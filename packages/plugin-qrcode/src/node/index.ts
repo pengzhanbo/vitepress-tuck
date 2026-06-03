@@ -15,7 +15,7 @@ export default definePlugin(() => ({
   },
   vite: {
     optimizeDeps: {
-      exclude: ['qrcode'],
+      include: ['qrcode'],
     },
   },
 }))

@@ -15,7 +15,7 @@ export default definePlugin(() => ({
   },
   vite: {
     optimizeDeps: {
-      exclude: ['@pengzhanbo/utils'],
+      include: ['@pengzhanbo/utils'],
     },
     ssr: {
       noExternal: ['vitepress-plugin-codepen'],

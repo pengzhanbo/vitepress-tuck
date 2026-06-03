@@ -2,8 +2,6 @@ import type { Theme } from 'vitepress'
 import enhanceApp from 'virtual:enhance-app'
 import DefaultTheme from 'vitepress/theme'
 
-import 'virtual:group-icons.css'
-
 export default {
   extends: DefaultTheme,
   enhanceApp(ctx) {

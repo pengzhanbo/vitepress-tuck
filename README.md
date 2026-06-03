@@ -25,8 +25,8 @@ pnpm add vitepress-tuck
 ### 在配置中使用
 
 ```ts
-import qrcode from 'vitepress-plugin-qrcode'
 // .vitepress/config.ts
+import qrcode from 'vitepress-plugin-qrcode'
 import { defineConfig } from 'vitepress-tuck'
 
 export default defineConfig({

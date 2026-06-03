@@ -1,23 +1,21 @@
-import process from 'node:process'
-import caniusePlugin from 'vitepress-plugin-caniuse'
-import codeCollapsePlugin from 'vitepress-plugin-code-collapse'
-import codepenPlugin from 'vitepress-plugin-codepen'
-import codeSandboxPlugin from 'vitepress-plugin-codesandbox'
-import fileTreePlugin from 'vitepress-plugin-file-tree'
-import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons'
-import jsfiddlePlugin from 'vitepress-plugin-jsfiddle'
-import llmstxt from 'vitepress-plugin-llms'
-import mermaidPlugin from 'vitepress-plugin-mermaid-next'
-import npmToPlugin from 'vitepress-plugin-npm-to'
-import obsidianPlugin from 'vitepress-plugin-obsidian'
-import pdfPlugin from 'vitepress-plugin-pdf'
-import plotPlugin from 'vitepress-plugin-plot'
-import qrcodePlugin from 'vitepress-plugin-qrcode'
-import stepsPlugin from 'vitepress-plugin-steps'
-import videoPlugin from 'vitepress-plugin-video'
+import caniuse from 'vitepress-plugin-caniuse'
+import codeCollapse from 'vitepress-plugin-code-collapse'
+import codepen from 'vitepress-plugin-codepen'
+import codeSandbox from 'vitepress-plugin-codesandbox'
+import fileTree from 'vitepress-plugin-file-tree'
+import jsfiddle from 'vitepress-plugin-jsfiddle'
+import mermaid from 'vitepress-plugin-mermaid-next'
+import npmTo from 'vitepress-plugin-npm-to'
+import obsidian from 'vitepress-plugin-obsidian'
+import pdf from 'vitepress-plugin-pdf'
+import plot from 'vitepress-plugin-plot'
+import qrcode from 'vitepress-plugin-qrcode'
+import steps from 'vitepress-plugin-steps'
+import video from 'vitepress-plugin-video'
 import { defineConfig } from 'vitepress-tuck'
 
-const isProd = process.env.NODE_ENV === 'production'
+import groupIcons from './plugins/group-icons'
+import llmstxt from './plugins/llmstxt'
 
 export default defineConfig({
   title: 'Vitepress Plugins',
@@ -28,27 +26,7 @@ export default defineConfig({
 
   rewrites: { 'en/:rest*': ':rest*' },
 
-  plugins: [
-    stepsPlugin(),
-    plotPlugin(),
-    fileTreePlugin(),
-    caniusePlugin(),
-    obsidianPlugin(),
-    pdfPlugin(),
-    videoPlugin(),
-    npmToPlugin(),
-    qrcodePlugin(),
-    jsfiddlePlugin(),
-    codepenPlugin(),
-    codeSandboxPlugin(),
-    mermaidPlugin(),
-    codeCollapsePlugin(),
-  ],
-
   markdown: {
-    config: (md) => {
-      md.use(groupIconMdPlugin)
-    },
     theme: { light: 'github-light', dark: 'github-dark' },
     headers: { level: [2, 3] },
     codeTransformers: [{ postprocess: code => code.replace(/\[!!code/g, '[!code') }],
@@ -62,16 +40,25 @@ export default defineConfig({
     root: { label: 'English', lang: 'en-US' },
     zh: { label: '简体中文', lang: 'zh-CN' },
   },
-  vite: {
-    plugins: [
-      groupIconVitePlugin(),
-      isProd && llmstxt({ workDir: 'en', ignoreFiles: ['index.md'] }) as any,
-    ],
-    ssr: {
-      noExternal: [
-        'vitepress-plugin-llms',
-        'vitepress-plugin-group-icons',
-      ],
-    },
-  },
+
+  plugins: [
+    steps(),
+    plot(),
+    fileTree(),
+    caniuse(),
+    obsidian(),
+    pdf(),
+    video(),
+    npmTo(),
+    qrcode(),
+    jsfiddle(),
+    codepen(),
+    codeSandbox(),
+    mermaid(),
+    codeCollapse(),
+
+    // wrap external plugins
+    llmstxt(),
+    groupIcons(),
+  ],
 })

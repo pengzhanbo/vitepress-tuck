@@ -41,7 +41,7 @@ export default definePlugin((options?: VideoPluginOptions) => ({
   vite: {
     plugins: [artPlayerVitePlugin()],
     optimizeDeps: {
-      exclude: ['@pengzhanbo/utils', 'artplayer', 'dashjs', 'hls.js', 'mpegts.js/dist/mpegts.js'],
+      include: ['@pengzhanbo/utils', 'artplayer', 'dashjs', 'hls.js', 'mpegts.js/dist/mpegts.js'],
     },
     ssr: {
       noExternal: ['vitepress-plugin-video'],

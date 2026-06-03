@@ -10,7 +10,7 @@ import { createEmbedRuleBlock, parseRect, resolveAttrs } from 'vitepress-plugin-
 
 const EMBED_LINK = 'https://codesandbox.io/embed/'
 const SHARE_LINK = 'https://codesandbox.io/p/sandbox/'
-const ALLOW = 'accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking'
+const ALLOW = 'accelerometer; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; xr-spatial-tracking'
 const SANDBOX = 'allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts'
 
 export const codeSandboxPlugin: PluginSimple = (md) => {
