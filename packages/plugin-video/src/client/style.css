@@ -1,0 +1,58 @@
+@import url("vitepress-plugin-toolkit/styles/loading.css");
+
+.vp-artplayer {
+  position: relative;
+}
+
+.vp-artplayer .artplayer-container {
+  margin: 16px 0;
+}
+
+@media (min-width: 768px) {
+  .vp-artplayer .artplayer-container {
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: var(--vp-shadow-2);
+    transition: box-shadow var(--vp-t-color);
+  }
+}
+
+.vp-artplayer .artplayer-container .art-video-player .art-subtitle {
+  z-index: 12;
+}
+
+.vp-artplayer .artplayer-container .art-video-player .art-danmuku {
+  z-index: 13;
+}
+
+.vp-artplayer .artplayer-container .art-video-player .art-layers {
+  z-index: 14;
+}
+
+.vp-artplayer .artplayer-container .art-video-player .art-mask {
+  z-index: 15;
+}
+
+.vp-artplayer .artplayer-container .art-video-player .art-bottom {
+  z-index: 16;
+}
+
+.vp-artplayer .artplayer-container .art-video-player .art-loading {
+  z-index: 17;
+}
+
+.vp-artplayer .artplayer-container .art-video-player .art-notice {
+  z-index: 18;
+}
+
+.vp-artplayer .artplayer-container .art-video-player .art-settings {
+  z-index: 19;
+}
+
+.vp-artplayer .artplayer-container .art-video-player .art-info {
+  z-index: 20;
+}
+
+.vp-artplayer .artplayer-container .art-video-player .art-contextmenu {
+  z-index: 21;
+}

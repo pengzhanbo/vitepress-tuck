@@ -1,0 +1,67 @@
+{
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
+  "files.encoding": "utf8",
+  "files.eol": "\n",
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "[markdown]": {
+    "files.trimTrailingWhitespace": false
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "css.validate": false,
+  "scss.validate": false,
+  "less.validate": false,
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "stylelint.packageManager": "pnpm",
+  "eslint.rules.customizations": [
+    { "rule": "style/*", "severity": "off" },
+    { "rule": "format/*", "severity": "off" },
+    { "rule": "*-indent", "severity": "off" },
+    { "rule": "*-spacing", "severity": "off" },
+    { "rule": "*-spaces", "severity": "off" },
+    { "rule": "*-order", "severity": "off" },
+    { "rule": "*-dangle", "severity": "off" },
+    { "rule": "*-newline", "severity": "off" },
+    { "rule": "*quotes", "severity": "off" },
+    { "rule": "*semi", "severity": "off" }
+  ],
+  "editor.formatOnSave": false,
+  "prettier.enable": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.stylelint": "explicit",
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.markdownlint": "explicit",
+    "source.organizeImports": "never"
+  },
+  "editor.formatOnPaste": false,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue",
+    "html",
+    "markdown",
+    "json",
+    "jsonc",
+    "yaml"
+  ],
+  "stylelint.validate": [
+    "css",
+    "scss",
+    "postcss",
+    "vue"
+  ],
+  "cSpell.words": [
+    "acfun",
+    "artplayer",
+    "bilibili",
+    "codepen",
+    "codesandbox",
+    "jsfiddle",
+    "qrcode"
+  ]
+}

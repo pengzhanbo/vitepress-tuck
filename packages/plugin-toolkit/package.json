@@ -1,0 +1,47 @@
+{
+  "name": "vitepress-plugin-toolkit",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Development toolkit for vitepress plugins",
+  "author": "pengzhanbo <q942450674@outlook.com> (https://github.com/pengzhanbo/)",
+  "license": "MIT",
+  "keywords": [
+    "vitepress",
+    "vitepress-plugin"
+  ],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/node/index.d.ts",
+      "default": "./dist/node/index.js"
+    },
+    "./client": {
+      "browser": "./dist/client/browser/index.js",
+      "default": "./dist/client/ssr/index.js"
+    },
+    "./styles/*": "./dist/client/styles/*"
+  },
+  "module": "./dist/node/index.js",
+  "types": "./dist/node/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "rimraf --glob ./dist",
+    "dev": "pnpm '/(tsdown|copy):watch/'",
+    "build": "pnpm tsdown && pnpm copy",
+    "copy": "cpx \"src/**/*.css\" dist",
+    "copy:watch": "pnpm copy -w",
+    "tsdown": "tsdown --config-loader unrun"
+  },
+  "peerDependencies": {
+    "vitepress": "^1.6.4 || ^2.0.0-alpha.17",
+    "vue": "^3.5.0"
+  },
+  "dependencies": {
+    "@pengzhanbo/utils": "catalog:prod",
+    "@vueuse/core": "catalog:prod",
+    "ansis": "catalog:prod",
+    "markdown-it-container": "catalog:prod"
+  }
+}

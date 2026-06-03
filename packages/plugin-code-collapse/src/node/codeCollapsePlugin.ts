@@ -1,0 +1,72 @@
+import type { PluginWithOptions } from 'markdown-it'
+import type { CollapsedLinesOptions } from './types.js'
+import { resolveCollapsedLines } from './resolveCollapsedLine.js'
+
+/**
+ * Add collapsed lines functionality to code blocks in markdown-it
+ *
+ * 为 markdown-it 中的代码块添加折叠行功能
+ *
+ * @param md - MarkdownIt instance / MarkdownIt 实例
+ * @param options - Plugin options / 插件选项
+ * @param options.collapsedLines - Collapsed lines configuration / 折叠行配置
+ * @param options.removeLastLine - Whether to remove the last line of the code block / 是否移除代码块的最后一行
+ *
+ * @example
+ *   import { collapsedLines } from '@vuepress/highlighter-helper'
+ *
+ *   md.use(collapsedLines, {
+ *     collapsedLines: 15,
+ *     removeLastLine: false,
+ *   })
+ */
+export const collapsedLinesPlugin: PluginWithOptions<CollapsedLinesOptions> = (md, {
+  collapsedLines: collapsedLinesOptions = true,
+  removeLastLine,
+} = {}): void => {
+  if (collapsedLinesOptions === 'disable')
+    return
+
+  const rawFence = md.renderer.rules.fence!
+
+  md.renderer.rules.fence = (...args): string => {
+    const [tokens, index] = args
+    const token = tokens[index]
+    // get token info
+    const info = token.info ? md.utils.unescapeAll(token.info).trim() : ''
+    const code = rawFence(...args)
+
+    // resolve collapsed-lines mark from token info
+    const collapsedLinesInfo
+      = resolveCollapsedLines(info) ?? collapsedLinesOptions
+
+    if (collapsedLinesInfo === false)
+      return code
+
+    const lines
+      = code
+        .slice(code.indexOf('<code>'), code.indexOf('</code>'))
+        .split('\n')
+        .length - (removeLastLine ? 1 : 0)
+    const startLines
+      = typeof collapsedLinesInfo === 'number' ? collapsedLinesInfo : 15
+
+    if (lines < startLines)
+      return code
+
+    const collapsedLinesCode = `<div class="collapsed-lines"></div>`
+    const styles = `--vp-collapsed-lines:${startLines};`
+
+    const finalCode = code
+      .replace(/<\/div>$/u, `${collapsedLinesCode}</div>`)
+      .replace(/"(language-[^"]*)"/u, '"$1 has-collapsed-lines collapsed"')
+      .replace(/^<div[^>]*>/u, (match) => {
+        if (!match.includes('style='))
+          return `${match.slice(0, -1)} style="${styles}">`
+
+        return match.replace(/(style=")/u, `$1${styles}`)
+      })
+
+    return finalCode
+  }
+}

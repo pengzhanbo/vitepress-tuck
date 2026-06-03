@@ -1,0 +1,288 @@
+/**
+ * npm-to container plugin
+ *
+ * 只写一个 npm 代码块，自动转为 代码块分组 [npm, pnpm, yarn, bun, deno]
+ *
+ * ::: npm-to
+ * ``` sh
+ * npm i -D vuepress-theme-plume
+ * ```
+ * :::
+ * ↓ ↓ ↓ ↓ ↓
+ * ::: code-group
+ * ```sh [npm]
+ * npm i -D vuepress-theme-plume
+ * ```
+ * ```sh [pnpm]
+ * pnpm add -D vuepress-theme-plume
+ * ```
+ * ```sh [yarn]
+ * yarn add -D vuepress-theme-plume
+ * ```
+ * :::
+ */
+
+import type { PluginWithOptions } from 'markdown-it'
+import type { MarkdownEnv } from 'vitepress'
+import type { CommandConfig, CommandConfigItem } from './npmTo.js'
+import type { NpmToPackageManager, NpmToPluginOptions } from './types.js'
+import { isArray } from '@pengzhanbo/utils'
+import colors from 'ansis'
+import { createContainerPlugin, resolveAttrs } from 'vitepress-plugin-toolkit'
+import { logger } from './logger.js'
+import { ALLOW_LIST, BOOL_FLAGS, DEFAULT_TABS, MANAGERS_CONFIG } from './npmTo.js'
+
+/**
+ * npm-to plugin - Convert npm commands to multiple package manager commands
+ *
+ * 注册 npm-to 容器插件，将 npm 代码块自动转换为多包管理器命令分组
+ *
+ * @param md - Markdown instance / Markdown 实例
+ * @param options - npm-to options / npm-to 选项
+ */
+export const npmToPlugin: PluginWithOptions<NpmToPluginOptions> = (md, options = {}): void => {
+  const opt = isArray(options) ? { tabs: options } : options
+  const defaultTabs = opt.tabs?.length ? opt.tabs : DEFAULT_TABS
+
+  createContainerPlugin(md, 'npm-to', {
+    before: (info, tokens, idx, _opt, env: MarkdownEnv) => {
+      const attrs = resolveAttrs<{ tabs?: string }>(info)
+      const tabs = (attrs.tabs ? attrs.tabs.split(/,\s*/) : defaultTabs) as NpmToPackageManager[]
+      const token = tokens[idx + 1]
+      if (token.type === 'fence') {
+        const content = token.content
+        token.hidden = true
+        token.type = 'text'
+        token.content = ''
+        // Split command line content, convert to multiple package manager commands
+        const lines = content.split(/(\n|\s*&&\s*)/)
+        return md.render(
+          resolveNpmTo(lines, token.info.trim(), idx, tabs),
+          env,
+        )
+      }
+      // Invalid container warning
+      logger.warn(`Invalid npm-to container in ${colors.gray(env.relativePath)}`)
+      return ''
+    },
+    after: () => '',
+  })
+}
+
+/**
+ * Convert npm commands to package manager command groups
+ *
+ * 将 npm 命令转换为各包管理器命令分组
+ *
+ * @param lines - Command line array / 命令行数组
+ * @param info - Code block type / 代码块类型
+ * @param idx - Token index / token 索引
+ * @param tabs - Package managers to support / 需要支持的包管理器
+ * @returns code-tabs formatted string / code-tabs 格式字符串
+ */
+function resolveNpmTo(lines: string[], info: string, idx: number, tabs: NpmToPackageManager[]): string {
+  tabs = validateTabs(tabs)
+  const res: string[] = []
+  const map: Record<string, LineParsed | false> = {}
+  for (const tab of tabs) {
+    const newLines: string[] = []
+    for (const line of lines) {
+      const config = findConfig(line)
+      if (config && config[tab as keyof CommandConfig]) {
+        // Parse and replace command arguments
+        const parsed = (map[line] ??= parseLine(line)) as LineParsed
+        const { cli, flags } = config[tab as keyof CommandConfig] as CommandConfigItem
+
+        let newLine = `${parsed.env ? `${parsed.env} ` : ''}${cli}`
+        if (parsed.args && flags) {
+          let args = parsed.args
+          for (const [key, value] of Object.entries(flags)) {
+            args = args.replaceAll(key, value)
+          }
+          newLine += ` ${args.replace(/\s+-/g, ' -').trim()}`
+        }
+
+        if (parsed.cmd)
+          newLine += ` ${parsed.cmd}`
+
+        if (parsed.scriptArgs)
+          newLine += ` ${parsed.scriptArgs}`
+        newLines.push(newLine.trim())
+      }
+      else {
+        newLines.push(line)
+      }
+    }
+    // Concatenate as code-tabs format
+    res.push(`\`\`\`${info} [${tab}]\n${newLines.join('')}\n\`\`\``)
+  }
+  return `:::code-group\n${res.join('\n')}\n:::`
+}
+
+/**
+ * Find package manager config by command line content
+ *
+ * 根据命令行内容查找对应的包管理器配置
+ *
+ * @param line - Command line / 命令行
+ * @returns Command config / 命令配置
+ */
+function findConfig(line: string): CommandConfig | undefined {
+  for (const { pattern, ...config } of Object.values(MANAGERS_CONFIG)) {
+    if (pattern.test(line)) {
+      return config
+    }
+  }
+  return undefined
+}
+
+/**
+ * Validate tabs, return allowed package manager list
+ *
+ * 校验 tabs 合法性，返回允许的包管理器列表
+ *
+ * @param tabs - Package managers / 包管理器
+ * @returns Validated tabs / 验证后的标签
+ */
+function validateTabs(tabs: NpmToPackageManager[]): NpmToPackageManager[] {
+  tabs = tabs.filter(tab => ALLOW_LIST.includes(tab))
+  if (tabs.length === 0) {
+    return DEFAULT_TABS
+  }
+  return tabs
+}
+
+/**
+ * Command line parse result type
+ *
+ * 命令行解析结果类型
+ */
+interface LineParsed {
+  env: string // Environment variable prefix / 环境变量前缀
+  cli: string // CLI tool (npm/npx ...) / 命令行工具
+  cmd: string // Command/script name / 命令/脚本名
+  args?: string // Arguments / 参数
+  scriptArgs?: string // Script arguments / 脚本参数
+}
+
+/**
+ * Regex for parsing npm/npx commands
+ *
+ * 解析 npm/npx 命令的正则
+ */
+const LINE_REG = /(.*)(npm|npx)\s+(.*)/
+
+/**
+ * Parse a line of npm/npx command, split env, command, args, etc.
+ *
+ * 解析一行 npm/npx 命令，拆分出环境变量、命令、参数等
+ *
+ * @param line - Command line / 命令行
+ * @returns Parsed result / 解析结果
+ */
+export function parseLine(line: string): false | LineParsed {
+  const match = line.match(LINE_REG)
+  if (!match)
+    return false
+
+  const [, env, cli, rest] = match
+  const idx = rest.trim().indexOf(' ')
+  if (cli === 'npx') {
+    let cmd = ''
+    let scriptArgs = ''
+    if (idx !== -1) {
+      cmd = rest.slice(0, idx)
+      scriptArgs = rest.slice(idx + 1).trim()
+    }
+    else {
+      cmd = rest
+    }
+    return { env, cli, cmd, scriptArgs }
+  }
+
+  if (idx === -1)
+    return { env, cli: `${cli} ${rest.trim()}`, cmd: '' }
+
+  return { env, cli: `${cli} ${rest.slice(0, idx)}`, ...parseArgs(rest.slice(idx + 1)) }
+}
+
+/**
+ * Parse npm command arguments, distinguish command, args, script args
+ *
+ * 解析 npm 命令参数，区分命令、参数、脚本参数
+ *
+ * @param line - Arguments line / 参数字符串
+ * @returns Parsed args / 解析后的参数
+ */
+function parseArgs(line: string): { cmd: string, args?: string, scriptArgs?: string } {
+  line = line?.trim()
+
+  const [npmArgs, scriptArgs] = line.split(/\s+--\s+/)
+  let cmd = ''
+  let args = ''
+  if (npmArgs[0] !== '-') {
+    // Process command and args
+    if (npmArgs[0] === '"' || npmArgs[0] === '\'') {
+      const idx = npmArgs.slice(1).indexOf(npmArgs[0])
+      cmd = npmArgs.slice(0, idx + 2)
+      args = npmArgs.slice(idx + 2)
+    }
+    else {
+      const idx = npmArgs.indexOf(' -')
+      if (idx === -1) {
+        cmd = npmArgs
+      }
+      else {
+        cmd = npmArgs.slice(0, idx)
+        args = npmArgs.slice(idx + 1)
+      }
+    }
+  }
+  else {
+    // Process args only
+    let newLine = ''
+    let value = ''
+    let isQuote = false
+    let isBool = false
+    let isNextValue = false
+    let quote = ''
+    for (let i = 0; i < npmArgs.length; i++) {
+      const v = npmArgs[i]
+      if (!isQuote && (v === '"' || v === '\'')) {
+        quote = v
+        isQuote = true
+        value += v
+      }
+      else if (isQuote && v === quote) {
+        isQuote = false
+        value += v
+      }
+      else if ((v === ' ' || v === '=' || i === npmArgs.length - 1) && !isQuote && value) {
+        if (i === npmArgs.length - 1) {
+          value += v
+        }
+
+        const isKey = value[0] === '-'
+        if (isKey) {
+          isBool = BOOL_FLAGS.includes(value)
+          isNextValue = !isBool
+        }
+        if (!isKey && !isNextValue) {
+          cmd += ` ${value}`
+        }
+        else {
+          newLine += `${value}${i !== npmArgs.length - 1 ? v : ''}`
+          if (!isKey && isNextValue) {
+            isNextValue = false
+          }
+        }
+        value = ''
+      }
+      else {
+        value += v
+      }
+    }
+    args = newLine
+  }
+  return { cmd: cmd.trim(), args: args.trim(), scriptArgs }
+}

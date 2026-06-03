@@ -1,0 +1,35 @@
+:root {
+  --vp-plot-bg: var(--vp-c-text-1);
+  --vp-plot-c-text: var(--vp-c-neutral-inverse);
+  --vp-plot-blur: 0.2rem;
+  --vp-plot-transition: 0.25s ease-in-out;
+}
+
+.vp-plot {
+  padding-inline: 2px;
+}
+
+.vp-plot.click {
+  cursor: pointer;
+}
+
+.vp-plot:where(.blur) {
+  filter: blur(var(--vp-plot-blur));
+  transition: filter var(--vp-plot-transition);
+}
+
+.vp-plot:where(.mask) {
+  color: transparent;
+  background-color: var(--vp-plot-bg);
+  transition: color var(--vp-plot-transition), background-color var(--vp-plot-transition);
+}
+
+.vp-plot:where(.blur.hover):hover,
+.vp-plot:where(.blur).active {
+  filter: blur(0);
+}
+
+.vp-plot:where(.mask.hover):hover,
+.vp-plot:where(.mask).active {
+  color: var(--vp-plot-c-text);
+}

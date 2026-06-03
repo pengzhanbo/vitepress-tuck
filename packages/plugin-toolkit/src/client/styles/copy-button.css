@@ -1,0 +1,75 @@
+.vp-doc .has-copy > button.vp-copy {
+  position: absolute;
+  top: 12px;
+
+  /* rtl:ignore */
+  right: 12px;
+  z-index: 3;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  background-color: var(--vp-code-copy-code-bg);
+  background-image: var(--vp-icon-copy);
+  background-repeat: no-repeat;
+  background-position: 50%;
+  background-size: 20px;
+  border: 1px solid var(--vp-code-copy-code-border-color);
+  border-radius: 4px;
+  opacity: 0;
+  transition:
+    border-color 0.25s,
+    background-color 0.25s,
+    opacity 0.25s;
+
+  /* rtl:ignore */
+  direction: ltr;
+}
+
+.vp-doc .has-copy:hover > button.vp-copy,
+.vp-doc .has-copy > button.vp-copy:focus {
+  opacity: 1;
+}
+
+.vp-doc .has-copy > button.vp-copy:hover,
+.vp-doc .has-copy > button.vp-copy.copied {
+  background-color: var(--vp-code-copy-code-hover-bg);
+  border-color: var(--vp-code-copy-code-hover-border-color);
+}
+
+.vp-doc .has-copy > button.vp-copy.copied,
+.vp-doc .has-copy > button.vp-copy:hover.copied {
+  background-color: var(--vp-code-copy-code-hover-bg);
+  background-image: var(--vp-icon-copied);
+
+  /* rtl:ignore */
+  border-radius: 0 4px 4px 0;
+}
+
+.vp-doc .has-copy > button.vp-copy.copied::before,
+.vp-doc .has-copy > button.vp-copy:hover.copied::before {
+  position: relative;
+  top: -1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  height: 40px;
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--vp-code-copy-code-active-text);
+  text-align: center;
+  white-space: nowrap;
+  content: var(--vp-code-copy-copied-text-content);
+  background-color: var(--vp-code-copy-code-hover-bg);
+  border: 1px solid var(--vp-code-copy-code-hover-border-color);
+
+  /* rtl:ignore */
+  border-right: 0;
+
+  /* rtl:ignore */
+  border-radius: 4px 0 0 4px;
+
+  /* rtl:ignore */
+  transform: translateX(calc(-100% - 1px));
+}

@@ -1,0 +1,45 @@
+{
+  "name": "vitepress-plugin-code-collapse",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "provide code block collapsed lines feature",
+  "author": "pengzhanbo <q942450674@outlook.com> (https://github.com/pengzhanbo/)",
+  "license": "MIT",
+  "keywords": [
+    "vitepress",
+    "vitepress-plugin",
+    "code-collapse",
+    "collapsed-lines"
+  ],
+  "exports": {
+    ".": "./dist/node/index.js",
+    "./client": {
+      "browser": "./dist/client/browser/index.js",
+      "default": "./dist/client/ssr/index.js"
+    },
+    "./style.css": "./dist/client/style.css"
+  },
+  "module": "./dist/node/index.js",
+  "types": "./dist/node/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "rimraf --glob ./dist",
+    "dev": "pnpm '/(tsdown|copy):watch/'",
+    "build": "pnpm tsdown && pnpm copy",
+    "copy": "cpx \"src/**/*.css\" dist",
+    "copy:watch": "pnpm copy -w",
+    "tsdown": "tsdown --config-loader unrun",
+    "tsdown:watch": "pnpm tsdown -w"
+  },
+  "peerDependencies": {
+    "vitepress": "^1.6.4 || ^2.0.0-alpha.17",
+    "vue": "^3.5.0"
+  },
+  "dependencies": {
+    "@vueuse/core": "catalog:prod",
+    "vitepress-plugin-toolkit": "workspace:*",
+    "vitepress-tuck": "workspace:*"
+  }
+}

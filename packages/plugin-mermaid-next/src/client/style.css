@@ -1,0 +1,122 @@
+@import url("vitepress-plugin-toolkit/styles/loading.css");
+
+.vp-mermaid-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: color-mix(in srgb, var(--vp-c-bg) 10%, transparent);
+  backdrop-filter: blur(4px);
+}
+
+.vp-mermaid-fullscreen > svg {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.vp-mermaid {
+  display: flex;
+  flex-direction: column;
+  margin-block: 16px;
+  margin-inline: -24px;
+  background: var(--vp-code-block-bg);
+}
+
+@media (min-width: 640px) {
+  .vp-mermaid {
+    margin-inline: 0;
+    border-radius: 8px;
+  }
+}
+
+.vp-mermaid .mermaid-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 4px;
+  padding-inline: 8px;
+}
+
+.vp-mermaid .mermaid-tabs {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  padding-block: 2px;
+  padding-inline: 4px;
+  background-color: var(--vp-c-gray-soft);
+  border-radius: 6px;
+}
+
+.vp-mermaid .mermaid-tabs button {
+  display: inline-block;
+  padding-block: 2px;
+  padding-inline: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
+  color: var(--vp-c-text-3);
+  cursor: pointer;
+  user-select: none;
+  background-color: transparent;
+  border-radius: 6px;
+  transition: background-color 0.25s ease-in-out;
+}
+
+.vp-mermaid .mermaid-tabs button.active {
+  color: var(--vp-c-text-1);
+  background-color: var(--vp-c-bg);
+  box-shadow: var(--vp-shadow-1);
+}
+
+.vp-mermaid .mermaid-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.25s ease-in-out;
+}
+
+.vp-mermaid:hover .mermaid-actions {
+  opacity: 1;
+}
+
+.vp-mermaid .mermaid-actions button {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  justify-content: center;
+}
+
+.vp-mermaid .mermaid-view {
+  max-width: 100%;
+  padding-block: 12px;
+  padding-inline: 16px;
+  overflow-x: auto;
+  text-align: center;
+}
+
+.vp-mermaid .mermaid-view > svg {
+  display: inline-block;
+}
+
+.vp-mermaid .mermaid-source div[class*="language-"] {
+  margin: 0;
+}
+
+.vp-mermaid .vpi-download {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='m12 16l-5-5l1.4-1.45l2.6 2.6V4h2v8.15l2.6-2.6L17 11zm-6 4q-.825 0-1.412-.587T4 18v-3h2v3h12v-3h2v3q0 .825-.587 1.413T18 20z'/%3E%3C/svg%3E");
+
+  display: inline-block;
+  width: 1.1em;
+  height: 1.1em;
+}
+
+.vp-mermaid .vpi-fullscreen {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M3 21v-5h2v3h3v2zm13 0v-2h3v-3h2v5zM3 8V3h5v2H5v3zm16 0V5h-3V3h5v5z'/%3E%3C/svg%3E");
+
+  display: inline-block;
+}

@@ -1,0 +1,46 @@
+/**
+ * @[youtube](id)
+ */
+
+import type { PluginSimple } from 'markdown-it'
+import { URLSearchParams } from 'node:url'
+import { createEmbedRuleBlock, parseRect, resolveAttrs, stringifyAttrs } from 'vitepress-plugin-toolkit'
+import { timeToSeconds } from './utils.js'
+
+const YOUTUBE_LINK = 'https://www.youtube.com/embed/'
+
+export const youtubePlugin: PluginSimple = (md) => {
+  createEmbedRuleBlock(md, {
+    type: 'youtube',
+    name: 'video_youtube',
+    syntaxPattern: /^@\[youtube([^\]]*)\]\(([^)]*)\)/,
+    meta([, info, id]) {
+      const attrs = resolveAttrs(info)
+
+      return {
+        id,
+        autoplay: attrs.autoplay ?? false,
+        loop: attrs.loop ?? false,
+        start: timeToSeconds(attrs.start),
+        end: timeToSeconds(attrs.end),
+        title: attrs.title || 'YouTube',
+        width: attrs.width ? parseRect(attrs.width) : '100%',
+        height: attrs.height ? parseRect(attrs.height) : undefined,
+        ratio: attrs.ratio,
+      }
+    },
+    content(meta) {
+      const params = new URLSearchParams()
+
+      meta.autoplay && params.set('autoplay', '1')
+      meta.loop && params.set('loop', '1')
+      meta.start && params.set('start', meta.start.toString())
+      meta.end && params.set('end', meta.end.toString())
+
+      const src = `${YOUTUBE_LINK}/${meta.id}?${params.toString()}`
+      const { width, height, ratio, title } = meta
+
+      return `<VPVideoEmbed${stringifyAttrs({ src, width, height, ratio, title, type: 'youtube' })} />`
+    },
+  })
+}

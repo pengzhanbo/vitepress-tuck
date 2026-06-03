@@ -1,0 +1,19 @@
+.vp-caniuse {
+  margin: 16px -24px;
+}
+
+.vp-caniuse.baseline {
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.vp-caniuse iframe {
+  width: 100%;
+  border: none;
+}
+
+@media (min-width: 768px) {
+  .vp-caniuse {
+    margin: 16px 0;
+  }
+}

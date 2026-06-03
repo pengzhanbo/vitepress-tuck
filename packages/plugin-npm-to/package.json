@@ -1,0 +1,40 @@
+{
+  "name": "vitepress-plugin-npm-to",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Automatically convert npm commands to equivalent commands for other package managers (pnpm, yarn, bun, deno).",
+  "author": "pengzhanbo <q942450674@outlook.com> (https://github.com/pengzhanbo/)",
+  "license": "MIT",
+  "keywords": [
+    "vitepress",
+    "vitepress-plugin"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/node/index.d.ts",
+      "default": "./dist/node/index.js"
+    }
+  },
+  "module": "./dist/node/index.js",
+  "types": "./dist/node/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "rimraf --glob ./dist",
+    "dev": "pnpm tsdown:watch",
+    "build": "pnpm tsdown",
+    "tsdown": "tsdown --config-loader unrun",
+    "tsdown:watch": "pnpm tsdown -w"
+  },
+  "peerDependencies": {
+    "vitepress": "^1.6.4 || ^2.0.0-alpha.17",
+    "vue": "^3.5.0"
+  },
+  "dependencies": {
+    "@pengzhanbo/utils": "catalog:prod",
+    "ansis": "catalog:prod",
+    "vitepress-plugin-toolkit": "workspace:*",
+    "vitepress-tuck": "workspace:*"
+  }
+}
