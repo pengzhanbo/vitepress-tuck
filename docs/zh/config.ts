@@ -4,7 +4,8 @@ export default defineAdditionalConfig({
   lang: 'zh-CN',
   themeConfig: {
     nav: [
-      { text: 'Plugins', link: '/plugins/', activeMatch: '/plugins/' },
+      { text: '指南', link: '/guide/' },
+      { text: '插件', link: '/plugins/', activeMatch: '/plugins/' },
     ],
     sidebar: {
       '/zh/plugins/': { base: '/zh/plugins/', items: [

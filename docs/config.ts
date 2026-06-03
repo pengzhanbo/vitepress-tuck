@@ -4,6 +4,7 @@ export default defineAdditionalConfig({
   lang: 'en-US',
   themeConfig: {
     nav: [
+      { text: 'Guide', link: '/guide/' },
       { text: 'Plugins', link: '/plugins/', activeMatch: '/plugins/' },
     ],
     sidebar: {

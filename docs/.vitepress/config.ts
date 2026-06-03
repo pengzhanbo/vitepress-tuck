@@ -18,8 +18,8 @@ import groupIcons from './plugins/group-icons'
 import llmstxt from './plugins/llmstxt'
 
 export default defineConfig({
-  title: 'Vitepress Plugins',
-  description: 'awesome vitepress plugins',
+  title: 'Vitepress Tuck',
+  description: 'Enhance vitepress configuration, provide plugins capability.',
   lastUpdated: true,
   cleanUrls: true,
   metaChunk: true,
@@ -32,13 +32,23 @@ export default defineConfig({
     codeTransformers: [{ postprocess: code => code.replace(/\[!!code/g, '[!code') }],
   },
 
+  head: [
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/vitepress-logo-mini.svg' }],
+    ['link', { rel: 'icon', type: 'image/png', href: '/vitepress-logo-mini.png' }],
+    ['meta', { name: 'theme-color', content: '#5f67ee' }],
+  ],
+
   themeConfig: {
+    logo: { src: '/vitepress-logo-mini.svg', width: 24, height: 24 },
+    socialLinks: [
+      { icon: 'github', link: 'https://github.com/pengzhanbo/vitepress-tuck' },
+    ],
     search: { provider: 'local' },
     outline: [2, 3],
   },
   locales: {
-    root: { label: 'English', lang: 'en-US' },
-    zh: { label: '简体中文', lang: 'zh-CN' },
+    root: { label: 'English', lang: 'en-US', dir: 'ltr' },
+    zh: { label: '简体中文', lang: 'zh-CN', dir: 'ltr' },
   },
 
   plugins: [

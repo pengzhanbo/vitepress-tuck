@@ -1,14 +1,16 @@
 ---
 layout: home
-title: VitePress 插件
+title: VitePress Tuck
 hero:
-  name: VitePress 插件
-  text: 一个 VitePress 插件集合
-  tagline: 为您的 VitePress 站点添加插件，扩展 VitePress 功能。
+  name: VitePress Tuck
+  text: 增强 vitepress 配置，提供插件能力。
   actions:
     - text: 开始使用
       link: /plugins/
     - text: Github
-      link: https://github.com/pengzhanbo/vitepress-plugins
+      link: https://github.com/pengzhanbo/vitepress-tuck
       theme: alt
+  image:
+    src: /tuck-logo.svg
+    alt: VitePress Tuck
 ---
