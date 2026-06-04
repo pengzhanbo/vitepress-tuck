@@ -13,7 +13,21 @@ const SHARE_LINK = 'https://codesandbox.io/p/sandbox/'
 const ALLOW = 'accelerometer; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; xr-spatial-tracking'
 const SANDBOX = 'allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts'
 
-export const codeSandboxPlugin: PluginSimple = (md) => {
+/**
+ * @example
+ * ```ts
+ * import { codeSandboxMarkdownPlugin } from 'vitepress-plugin-codesandbox'
+ * import { defineConfig } from 'vitepress'
+ * export default defineConfig({
+ *   markdown: {
+ *     config(md) {
+ *       md.use(codeSandboxMarkdownPlugin)
+ *     },
+ *   },
+ * })
+ * ```
+ */
+export const codeSandboxMarkdownPlugin: PluginSimple = (md) => {
   createEmbedRuleBlock<CodeSandboxTokenMeta>(md, {
     type: 'codesandbox',
     syntaxPattern: /^@\[codesandbox(?:\s+(embed|button))?([^\]]*)\]\(([^)]*)\)/,

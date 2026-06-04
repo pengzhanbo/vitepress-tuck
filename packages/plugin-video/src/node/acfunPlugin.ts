@@ -7,7 +7,7 @@ import { createEmbedRuleBlock, parseRect, resolveAttrs, stringifyAttrs } from 'v
 
 const AC_FUN_LINK = 'https://www.acfun.cn/player'
 
-export const acfunPlugin: PluginSimple = (md) => {
+export const acfunMarkdownPlugin: PluginSimple = (md) => {
   createEmbedRuleBlock(md, {
     type: 'acfun',
     name: 'video_acfun',

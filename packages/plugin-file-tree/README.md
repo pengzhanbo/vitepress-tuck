@@ -63,12 +63,12 @@ yarn add -D vitepress-plugin-file-tree
 ```ts
 // .vitepress/config.ts
 import { defineConfig } from 'vitepress'
-import { fileTreePlugin } from 'vitepress-plugin-file-tree'
+import { fileTreeMarkdownPlugin } from 'vitepress-plugin-file-tree'
 
 export default defineConfig({
   markdown: {
     config: (md) => {
-      md.use(fileTreePlugin)
+      md.use(fileTreeMarkdownPlugin)
     },
   },
 })

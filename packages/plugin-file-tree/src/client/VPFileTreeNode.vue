@@ -58,7 +58,7 @@ function toggle(ev: MouseEvent) {
     >
       <span
         v-if="filename !== '…' && filename !== '...'"
-        class="vp-icon" :class="{ expanded, [type]: true }"
+        class="vp-icon" :class="{ expanded: type === 'folder' ? active : false, [type]: true }"
         :data-filename="filename"
       />
       <span class="name" :class="[type]">{{ filename }}</span>

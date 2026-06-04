@@ -63,12 +63,12 @@ yarn add -D vitepress-plugin-jsfiddle
 ```ts
 // .vitepress/config.ts
 import { defineConfig } from 'vitepress'
-import { jsfiddlePlugin } from 'vitepress-plugin-jsfiddle'
+import { jsfiddleMarkdownPlugin } from 'vitepress-plugin-jsfiddle'
 
 export default defineConfig({
   markdown: {
     config: (md) => {
-      md.use(jsfiddlePlugin)
+      md.use(jsfiddleMarkdownPlugin)
     },
   },
 })

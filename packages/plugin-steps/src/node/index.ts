@@ -1,7 +1,7 @@
 import { definePlugin } from 'vitepress-tuck'
-import { stepsPlugin } from './stepsPlugin.js'
+import { stepsMarkdownPlugin } from './stepsPlugin.js'
 
-export { stepsPlugin }
+export { stepsMarkdownPlugin }
 
 export default definePlugin(() => ({
   name: 'vitepress-plugin-steps',
@@ -10,7 +10,7 @@ export default definePlugin(() => ({
   },
   markdown: {
     config: (md) => {
-      md.use(stepsPlugin)
+      md.use(stepsMarkdownPlugin)
     },
   },
 }))

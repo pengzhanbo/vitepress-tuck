@@ -1,9 +1,9 @@
 import type { MermaidPluginOptions } from './types.js'
 import { definePlugin } from 'vitepress-tuck'
-import { mermaidPlugin } from './mermaidPlugin.js'
+import { mermaidMarkdownPlugin } from './mermaidPlugin.js'
 import { mermaidVitePlugin } from './mermaidVitePlugin.js'
 
-export { mermaidPlugin, mermaidVitePlugin }
+export { mermaidMarkdownPlugin, mermaidVitePlugin }
 export type { MermaidPluginOptions } from './types.js'
 
 export default definePlugin((options?: MermaidPluginOptions) => ({
@@ -13,13 +13,13 @@ export default definePlugin((options?: MermaidPluginOptions) => ({
   },
   markdown: {
     config(md) {
-      md.use(mermaidPlugin)
+      md.use(mermaidMarkdownPlugin)
     },
   },
   vite: {
     plugins: [mermaidVitePlugin(options)],
     optimizeDeps: {
-      exclude: ['mermaid'],
+      include: ['mermaid/dist/mermaid.esm.min.mjs'],
     },
     ssr: {
       noExternal: ['vitepress-plugin-mermaid-next'],

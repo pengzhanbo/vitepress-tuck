@@ -63,12 +63,12 @@ yarn add -D vitepress-plugin-code-collapse
 ```ts
 // .vitepress/config.ts
 import { defineConfig } from 'vitepress'
-import { collapsedLinesPlugin } from 'vitepress-plugin-code-collapse'
+import { collapsedLinesMarkdownPlugin } from 'vitepress-plugin-code-collapse'
 
 export default defineConfig({
   markdown: {
     config: (md) => {
-      md.use(collapsedLinesPlugin)
+      md.use(collapsedLinesMarkdownPlugin)
     },
   }
 })

@@ -1,8 +1,8 @@
 # vitepress-plugin-caniuse
 
-Embed caniuse.com data in your VitePress site.
+Embed [caniuse.com](https://caniuse.com/) data in your VitePress site.
 
-在 VitePress 中嵌入 caniuse.com 数据
+在 VitePress 中嵌入 [caniuse.com](https://caniuse.com/) 数据
 
 ## Usage
 
@@ -63,12 +63,12 @@ yarn add -D vitepress-plugin-caniuse
 ```ts
 // .vitepress/config.ts
 import { defineConfig } from 'vitepress'
-import { caniusePlugin } from 'vitepress-plugin-caniuse'
+import { caniuseMarkdownPlugin } from 'vitepress-plugin-caniuse'
 
 export default defineConfig({
   markdown: {
     config: (md) => {
-      md.use(caniusePlugin)
+      md.use(caniuseMarkdownPlugin)
     },
   },
   vite: {

@@ -9,7 +9,7 @@ import { timeToSeconds } from './utils.js'
 
 const YOUTUBE_LINK = 'https://www.youtube.com/embed/'
 
-export const youtubePlugin: PluginSimple = (md) => {
+export const youtubeMarkdownPlugin: PluginSimple = (md) => {
   createEmbedRuleBlock(md, {
     type: 'youtube',
     name: 'video_youtube',

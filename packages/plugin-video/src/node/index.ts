@@ -1,31 +1,31 @@
 import type { PluginWithOptions } from 'markdown-it'
 import type { VideoPluginOptions } from './types.js'
 import { definePlugin } from 'vitepress-tuck'
-import { acfunPlugin } from './acfunPlugin.js'
-import { artPlayerPlugin, artPlayerVitePlugin } from './artplayerPlugin.js'
-import { bilibiliPlugin } from './bilibiliPlugin.js'
-import { youtubePlugin } from './youtubePlugin.js'
+import { acfunMarkdownPlugin } from './acfunPlugin.js'
+import { artPlayerMarkdownPlugin, artPlayerVitePlugin } from './artplayerPlugin.js'
+import { bilibiliMarkdownPlugin } from './bilibiliPlugin.js'
+import { youtubeMarkdownPlugin } from './youtubePlugin.js'
 
 export {
-  acfunPlugin,
-  artPlayerPlugin,
+  acfunMarkdownPlugin,
+  artPlayerMarkdownPlugin,
   artPlayerVitePlugin,
-  bilibiliPlugin,
-  youtubePlugin,
+  bilibiliMarkdownPlugin,
+  youtubeMarkdownPlugin,
 }
 
-export const videoPlugin: PluginWithOptions<VideoPluginOptions> = (md, options = {}) => {
+export const videoMarkdownPlugin: PluginWithOptions<VideoPluginOptions> = (md, options = {}) => {
   if (options.acfun !== false)
-    md.use(acfunPlugin)
+    md.use(acfunMarkdownPlugin)
 
   if (options.bilibili !== false)
-    md.use(bilibiliPlugin)
+    md.use(bilibiliMarkdownPlugin)
 
   if (options.youtube !== false)
-    md.use(youtubePlugin)
+    md.use(youtubeMarkdownPlugin)
 
   if (options.artplayer !== false)
-    md.use(artPlayerPlugin)
+    md.use(artPlayerMarkdownPlugin)
 }
 
 export default definePlugin((options?: VideoPluginOptions) => ({
@@ -35,7 +35,7 @@ export default definePlugin((options?: VideoPluginOptions) => ({
   },
   markdown: {
     config(md) {
-      md.use(videoPlugin, options)
+      md.use(videoMarkdownPlugin, options)
     },
   },
   vite: {

@@ -63,12 +63,12 @@ yarn add -D vitepress-plugin-mermaid-next
 ```ts
 // .vitepress/config.ts
 import { defineConfig } from 'vitepress'
-import { mermaidPlugin, mermaidVitePlugin } from 'vitepress-plugin-mermaid-next'
+import { mermaidMarkdownPlugin, mermaidVitePlugin } from 'vitepress-plugin-mermaid-next'
 
 export default defineConfig({
   markdown: {
     config: (md) => {
-      md.use(mermaidPlugin)
+      md.use(mermaidMarkdownPlugin)
     },
   },
   vite: {

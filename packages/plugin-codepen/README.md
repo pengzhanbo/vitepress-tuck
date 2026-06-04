@@ -63,12 +63,12 @@ yarn add -D vitepress-plugin-codepen
 ```ts
 // .vitepress/config.ts
 import { defineConfig } from 'vitepress'
-import { codepenPlugin } from 'vitepress-plugin-codepen'
+import { codepenMarkdownPlugin } from 'vitepress-plugin-codepen'
 
 export default defineConfig({
   markdown: {
     config: (md) => {
-      md.use(codepenPlugin)
+      md.use(codepenMarkdownPlugin)
     },
   },
 })

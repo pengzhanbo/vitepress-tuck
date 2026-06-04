@@ -6,7 +6,7 @@ hero:
   text: 增强 vitepress 配置，提供插件能力。
   actions:
     - text: 开始使用
-      link: /plugins/
+      link: /guide/quick-start
     - text: Github
       link: https://github.com/pengzhanbo/vitepress-tuck
       theme: alt

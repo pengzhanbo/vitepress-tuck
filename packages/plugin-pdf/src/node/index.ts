@@ -1,7 +1,7 @@
 import { definePlugin } from 'vitepress-tuck'
-import { pdfPlugin } from './pdfPlugin.js'
+import { pdfMarkdownPlugin } from './pdfPlugin.js'
 
-export { pdfPlugin }
+export { pdfMarkdownPlugin }
 
 export default definePlugin(() => ({
   name: 'vitepress-plugin-pdf',
@@ -10,7 +10,7 @@ export default definePlugin(() => ({
   },
   markdown: {
     config: (md) => {
-      md.use(pdfPlugin)
+      md.use(pdfMarkdownPlugin)
     },
   },
   vite: {
@@ -18,7 +18,7 @@ export default definePlugin(() => ({
       noExternal: ['vitepress-plugin-pdf'],
     },
     optimizeDeps: {
-      exclude: ['@pengzhanbo/utils'],
+      include: ['@pengzhanbo/utils'],
     },
   },
 }))

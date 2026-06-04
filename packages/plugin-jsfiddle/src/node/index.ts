@@ -1,8 +1,18 @@
 import { definePlugin } from 'vitepress-tuck'
-import { jsfiddlePlugin } from './jsfiddlePlugin'
+import { jsfiddleMarkdownPlugin } from './jsfiddlePlugin'
 
-export { jsfiddlePlugin }
+export { jsfiddleMarkdownPlugin }
 
+/**
+ * @example
+ * ```ts
+ * import jsfiddle from 'vitepress-plugin-jsfiddle'
+ * import { defineConfig } from 'vitepress-tuck'
+ * export default defineConfig({
+ *   plugins: [jsfiddle()]
+ * })
+ * ```
+ */
 export default definePlugin(() => ({
   name: 'vitepress-plugin-jsfiddle',
   client: {
@@ -10,7 +20,7 @@ export default definePlugin(() => ({
   },
   markdown: {
     config(md) {
-      md.use(jsfiddlePlugin)
+      md.use(jsfiddleMarkdownPlugin)
     },
   },
   vite: {

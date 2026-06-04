@@ -3,7 +3,7 @@ import type { SizeOptions } from 'vitepress-plugin-toolkit'
 /**
  * CodeSandbox Token Metadata
  *
- * CodeSandbox 令牌元数据
+ * CodeSandbox 元数据
  */
 export interface CodeSandboxTokenMeta extends SizeOptions {
   /**

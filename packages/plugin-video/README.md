@@ -63,12 +63,12 @@ yarn add -D vitepress-plugin-video
 ```ts
 // .vitepress/config.ts
 import { defineConfig } from 'vitepress'
-import { videoPlugin } from 'vitepress-plugin-video'
+import { videoMarkdownPlugin } from 'vitepress-plugin-video'
 
 export default defineConfig({
   markdown: {
     config: (md) => {
-      md.use(videoPlugin)
+      md.use(videoMarkdownPlugin)
     },
   },
 })

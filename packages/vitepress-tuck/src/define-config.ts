@@ -31,8 +31,6 @@ export function defineConfig<ThemeConfig = DefaultTheme.Config>(
   const processPlugins = (plugins: VitepressPlugin[]) => {
     plugins.forEach((plugin) => {
       const { name, client, buildEnd, transformHead, transformHtml, transformPageData, postRender, ...customConfig } = plugin
-      // 合并 markdown / vite / vue 配置
-      mergedConfig = mergeConfig(mergedConfig, customConfig)
 
       // 注入 client 配置
       if (client) {
@@ -53,6 +51,9 @@ export function defineConfig<ThemeConfig = DefaultTheme.Config>(
       transformHtml && hooks.transformHtml.push(transformHtml)
       transformPageData && hooks.transformPageData.push(transformPageData)
       postRender && hooks.postRender.push(postRender)
+
+      // 合并 markdown / vite / vue 配置
+      mergedConfig = mergeConfig(mergedConfig, customConfig)
     })
   }
   // 先处理外部插件
@@ -66,8 +67,8 @@ export function defineConfig<ThemeConfig = DefaultTheme.Config>(
   // 合并钩子，根据不同钩子的特性，确保顺序、入参、出参一致
 
   // 合并 markdown config 钩子， 此钩子可直接并发执行
+  const useMarkdownConfig = mergedConfig.markdown?.config
   if (hooks.markdownConfig.length) {
-    const useMarkdownConfig = mergedConfig.markdown?.config
     mergedConfig.markdown ??= {}
     mergedConfig.markdown.config = async (md) => {
       await Promise.all([

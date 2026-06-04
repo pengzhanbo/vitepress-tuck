@@ -15,11 +15,20 @@ interface CanIUseTokenMeta {
 
 /**
  * @example
- * ```md
- * @[caniuse](feature_name)
+ * `.vitepress/config.ts`
+ * ```ts
+ * import { definePlugin } from 'vitepress'
+ * import { caniuseMarkdownPlugin } from 'vitepress-plugin-caniuse'
+ * export default defineConfig({
+ *   markdown: {
+ *     config: (md) => {
+ *       md.use(caniuseMarkdownPlugin)
+ *     },
+ *   },
+ * })
  * ```
  */
-export const caniusePlugin: PluginSimple = (md): void => {
+export const caniuseMarkdownPlugin: PluginSimple = (md): void => {
   createEmbedRuleBlock<CanIUseTokenMeta>(md, {
     type: 'caniuse',
     syntaxPattern: /^@\[caniuse\s*(embed|baseline)?(?:\{([0-9,\-]*)\})?\]\(([^)]*)\)/,
@@ -48,7 +57,7 @@ function resolveCanIUse({ feature, mode, versions }: CanIUseTokenMeta): string {
 
 function resolveVersions(versions: string): { past: number, future: number } {
   if (!versions)
-    return { past: 2, future: 1 }
+    return { past: 5, future: 3 }
 
   const list = versions
     .split(',')

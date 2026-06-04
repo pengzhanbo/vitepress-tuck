@@ -9,22 +9,22 @@ import { resolveCollapsedLines } from './resolveCollapsedLine.js'
  *
  * @param md - MarkdownIt instance / MarkdownIt 实例
  * @param options - Plugin options / 插件选项
- * @param options.collapsedLines - Collapsed lines configuration / 折叠行配置
- * @param options.removeLastLine - Whether to remove the last line of the code block / 是否移除代码块的最后一行
  *
  * @example
- *   import { collapsedLines } from '@vuepress/highlighter-helper'
- *
- *   md.use(collapsedLines, {
- *     collapsedLines: 15,
- *     removeLastLine: false,
- *   })
+ * ```ts
+ * import { collapsedLinesMarkdownPlugin } from 'vitepress-code-collapse'
+ * import { defineConfig } from 'vitepress'
+ * export default defineConfig({
+ *   markdown: {
+ *     config(md) {
+ *       md.use(collapsedLinesMarkdownPlugin)
+ *     }
+ *   }
+ * })
+ * ```
  */
-export const collapsedLinesPlugin: PluginWithOptions<CollapsedLinesOptions> = (md, {
-  collapsedLines: collapsedLinesOptions = true,
-  removeLastLine,
-} = {}): void => {
-  if (collapsedLinesOptions === 'disable')
+export const collapsedLinesMarkdownPlugin: PluginWithOptions<CollapsedLinesOptions> = (md, options = false): void => {
+  if (options === 'disable')
     return
 
   const rawFence = md.renderer.rules.fence!
@@ -38,7 +38,7 @@ export const collapsedLinesPlugin: PluginWithOptions<CollapsedLinesOptions> = (m
 
     // resolve collapsed-lines mark from token info
     const collapsedLinesInfo
-      = resolveCollapsedLines(info) ?? collapsedLinesOptions
+      = resolveCollapsedLines(info) ?? options
 
     if (collapsedLinesInfo === false)
       return code
@@ -47,7 +47,7 @@ export const collapsedLinesPlugin: PluginWithOptions<CollapsedLinesOptions> = (m
       = code
         .slice(code.indexOf('<code>'), code.indexOf('</code>'))
         .split('\n')
-        .length - (removeLastLine ? 1 : 0)
+        .length
     const startLines
       = typeof collapsedLinesInfo === 'number' ? collapsedLinesInfo : 15
 

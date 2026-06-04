@@ -1,9 +1,20 @@
 import type { CollapsedLinesOptions } from './types.js'
 import { definePlugin } from 'vitepress-tuck'
-import { collapsedLinesPlugin } from './codeCollapsePlugin.js'
+import { collapsedLinesMarkdownPlugin } from './codeCollapsePlugin.js'
 
-export { collapsedLinesPlugin }
+export { collapsedLinesMarkdownPlugin }
 
+/**
+ * @example
+ * ```ts
+ * import collapsedLines from 'vitepress-code-collapse'
+ * import { defineConfig } from 'vitepress-tuck'
+ * export default defineConfig({
+ *   plugins: [collapsedLines()]
+ * })
+ * ```
+ * ```
+ */
 export default definePlugin((options?: CollapsedLinesOptions) => ({
   name: 'vitepress-plugin-code-collapse',
   client: {
@@ -11,7 +22,7 @@ export default definePlugin((options?: CollapsedLinesOptions) => ({
   },
   markdown: {
     config: (md) => {
-      md.use(collapsedLinesPlugin, options)
+      md.use(collapsedLinesMarkdownPlugin, options)
     },
   },
 }))

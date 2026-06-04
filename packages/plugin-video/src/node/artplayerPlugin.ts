@@ -34,7 +34,7 @@ export function artPlayerVitePlugin(): Plugin {
 
 const SUPPORTED_VIDEO_TYPES = ['mp4', 'mp3', 'webm', 'ogg', 'mpd', 'dash', 'm3u8', 'hls', 'ts', 'flv', 'mkv', 'mov', 'ogv']
 
-export const artPlayerPlugin: PluginSimple = (md) => {
+export const artPlayerMarkdownPlugin: PluginSimple = (md) => {
   createEmbedRuleBlock(md, {
     type: 'artPlayer',
     name: 'video_artPlayer',

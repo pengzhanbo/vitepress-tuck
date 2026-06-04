@@ -63,12 +63,12 @@ yarn add -D vitepress-plugin-qrcode
 ```ts
 // .vitepress/config.ts
 import { defineConfig } from 'vitepress'
-import { qrcodePlugin } from 'vitepress-plugin-qrcode'
+import { qrcodeMarkdownPlugin } from 'vitepress-plugin-qrcode'
 
 export default defineConfig({
   markdown: {
     config: (md) => {
-      md.use(qrcodePlugin)
+      md.use(qrcodeMarkdownPlugin)
     },
   },
 })

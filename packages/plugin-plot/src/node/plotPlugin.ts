@@ -14,11 +14,12 @@ import type { PlotOptions } from './types.js'
  * 黑幕插件 - 使用黑幕效果隐藏文本
  *
  * Syntax: !!hidden text!!
+ *
  * 语法：!!隐藏文本!!
  *
  * @param md - Markdown-it instance / Markdown-it 实例
  */
-export const plotPlugin: PluginWithOptions<PlotOptions> = (md, options = {}) => {
+export const plotMarkdownPlugin: PluginWithOptions<PlotOptions> = (md, options = {}) => {
   const { trigger, effect } = options
   const plotDef: RuleInline = (state, silent) => {
     let found = false

@@ -1,6 +1,6 @@
 import type { PluginSimple } from 'markdown-it'
 
-export const mermaidPlugin: PluginSimple = (md) => {
+export const mermaidMarkdownPlugin: PluginSimple = (md) => {
   const defaultFence = md.renderer.rules.fence!
 
   md.renderer.rules.fence = (...args) => {

@@ -56,10 +56,9 @@ export const npmToPlugin: PluginWithOptions<NpmToPluginOptions> = (md, options =
         token.content = ''
         // Split command line content, convert to multiple package manager commands
         const lines = content.split(/(\n|\s*&&\s*)/)
-        return md.render(
-          resolveNpmTo(lines, token.info.trim(), idx, tabs),
-          env,
-        )
+        return md
+          .render(resolveNpmTo(lines, token.info.trim(), idx, tabs), env)
+          .replaceAll(/(for|id)="tab-(\d+)"/g, (_, attr, num) => `${attr}="tab-${idx}-${num}"`)
       }
       // Invalid container warning
       logger.warn(`Invalid npm-to container in ${colors.gray(env.relativePath)}`)

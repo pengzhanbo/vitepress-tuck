@@ -12,7 +12,7 @@ import { timeToSeconds } from './utils.js'
 
 const BILIBILI_LINK = 'https://player.bilibili.com/player.html'
 
-export const bilibiliPlugin: PluginSimple = (md) => {
+export const bilibiliMarkdownPlugin: PluginSimple = (md) => {
   createEmbedRuleBlock(md, {
     type: 'bilibili',
     name: 'video_bilibili',

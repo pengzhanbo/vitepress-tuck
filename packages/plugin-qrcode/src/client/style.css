@@ -61,6 +61,10 @@
   aspect-ratio: 1/1;
 }
 
+.vp-qrcode.card .qrcode-img {
+  margin: 0;
+}
+
 .vp-qrcode .qrcode-info {
   display: flex;
   flex: 1;

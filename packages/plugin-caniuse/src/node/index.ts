@@ -1,8 +1,19 @@
 import { definePlugin } from 'vitepress-tuck'
-import { caniusePlugin } from './caniusePlugin.js'
+import { caniuseMarkdownPlugin } from './caniusePlugin.js'
 
-export { caniusePlugin }
+export { caniuseMarkdownPlugin }
 
+/**
+ * @example
+ * `.vitepress/config.ts`
+ * ```ts
+ * import { definePlugin } from 'vitepress-tuck'
+ * import caniuse from 'vitepress-plugin-caniuse'
+ * export default defineConfig({
+ *   plugins: [caniuse()],
+ * })
+ * ```
+ */
 export default definePlugin(() => ({
   name: 'vitepress-plugin-caniuse',
   client: {
@@ -10,7 +21,7 @@ export default definePlugin(() => ({
   },
   markdown: {
     config: (md) => {
-      md.use(caniusePlugin)
+      md.use(caniuseMarkdownPlugin)
     },
   },
   vite: {

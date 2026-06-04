@@ -7,21 +7,21 @@ import { embedLinkPlugin } from './embedLinkPlugin.js'
 import { loadFiles } from './loadFiles.js'
 import { wikiLinkPlugin } from './wikiLinkPlugin.js'
 
-export const obsidianPlugin: PluginWithOptions<ObsidianPluginOptions> = (md, options = {}) => {
-  const { callout = true, comment = true, embedLink = true, wikiLink = true } = options
+export const obsidianMarkdownPlugin: PluginWithOptions<ObsidianPluginOptions> = (md, options = {}) => {
+  const { callout, comment, embedLink, wikiLink } = options
 
-  if (callout)
+  if (callout !== false)
     md.use(calloutPlugin)
 
-  if (comment)
+  if (comment !== false)
     md.use(commentPlugin)
 
-  if (wikiLink || embedLink) {
+  if (wikiLink !== false || embedLink !== false) {
     const files = loadFiles()
-    if (embedLink)
+    if (embedLink !== false)
       md.use(embedLinkPlugin, files)
 
-    if (wikiLink)
+    if (wikiLink !== false)
       md.use(wikiLinkPlugin, files)
   }
 }
@@ -30,7 +30,7 @@ export default definePlugin((options: ObsidianPluginOptions = {}) => ({
   name: 'vitepress-plugin-obsidian',
   markdown: {
     config: (md) => {
-      md.use(obsidianPlugin, options)
+      md.use(obsidianMarkdownPlugin, options)
     },
   },
 }))

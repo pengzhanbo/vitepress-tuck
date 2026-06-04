@@ -63,12 +63,12 @@ yarn add -D vitepress-plugin-pdf
 ```ts
 // .vitepress/config.ts
 import { defineConfig } from 'vitepress'
-import { pdfPlugin } from 'vitepress-plugin-pdf'
+import { pdfMarkdownPlugin } from 'vitepress-plugin-pdf'
 
 export default defineConfig({
   markdown: {
     config: (md) => {
-      md.use(pdfPlugin)
+      md.use(pdfMarkdownPlugin)
     },
   },
 })

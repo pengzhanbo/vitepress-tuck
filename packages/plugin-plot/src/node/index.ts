@@ -1,7 +1,7 @@
 import { definePlugin } from 'vitepress-tuck'
-import { plotPlugin } from './plotPlugin.js'
+import { plotMarkdownPlugin } from './plotPlugin.js'
 
-export { plotPlugin }
+export { plotMarkdownPlugin }
 
 export default definePlugin(() => ({
   name: 'vitepress-plugin-plot',
@@ -10,7 +10,7 @@ export default definePlugin(() => ({
   },
   markdown: {
     config: (md) => {
-      md.use(plotPlugin)
+      md.use(plotMarkdownPlugin)
     },
   },
   vite: {

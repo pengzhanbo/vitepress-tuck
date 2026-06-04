@@ -49,12 +49,12 @@ yarn add -D vitepress-plugin-codesandbox
 ```ts
 // .vitepress/config.ts
 import { defineConfig } from 'vitepress'
-import { codeSandboxPlugin } from 'vitepress-plugin-codesandbox'
+import { codeSandboxMarkdownPlugin } from 'vitepress-plugin-codesandbox'
 
 export default defineConfig({
   markdown: {
     config: (md) => {
-      md.use(codeSandboxPlugin)
+      md.use(codeSandboxMarkdownPlugin)
     },
   },
 })

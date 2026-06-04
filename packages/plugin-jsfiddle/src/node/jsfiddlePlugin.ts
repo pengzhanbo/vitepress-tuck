@@ -7,7 +7,7 @@ import type { PluginSimple } from 'markdown-it'
 import type { JSFiddleTokenMeta } from './types.js'
 import { createEmbedRuleBlock, parseRect, resolveAttrs, stringifyAttrs } from 'vitepress-plugin-toolkit'
 
-export const jsfiddlePlugin: PluginSimple = (md) => {
+export const jsfiddleMarkdownPlugin: PluginSimple = (md) => {
   createEmbedRuleBlock<JSFiddleTokenMeta>(md, {
     type: 'jsfiddle',
     syntaxPattern: /^@\[jsfiddle([^\]]*)\]\(([^)]*)\)/,

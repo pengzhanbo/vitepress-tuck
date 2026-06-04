@@ -1,49 +1,49 @@
 # vitepress-tuck
 
-> 一个低门槛、易扩展的 VitePress 插件开发库与插件生态
+> A low-barrier, extensible plugin development library and plugin ecosystem for VitePress
 
-🚧🚧 施工中... 🚧🚧
+## Overview
 
-## 概览
+`vitepress-tuck` is a plugin development library and plugin collection designed for **VitePress**. It provides a clean, unified plugin interface and configuration merging mechanism, significantly lowering the barrier to developing VitePress plugins while offering a more user-friendly integration experience.
 
-`vitepress-tuck` 是一个专为 **VitePress** 设计的插件开发库与插件集合。它通过提供一套简洁统一的插件接口定义和配置合并机制，大幅降低了 VitePress 插件的开发门槛，同时也为插件使用者提供了更友好的接入体验。
+### Design Philosophy
 
-### 核心设计理念
+- **Low Barrier** — Plugin developers only need to focus on core logic; no need to handle complex VitePress configuration merging and lifecycle orchestration.
+- **Easy Integration** — Plugin users simply pass a `plugins` array to `defineConfig`, and plugins automatically handle configuration injection.
+- **Progressive Compatibility** — All plugins work with both `vitepress-tuck` and native VitePress integration.
 
-- **低门槛** — 插件开发者只需关注核心逻辑，无需处理复杂的 VitePress 配置合并与生命周期编排
-- **易接入** — 插件使用者通过 `defineConfig` 传入 `plugins` 数组即可使用，插件自动完成配置注入
-- **渐进兼容** — 所有插件同时兼容 `vitepress-tuck` 和 VitePress 原生接入方式
+## Quick Start
 
-## 快速开始
-
-### 安装
+### Installation
 
 ```bash
 pnpm add vitepress-tuck
 ```
 
-### 在配置中使用
+### Using in Configuration
+
+Replace VitePress's `defineConfig` with `vitepress-tuck`'s `defineConfig`:
 
 ```ts
 // .vitepress/config.ts
-import qrcode from 'vitepress-plugin-qrcode'
 import { defineConfig } from 'vitepress-tuck'
 
 export default defineConfig({
-  title: 'My Site',
   plugins: [
-    qrcode(),
+    // Add plugins here
   ],
+  // Other VitePress config options ...
 })
 ```
 
-`defineConfig` 完全兼容 VitePress 原生 `defineConfig` 的所有参数，额外增加 `plugins` 选项。
+`defineConfig` is fully compatible with all parameters of VitePress's native `defineConfig`, with the additional `plugins` option.
 
-### 客户端代码注入
+### Client Code Injection
 
-在 `.vitepress/theme/index.ts` 中，通过 `import 'virtual:enhance-app'` 自动注入插件的客户端代码：
+In `.vitepress/theme/index.ts`, import `virtual:enhance-app` to automatically inject plugin client code:
 
 ```ts
+// .vitepress/theme/index.ts
 import type { Theme } from 'vitepress'
 import enhanceApp from 'virtual:enhance-app'
 import DefaultTheme from 'vitepress/theme'
@@ -56,66 +56,118 @@ export default {
 } satisfies Theme
 ```
 
-## 插件列表
+`virtual:enhance-app` is a virtual module provided by `vitepress-tuck` that automatically collects and merges all plugins' client configurations.
 
-所有插件均基于 `vitepress-tuck` 开发，同时兼容 VitePress 原生接入方式。
+> For TypeScript support, add type references in `tsconfig.json`:
+>
+> ```json
+> {
+>   "compilerOptions": {
+>     "types": ["vitepress-tuck/client-types"]
+>   }
+> }
+> ```
 
-| 插件                                                            | 描述                            | 特性                                        |
-| --------------------------------------------------------------- | ------------------------------- | ------------------------------------------- |
-| [vitepress-plugin-mermaid-next](packages/plugin-mermaid-next)   | 集成 Mermaid 图表渲染           | 支持 i18n 区域设置、SSR 优化                |
-| [vitepress-plugin-caniuse](packages/plugin-caniuse)             | 嵌入 Can I Use 浏览器兼容性数据 | 支持 embed/baseline 两种展示模式            |
-| [vitepress-plugin-code-collapse](packages/plugin-code-collapse) | 代码块折叠                      | 支持全局/局部折叠行数配置                   |
-| [vitepress-plugin-codepen](packages/plugin-codepen)             | 嵌入 CodePen 示例               | 支持自定义标签与主题                        |
-| [vitepress-plugin-codesandbox](packages/plugin-codesandbox)     | 嵌入 CodeSandbox 示例           | 支持自定义模块与主题                        |
-| [vitepress-plugin-file-tree](packages/plugin-file-tree)         | 渲染文件目录树                  | 支持展开/折叠交互                           |
-| [vitepress-plugin-jsfiddle](packages/plugin-jsfiddle)           | 嵌入 JSFiddle 示例              | 支持自定义标签页                            |
-| [vitepress-plugin-npm-to](packages/plugin-npm-to)               | npm 命令多包管理器转换          | 支持 npm / pnpm / yarn / bun / deno         |
-| [vitepress-plugin-obsidian](packages/plugin-obsidian)           | Obsidian 风格 Markdown 语法     | 支持 Callout / 注释 / WikiLink / 嵌入链接   |
-| [vitepress-plugin-pdf](packages/plugin-pdf)                     | 嵌入 PDF 文件                   | 支持页码、工具栏、缩放等配置                |
-| [vitepress-plugin-plot](packages/plugin-plot)                   | 隐秘文本语法                    | `!!text!!` 格式，用于在页面中文本黑幕化     |
-| [vitepress-plugin-qrcode](packages/plugin-qrcode)               | 生成二维码                      | 支持 img / card 两种模式                    |
-| [vitepress-plugin-steps](packages/plugin-steps)                 | 步骤流程容器                    | 自动添加样式                                |
-| [vitepress-plugin-video](packages/plugin-video)                 | 多平台视频嵌入                  | 支持 Bilibili / AcFun / YouTube / ArtPlayer |
+## Plugin Ecosystem
 
-## 开发插件
+All plugins are built on `vitepress-tuck` while remaining compatible with native VitePress.
 
-使用 `vitepress-tuck` 开发一个插件非常简单：
+| Plugin | Package | Description |
+| ------ | ------- | ----------- |
+| [Steps](./docs/zh/plugins/steps.md) | `vitepress-plugin-steps` | Step-by-step container for creating guided content |
+| [File Tree](./docs/zh/plugins/file-tree.md) | `vitepress-plugin-file-tree` | Render file directory trees with expand/collapse |
+| [Plot](./docs/zh/plugins/plot.md) | `vitepress-plugin-plot` | Hidden text with click/hover reveal (`!!text!!` syntax) |
+| [Npm To](./docs/zh/plugins/npm-to.md) | `vitepress-plugin-npm-to` | Convert npm commands to pnpm / yarn / bun / deno equivalents |
+| [Mermaid](./docs/zh/plugins/mermaid.md) | `vitepress-plugin-mermaid-next` | Mermaid diagram rendering with i18n support |
+| [QRCode](./docs/zh/plugins/qrcode.md) | `vitepress-plugin-qrcode` | Generate QR codes (image/card modes) |
+| [Video](./docs/zh/plugins/video.md) | `vitepress-plugin-video` | Multi-platform video embedding (Bilibili, YouTube, AcFun, ArtPlayer) |
+| [Obsidian](./docs/zh/plugins/obsidian.md) | `vitepress-plugin-obsidian` | Obsidian-style Markdown (Wiki links, Callouts, embeds, comments) |
+| [PDF](./docs/zh/plugins/pdf.md) | `vitepress-plugin-pdf` | Embed PDF files with page/zoom/toolbar options |
+| [Can I Use](./docs/zh/plugins/caniuse.md) | `vitepress-plugin-caniuse` | Embed browser compatibility data from caniuse.com |
+| [Code Collapse](./docs/zh/plugins/code-collapse.md) | `vitepress-plugin-code-collapse` | Fold long code blocks (global / per-block configuration) |
+| [CodePen](./docs/zh/plugins/codepen.md) | `vitepress-plugin-codepen` | Embed CodePen demos with custom tabs and themes |
+| [CodeSandbox](./docs/zh/plugins/codesandbox.md) | `vitepress-plugin-codesandbox` | Embed CodeSandbox projects (embed / button modes) |
+| [JSFiddle](./docs/zh/plugins/jsfiddle.md) | `vitepress-plugin-jsfiddle` | Embed JSFiddle demos with custom tabs |
 
-### 一个简单的插件示例
+## Developing Plugins
+
+Creating a VitePress plugin with `vitepress-tuck` is straightforward:
 
 ```ts
-// vitepress-plugin-example/src/node/index.ts
+// src/node/index.ts
 import { definePlugin } from 'vitepress-tuck'
 
-export default definePlugin(() => ({
+export default definePlugin((options?: MyPluginOptions) => ({
   name: 'vitepress-plugin-example',
+
+  // Client configuration: auto-injected into virtual:enhance-app
   client: {
+    imports: [
+      'import "vitepress-plugin-example/style.css"',
+    ],
     enhance: 'enhanceAppWithExample',
   },
+
+  // Markdown configuration: register markdown-it plugins
   markdown: {
-    config(md) {
-      md.use(/* your markdown-it plugin */)
+    config: (md) => {
+      md.use(yourMarkdownItPlugin, options?.markdownOptions)
+    },
+  },
+
+  // Vite configuration
+  vite: {
+    plugins: [yourVitePlugin(options?.viteOptions)],
+    ssr: {
+      noExternal: ['vitepress-plugin-example'],
+    },
+  },
+
+  // VitePress lifecycle hooks
+  buildEnd: (siteConfig) => { /* ... */ },
+  transformHead: (context) => { /* ... */ },
+  transformHtml: (code, id, context) => { /* ... */ },
+  transformPageData: (pageData, context) => { /* ... */ },
+  postRender: (context) => { /* ... */ },
+}))
+```
+
+### Development Resources
+
+- Use [vitepress-plugin-toolkit](./packages/plugin-toolkit) which provides `createEmbedRuleBlock`, `createContainerPlugin`, `createContainerSyntaxPlugin` and other utilities for quickly building markdown-it plugins.
+- See the [full API reference](./docs/zh/guide/api.md) for `VitepressPlugin` type definitions.
+- Refer to existing plugins in this repository as development examples.
+
+### Wrapping Existing Plugins
+
+You can easily wrap any existing plugin logic into a `vitepress-tuck` compatible form using `definePlugin`:
+
+```ts
+import { definePlugin } from 'vitepress-tuck'
+import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons'
+
+export default definePlugin(() => ({
+  name: 'vitepress-plugin-group-icons',
+  client: {
+    imports: ['import \'virtual:group-icons.css\''],
+  },
+  markdown: {
+    config: (md) => {
+      md.use(groupIconMdPlugin)
     },
   },
   vite: {
-    optimizeDeps: {
-      exclude: ['some-dependency'],
+    plugins: [groupIconVitePlugin()],
+    ssr: {
+      noExternal: ['vitepress-plugin-group-icons'],
     },
   },
 }))
 ```
 
-### 更多开发资源
+## Standalone Plugin Usage
 
-- 使用 [vitepress-plugin-toolkit](packages/plugin-toolkit) 提供的 `createEmbedRuleBlock`、`createContainerPlugin` 等工具快速构建 markdown-it 插件
-- 参考本项目中的已有插件作为开发范例
-- 类型定义参见 `vitepress-tuck` 的 [types.ts](packages/vitepress-tuck/src/types.ts)
-
----
-
-## 插件独立使用
-
-本项目的所有插件也支持脱离 `vitepress-tuck`，直接在 VitePress 中原生使用：
+All plugins in this project can also be used independently without `vitepress-tuck`, directly in native VitePress:
 
 ```ts
 // .vitepress/config.ts
@@ -130,16 +182,26 @@ export default defineConfig({
   },
   vite: {
     plugins: [
-      // vite 配置...
+      // vite config...
     ],
   },
 })
-```
 
-这种方式适用于已经存在大量 VitePress 配置、不希望引入额外抽象的项目。
+// .vitepress/theme/index.ts
+import type { Theme } from 'vitepress'
+import { enhanceAppWithQrcode } from 'vitepress-plugin-qrcode/client'
+import DefaultTheme from 'vitepress/theme'
+
+export default {
+  extends: DefaultTheme,
+  enhanceApp(ctx) {
+    enhanceAppWithQrcode(ctx)
+  },
+} satisfies Theme
+```
 
 ---
 
-## 许可证
+## License
 
 [MIT](LICENSE)

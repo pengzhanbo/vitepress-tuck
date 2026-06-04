@@ -28,8 +28,12 @@ import process from 'node:process'
 import { attempt, isHttp } from '@pengzhanbo/utils'
 import grayMatter from 'gray-matter'
 import Token from 'markdown-it/lib/token.mjs'
-import { EXTENSION_AUDIOS, EXTENSION_IMAGES, EXTENSION_VIDEO, parseRect, slugify } from 'vitepress-plugin-toolkit'
+import { EXTENSION_AUDIOS, EXTENSION_IMAGES, EXTENSION_VIDEOS, parseRect, slugify } from 'vitepress-plugin-toolkit'
 import { findFirstFile } from './loadFiles'
+
+const audioExtensions = EXTENSION_AUDIOS.map(ext => `.${ext}`)
+const videoExtensions = EXTENSION_VIDEOS.map(ext => `.${ext}`)
+const imageExtensions = EXTENSION_IMAGES.map(ext => `.${ext}`)
 
 function blockEmbedLinkDef(root: string, files: string[]): RuleBlock {
   return (state, startLine, endLine, silent) => {
@@ -159,7 +163,7 @@ function genEmbedAsset(
   const env = state.env as MarkdownEnv
 
   // 渲染为 图片
-  if (EXTENSION_IMAGES.includes(extname)) {
+  if (imageExtensions.includes(extname)) {
     const token = state.push('image', 'img', 1)
     token.content = filename
     token.attrSet('src', resolveFilenameToAssetPath(filename, root, env.relativePath))
@@ -178,7 +182,7 @@ function genEmbedAsset(
     token.children = [text]
   }
   // 渲染为音频
-  else if (EXTENSION_AUDIOS.includes(extname)) {
+  else if (audioExtensions.includes(extname)) {
     const token = state.push('audio_open', 'audio', 1)
     token.content = filename
     token.attrSet('controls', 'true')
@@ -189,7 +193,7 @@ function genEmbedAsset(
     state.push('audio_close', 'audio', -1)
   }
   // 渲染为视频
-  else if (EXTENSION_VIDEO.includes(extname)) {
+  else if (videoExtensions.includes(extname)) {
     const token = state.push('video_artPlayer_open', 'VPArtPlayer', 1)
     const type = extname.slice(1)
     token.attrSet('src', resolveFilenameToAssetPath(filename))

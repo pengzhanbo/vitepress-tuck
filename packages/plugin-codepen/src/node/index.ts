@@ -1,8 +1,18 @@
 import { definePlugin } from 'vitepress-tuck'
-import { codepenPlugin } from './codepenPlugin.js'
+import { codepenMarkdownPlugin } from './codepenPlugin.js'
 
-export { codepenPlugin }
+export { codepenMarkdownPlugin }
 
+/**
+ * @example
+ * ```ts
+ * import codepen from 'vitepress-plugin-codepen'
+ * import { defineConfig } from 'vitepress-tuck'
+ * export default defineConfig({
+ *   plugins: [codepen()]
+ * })
+ * ```
+ */
 export default definePlugin(() => ({
   name: 'vitepress-plugin-codepen',
   client: {
@@ -10,7 +20,7 @@ export default definePlugin(() => ({
   },
   markdown: {
     config(md) {
-      md.use(codepenPlugin)
+      md.use(codepenMarkdownPlugin)
     },
   },
   vite: {

@@ -70,10 +70,6 @@ div[class*="language-"].has-collapsed-lines.collapsed {
   overflow-y: hidden;
 }
 
-div[class*="language-"].has-collapsed-lines:not(.collapsed) code {
-  padding-bottom: 28px;
-}
-
 div[class*="language-"].has-collapsed-lines:not(.collapsed) .collapsed-lines {
   --vp-collapsed-lines-rotate: 180deg;
 }

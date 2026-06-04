@@ -59,7 +59,7 @@ export default defineConfig({
     obsidian(),
     pdf(),
     video(),
-    npmTo(),
+    npmTo(['pnpm', 'npm', 'bun', 'deno', 'yarn']),
     qrcode(),
     jsfiddle(),
     codepen(),

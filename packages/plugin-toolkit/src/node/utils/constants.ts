@@ -1,7 +1,7 @@
 /**
  * 支持的视频文件名扩展名
  */
-export const EXTENSION_VIDEO: string[] = ['mp4', 'mp3', 'webm', 'ogg', 'mpd', 'dash', 'm3u8', 'hls', 'ts', 'flv', 'mkv', 'mov', 'ogv']
+export const EXTENSION_VIDEOS: string[] = ['mp4', 'mp3', 'webm', 'ogg', 'mpd', 'dash', 'm3u8', 'hls', 'ts', 'flv', 'mkv', 'mov', 'ogv']
 /**
  * 支持的图片文件名扩展名
  */

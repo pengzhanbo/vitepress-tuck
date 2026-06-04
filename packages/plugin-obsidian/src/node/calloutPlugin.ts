@@ -18,7 +18,7 @@ import { objectEntries, uniq, upperCase } from '@pengzhanbo/utils'
 // 将 obsidian callout 映射到 vitepress alert 的类型
 const calloutsToAlerts: Record<string, string[]> = {
   note: ['quote', 'cite'],
-  tip: ['hint', 'check', 'done'],
+  tip: ['hint', 'check', 'done', 'success'],
   info: ['todo'],
   warning: ['question', 'help', 'faq'],
   caution: ['attention', 'failure', 'fail', 'missing', 'danger', 'error', 'bug'],

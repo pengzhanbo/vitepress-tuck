@@ -1,7 +1,7 @@
 import { definePlugin } from 'vitepress-tuck'
-import { qrcodePlugin } from './qrcodePlugin.js'
+import { qrcodeMarkdownPlugin } from './qrcodePlugin.js'
 
-export { qrcodePlugin }
+export { qrcodeMarkdownPlugin }
 
 export default definePlugin(() => ({
   name: 'vitepress-plugin-qrcode',
@@ -10,7 +10,7 @@ export default definePlugin(() => ({
   },
   markdown: {
     config(md) {
-      md.use(qrcodePlugin)
+      md.use(qrcodeMarkdownPlugin)
     },
   },
   vite: {

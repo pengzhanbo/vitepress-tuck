@@ -7,7 +7,7 @@ import type { MarkdownEnv } from 'vitepress'
 import { omit } from '@pengzhanbo/utils'
 import { createContainerSyntaxPlugin, createEmbedRuleBlock, isLinkWithProtocol, resolveAttrs, resolveRouteLink, stringifyAttrs } from 'vitepress-plugin-toolkit'
 
-export const qrcodePlugin: PluginSimple = (md) => {
+export const qrcodeMarkdownPlugin: PluginSimple = (md) => {
   createEmbedRuleBlock(md, {
     type: 'qrcode',
     syntaxPattern: /^@\[qrcode([^\]]*)\]\(([^)]*)\)/,
@@ -44,7 +44,7 @@ function processText(text: string, env: MarkdownEnv) {
 
   const [pathname] = text.split(/[#?]/, 2)
   // 检查是否可能是内部链接
-  if (/^\.{0,2}\/[\s\S](?:\/|\.html|\.md)$/.test(pathname)) {
+  if (/^\.{0,2}\/[\s\S]*(?:\/|\.html|\.md)$/.test(pathname)) {
     return resolveRouteLink(text, env)
   }
 

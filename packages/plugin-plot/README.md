@@ -63,12 +63,12 @@ yarn add -D vitepress-plugin-plot
 ```ts
 // .vitepress/config.ts
 import { defineConfig } from 'vitepress'
-import { plotPlugin } from 'vitepress-plugin-plot'
+import { plotMarkdownPlugin } from 'vitepress-plugin-plot'
 
 export default defineConfig({
   markdown: {
     config: (md) => {
-      md.use(plotPlugin)
+      md.use(plotMarkdownPlugin)
     },
   },
 })

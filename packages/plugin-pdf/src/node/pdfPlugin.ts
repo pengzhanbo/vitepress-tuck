@@ -7,7 +7,7 @@ import type { PluginSimple } from 'markdown-it'
 import path from 'node:path'
 import { createEmbedRuleBlock, parseRect, resolveAttrs, stringifyAttrs } from 'vitepress-plugin-toolkit'
 
-export const pdfPlugin: PluginSimple = (md) => {
+export const pdfMarkdownPlugin: PluginSimple = (md) => {
   createEmbedRuleBlock(md, {
     type: 'pdf',
     // eslint-disable-next-line regexp/no-super-linear-backtracking

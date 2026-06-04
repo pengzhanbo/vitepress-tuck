@@ -49,12 +49,12 @@ yarn add -D vitepress-plugin-obsidian
 ```ts
 // .vitepress/config.ts
 import { defineConfig } from 'vitepress'
-import { obsidianPlugin } from 'vitepress-plugin-obsidian'
+import { obsidianMarkdownPlugin } from 'vitepress-plugin-obsidian'
 
 export default defineConfig({
   markdown: {
     config: (md) => {
-      md.use(obsidianPlugin)
+      md.use(obsidianMarkdownPlugin)
     },
   },
 })
@@ -88,7 +88,9 @@ Use `> [!type]` to create callout blocks, mapped to VitePress alert styles.
 > This is a danger alert.
 ```
 
-Supported types: `note`, `tip`, `info`, `warning`, `caution`, `danger`, `important`, `details`.
+Supported types: `note`, `quote`, `cite`, `tip`, `hint`, `check`, `done`, `success`, `info`, `todo`,
+`warning`, `question`,`help`, `faq`, `caution`, `attention`, `failure`, `fail`, `missing`, `danger`, `error`, `bug`,
+`important`,`example`, `details`, `abstract`, `summary`, `tldr`
 
 ### Wiki Links
 

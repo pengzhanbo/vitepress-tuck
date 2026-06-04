@@ -49,12 +49,12 @@ yarn add -D vitepress-plugin-steps
 ```ts
 // .vitepress/config.ts
 import { defineConfig } from 'vitepress'
-import { stepsPlugin } from 'vitepress-plugin-steps'
+import { stepsMarkdownPlugin } from 'vitepress-plugin-steps'
 
 export default defineConfig({
   markdown: {
     config: (md) => {
-      md.use(stepsPlugin)
+      md.use(stepsMarkdownPlugin)
     },
   },
 })

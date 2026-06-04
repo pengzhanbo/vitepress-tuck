@@ -4,15 +4,33 @@ export default defineAdditionalConfig({
   lang: 'zh-CN',
   themeConfig: {
     nav: [
-      { text: '指南', link: '/guide/' },
-      { text: '插件', link: '/plugins/', activeMatch: '/plugins/' },
+      { text: '指南', link: '/zh/guide/quick-start', activeMatch: '/zh/guide/' },
+      { text: '插件', link: '/zh/plugins/intro', activeMatch: '/zh/plugins/' },
     ],
     sidebar: {
+      '/zh/guide/': { base: '/zh/guide/', items: [
+        { text: '快速开始', link: 'quick-start' },
+        { text: '插件开发', link: 'plugin-dev' },
+        { text: '包装现有插件', link: 'wrap-plugin' },
+        { text: 'Core API', link: 'api' },
+        { text: 'Toolkit API', link: 'toolkit' },
+      ] },
       '/zh/plugins/': { base: '/zh/plugins/', items: [
-        { text: 'Steps', link: 'steps' },
-        { text: 'Obsidian', link: 'obsidian' },
-        { text: 'Video', link: 'video' },
+        { text: '总览', link: 'intro' },
+        { text: '步骤', link: 'steps' },
+        { text: '文件树', link: 'file-tree' },
+        { text: '隐秘文本', link: 'plot' },
+        { text: 'Npm To', link: 'npm-to' },
         { text: 'Mermaid', link: 'mermaid' },
+        { text: '二维码', link: 'qrcode' },
+        { text: '视频嵌入', link: 'video' },
+        { text: 'Obsidian', link: 'obsidian' },
+        { text: 'PDF', link: 'pdf' },
+        { text: 'Can I Use', link: 'caniuse' },
+        { text: '代码块行折叠', link: 'code-collapse' },
+        { text: 'CodePen', link: 'codepen' },
+        { text: 'CodeSandbox', link: 'codesandbox' },
+        { text: 'JSFiddle', link: 'jsfiddle' },
       ] },
     },
 
@@ -42,8 +60,8 @@ export default defineAdditionalConfig({
       },
     },
     editLink: {
-      pattern: 'https://github.com/pengzhanbo/vitepress-plugins/edit/main/docs/:path',
-      text: '在Github编辑此页',
+      pattern: 'https://github.com/pengzhanbo/vitepress-tuck/edit/main/docs/:path',
+      text: '在 Github 编辑此页',
     },
 
     footer: {

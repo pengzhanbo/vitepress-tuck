@@ -143,7 +143,21 @@ function fileTreeToCMDText(nodes: FileTreeNode[], prefix = ''): string {
   return content
 }
 
-export const fileTreePlugin: PluginSimple = (md) => {
+/**
+ * @example
+ * ```ts
+ * import { fileTreeMarkdownPlugin } from 'vitepress-plugin-file-tree'
+ * import { defineConfig } from 'vitepress'
+ * export default defineConfig({
+ *   markdown: {
+ *     config: (md) => {
+ *       md.use(fileTreeMarkdownPlugin)
+ *     },
+ *   },
+ * })
+ * ```
+ */
+export const fileTreeMarkdownPlugin: PluginSimple = (md) => {
   /**
    * Recursively render file tree nodes
    *
