@@ -6,7 +6,7 @@ hero:
   text: Enhance vitepress configuration, provide plugins capability.
   actions:
     - text: Get Started
-      link: /plugins/
+      link: /guide/quick-start
     - text: Github
       link: https://github.com/pengzhanbo/vitepress-tuck
       theme: alt

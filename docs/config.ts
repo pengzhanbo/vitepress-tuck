@@ -4,13 +4,33 @@ export default defineAdditionalConfig({
   lang: 'en-US',
   themeConfig: {
     nav: [
-      { text: 'Guide', link: '/guide/' },
-      { text: 'Plugins', link: '/plugins/', activeMatch: '/plugins/' },
+      { text: 'Guide', link: '/guide/quick-start', activeMatch: '/guide/' },
+      { text: 'Plugins', link: '/plugins/intro', activeMatch: '/plugins/' },
     ],
     sidebar: {
+      '/guide/': { base: '/guide/', items: [
+        { text: 'Quick Start', link: 'quick-start' },
+        { text: 'Plugin Development', link: 'plugin-dev' },
+        { text: 'Wrapping Plugins', link: 'wrap-plugin' },
+        { text: 'Core API', link: 'api' },
+        { text: 'Toolkit API', link: 'toolkit' },
+      ] },
       '/plugins/': { base: '/plugins/', items: [
+        { text: 'Overview', link: 'intro' },
         { text: 'Steps', link: 'steps' },
+        { text: 'File Tree', link: 'file-tree' },
+        { text: 'Plot', link: 'plot' },
+        { text: 'Npm To', link: 'npm-to' },
         { text: 'Mermaid', link: 'mermaid' },
+        { text: 'QRCode', link: 'qrcode' },
+        { text: 'Video', link: 'video' },
+        { text: 'Obsidian', link: 'obsidian' },
+        { text: 'PDF', link: 'pdf' },
+        { text: 'Can I Use', link: 'caniuse' },
+        { text: 'Code Collapse', link: 'code-collapse' },
+        { text: 'CodePen', link: 'codepen' },
+        { text: 'CodeSandbox', link: 'codesandbox' },
+        { text: 'JSFiddle', link: 'jsfiddle' },
       ] },
     },
     search: {
