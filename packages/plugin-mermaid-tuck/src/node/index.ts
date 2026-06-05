@@ -7,7 +7,7 @@ export { mermaidMarkdownPlugin, mermaidVitePlugin }
 export type { MermaidPluginOptions } from './types.js'
 
 export default definePlugin((options?: MermaidPluginOptions) => ({
-  name: 'vitepress-plugin-mermaid-next',
+  name: 'vitepress-plugin-mermaid-tuck',
   client: {
     enhance: 'enhanceAppWithMermaid',
   },
@@ -22,7 +22,7 @@ export default definePlugin((options?: MermaidPluginOptions) => ({
       include: ['mermaid/dist/mermaid.esm.min.mjs'],
     },
     ssr: {
-      noExternal: ['vitepress-plugin-mermaid-next'],
+      noExternal: ['vitepress-plugin-mermaid-tuck'],
     },
   },
 }))

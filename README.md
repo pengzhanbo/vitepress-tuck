@@ -78,7 +78,7 @@ All plugins are built on `vitepress-tuck` while remaining compatible with native
 | [File Tree](./docs/zh/plugins/file-tree.md) | `vitepress-plugin-file-tree` | Render file directory trees with expand/collapse |
 | [Plot](./docs/zh/plugins/plot.md) | `vitepress-plugin-plot` | Hidden text with click/hover reveal (`!!text!!` syntax) |
 | [Npm To](./docs/zh/plugins/npm-to.md) | `vitepress-plugin-npm-to` | Convert npm commands to pnpm / yarn / bun / deno equivalents |
-| [Mermaid](./docs/zh/plugins/mermaid.md) | `vitepress-plugin-mermaid-next` | Mermaid diagram rendering with i18n support |
+| [Mermaid](./docs/zh/plugins/mermaid.md) | `vitepress-plugin-mermaid-tuck` | Mermaid diagram rendering with i18n support |
 | [QRCode](./docs/zh/plugins/qrcode.md) | `vitepress-plugin-qrcode` | Generate QR codes (image/card modes) |
 | [Video](./docs/zh/plugins/video.md) | `vitepress-plugin-video` | Multi-platform video embedding (Bilibili, YouTube, AcFun, ArtPlayer) |
 | [Obsidian](./docs/zh/plugins/obsidian.md) | `vitepress-plugin-obsidian` | Obsidian-style Markdown (Wiki links, Callouts, embeds, comments) |

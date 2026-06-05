@@ -7,7 +7,7 @@ Mermaid diagram plugin, supporting Mermaid chart rendering in Markdown.
 ::: npm-to
 
 ```sh
-npm install vitepress-plugin-mermaid-next
+npm install vitepress-plugin-mermaid-tuck
 ```
 
 :::
@@ -18,7 +18,7 @@ npm install vitepress-plugin-mermaid-next
 
 ```ts [.vitepress/config.ts]
 import { defineConfig } from 'vitepress-tuck'
-import mermaid from 'vitepress-plugin-mermaid-next'
+import mermaid from 'vitepress-plugin-mermaid-tuck'
 
 export default defineConfig({
   plugins: [
@@ -33,7 +33,7 @@ export default defineConfig({
 
 ```ts [.vitepress/config.ts]
 import { defineConfig } from 'vitepress'
-import { mermaidMarkdownPlugin, mermaidVitePlugin } from 'vitepress-plugin-mermaid-next'
+import { mermaidMarkdownPlugin, mermaidVitePlugin } from 'vitepress-plugin-mermaid-tuck'
 
 export default defineConfig({
   vite: {
@@ -51,7 +51,7 @@ export default defineConfig({
 
 ```ts [.vitepress/theme/index.ts]
 import type { Theme } from 'vitepress'
-import { enhanceAppWithMermaid } from 'vitepress-plugin-mermaid-next/client'
+import { enhanceAppWithMermaid } from 'vitepress-plugin-mermaid-tuck/client'
 import DefaultTheme from 'vitepress/theme'
 
 export default {

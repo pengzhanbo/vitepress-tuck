@@ -1,4 +1,4 @@
-# vitepress-plugin-mermaid-next
+# vitepress-plugin-mermaid-tuck
 
 Render Mermaid diagrams in your VitePress site.
 
@@ -12,18 +12,18 @@ Render Mermaid diagrams in your VitePress site.
 
 ```bash
 # npm
-npm install -D vitepress-tuck vitepress-plugin-mermaid-next
+npm install -D vitepress-tuck vitepress-plugin-mermaid-tuck
 # pnpm
-pnpm add -D vitepress-tuck vitepress-plugin-mermaid-next
+pnpm add -D vitepress-tuck vitepress-plugin-mermaid-tuck
 # yarn
-yarn add -D vitepress-tuck vitepress-plugin-mermaid-next
+yarn add -D vitepress-tuck vitepress-plugin-mermaid-tuck
 ```
 
 **Configuration:**
 
 ```ts
 // .vitepress/config.ts
-import mermaid from 'vitepress-plugin-mermaid-next'
+import mermaid from 'vitepress-plugin-mermaid-tuck'
 import { defineConfig } from 'vitepress-tuck'
 
 export default defineConfig({
@@ -51,11 +51,11 @@ export default {
 
 ```bash
 # npm
-npm install -D vitepress-plugin-mermaid-next
+npm install -D vitepress-plugin-mermaid-tuck
 # pnpm
-pnpm add -D vitepress-plugin-mermaid-next
+pnpm add -D vitepress-plugin-mermaid-tuck
 # yarn
-yarn add -D vitepress-plugin-mermaid-next
+yarn add -D vitepress-plugin-mermaid-tuck
 ```
 
 **Configuration:**
@@ -63,7 +63,7 @@ yarn add -D vitepress-plugin-mermaid-next
 ```ts
 // .vitepress/config.ts
 import { defineConfig } from 'vitepress'
-import { mermaidMarkdownPlugin, mermaidVitePlugin } from 'vitepress-plugin-mermaid-next'
+import { mermaidMarkdownPlugin, mermaidVitePlugin } from 'vitepress-plugin-mermaid-tuck'
 
 export default defineConfig({
   markdown: {
@@ -80,7 +80,7 @@ export default defineConfig({
 ```ts
 // .vitepress/theme/index.ts
 import type { Theme } from 'vitepress'
-import { enhanceAppWithMermaid } from 'vitepress-plugin-mermaid-next/client'
+import { enhanceAppWithMermaid } from 'vitepress-plugin-mermaid-tuck/client'
 import DefaultTheme from 'vitepress/theme'
 
 export default {
@@ -131,7 +131,7 @@ Or override options at runtime in your theme:
 
 ```ts
 // .vitepress/theme/index.ts
-import { defineMermaidOptions } from 'vitepress-plugin-mermaid-next/client'
+import { defineMermaidOptions } from 'vitepress-plugin-mermaid-tuck/client'
 
 defineMermaidOptions({
   securityLevel: 'loose',

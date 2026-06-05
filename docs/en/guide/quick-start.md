@@ -77,7 +77,7 @@ Using plugins is simple — just import and invoke them in the `plugins` array:
 ```ts [.vitepress/config.ts]
 import { defineConfig } from 'vitepress-tuck'
 import steps from 'vitepress-plugin-steps'
-import mermaid from 'vitepress-plugin-mermaid-next'
+import mermaid from 'vitepress-plugin-mermaid-tuck'
 
 export default defineConfig({
   plugins: [
