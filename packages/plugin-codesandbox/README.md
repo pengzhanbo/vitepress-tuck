@@ -1,4 +1,4 @@
-# vitepress-plugin-codesandbox
+# vitepress-plugin-code-sandbox
 
 Embed CodeSandbox in your VitePress site.
 
@@ -12,18 +12,18 @@ Embed CodeSandbox in your VitePress site.
 
 ```bash
 # npm
-npm install -D vitepress-tuck vitepress-plugin-codesandbox
+npm install -D vitepress-tuck vitepress-plugin-code-sandbox
 # pnpm
-pnpm add -D vitepress-tuck vitepress-plugin-codesandbox
+pnpm add -D vitepress-tuck vitepress-plugin-code-sandbox
 # yarn
-yarn add -D vitepress-tuck vitepress-plugin-codesandbox
+yarn add -D vitepress-tuck vitepress-plugin-code-sandbox
 ```
 
 **Configuration:**
 
 ```ts
 // .vitepress/config.ts
-import codesandbox from 'vitepress-plugin-codesandbox'
+import codesandbox from 'vitepress-plugin-code-sandbox'
 import { defineConfig } from 'vitepress-tuck'
 
 export default defineConfig({
@@ -37,11 +37,11 @@ export default defineConfig({
 
 ```bash
 # npm
-npm install -D vitepress-plugin-codesandbox
+npm install -D vitepress-plugin-code-sandbox
 # pnpm
-pnpm add -D vitepress-plugin-codesandbox
+pnpm add -D vitepress-plugin-code-sandbox
 # yarn
-yarn add -D vitepress-plugin-codesandbox
+yarn add -D vitepress-plugin-code-sandbox
 ```
 
 **Configuration:**
@@ -49,7 +49,7 @@ yarn add -D vitepress-plugin-codesandbox
 ```ts
 // .vitepress/config.ts
 import { defineConfig } from 'vitepress'
-import { codeSandboxMarkdownPlugin } from 'vitepress-plugin-codesandbox'
+import { codeSandboxMarkdownPlugin } from 'vitepress-plugin-code-sandbox'
 
 export default defineConfig({
   markdown: {

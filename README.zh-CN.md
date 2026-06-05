@@ -86,7 +86,7 @@ export default {
 | [Can I Use](./docs/zh/plugins/caniuse.md) | `vitepress-plugin-caniuse` | 嵌入 caniuse.com 浏览器兼容性数据 |
 | [Code Collapse](./docs/zh/plugins/code-collapse.md) | `vitepress-plugin-code-collapse` | 代码块行折叠，支持全局/单块配置 |
 | [CodePen](./docs/zh/plugins/codepen.md) | `vitepress-plugin-codepen` | 嵌入 CodePen 示例，支持自定义标签与主题 |
-| [CodeSandbox](./docs/zh/plugins/codesandbox.md) | `vitepress-plugin-codesandbox` | 嵌入 CodeSandbox 项目（嵌入 / 按钮模式） |
+| [CodeSandbox](./docs/zh/plugins/codesandbox.md) | `vitepress-plugin-code-sandbox` | 嵌入 CodeSandbox 项目（嵌入 / 按钮模式） |
 | [JSFiddle](./docs/zh/plugins/jsfiddle.md) | `vitepress-plugin-jsfiddle` | 嵌入 JSFiddle 示例，支持自定义标签页 |
 
 ## 开发插件

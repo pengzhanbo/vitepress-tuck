@@ -6,7 +6,7 @@ export { codeSandboxMarkdownPlugin }
 /**
  * @example
  * ```ts
- * import codeSandbox from 'vitepress-plugin-codesandbox'
+ * import codeSandbox from 'vitepress-plugin-code-sandbox'
  * import { defineConfig } from 'vitepress-tuck'
  * export default defineConfig({
  *   plugins: [codeSandbox()],
@@ -14,7 +14,7 @@ export { codeSandboxMarkdownPlugin }
  * ```
  */
 export default definePlugin(() => ({
-  name: 'vitepress-plugin-codesandbox',
+  name: 'vitepress-plugin-code-sandbox',
   markdown: {
     config(md) {
       md.use(codeSandboxMarkdownPlugin)

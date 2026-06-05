@@ -16,7 +16,7 @@ const SANDBOX = 'allow-forms allow-modals allow-popups allow-presentation allow-
 /**
  * @example
  * ```ts
- * import { codeSandboxMarkdownPlugin } from 'vitepress-plugin-codesandbox'
+ * import { codeSandboxMarkdownPlugin } from 'vitepress-plugin-code-sandbox'
  * import { defineConfig } from 'vitepress'
  * export default defineConfig({
  *   markdown: {

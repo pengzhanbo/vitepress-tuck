@@ -7,7 +7,7 @@
 ::: npm-to
 
 ```sh
-npm install vitepress-plugin-codesandbox
+npm install vitepress-plugin-code-sandbox
 ```
 
 :::
@@ -18,7 +18,7 @@ npm install vitepress-plugin-codesandbox
 
 ```ts [.vitepress/config.ts]
 import { defineConfig } from 'vitepress-tuck'
-import codeSandbox from 'vitepress-plugin-codesandbox'
+import codeSandbox from 'vitepress-plugin-code-sandbox'
 
 export default defineConfig({
   plugins: [codeSandbox()],
@@ -31,7 +31,7 @@ export default defineConfig({
 
 ```ts [.vitepress/config.ts]
 import { defineConfig } from 'vitepress'
-import { codeSandboxMarkdownPlugin } from 'vitepress-plugin-codesandbox'
+import { codeSandboxMarkdownPlugin } from 'vitepress-plugin-code-sandbox'
 
 export default defineConfig({
   markdown: {

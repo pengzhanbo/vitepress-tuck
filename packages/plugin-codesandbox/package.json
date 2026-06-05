@@ -1,5 +1,5 @@
 {
-  "name": "vitepress-plugin-codesandbox",
+  "name": "vitepress-plugin-code-sandbox",
   "type": "module",
   "version": "0.1.0",
   "description": "Embed CodeSandbox in your VitePress site.",

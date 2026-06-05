@@ -238,12 +238,12 @@ importers:
       vitepress-plugin-code-collapse:
         specifier: workspace:*
         version: link:../packages/plugin-code-collapse
+      vitepress-plugin-code-sandbox:
+        specifier: workspace:*
+        version: link:../packages/plugin-codesandbox
       vitepress-plugin-codepen:
         specifier: workspace:*
         version: link:../packages/plugin-codepen
-      vitepress-plugin-codesandbox:
-        specifier: workspace:*
-        version: link:../packages/plugin-codesandbox
       vitepress-plugin-file-tree:
         specifier: workspace:*
         version: link:../packages/plugin-file-tree

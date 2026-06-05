@@ -86,7 +86,7 @@ All plugins are built on `vitepress-tuck` while remaining compatible with native
 | [Can I Use](./docs/zh/plugins/caniuse.md) | `vitepress-plugin-caniuse` | Embed browser compatibility data from caniuse.com |
 | [Code Collapse](./docs/zh/plugins/code-collapse.md) | `vitepress-plugin-code-collapse` | Fold long code blocks (global / per-block configuration) |
 | [CodePen](./docs/zh/plugins/codepen.md) | `vitepress-plugin-codepen` | Embed CodePen demos with custom tabs and themes |
-| [CodeSandbox](./docs/zh/plugins/codesandbox.md) | `vitepress-plugin-codesandbox` | Embed CodeSandbox projects (embed / button modes) |
+| [CodeSandbox](./docs/zh/plugins/codesandbox.md) | `vitepress-plugin-code-sandbox` | Embed CodeSandbox projects (embed / button modes) |
 | [JSFiddle](./docs/zh/plugins/jsfiddle.md) | `vitepress-plugin-jsfiddle` | Embed JSFiddle demos with custom tabs |
 
 ## Developing Plugins
