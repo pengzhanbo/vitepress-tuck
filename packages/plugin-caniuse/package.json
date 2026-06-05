@@ -41,5 +41,8 @@
     "@vueuse/core": "catalog:prod",
     "vitepress-plugin-toolkit": "workspace:*",
     "vitepress-tuck": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

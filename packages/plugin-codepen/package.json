@@ -39,5 +39,8 @@
   "dependencies": {
     "vitepress-plugin-toolkit": "workspace:*",
     "vitepress-tuck": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

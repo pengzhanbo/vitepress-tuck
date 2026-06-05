@@ -28,5 +28,8 @@
   },
   "dependencies": {
     "@pengzhanbo/utils": "catalog:prod"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

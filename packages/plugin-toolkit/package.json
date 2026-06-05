@@ -7,7 +7,8 @@
   "license": "MIT",
   "keywords": [
     "vitepress",
-    "vitepress-plugin"
+    "vitepress-plugin",
+    "toolkit"
   ],
   "sideEffects": false,
   "exports": {
@@ -43,5 +44,8 @@
     "@vueuse/core": "catalog:prod",
     "ansis": "catalog:prod",
     "markdown-it-container": "catalog:prod"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
