@@ -72,22 +72,21 @@ export default {
 
 All plugins are built on `vitepress-tuck` while remaining compatible with native VitePress.
 
-| Plugin | Package | Description |
-| ------ | ------- | ----------- |
-| [Steps](./docs/zh/plugins/steps.md) | `vitepress-plugin-steps` | Step-by-step container for creating guided content |
-| [File Tree](./docs/zh/plugins/file-tree.md) | `vitepress-plugin-file-tree` | Render file directory trees with expand/collapse |
-| [Plot](./docs/zh/plugins/plot.md) | `vitepress-plugin-plot` | Hidden text with click/hover reveal (`!!text!!` syntax) |
-| [Npm To](./docs/zh/plugins/npm-to.md) | `vitepress-plugin-npm-to` | Convert npm commands to pnpm / yarn / bun / deno equivalents |
-| [Mermaid](./docs/zh/plugins/mermaid.md) | `vitepress-plugin-mermaid-tuck` | Mermaid diagram rendering with i18n support |
-| [QRCode](./docs/zh/plugins/qrcode.md) | `vitepress-plugin-qrcode` | Generate QR codes (image/card modes) |
-| [Video](./docs/zh/plugins/video.md) | `vitepress-plugin-video` | Multi-platform video embedding (Bilibili, YouTube, AcFun, ArtPlayer) |
-| [Obsidian](./docs/zh/plugins/obsidian.md) | `vitepress-plugin-obsidian` | Obsidian-style Markdown (Wiki links, Callouts, embeds, comments) |
-| [PDF](./docs/zh/plugins/pdf.md) | `vitepress-plugin-pdf` | Embed PDF files with page/zoom/toolbar options |
-| [Can I Use](./docs/zh/plugins/caniuse.md) | `vitepress-plugin-caniuse` | Embed browser compatibility data from caniuse.com |
-| [Code Collapse](./docs/zh/plugins/code-collapse.md) | `vitepress-plugin-code-collapse` | Fold long code blocks (global / per-block configuration) |
-| [CodePen](./docs/zh/plugins/codepen.md) | `vitepress-plugin-codepen` | Embed CodePen demos with custom tabs and themes |
-| [CodeSandbox](./docs/zh/plugins/codesandbox.md) | `vitepress-plugin-code-sandbox` | Embed CodeSandbox projects (embed / button modes) |
-| [JSFiddle](./docs/zh/plugins/jsfiddle.md) | `vitepress-plugin-jsfiddle` | Embed JSFiddle demos with custom tabs |
+| Plugin                                              | Package                          | Description                                                          |
+| --------------------------------------------------- | -------------------------------- | -------------------------------------------------------------------- |
+| [Steps](./docs/zh/plugins/steps.md)                 | `vitepress-plugin-steps`         | Step-by-step container for creating guided content                   |
+| [File Tree](./docs/zh/plugins/file-tree.md)         | `vitepress-plugin-file-tree`     | Render file directory trees with expand/collapse                     |
+| [Plot](./docs/zh/plugins/plot.md)                   | `vitepress-plugin-plot`          | Hidden text with click/hover reveal (`!!text!!` syntax)              |
+| [Npm To](./docs/zh/plugins/npm-to.md)               | `vitepress-plugin-npm-to`        | Convert npm commands to pnpm / yarn / bun / deno equivalents         |
+| [Mermaid](./docs/zh/plugins/mermaid.md)             | `vitepress-plugin-mermaid-tuck`  | Mermaid diagram rendering with i18n support                          |
+| [QRCode](./docs/zh/plugins/qrcode.md)               | `vitepress-plugin-qrcode`        | Generate QR codes (image/card modes)                                 |
+| [Video](./docs/zh/plugins/video.md)                 | `vitepress-plugin-video`         | Multi-platform video embedding (Bilibili, YouTube, AcFun, ArtPlayer) |
+| [Obsidian](./docs/zh/plugins/obsidian.md)           | `vitepress-plugin-obsidian`      | Obsidian-style Markdown (Wiki links, Callouts, embeds, comments)     |
+| [PDF](./docs/zh/plugins/pdf.md)                     | `vitepress-plugin-pdf`           | Embed PDF files with page/zoom/toolbar options                       |
+| [Can I Use](./docs/zh/plugins/caniuse.md)           | `vitepress-plugin-caniuse`       | Embed browser compatibility data from caniuse.com                    |
+| [Code Collapse](./docs/zh/plugins/code-collapse.md) | `vitepress-plugin-code-collapse` | Fold long code blocks (global / per-block configuration)             |
+| [CodePen](./docs/zh/plugins/codepen.md)             | `vitepress-plugin-codepen`       | Embed CodePen demos with custom tabs and themes                      |
+| [JSFiddle](./docs/zh/plugins/jsfiddle.md)           | `vitepress-plugin-jsfiddle`      | Embed JSFiddle demos with custom tabs                                |
 
 ## Developing Plugins
 

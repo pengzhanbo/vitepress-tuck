@@ -1,6 +1,5 @@
 import caniuse from 'vitepress-plugin-caniuse'
 import codeCollapse from 'vitepress-plugin-code-collapse'
-import codeSandbox from 'vitepress-plugin-code-sandbox'
 import codepen from 'vitepress-plugin-codepen'
 import fileTree from 'vitepress-plugin-file-tree'
 import jsfiddle from 'vitepress-plugin-jsfiddle'
@@ -63,7 +62,6 @@ export default defineConfig({
     qrcode(),
     jsfiddle(),
     codepen(),
-    codeSandbox(),
     mermaid(),
     codeCollapse(),
 

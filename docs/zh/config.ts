@@ -29,7 +29,6 @@ export default defineAdditionalConfig({
         { text: 'Can I Use', link: 'caniuse' },
         { text: '代码块行折叠', link: 'code-collapse' },
         { text: 'CodePen', link: 'codepen' },
-        { text: 'CodeSandbox', link: 'codesandbox' },
         { text: 'JSFiddle', link: 'jsfiddle' },
       ] },
     },

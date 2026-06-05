@@ -29,7 +29,6 @@ export default defineAdditionalConfig({
         { text: 'Can I Use', link: 'caniuse' },
         { text: 'Code Collapse', link: 'code-collapse' },
         { text: 'CodePen', link: 'codepen' },
-        { text: 'CodeSandbox', link: 'codesandbox' },
         { text: 'JSFiddle', link: 'jsfiddle' },
       ] },
     },

@@ -72,22 +72,21 @@ export default {
 
 所有插件均基于 `vitepress-tuck` 开发，同时兼容 VitePress 原生接入方式。
 
-| 插件 | 包名 | 说明 |
-| ---- | ---- | ---- |
-| [Steps](./docs/zh/plugins/steps.md) | `vitepress-plugin-steps` | 步骤容器，用于创建步骤引导内容 |
-| [File Tree](./docs/zh/plugins/file-tree.md) | `vitepress-plugin-file-tree` | 文件目录树展示，支持展开/折叠 |
-| [Plot](./docs/zh/plugins/plot.md) | `vitepress-plugin-plot` | 隐文遮罩，点击或悬停显示隐藏文本（`!!text!!` 语法） |
-| [Npm To](./docs/zh/plugins/npm-to.md) | `vitepress-plugin-npm-to` | npm 命令自动转换为 pnpm / yarn / bun / deno 等包管理器命令 |
-| [Mermaid](./docs/zh/plugins/mermaid.md) | `vitepress-plugin-mermaid-tuck` | Mermaid 图表渲染，支持 i18n 多语言 |
-| [QRCode](./docs/zh/plugins/qrcode.md) | `vitepress-plugin-qrcode` | 二维码生成，支持图片 / 卡片两种模式 |
-| [Video](./docs/zh/plugins/video.md) | `vitepress-plugin-video` | 多平台视频嵌入（Bilibili、YouTube、AcFun、ArtPlayer） |
-| [Obsidian](./docs/zh/plugins/obsidian.md) | `vitepress-plugin-obsidian` | Obsidian 风格 Markdown 语法（Wiki 链接、Callout、嵌入、注释） |
-| [PDF](./docs/zh/plugins/pdf.md) | `vitepress-plugin-pdf` | 嵌入 PDF 文件，支持页码、缩放、工具栏等配置 |
-| [Can I Use](./docs/zh/plugins/caniuse.md) | `vitepress-plugin-caniuse` | 嵌入 caniuse.com 浏览器兼容性数据 |
-| [Code Collapse](./docs/zh/plugins/code-collapse.md) | `vitepress-plugin-code-collapse` | 代码块行折叠，支持全局/单块配置 |
-| [CodePen](./docs/zh/plugins/codepen.md) | `vitepress-plugin-codepen` | 嵌入 CodePen 示例，支持自定义标签与主题 |
-| [CodeSandbox](./docs/zh/plugins/codesandbox.md) | `vitepress-plugin-code-sandbox` | 嵌入 CodeSandbox 项目（嵌入 / 按钮模式） |
-| [JSFiddle](./docs/zh/plugins/jsfiddle.md) | `vitepress-plugin-jsfiddle` | 嵌入 JSFiddle 示例，支持自定义标签页 |
+| 插件                                                | 包名                             | 说明                                                          |
+| --------------------------------------------------- | -------------------------------- | ------------------------------------------------------------- |
+| [Steps](./docs/zh/plugins/steps.md)                 | `vitepress-plugin-steps`         | 步骤容器，用于创建步骤引导内容                                |
+| [File Tree](./docs/zh/plugins/file-tree.md)         | `vitepress-plugin-file-tree`     | 文件目录树展示，支持展开/折叠                                 |
+| [Plot](./docs/zh/plugins/plot.md)                   | `vitepress-plugin-plot`          | 隐文遮罩，点击或悬停显示隐藏文本（`!!text!!` 语法）           |
+| [Npm To](./docs/zh/plugins/npm-to.md)               | `vitepress-plugin-npm-to`        | npm 命令自动转换为 pnpm / yarn / bun / deno 等包管理器命令    |
+| [Mermaid](./docs/zh/plugins/mermaid.md)             | `vitepress-plugin-mermaid-tuck`  | Mermaid 图表渲染，支持 i18n 多语言                            |
+| [QRCode](./docs/zh/plugins/qrcode.md)               | `vitepress-plugin-qrcode`        | 二维码生成，支持图片 / 卡片两种模式                           |
+| [Video](./docs/zh/plugins/video.md)                 | `vitepress-plugin-video`         | 多平台视频嵌入（Bilibili、YouTube、AcFun、ArtPlayer）         |
+| [Obsidian](./docs/zh/plugins/obsidian.md)           | `vitepress-plugin-obsidian`      | Obsidian 风格 Markdown 语法（Wiki 链接、Callout、嵌入、注释） |
+| [PDF](./docs/zh/plugins/pdf.md)                     | `vitepress-plugin-pdf`           | 嵌入 PDF 文件，支持页码、缩放、工具栏等配置                   |
+| [Can I Use](./docs/zh/plugins/caniuse.md)           | `vitepress-plugin-caniuse`       | 嵌入 caniuse.com 浏览器兼容性数据                             |
+| [Code Collapse](./docs/zh/plugins/code-collapse.md) | `vitepress-plugin-code-collapse` | 代码块行折叠，支持全局/单块配置                               |
+| [CodePen](./docs/zh/plugins/codepen.md)             | `vitepress-plugin-codepen`       | 嵌入 CodePen 示例，支持自定义标签与主题                       |
+| [JSFiddle](./docs/zh/plugins/jsfiddle.md)           | `vitepress-plugin-jsfiddle`      | 嵌入 JSFiddle 示例，支持自定义标签页                          |
 
 ## 开发插件
 

@@ -238,9 +238,6 @@ importers:
       vitepress-plugin-code-collapse:
         specifier: workspace:*
         version: link:../packages/plugin-code-collapse
-      vitepress-plugin-code-sandbox:
-        specifier: workspace:*
-        version: link:../packages/plugin-codesandbox
       vitepress-plugin-codepen:
         specifier: workspace:*
         version: link:../packages/plugin-codepen
@@ -324,21 +321,6 @@ importers:
         version: 3.5.35(typescript@6.0.3)
 
   packages/plugin-codepen:
-    dependencies:
-      vitepress:
-        specifier: ^2.0.0-alpha.17
-        version: 2.0.0-alpha.17(@types/node@25.9.1)(change-case@5.4.4)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
-      vitepress-plugin-toolkit:
-        specifier: workspace:*
-        version: link:../plugin-toolkit
-      vitepress-tuck:
-        specifier: workspace:*
-        version: link:../vitepress-tuck
-      vue:
-        specifier: ^3.5.0
-        version: 3.5.35(typescript@6.0.3)
-
-  packages/plugin-codesandbox:
     dependencies:
       vitepress:
         specifier: ^2.0.0-alpha.17

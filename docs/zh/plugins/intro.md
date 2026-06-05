@@ -23,5 +23,4 @@
 | [Can I Use](./caniuse)           | `vitepress-plugin-caniuse`       | caniuse 浏览器兼容性数据嵌入                       |
 | [Code Collapse](./code-collapse) | `vitepress-plugin-code-collapse` | 代码块折叠                                         |
 | [CodePen](./codepen)             | `vitepress-plugin-codepen`       | CodePen 嵌入                                       |
-| [CodeSandbox](./codesandbox)     | `vitepress-plugin-code-sandbox`   | CodeSandbox 嵌入                                   |
 | [JSFiddle](./jsfiddle)           | `vitepress-plugin-jsfiddle`      | JSFiddle 嵌入                                      |

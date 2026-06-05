@@ -24,5 +24,4 @@ All plugins support two usage modes:
 | [Can I Use](./caniuse)           | `vitepress-plugin-caniuse`       | Embed browser compatibility data from caniuse.com               |
 | [Code Collapse](./code-collapse) | `vitepress-plugin-code-collapse` | Code block folding                                              |
 | [CodePen](./codepen)             | `vitepress-plugin-codepen`       | CodePen embedding                                               |
-| [CodeSandbox](./codesandbox)     | `vitepress-plugin-code-sandbox`   | CodeSandbox embedding                                           |
 | [JSFiddle](./jsfiddle)           | `vitepress-plugin-jsfiddle`      | JSFiddle embedding                                              |
