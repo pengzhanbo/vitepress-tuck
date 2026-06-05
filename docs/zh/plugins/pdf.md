@@ -1,5 +1,7 @@
 # PDF
 
+<NpmBadge name="vitepress-plugin-pdf" />
+
 PDF 文件嵌入插件，在页面中嵌入 PDF 查看器。
 
 ## 安装

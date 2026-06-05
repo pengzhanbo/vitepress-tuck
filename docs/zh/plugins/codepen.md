@@ -1,5 +1,7 @@
 # CodePen
 
+<NpmBadge name="vitepress-plugin-codepen" />
+
 将 [CodePen](https://codepen.io/) 项目嵌入到 VitePress 页面中。
 
 ## 安装

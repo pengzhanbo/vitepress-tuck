@@ -1,5 +1,7 @@
 # Mermaid
 
+<NpmBadge name="vitepress-plugin-mermaid-tuck" />
+
 Mermaid 图表插件，支持在 Markdown 中渲染 Mermaid 图表。
 
 ## 安装

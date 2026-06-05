@@ -1,5 +1,7 @@
 # Plot
 
+<NpmBadge name="vitepress-plugin-plot" />
+
 Hidden text plugin that reveals concealed text content on click or hover.
 
 ## Installation

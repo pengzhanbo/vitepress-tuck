@@ -1,5 +1,7 @@
 # File Tree
 
+<NpmBadge name="vitepress-plugin-file-tree" />
+
 文件树展示插件，用于在 Markdown 中渲染文件目录结构。
 
 ## 安装

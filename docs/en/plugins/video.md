@@ -1,5 +1,7 @@
 # Video
 
+<NpmBadge name="vitepress-plugin-video" />
+
 Multi-platform video embedding plugin, supporting Bilibili, YouTube, AcFun, and ArtPlayer.
 
 ## Installation

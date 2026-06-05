@@ -1,5 +1,7 @@
 # Obsidian
 
+<NpmBadge name="vitepress-plugin-obsidian" />
+
 提供 Obsidian 风格 Markdown 语法支持，包括 Wiki 链接、Callout 标注、嵌入文件和注释语法。
 
 ## 安装

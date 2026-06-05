@@ -1,5 +1,7 @@
 # Code Collapse
 
+<NpmBadge name="vitepress-plugin-code-collapse" />
+
 Code block folding plugin that automatically collapses code blocks exceeding a specified number of lines, improving page readability.
 
 ## Installation

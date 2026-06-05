@@ -1,5 +1,7 @@
 # Can I Use
 
+<NpmBadge name="vitepress-plugin-caniuse" />
+
 嵌入 [caniuse.com](https://caniuse.com/) 的浏览器兼容性数据，在页面中展示 CSS/JS 特性的浏览器支持情况。
 
 ## 安装

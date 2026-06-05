@@ -1,5 +1,7 @@
 # JSFiddle
 
+<NpmBadge name="vitepress-plugin-jsfiddle" />
+
 Embed [JSFiddle](https://jsfiddle.net/) projects into VitePress pages.
 
 ## Installation

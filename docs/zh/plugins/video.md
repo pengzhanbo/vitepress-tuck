@@ -1,5 +1,7 @@
 # Video
 
+<NpmBadge name="vitepress-plugin-video" />
+
 视频嵌入插件，支持 Bilibili、YouTube、AcFun 和 ArtPlayer。
 
 ## 安装

@@ -1,5 +1,7 @@
 # QRCode
 
+<NpmBadge name="vitepress-plugin-qrcode" />
+
 二维码生成插件，将文本或链接生成二维码。
 
 ## 安装

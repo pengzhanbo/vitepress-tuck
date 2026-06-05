@@ -1,5 +1,7 @@
 # Steps
 
+<NpmBadge name="vitepress-plugin-steps" />
+
 Step container plugin for creating step-by-step guided content in Markdown.
 
 ## Installation

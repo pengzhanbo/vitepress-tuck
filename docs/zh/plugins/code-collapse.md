@@ -1,5 +1,7 @@
 # Code Collapse
 
+<NpmBadge name="vitepress-plugin-code-collapse" />
+
 代码块折叠插件，当代码块超过指定行数时自动折叠，提升页面阅读体验。
 
 ## 安装

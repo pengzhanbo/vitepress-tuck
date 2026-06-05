@@ -1,5 +1,7 @@
 # File Tree
 
+<NpmBadge name="vitepress-plugin-file-tree" />
+
 File tree display plugin for rendering file directory structures in Markdown.
 
 ## Installation

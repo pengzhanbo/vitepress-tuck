@@ -1,5 +1,7 @@
 # Steps
 
+<NpmBadge name="vitepress-plugin-steps" />
+
 步骤容器插件，用于在 Markdown 中创建步骤引导内容。
 
 ## 安装

@@ -1,5 +1,7 @@
 # Npm To
 
+<NpmBadge name="vitepress-plugin-npm-to" />
+
 将 npm 命令自动转换为其他包管理器（pnpm、yarn、bun、deno）的对应命令。
 
 ## 安装

@@ -1,5 +1,7 @@
 # Obsidian
 
+<NpmBadge name="vitepress-plugin-obsidian" />
+
 Provides Obsidian-style Markdown syntax support, including Wiki links, Callout annotations, embedded files, and comment syntax.
 
 ## Installation

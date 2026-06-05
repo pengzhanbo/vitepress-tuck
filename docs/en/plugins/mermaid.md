@@ -1,5 +1,7 @@
 # Mermaid
 
+<NpmBadge name="vitepress-plugin-mermaid-tuck" />
+
 Mermaid diagram plugin, supporting Mermaid chart rendering in Markdown.
 
 ## Installation

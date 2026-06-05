@@ -1,5 +1,7 @@
 # JSFiddle
 
+<NpmBadge name="vitepress-plugin-jsfiddle" />
+
 将 [JSFiddle](https://jsfiddle.net/) 项目嵌入到 VitePress 页面中。
 
 ## 安装

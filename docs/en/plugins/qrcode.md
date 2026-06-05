@@ -1,5 +1,7 @@
 # QRCode
 
+<NpmBadge name="vitepress-plugin-qrcode" />
+
 QR code generation plugin, generating QR codes from text or links.
 
 ## Installation

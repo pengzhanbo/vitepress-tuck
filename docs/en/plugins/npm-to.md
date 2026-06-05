@@ -1,5 +1,7 @@
 # Npm To
 
+<NpmBadge name="vitepress-plugin-npm-to" />
+
 Automatically converts npm commands to equivalent commands for other package managers (pnpm, yarn, bun, deno).
 
 ## Installation

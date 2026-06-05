@@ -1,5 +1,7 @@
 # PDF
 
+<NpmBadge name="vitepress-plugin-pdf" />
+
 PDF file embedding plugin for displaying a PDF viewer in the page.
 
 ## Installation

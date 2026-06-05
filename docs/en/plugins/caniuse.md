@@ -1,5 +1,7 @@
 # Can I Use
 
+<NpmBadge name="vitepress-plugin-caniuse" />
+
 Embed browser compatibility data from [caniuse.com](https://caniuse.com/), displaying browser support for CSS/JS features on the page.
 
 ## Installation

@@ -1,5 +1,7 @@
 # CodePen
 
+<NpmBadge name="vitepress-plugin-codepen" />
+
 Embed [CodePen](https://codepen.io/) projects into VitePress pages.
 
 ## Installation

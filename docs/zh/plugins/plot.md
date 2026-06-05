@@ -1,5 +1,7 @@
 # Plot
 
+<NpmBadge name="vitepress-plugin-plot" />
+
 隐文遮罩插件，通过点击或悬停来显示隐藏的文本内容。
 
 ## 安装
