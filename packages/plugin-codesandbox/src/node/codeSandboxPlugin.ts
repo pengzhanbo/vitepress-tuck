@@ -70,7 +70,7 @@ export const codeSandboxMarkdownPlugin: PluginSimple = (md) => {
 function getLink(meta: CodeSandboxTokenMeta) {
   const params = new URLSearchParams()
   if (meta.filepath)
-    params.set(meta.type === 'embed' ? 'module' : 'file', encodeURIComponent(meta.filepath))
+    params.set(meta.type === 'embed' ? 'module' : 'file', meta.filepath)
 
   if (meta.type === 'embed') {
     params.set('view', meta.layout ? meta.layout.replace(/,/g, '+') : 'Editor+Preview')

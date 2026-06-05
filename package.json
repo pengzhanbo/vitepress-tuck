@@ -18,6 +18,7 @@
     "lint:check": "eslint --cache .",
     "lint:css": "stylelint '**/*.{css,vue}'",
     "lint:fix": "pnpm lint:check --fix && pnpm lint:css --fix",
+    "test": "cross-env TZ=Etc/UTC vitest --coverage",
     "prepare": "husky",
     "release:changelog": "conventional-changelog -p angular",
     "release:check": "pnpm lint && pnpm build",
