@@ -5,6 +5,11 @@
   "description": "Embed videos from multiple platforms (Bilibili, YouTube, AcFun, and self-hosted) in your VitePress site.",
   "author": "pengzhanbo <q942450674@outlook.com> (https://github.com/pengzhanbo/)",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pengzhanbo/vitepress-tuck.git",
+    "directory": "packages/plugin-video"
+  },
   "keywords": [
     "vitepress",
     "vitepress-plugin",

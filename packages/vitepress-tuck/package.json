@@ -5,6 +5,11 @@
   "description": "Enhance vitepress configuration, provide plugins capability.",
   "author": "pengzhanbo <q942450674@outlook.com> (https://github.com/pengzhanbo/)",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pengzhanbo/vitepress-tuck.git",
+    "directory": "packages/vitepress-tuck"
+  },
   "keywords": [
     "vitepress",
     "vitepress-plugin"
