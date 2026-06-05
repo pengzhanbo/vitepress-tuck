@@ -1,7 +1,7 @@
 {
   "name": "vitepress-plugin-plot",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Add spoiler/hidden text with `!!text!!` syntax. Text is masked until hovered or clicked.",
   "author": "pengzhanbo <q942450674@outlook.com> (https://github.com/pengzhanbo/)",
   "license": "MIT",
