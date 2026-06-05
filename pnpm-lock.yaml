@@ -256,9 +256,9 @@ importers:
       vitepress-plugin-llms:
         specifier: catalog:dev
         version: 1.13.1
-      vitepress-plugin-mermaid-next:
+      vitepress-plugin-mermaid-tuck:
         specifier: workspace:*
-        version: link:../packages/plugin-mermaid-next
+        version: link:../packages/plugin-mermaid-tuck
       vitepress-plugin-npm-to:
         specifier: workspace:*
         version: link:../packages/plugin-npm-to
@@ -389,7 +389,7 @@ importers:
         specifier: ^3.5.0
         version: 3.5.35(typescript@6.0.3)
 
-  packages/plugin-mermaid-next:
+  packages/plugin-mermaid-tuck:
     dependencies:
       '@pengzhanbo/utils':
         specifier: catalog:prod

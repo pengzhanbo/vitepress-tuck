@@ -1,5 +1,5 @@
 {
-  "name": "vitepress-plugin-mermaid-next",
+  "name": "vitepress-plugin-mermaid-tuck",
   "type": "module",
   "version": "0.1.0",
   "description": "Render Mermaid diagrams in your VitePress site.",
