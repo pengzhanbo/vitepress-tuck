@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "@pengzhanbo/utils": "catalog:prod",
+    "@vueuse/core": "catalog:prod",
     "mermaid": "catalog:prod",
     "vitepress-plugin-toolkit": "workspace:*",
     "vitepress-tuck": "workspace:*"

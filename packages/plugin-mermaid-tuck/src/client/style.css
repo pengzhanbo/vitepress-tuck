@@ -7,14 +7,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: auto;
   background-color: color-mix(in srgb, var(--vp-c-bg) 10%, transparent);
   backdrop-filter: blur(4px);
 }
 
 .vp-mermaid-fullscreen > svg {
   max-width: 100%;
-  max-height: 100%;
-  padding: 12px;
+  padding: 8px;
   background-color: var(--vp-c-bg);
   border-radius: 8px;
   box-shadow: var(--vp-shadow-3);
@@ -81,8 +81,14 @@
   gap: 16px;
   align-items: center;
   justify-content: center;
-  opacity: 0;
+  opacity: 1;
   transition: opacity 0.25s ease-in-out;
+}
+
+@media (min-width: 640px) {
+  .vp-mermaid .mermaid-actions {
+    opacity: 0;
+  }
 }
 
 .vp-mermaid:hover .mermaid-actions {

@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { isFunction } from '@pengzhanbo/utils'
+import { useScrollLock } from '@vueuse/core'
 import { defaultOptions, locales } from 'virtual:vitepress-mermaid'
 import { VPLoading } from 'vitepress-plugin-toolkit/client'
-import { useData } from 'vitepress/client'
+import { inBrowser, useData } from 'vitepress/client'
 import { computed, onMounted, ref, useId, watch } from 'vue'
 import { useMermaidOptions } from './mermaidOptions.js'
 
@@ -68,16 +69,21 @@ function onDownload() {
   URL.revokeObjectURL(url)
 }
 
+const isLocked = useScrollLock(() => inBrowser ? document.body : null)
 function onFullscreen() {
   if (!loaded.value)
     return
+  isLocked.value = true
   const div = document.createElement('div')
   div.classList.add('vp-mermaid-fullscreen')
   div.innerHTML = svgCode.value
   document.body.append(div)
 
-  div.addEventListener('click', () => {
-    div.remove()
+  div.addEventListener('click', (event) => {
+    if (event.target === div) {
+      div.remove()
+      isLocked.value = false
+    }
   })
 }
 </script>

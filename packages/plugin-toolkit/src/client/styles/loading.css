@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-block: 1em;
   font-size: 36px;
   color: currentcolor;
   background-color: inherit;
