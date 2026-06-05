@@ -22,9 +22,9 @@ overrides:
 
 catalogs:
   dev:
-    '@pengzhanbo/eslint-config-vue': ^2.4.1
-    '@pengzhanbo/stylelint-config': ^2.4.1
-    '@pengzhanbo/tsconfig': ^2.4.1
+    '@pengzhanbo/eslint-config-vue': ^2.5.0
+    '@pengzhanbo/stylelint-config': ^2.5.0
+    '@pengzhanbo/tsconfig': ^2.5.0
     '@tsdown/css': ^0.22.1
     '@types/markdown-it': ^14.1.2
     '@types/markdown-it-container': ^4.0.0

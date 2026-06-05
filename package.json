@@ -11,9 +11,13 @@
     "pnpm": ">=10"
   },
   "scripts": {
+    "clean": "pnpm -r --stream run clean",
     "build": "pnpm run clean && pnpm build:package",
     "build:package": "pnpm -r --stream build",
-    "clean": "pnpm -r --stream run clean",
+    "docs:dev": "pnpm -F=docs docs:dev",
+    "docs:build": "pnpm -F=docs docs:build",
+    "docs:clean": "pnpm -F=docs docs:clean",
+    "docs:preview": "pnpm -F=docs docs:preview",
     "lint": "pnpm lint:check && pnpm lint:css",
     "lint:check": "eslint --cache .",
     "lint:css": "stylelint '**/*.{css,vue}'",
