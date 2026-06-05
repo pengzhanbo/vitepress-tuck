@@ -34,4 +34,6 @@ jobs:
       - name: Unit Test
         env:
           NODE_OPTIONS: --max_old_space_size=8192
-        run: pnpm run test
+        run: |
+          pnpm run build:package
+          pnpm run test
