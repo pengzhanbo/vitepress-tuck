@@ -152,6 +152,7 @@ export function createContainerSyntaxPlugin(
     const token = state.push(`${type}_container`, '', 0)
     token.meta = resolveAttrs(info.slice(type.length))
     token.content = content
+    token.info = info.slice(type.length).trim()
     token.markup = `${markup} ${type}`
     token.map = [startLine, line + 1]
 

@@ -241,6 +241,9 @@ importers:
       vitepress-plugin-codepen:
         specifier: workspace:*
         version: link:../packages/plugin-codepen
+      vitepress-plugin-field:
+        specifier: workspace:*
+        version: link:../packages/plugin-field
       vitepress-plugin-file-tree:
         specifier: workspace:*
         version: link:../packages/plugin-file-tree
@@ -322,6 +325,24 @@ importers:
 
   packages/plugin-codepen:
     dependencies:
+      vitepress:
+        specifier: ^2.0.0-alpha.17
+        version: 2.0.0-alpha.17(@types/node@25.9.1)(change-case@5.4.4)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
+      vitepress-plugin-toolkit:
+        specifier: workspace:*
+        version: link:../plugin-toolkit
+      vitepress-tuck:
+        specifier: workspace:*
+        version: link:../vitepress-tuck
+      vue:
+        specifier: ^3.5.0
+        version: 3.5.35(typescript@6.0.3)
+
+  packages/plugin-field:
+    dependencies:
+      '@pengzhanbo/utils':
+        specifier: catalog:prod
+        version: 3.7.3
       vitepress:
         specifier: ^2.0.0-alpha.17
         version: 2.0.0-alpha.17(@types/node@25.9.1)(change-case@5.4.4)(jiti@2.7.0)(lightningcss@1.32.0)(postcss@8.5.15)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)

@@ -19,6 +19,7 @@ export default defineAdditionalConfig({
         { text: '总览', link: 'intro' },
         { text: '步骤', link: 'steps' },
         { text: '文件树', link: 'file-tree' },
+        { text: '字段', link: 'field' },
         { text: '隐秘文本', link: 'plot' },
         { text: 'Npm To', link: 'npm-to' },
         { text: 'Mermaid', link: 'mermaid' },

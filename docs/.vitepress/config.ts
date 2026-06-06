@@ -1,6 +1,7 @@
 import caniuse from 'vitepress-plugin-caniuse'
 import codeCollapse from 'vitepress-plugin-code-collapse'
 import codepen from 'vitepress-plugin-codepen'
+import field from 'vitepress-plugin-field'
 import fileTree from 'vitepress-plugin-file-tree'
 import jsfiddle from 'vitepress-plugin-jsfiddle'
 import mermaid from 'vitepress-plugin-mermaid-tuck'
@@ -64,6 +65,7 @@ export default defineConfig({
     codepen(),
     mermaid(),
     codeCollapse(),
+    field(),
 
     // wrap external plugins
     llmstxt(),
