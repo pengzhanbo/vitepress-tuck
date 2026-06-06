@@ -2,7 +2,7 @@
   "name": "vitepress-plugin-field",
   "type": "module",
   "version": "0.1.1",
-  "description": "Render file tree structure in your VitePress site.",
+  "description": "Render structured API fields and properties documentation in your VitePress site.",
   "author": "pengzhanbo <q942450674@outlook.com> (https://github.com/pengzhanbo/)",
   "license": "MIT",
   "repository": {
