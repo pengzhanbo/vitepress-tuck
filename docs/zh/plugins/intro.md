@@ -15,6 +15,7 @@
 | [Obsidian](./obsidian)           | `vitepress-plugin-obsidian`      | Obsidian 语法支持，包括 Wiki 链接、Callout、注释等 |
 | [Video](./video)                 | `vitepress-plugin-video`         | 视频嵌入，支持 Bilibili、YouTube、AcFun、ArtPlayer |
 | [Mermaid](./mermaid)             | `vitepress-plugin-mermaid-tuck`  | Mermaid 图表支持                                   |
+| [Field](./field)                 | `vitepress-plugin-field`         | API 字段文档，支持 JSDoc 标签                      |
 | [Npm To](./npm-to)               | `vitepress-plugin-npm-to`        | npm 命令自动转换为其他包管理器命令                 |
 | [File Tree](./file-tree)         | `vitepress-plugin-file-tree`     | 文件树展示                                         |
 | [PDF](./pdf)                     | `vitepress-plugin-pdf`           | PDF 文件嵌入                                       |
