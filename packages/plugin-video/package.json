@@ -1,7 +1,7 @@
 {
   "name": "vitepress-plugin-video",
   "type": "module",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Embed videos from multiple platforms (Bilibili, YouTube, AcFun, and self-hosted) in your VitePress site.",
   "author": "pengzhanbo <q942450674@outlook.com> (https://github.com/pengzhanbo/)",
   "license": "MIT",
