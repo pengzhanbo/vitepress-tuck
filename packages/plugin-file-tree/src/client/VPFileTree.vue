@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { VPCopyButton } from 'vitepress-plugin-toolkit/client'
+import { computed } from 'vue'
 
 const { title, text } = defineProps<{ title?: string, text: string }>()
+
+const content = computed(() => decodeURIComponent(text))
 </script>
 
 <template>
@@ -9,7 +12,7 @@ const { title, text } = defineProps<{ title?: string, text: string }>()
     <p v-if="title" class="vp-file-tree-title">
       {{ title }}
     </p>
-    <VPCopyButton :text />
+    <VPCopyButton :text="content" />
     <slot />
   </div>
 </template>

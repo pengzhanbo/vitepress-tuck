@@ -59,6 +59,8 @@ export default {
 
 ## Syntax
 
+### Container Syntax
+
 Use the `::: file-tree` container to represent file hierarchy via indentation:
 
 ```md
@@ -75,9 +77,31 @@ Use the `::: file-tree` container to represent file hierarchy via indentation:
 :::
 ```
 
+### Fenced Code Syntax
+
+Alternatively, use a fenced code block with the `tree` or `file-tree` language identifier.
+The content follows the output format of the `tree` command-line tool (using Unicode
+box-drawing characters):
+
+````md
+```tree
+.
+├── src/
+│   ├── components/
+│   │   ├── Button.vue
+│   │   └── Nav.vue
+│   └── index.ts
+├── package.json
+└── tsconfig.json
+```
+````
+
+This is especially useful when you already have a `tree` command output and want to
+paste it directly into your Markdown without reformatting.
+
 ### Node Annotations
 
-Each node can have special annotations:
+Both syntaxes support the following node annotations:
 
 | Syntax               | Description                          |
 | -------------------- | ------------------------------------ |
@@ -87,6 +111,8 @@ Each node can have special annotations:
 | `filename # comment` | Add a comment                        |
 | `folder/`            | Mark as folder, collapsed by default |
 | `…`                  | Ellipsis marker                      |
+
+Container example with annotations:
 
 ```md
 ::: file-tree title="Changed Files"
@@ -99,6 +125,19 @@ Each node can have special annotations:
 
 :::
 ```
+
+Fenced code example with annotations:
+
+````md
+```tree
+.
+├── src/
+│   ├── -- old-file.ts
+│   ├── ++ new-file.ts
+│   └── **main.ts** # Core entry
+└── …
+```
+````
 
 ## Example
 

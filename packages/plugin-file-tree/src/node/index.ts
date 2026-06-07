@@ -1,9 +1,11 @@
-import type { FileTreeAttrs, FileTreeNode } from './fileTreePlugin.js'
 import { definePlugin } from 'vitepress-tuck'
-import { fileTreeMarkdownPlugin, parseFileTreeNodeInfo, parseFileTreeRawContent } from './fileTreePlugin.js'
+import { fileTreeMarkdownPlugin } from './fileTreePlugin.js'
 
-export { fileTreeMarkdownPlugin, parseFileTreeNodeInfo, parseFileTreeRawContent }
-export type { FileTreeAttrs, FileTreeNode }
+export * from './container.js'
+export * from './fence.js'
+export * from './parseNodeInfo.js'
+export * from './types.js'
+export { fileTreeMarkdownPlugin }
 
 export default definePlugin(() => ({
   name: 'vitepress-plugin-file-tree',

@@ -117,3 +117,24 @@ Use `::: file-tree` container to create a file tree.
 | `- …` or `- ...`       | Placeholder (non-clickable)              |
 
 Indentation uses 2 spaces per level. A copy button is included to copy the file tree as command-line style text.
+
+### Tree Fenced Code Syntax
+
+You can also use a fenced code block with the `tree` or `file-tree` language identifier,
+which accepts content in the format of the `tree` command-line tool output:
+
+````md
+```tree
+.
+├── src/
+│   ├── components/
+│   │   ├── Button.vue
+│   │   └── Input.vue
+│   └── index.ts
+├── package.json
+└── README.md
+```
+````
+
+The fenced code syntax supports the same node annotations as the container syntax
+(`**filename**`, `# comment`, `++/--`, trailing `/` for folders).
