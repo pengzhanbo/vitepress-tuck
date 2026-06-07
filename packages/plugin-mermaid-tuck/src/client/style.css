@@ -26,6 +26,7 @@
   flex-direction: column;
   margin-block: 16px;
   margin-inline: -24px;
+  overflow: hidden;
   background: var(--vp-code-block-bg);
 }
 
@@ -42,6 +43,7 @@
   justify-content: space-between;
   padding-block: 4px;
   padding-inline: 8px;
+  background: var(--vp-code-block-bg);
 }
 
 .vp-mermaid .mermaid-tabs {
@@ -78,7 +80,7 @@
 
 .vp-mermaid .mermaid-actions {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   align-items: center;
   justify-content: center;
   opacity: 1;
@@ -102,11 +104,17 @@
   justify-content: center;
 }
 
+@media (max-width: 639px) {
+  .vp-mermaid .mermaid-actions button.fullscreen {
+    display: none;
+  }
+}
+
 .vp-mermaid .mermaid-view {
   max-width: 100%;
+  max-height: calc(100vh - 58px - var(--vp-nav-height) - var(--vp-layout-top-height, 0px));
   padding-block: 12px;
-  padding-inline: 16px;
-  overflow-x: auto;
+  overflow: auto;
   text-align: center;
 }
 

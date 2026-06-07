@@ -1,4 +1,4 @@
-import type { MermaidOptions } from './types.js'
+import type { MermaidOptions } from '../types.js'
 
 let options: MermaidOptions = {}
 
