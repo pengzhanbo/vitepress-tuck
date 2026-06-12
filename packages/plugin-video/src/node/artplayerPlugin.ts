@@ -29,6 +29,11 @@ export function artPlayerVitePlugin(): Plugin {
         },
       }
     },
+    onLog(_, log) {
+      if (log.message.includes('COMMONJS_VARIABLE_IN_ESM') && log.message.includes('dashjs'))
+        return false
+      return undefined
+    },
   }
 }
 
