@@ -23,6 +23,7 @@ export default defineAdditionalConfig({
         { text: '隐秘文本', link: 'plot' },
         { text: 'Npm To', link: 'npm-to' },
         { text: 'Mermaid', link: 'mermaid' },
+        { text: 'PlantUML', link: 'plantuml' },
         { text: '二维码', link: 'qrcode' },
         { text: '视频嵌入', link: 'video' },
         { text: 'Obsidian', link: 'obsidian' },

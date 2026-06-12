@@ -23,6 +23,7 @@ export default defineAdditionalConfig({
         { text: 'Plot', link: 'plot' },
         { text: 'Npm To', link: 'npm-to' },
         { text: 'Mermaid', link: 'mermaid' },
+        { text: 'PlantUML', link: 'plantuml' },
         { text: 'QRCode', link: 'qrcode' },
         { text: 'Video', link: 'video' },
         { text: 'Obsidian', link: 'obsidian' },

@@ -8,6 +8,7 @@ import mermaid from 'vitepress-plugin-mermaid-tuck'
 import npmTo from 'vitepress-plugin-npm-to'
 import obsidian from 'vitepress-plugin-obsidian'
 import pdf from 'vitepress-plugin-pdf'
+import plantuml from 'vitepress-plugin-plantuml'
 import plot from 'vitepress-plugin-plot'
 import qrcode from 'vitepress-plugin-qrcode'
 import steps from 'vitepress-plugin-steps'
@@ -66,6 +67,7 @@ export default defineConfig({
     mermaid(),
     codeCollapse(),
     field(),
+    plantuml(),
 
     // wrap external plugins
     llmstxt(),

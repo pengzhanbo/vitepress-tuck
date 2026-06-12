@@ -172,7 +172,6 @@ export interface MermaidLocaleData extends Record<string, unknown> {
   chart?: string
   source?: string
   fullscreen?: string
-  download?: string
 }
 
 export interface MermaidPluginOptions {

@@ -174,5 +174,4 @@ export interface MermaidLocaleData {
   chart?: string
   source?: string
   fullscreen?: string
-  download?: string
 }

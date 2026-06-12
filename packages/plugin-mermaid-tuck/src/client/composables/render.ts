@@ -16,7 +16,7 @@ export function useMermaidRender(graph: Ref<string>) {
   const { isDark } = useData()
 
   const loaded = ref(false)
-  const svgCode = ref('')
+  const svg = ref('')
   const id = useId()
 
   async function renderMermaid(): Promise<void> {
@@ -41,7 +41,7 @@ export function useMermaidRender(graph: Ref<string>) {
       startOnLoad: false,
     })
 
-    svgCode.value = (await mermaid.render(id, decodeURIComponent(graph.value))).svg
+    svg.value = (await mermaid.render(id, decodeURIComponent(graph.value))).svg
     loaded.value = true
   }
 
@@ -49,5 +49,5 @@ export function useMermaidRender(graph: Ref<string>) {
     watch([isDark, graph], renderMermaid, { flush: 'post', immediate: true })
   })
 
-  return { loaded, svgCode }
+  return { loaded, svg }
 }

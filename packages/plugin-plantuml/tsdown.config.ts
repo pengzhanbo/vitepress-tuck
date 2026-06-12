@@ -10,6 +10,7 @@ export default defineConfig([
     dts: true,
     target: 'node20.19.0',
     fixedExtension: false,
+    deps: { neverBundle: ['vite'] },
   },
   ...['browser', 'ssr'].map(type => ({
     entry: 'src/client/index.ts',
@@ -17,7 +18,7 @@ export default defineConfig([
     outDir: `dist/client/${type}`,
     format: 'esm',
     dts: { vue: true },
-    deps: { neverBundle: ['virtual:vitepress-mermaid'] },
+    deps: { neverBundle: ['virtual:vitepress-plantuml'] },
     platform: type === 'browser' ? 'browser' : 'node',
     outputOptions: {
       banner: type === 'browser'

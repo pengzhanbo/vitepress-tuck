@@ -21,6 +21,7 @@
     "vitepress-plugin-npm-to": "workspace:*",
     "vitepress-plugin-obsidian": "workspace:*",
     "vitepress-plugin-pdf": "workspace:*",
+    "vitepress-plugin-plantuml": "workspace:*",
     "vitepress-plugin-plot": "workspace:*",
     "vitepress-plugin-qrcode": "workspace:*",
     "vitepress-plugin-steps": "workspace:*",

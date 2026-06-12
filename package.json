@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.2.0",
   "private": true,
-  "packageManager": "pnpm@11.5.1",
+  "packageManager": "pnpm@11.5.2",
   "author": "pengzhanbo <q942450674@outlook.com> (https://github.com/pengzhanbo/)",
   "license": "MIT",
   "engines": {
@@ -19,7 +19,7 @@
     "docs:clean": "pnpm -F=docs docs:clean",
     "docs:preview": "pnpm -F=docs docs:preview",
     "lint": "pnpm lint:check && pnpm lint:css",
-    "lint:check": "eslint --cache .",
+    "lint:check": "eslint .",
     "lint:css": "stylelint '**/*.{css,vue}'",
     "lint:fix": "pnpm lint:check --fix && pnpm lint:css --fix",
     "test": "cross-env TZ=Etc/UTC vitest --coverage",
@@ -34,7 +34,6 @@
   "devDependencies": {
     "@pengzhanbo/eslint-config-vue": "catalog:dev",
     "@pengzhanbo/stylelint-config": "catalog:dev",
-    "@pengzhanbo/tsconfig": "catalog:dev",
     "@tsdown/css": "catalog:dev",
     "@types/markdown-it": "catalog:dev",
     "@types/markdown-it-container": "catalog:dev",
@@ -50,6 +49,7 @@
     "husky": "catalog:dev",
     "lint-staged": "catalog:dev",
     "markdown-it": "catalog:dev",
+    "oxc-minify": "catalog:dev",
     "rimraf": "catalog:dev",
     "stylelint": "catalog:dev",
     "tsdown": "catalog:dev",

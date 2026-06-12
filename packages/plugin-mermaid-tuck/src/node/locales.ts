@@ -4,38 +4,38 @@ import type { MermaidLocaleData } from './types.js'
 export const builtinLocales: BuiltinLocales<MermaidLocaleData> = [
   [
     ['en', 'en-US'],
-    { chart: 'Chart', source: 'Code', fullscreen: 'Fullscreen', download: 'Download' },
+    { chart: 'Chart', source: 'Code', fullscreen: 'Fullscreen' },
   ],
   [
     ['zh', 'zh-CN'],
-    { chart: '图表', source: '代码', fullscreen: '全屏', download: '下载' },
+    { chart: '图表', source: '代码', fullscreen: '全屏' },
   ],
   [
     ['ja', 'ja-JP'],
-    { chart: 'グラフ', source: 'コード', fullscreen: '全屏', download: 'ダウンロード' },
+    { chart: 'グラフ', source: 'コード', fullscreen: '全画面' },
   ],
   [
     ['ko', 'ko-KR'],
-    { chart: '차트', source: '코드', fullscreen: '全屏', download: '다운로드' },
+    { chart: '차트', source: '코드', fullscreen: '전체화면' },
   ],
   [
     ['es', 'es-ES'],
-    { chart: 'Gráfico', source: 'Código', fullscreen: 'Pantalla completa', download: 'Descargar' },
+    { chart: 'Gráfico', source: 'Código', fullscreen: 'Pantalla completa' },
   ],
   [
     ['fr', 'fr-FR'],
-    { chart: 'Graphique', source: 'Code', fullscreen: 'Écran plein', download: 'Télécharger' },
+    { chart: 'Graphique', source: 'Code', fullscreen: 'Écran plein' },
   ],
   [
     ['ru', 'ru-RU'],
-    { chart: 'График', source: 'Код', fullscreen: 'Полный экран', download: 'Скачать' },
+    { chart: 'График', source: 'Код', fullscreen: 'Полный экран' },
   ],
   [
     ['de', 'de-DE'],
-    { chart: 'Diagramm', source: 'Code', fullscreen: 'Vollbild', download: 'Herunterladen' },
+    { chart: 'Diagramm', source: 'Code', fullscreen: 'Vollbild' },
   ],
   [
     ['pt', 'pt-BR'],
-    { chart: 'Gráfico', source: 'Código', fullscreen: 'Tela cheia', download: 'Descargar' },
+    { chart: 'Gráfico', source: 'Código', fullscreen: 'Tela cheia' },
   ],
 ]

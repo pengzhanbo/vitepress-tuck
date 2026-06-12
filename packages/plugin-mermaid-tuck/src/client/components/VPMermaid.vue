@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useScrollLock } from '@vueuse/core'
-import { VPLoading } from 'vitepress-plugin-toolkit/client'
+import { VPLoading, VPTabSwitch } from 'vitepress-plugin-toolkit/client'
 import { inBrowser } from 'vitepress/client'
 import { computed, useTemplateRef } from 'vue'
 import { useDownload } from '../composables/download.js'
@@ -10,12 +10,12 @@ import { useTabs } from '../composables/tabs.js'
 
 const { graph } = defineProps<{ graph: string }>()
 
-const svgContainer = useTemplateRef<HTMLDivElement>('svgContainer')
+const svgEl = useTemplateRef<HTMLDivElement>('svgEl')
 
 const locale = useLocale()
-const { loaded, svgCode } = useMermaidRender(computed(() => graph))
+const { loaded, svg } = useMermaidRender(computed(() => graph))
 const { tab, tabs } = useTabs()
-const download = useDownload(svgContainer, loaded)
+const download = useDownload(svgEl, loaded)
 
 const isLocked = useScrollLock(() => inBrowser ? document.body : null)
 function onFullscreen() {
@@ -24,7 +24,7 @@ function onFullscreen() {
   isLocked.value = true
   const div = document.createElement('div')
   div.classList.add('vp-mermaid-fullscreen')
-  div.innerHTML = svgCode.value
+  div.innerHTML = svg.value
   document.body.append(div)
 
   div.addEventListener('click', (event) => {
@@ -39,15 +39,7 @@ function onFullscreen() {
 <template>
   <div class="vp-mermaid">
     <div class="mermaid-header">
-      <div class="mermaid-tabs">
-        <button
-          v-for="item in tabs" :key="item.value"
-          :class="{ active: tab === item.value }"
-          @click="tab = item.value"
-        >
-          {{ item.label }}
-        </button>
-      </div>
+      <VPTabSwitch v-model="tab" :items="tabs" />
 
       <div class="mermaid-actions">
         <button @click="download('svg')">
@@ -65,7 +57,7 @@ function onFullscreen() {
       </div>
     </div>
 
-    <div v-show="tab === 'chart'" ref="svgContainer" class="mermaid-view" v-html="svgCode" />
+    <div v-show="tab === 'chart'" ref="svgEl" class="mermaid-view" v-html="svg" />
     <VPLoading v-if="!loaded && tab === 'chart'" />
 
     <div v-show="tab === 'source'" class="mermaid-source">

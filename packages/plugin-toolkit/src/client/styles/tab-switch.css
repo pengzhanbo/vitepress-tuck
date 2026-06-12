@@ -1,0 +1,31 @@
+.vp-tab-switch-list {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  padding-block: 2px;
+  padding-inline: 4px;
+  background-color: var(--vp-c-gray-soft);
+  border-radius: 6px;
+}
+
+.vp-tab-switch-list button {
+  display: inline-block;
+  padding-block: 2px;
+  padding-inline: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
+  color: var(--vp-c-text-3);
+  cursor: pointer;
+  user-select: none;
+  background-color: transparent;
+  border-radius: 6px;
+  transition: background-color 0.25s ease-in-out;
+}
+
+.vp-tab-switch-list button.active {
+  color: var(--vp-c-text-1);
+  background-color: var(--vp-c-bg);
+  box-shadow: var(--vp-shadow-1);
+}
