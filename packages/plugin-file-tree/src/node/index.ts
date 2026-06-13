@@ -1,28 +1,11 @@
-import { definePlugin } from 'vitepress-tuck'
-import { fileTreeMarkdownPlugin } from './fileTreePlugin.js'
+import { fileTree } from './plugin.js'
 
-export * from './container.js'
-export * from './fence.js'
+export * from './fileTreeToCMDText.js'
+export * from './markdown.js'
+export * from './parseContentWithContainer.js'
+export * from './parseContentWithFence.js'
 export * from './parseNodeInfo.js'
+export * from './plugin.js'
 export * from './types.js'
-export { fileTreeMarkdownPlugin }
 
-export default definePlugin(() => ({
-  name: 'vitepress-plugin-file-tree',
-  client: {
-    enhance: 'enhanceAppWithFileTree',
-  },
-  markdown: {
-    config: (md) => {
-      md.use(fileTreeMarkdownPlugin)
-    },
-  },
-  vite: {
-    optimizeDeps: {
-      exclude: ['@pengzhanbo/utils'],
-    },
-    ssr: {
-      noExternal: ['vitepress-plugin-file-tree'],
-    },
-  },
-}))
+export default fileTree

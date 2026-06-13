@@ -1,8 +1,8 @@
 import MarkdownIt from 'markdown-it'
 import { describe, expect, it } from 'vitest'
-import { parseContentWithContainer } from '../src/node/container.js'
-import { parseContentWithFence } from '../src/node/fence.js'
-import { fileTreeMarkdownPlugin } from '../src/node/fileTreePlugin.js'
+import { fileTreeMarkdownPlugin } from '../src/node/markdown.js'
+import { parseContentWithContainer } from '../src/node/parseContentWithContainer.js'
+import { parseContentWithFence } from '../src/node/parseContentWithFence.js'
 import { parseNodeInfo } from '../src/node/parseNodeInfo.js'
 
 describe('parseNodeInfo', () => {

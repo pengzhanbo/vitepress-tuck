@@ -378,7 +378,7 @@ const calloutsDef: RuleBlock = (state, startLine, endLine, silent) => {
   return true
 }
 
-export const calloutPlugin: PluginSimple = (md): void => {
+export const calloutMarkdownPlugin: PluginSimple = (md): void => {
   md.block.ruler.before(
     'blockquote',
     'github-alerts',

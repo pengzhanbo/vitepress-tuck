@@ -1,28 +1,7 @@
-import type { CollapsedLinesOptions } from './types.js'
-import { definePlugin } from 'vitepress-tuck'
-import { collapsedLinesMarkdownPlugin } from './codeCollapsePlugin.js'
+import { collapsedLines } from './plugin.js'
 
-export { collapsedLinesMarkdownPlugin }
+export * from './markdown.js'
+export * from './plugin.js'
+export * from './types.js'
 
-/**
- * @example
- * ```ts
- * import collapsedLines from 'vitepress-code-collapse'
- * import { defineConfig } from 'vitepress-tuck'
- * export default defineConfig({
- *   plugins: [collapsedLines()]
- * })
- * ```
- * ```
- */
-export default definePlugin((options?: CollapsedLinesOptions) => ({
-  name: 'vitepress-plugin-code-collapse',
-  client: {
-    enhance: 'enhanceAppWithCollapsedLines',
-  },
-  markdown: {
-    config: (md) => {
-      md.use(collapsedLinesMarkdownPlugin, options)
-    },
-  },
-}))
+export default collapsedLines

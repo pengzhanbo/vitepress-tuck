@@ -16,10 +16,10 @@
     "obsidian"
   ],
   "exports": {
-    ".": "./dist/node/index.js"
+    ".": "./dist/index.js"
   },
-  "module": "./dist/node/index.js",
-  "types": "./dist/node/index.d.ts",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],

@@ -1,21 +1,6 @@
-import { definePlugin } from 'vitepress-tuck'
-import { qrcodeMarkdownPlugin } from './qrcodePlugin.js'
+import { qrcode } from './plugin.js'
 
-export { qrcodeMarkdownPlugin }
+export * from './markdown.js'
+export * from './plugin.js'
 
-export default definePlugin(() => ({
-  name: 'vitepress-plugin-qrcode',
-  client: {
-    enhance: 'enhanceAppWithQrcode',
-  },
-  markdown: {
-    config(md) {
-      md.use(qrcodeMarkdownPlugin)
-    },
-  },
-  vite: {
-    optimizeDeps: {
-      include: ['qrcode'],
-    },
-  },
-}))
+export default qrcode

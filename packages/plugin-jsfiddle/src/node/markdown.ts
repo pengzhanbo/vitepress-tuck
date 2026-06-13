@@ -4,15 +4,15 @@
  */
 
 import type { PluginSimple } from 'markdown-it'
-import type { JSFiddleTokenMeta } from './types.js'
+import type { JSFiddleData } from './types.js'
 import { createEmbedRuleBlock, parseRect, resolveAttrs, stringifyAttrs } from 'vitepress-plugin-toolkit'
 
 export const jsfiddleMarkdownPlugin: PluginSimple = (md) => {
-  createEmbedRuleBlock<JSFiddleTokenMeta>(md, {
+  createEmbedRuleBlock<JSFiddleData>(md, {
     type: 'jsfiddle',
     syntaxPattern: /^@\[jsfiddle([^\]]*)\]\(([^)]*)\)/,
     meta([, info, source]) {
-      const { width, height, title, tab, theme } = resolveAttrs<JSFiddleTokenMeta>(info)
+      const { width, height, title, tab, theme } = resolveAttrs<JSFiddleData>(info)
 
       return {
         width: width ? parseRect(width) : '100%',

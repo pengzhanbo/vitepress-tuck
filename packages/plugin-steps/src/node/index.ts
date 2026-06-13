@@ -1,16 +1,6 @@
-import { definePlugin } from 'vitepress-tuck'
-import { stepsMarkdownPlugin } from './stepsPlugin.js'
+import { steps } from './plugin.js'
 
-export { stepsMarkdownPlugin }
+export * from './markdown.js'
+export * from './plugin.js'
 
-export default definePlugin(() => ({
-  name: 'vitepress-plugin-steps',
-  client: {
-    imports: [`import 'vitepress-plugin-steps/style.css'`],
-  },
-  markdown: {
-    config: (md) => {
-      md.use(stepsMarkdownPlugin)
-    },
-  },
-}))
+export default steps

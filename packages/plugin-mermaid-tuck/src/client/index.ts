@@ -1,5 +1,5 @@
 import type { EnhanceAppContext } from 'vitepress/client'
-import VPMermaid from './components/VPMermaid.vue'
+import VPMermaid from './VPMermaid.vue'
 
 export { VPMermaid }
 export { defineMermaidOptions } from './composables/options.js'

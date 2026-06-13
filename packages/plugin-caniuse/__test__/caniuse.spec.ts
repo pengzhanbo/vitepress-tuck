@@ -1,6 +1,6 @@
 import MarkdownIt from 'markdown-it'
 import { describe, expect, it } from 'vitest'
-import { caniuseMarkdownPlugin } from '../src/node/caniusePlugin'
+import { caniuseMarkdownPlugin } from '../src/node/markdown'
 
 describe('caniuseMarkdownPlugin', () => {
   it('should render embed mode by default', () => {

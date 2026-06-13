@@ -1,6 +1,6 @@
 import MarkdownIt from 'markdown-it'
 import { describe, expect, it } from 'vitest'
-import { pdfMarkdownPlugin } from '../src/node/pdfPlugin'
+import { pdfMarkdownPlugin } from '../src/node/markdown'
 
 describe('pdfMarkdownPlugin', () => {
   it('should render pdf embed', () => {

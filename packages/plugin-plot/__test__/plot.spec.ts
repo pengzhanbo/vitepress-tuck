@@ -1,6 +1,6 @@
 import MarkdownIt from 'markdown-it'
 import { describe, expect, it } from 'vitest'
-import { plotMarkdownPlugin } from '../src/node/plotPlugin'
+import { plotMarkdownPlugin } from '../src/node/markdown'
 
 describe('plotMarkdownPlugin', () => {
   it('should wrap !!text!! in spoiler tokens', () => {

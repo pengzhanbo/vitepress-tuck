@@ -1,7 +1,7 @@
-import { plot } from './plugin.js'
+import { npmTo } from './plugin.js'
 
 export * from './markdown.js'
 export * from './plugin.js'
 export * from './types.js'
 
-export default plot
+export default npmTo

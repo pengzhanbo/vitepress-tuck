@@ -1,6 +1,6 @@
 import MarkdownIt from 'markdown-it'
 import { describe, expect, it } from 'vitest'
-import { codepenMarkdownPlugin } from '../src/node/codepenPlugin'
+import { codepenMarkdownPlugin } from '../src/node/markdown'
 
 describe('codepenMarkdownPlugin', () => {
   it('should render codepen embed', () => {

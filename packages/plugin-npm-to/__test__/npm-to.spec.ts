@@ -1,13 +1,12 @@
 import MarkdownIt from 'markdown-it'
 import { describe, expect, it } from 'vitest'
-import { ALLOW_LIST, DEFAULT_TABS } from '../src/node/npmTo'
-import { npmToPlugin } from '../src/node/npmToPlugin'
-import { parseLine } from '../src/node/npmToPlugin'
+import { npmToMarkdownPlugin, parseLine } from '../src/markdown'
+import { ALLOW_LIST, DEFAULT_TABS } from '../src/npmTo'
 
-describe('npmToPlugin', () => {
+describe('npmToMarkdownPlugin', () => {
   it('should convert npm install to code-group with multiple package managers', () => {
     const md = new MarkdownIt()
-    md.use(npmToPlugin)
+    md.use(npmToMarkdownPlugin)
 
     const result = md.render('::: npm-to\n```sh\nnpm install vitepress-plugin-steps\n```\n:::')
     expect(result).toContain('code-group')
@@ -18,7 +17,7 @@ describe('npmToPlugin', () => {
 
   it('should convert npm install -D', () => {
     const md = new MarkdownIt()
-    md.use(npmToPlugin)
+    md.use(npmToMarkdownPlugin)
 
     const result = md.render('::: npm-to\n```sh\nnpm install -D vitepress-plugin-steps\n```\n:::')
     expect(result).toContain('code-group')
@@ -26,7 +25,7 @@ describe('npmToPlugin', () => {
 
   it('should handle custom tabs option', () => {
     const md = new MarkdownIt()
-    md.use(npmToPlugin, ['npm', 'pnpm'])
+    md.use(npmToMarkdownPlugin, ['npm', 'pnpm'])
 
     const result = md.render('::: npm-to\n```sh\nnpm install vitepress-plugin-steps\n```\n:::')
     expect(result).toContain('npm')
@@ -37,7 +36,7 @@ describe('npmToPlugin', () => {
 
   it('should handle tabs via container attribute', () => {
     const md = new MarkdownIt()
-    md.use(npmToPlugin)
+    md.use(npmToMarkdownPlugin)
 
     const result = md.render('::: npm-to tabs="npm,bun"\n```sh\nnpm install vitepress-plugin-steps\n```\n:::')
     expect(result).toContain('npm')
@@ -46,7 +45,7 @@ describe('npmToPlugin', () => {
 
   it('should convert npm run commands', () => {
     const md = new MarkdownIt()
-    md.use(npmToPlugin)
+    md.use(npmToMarkdownPlugin)
 
     const result = md.render('::: npm-to\n```sh\nnpm run build\n```\n:::')
     expect(result).toContain('code-group')
@@ -54,7 +53,7 @@ describe('npmToPlugin', () => {
 
   it('should convert npx commands', () => {
     const md = new MarkdownIt()
-    md.use(npmToPlugin)
+    md.use(npmToMarkdownPlugin)
 
     const result = md.render('::: npm-to\n```sh\nnpx eslint .\n```\n:::')
     expect(result).toContain('code-group')
@@ -63,7 +62,7 @@ describe('npmToPlugin', () => {
 
   it('should convert npm uninstall commands', () => {
     const md = new MarkdownIt()
-    md.use(npmToPlugin)
+    md.use(npmToMarkdownPlugin)
 
     const result = md.render('::: npm-to\n```sh\nnpm uninstall react\n```\n:::')
     expect(result).toContain('code-group')
@@ -71,7 +70,7 @@ describe('npmToPlugin', () => {
 
   it('should convert npm create commands', () => {
     const md = new MarkdownIt()
-    md.use(npmToPlugin)
+    md.use(npmToMarkdownPlugin)
 
     const result = md.render('::: npm-to\n```sh\nnpm create vite@latest\n```\n:::')
     expect(result).toContain('code-group')
@@ -79,7 +78,7 @@ describe('npmToPlugin', () => {
 
   it('should convert npm init commands', () => {
     const md = new MarkdownIt()
-    md.use(npmToPlugin)
+    md.use(npmToMarkdownPlugin)
 
     const result = md.render('::: npm-to\n```sh\nnpm init -y\n```\n:::')
     expect(result).toContain('code-group')
@@ -87,7 +86,7 @@ describe('npmToPlugin', () => {
 
   it('should return empty for invalid container (no fence)', () => {
     const md = new MarkdownIt()
-    md.use(npmToPlugin)
+    md.use(npmToMarkdownPlugin)
 
     const result = md.render('::: npm-to\nJust text, no code fence\n:::')
     // Invalid container should render empty
@@ -96,7 +95,7 @@ describe('npmToPlugin', () => {
 
   it('should support all package manager options via options', () => {
     const md = new MarkdownIt()
-    md.use(npmToPlugin, ['npm', 'pnpm', 'yarn', 'bun', 'deno'])
+    md.use(npmToMarkdownPlugin, ['npm', 'pnpm', 'yarn', 'bun', 'deno'])
 
     const result = md.render('::: npm-to\n```sh\nnpm i react\n```\n:::')
     expect(result).toContain('code-group')

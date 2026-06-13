@@ -40,7 +40,7 @@ import { ALLOW_LIST, BOOL_FLAGS, DEFAULT_TABS, MANAGERS_CONFIG } from './npmTo.j
  * @param md - Markdown instance / Markdown 实例
  * @param options - npm-to options / npm-to 选项
  */
-export const npmToPlugin: PluginWithOptions<NpmToPluginOptions> = (md, options = {}): void => {
+export const npmToMarkdownPlugin: PluginWithOptions<NpmToPluginOptions> = (md, options = {}): void => {
   const opt = isArray(options) ? { tabs: options } : options
   const defaultTabs = opt.tabs?.length ? opt.tabs : DEFAULT_TABS
 

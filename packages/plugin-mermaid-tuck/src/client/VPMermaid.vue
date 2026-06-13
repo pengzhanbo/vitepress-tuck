@@ -3,10 +3,10 @@ import { useScrollLock } from '@vueuse/core'
 import { VPLoading, VPTabSwitch } from 'vitepress-plugin-toolkit/client'
 import { inBrowser } from 'vitepress/client'
 import { computed, useTemplateRef } from 'vue'
-import { useDownload } from '../composables/download.js'
-import { useLocale } from '../composables/locales.js'
-import { useMermaidRender } from '../composables/render.js'
-import { useTabs } from '../composables/tabs.js'
+import { useDownload } from './composables/download.js'
+import { useLocale } from './composables/locales.js'
+import { useMermaidRender } from './composables/render.js'
+import { useTabs } from './composables/tabs.js'
 
 const { graph } = defineProps<{ graph: string }>()
 

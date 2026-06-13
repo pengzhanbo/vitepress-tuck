@@ -1,6 +1,6 @@
 import MarkdownIt from 'markdown-it'
 import { describe, expect, it } from 'vitest'
-import { qrcodeMarkdownPlugin } from '../src/node/qrcodePlugin'
+import { qrcodeMarkdownPlugin } from '../src/node/markdown'
 
 describe('qrcodeMarkdownPlugin', () => {
   it('should render qrcode from embed syntax', () => {

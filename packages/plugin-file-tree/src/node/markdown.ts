@@ -1,8 +1,9 @@
 import type { PluginSimple } from 'markdown-it'
 import type { FileTreeAttrs, FileTreeNode } from './types.js'
 import { createContainerSyntaxPlugin, stringifyAttrs } from 'vitepress-plugin-toolkit'
-import { fileTreeToCMDText, parseContentWithContainer } from './container.js'
-import { parseContentWithFence } from './fence.js'
+import { fileTreeToCMDText } from './fileTreeToCMDText.js'
+import { parseContentWithContainer } from './parseContentWithContainer.js'
+import { parseContentWithFence } from './parseContentWithFence.js'
 
 /**
  * @example

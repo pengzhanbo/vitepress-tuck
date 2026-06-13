@@ -1,12 +1,12 @@
 import MarkdownIt from 'markdown-it'
 import { describe, expect, it } from 'vitest'
-import { calloutPlugin } from '../src/node/calloutPlugin'
-import { commentPlugin } from '../src/node/commentPlugin'
+import { calloutMarkdownPlugin } from '../src/callout'
+import { commentMarkdownPlugin } from '../src/comment'
 
-describe('commentPlugin', () => {
+describe('commentMarkdownPlugin', () => {
   it('should remove inline comments from output', () => {
     const md = new MarkdownIt()
-    md.use(commentPlugin)
+    md.use(commentMarkdownPlugin)
 
     const result = md.render('Hello %%hidden%% World')
     expect(result).not.toContain('hidden')
@@ -16,7 +16,7 @@ describe('commentPlugin', () => {
 
   it('should remove block comments from output', () => {
     const md = new MarkdownIt()
-    md.use(commentPlugin)
+    md.use(commentMarkdownPlugin)
 
     const input = 'Before\n%%\nHidden block\n%%\nAfter'
     const result = md.render(input)
@@ -27,7 +27,7 @@ describe('commentPlugin', () => {
 
   it('should handle inline comments at start of line', () => {
     const md = new MarkdownIt()
-    md.use(commentPlugin)
+    md.use(commentMarkdownPlugin)
 
     const result = md.render('%%secret%% visible')
     expect(result).not.toContain('secret')
@@ -36,7 +36,7 @@ describe('commentPlugin', () => {
 
   it('should not match single percent signs', () => {
     const md = new MarkdownIt()
-    md.use(commentPlugin)
+    md.use(commentMarkdownPlugin)
 
     const result = md.render('100% complete')
     expect(result).toContain('100%')
@@ -45,7 +45,7 @@ describe('commentPlugin', () => {
 
   it('should handle consecutive inline comments', () => {
     const md = new MarkdownIt()
-    md.use(commentPlugin)
+    md.use(commentMarkdownPlugin)
 
     // The inline comment rule processes %%a%% first, consuming those chars.
     // Then the remaining text starts at position after the first %%.
@@ -59,17 +59,17 @@ describe('commentPlugin', () => {
 
   it('should treat unterminated comment as plain text', () => {
     const md = new MarkdownIt()
-    md.use(commentPlugin)
+    md.use(commentMarkdownPlugin)
 
     const result = md.render('%% unterminated')
     expect(result).toContain('%% unterminated')
   })
 })
 
-describe('calloutPlugin', () => {
+describe('calloutMarkdownPlugin', () => {
   it('should render note callout', () => {
     const md = new MarkdownIt()
-    md.use(calloutPlugin)
+    md.use(calloutMarkdownPlugin)
 
     const result = md.render('> [!note]\n> This is a note')
     expect(result).toContain('custom-block')
@@ -79,7 +79,7 @@ describe('calloutPlugin', () => {
 
   it('should render tip callout', () => {
     const md = new MarkdownIt()
-    md.use(calloutPlugin)
+    md.use(calloutMarkdownPlugin)
 
     const result = md.render('> [!tip]\n> This is a tip')
     expect(result).toContain('custom-block')
@@ -88,7 +88,7 @@ describe('calloutPlugin', () => {
 
   it('should render warning callout', () => {
     const md = new MarkdownIt()
-    md.use(calloutPlugin)
+    md.use(calloutMarkdownPlugin)
 
     const result = md.render('> [!warning]\n> Warning message')
     expect(result).toContain('warning')
@@ -97,7 +97,7 @@ describe('calloutPlugin', () => {
 
   it('should render caution callout', () => {
     const md = new MarkdownIt()
-    md.use(calloutPlugin)
+    md.use(calloutMarkdownPlugin)
 
     const result = md.render('> [!caution]\n> Be careful')
     expect(result).toContain('caution')
@@ -105,7 +105,7 @@ describe('calloutPlugin', () => {
 
   it('should render info callout', () => {
     const md = new MarkdownIt()
-    md.use(calloutPlugin)
+    md.use(calloutMarkdownPlugin)
 
     const result = md.render('> [!info]\n> Information')
     expect(result).toContain('info')
@@ -113,7 +113,7 @@ describe('calloutPlugin', () => {
 
   it('should render important callout', () => {
     const md = new MarkdownIt()
-    md.use(calloutPlugin)
+    md.use(calloutMarkdownPlugin)
 
     const result = md.render('> [!important]\n> Very important')
     expect(result).toContain('important')
@@ -121,7 +121,7 @@ describe('calloutPlugin', () => {
 
   it('should render details callout as HTML details element', () => {
     const md = new MarkdownIt()
-    md.use(calloutPlugin)
+    md.use(calloutMarkdownPlugin)
 
     const result = md.render('> [!details]\n> Hidden content')
     expect(result).toContain('<details')
@@ -131,7 +131,7 @@ describe('calloutPlugin', () => {
 
   it('should support custom title', () => {
     const md = new MarkdownIt()
-    md.use(calloutPlugin)
+    md.use(calloutMarkdownPlugin)
 
     const result = md.render('> [!tip] My Title\n> Content')
     expect(result).toContain('My Title')
@@ -140,7 +140,7 @@ describe('calloutPlugin', () => {
 
   it('should support callout aliases', () => {
     const md = new MarkdownIt()
-    md.use(calloutPlugin)
+    md.use(calloutMarkdownPlugin)
 
     // success is an alias for tip
     const result = md.render('> [!success]\n> Success message')
@@ -151,7 +151,7 @@ describe('calloutPlugin', () => {
 
   it('should support faq alias for warning', () => {
     const md = new MarkdownIt()
-    md.use(calloutPlugin)
+    md.use(calloutMarkdownPlugin)
 
     const result = md.render('> [!faq]\n> FAQ content')
     expect(result).toContain('warning')
@@ -160,7 +160,7 @@ describe('calloutPlugin', () => {
 
   it('should support bug alias for caution', () => {
     const md = new MarkdownIt()
-    md.use(calloutPlugin)
+    md.use(calloutMarkdownPlugin)
 
     const result = md.render('> [!bug]\n> Bug report')
     expect(result).toContain('caution')
@@ -169,7 +169,7 @@ describe('calloutPlugin', () => {
 
   it('should support example alias for important', () => {
     const md = new MarkdownIt()
-    md.use(calloutPlugin)
+    md.use(calloutMarkdownPlugin)
 
     const result = md.render('> [!example]\n> Example content')
     expect(result).toContain('important')
@@ -178,7 +178,7 @@ describe('calloutPlugin', () => {
 
   it('should not render invalid callout types', () => {
     const md = new MarkdownIt()
-    md.use(calloutPlugin)
+    md.use(calloutMarkdownPlugin)
 
     const result = md.render('> [!invalid]\n> Should be blockquote')
     // Should be treated as a regular blockquote
@@ -187,7 +187,7 @@ describe('calloutPlugin', () => {
 
   it('should handle multi-line callout content', () => {
     const md = new MarkdownIt()
-    md.use(calloutPlugin)
+    md.use(calloutMarkdownPlugin)
 
     const result = md.render('> [!tip]\n> Line 1\n> Line 2\n> Line 3')
     expect(result).toContain('Line 1')
@@ -197,7 +197,7 @@ describe('calloutPlugin', () => {
 
   it('should handle callout without body content as blockquote', () => {
     const md = new MarkdownIt()
-    md.use(calloutPlugin)
+    md.use(calloutMarkdownPlugin)
 
     const result = md.render('> [!note]')
     // Should fall through to blockquote because no body content

@@ -16,7 +16,7 @@
 
 import type { PluginSimple } from 'markdown-it'
 
-export const commentPlugin: PluginSimple = (md): void => {
+export const commentMarkdownPlugin: PluginSimple = (md): void => {
   md.inline.ruler.before(
     'html_inline',
     'obsidian_inline_comment',

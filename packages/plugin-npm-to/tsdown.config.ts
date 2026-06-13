@@ -2,9 +2,9 @@ import { defineConfig } from 'tsdown'
 
 export default defineConfig([
   {
-    entry: 'src/node/index.ts',
+    entry: 'src/index.ts',
     clean: true,
-    outDir: 'dist/node',
+    outDir: 'dist',
     format: 'esm',
     dts: true,
     target: 'node20.19.0',

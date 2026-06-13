@@ -29,7 +29,7 @@ import { attempt, isHttp } from '@pengzhanbo/utils'
 import grayMatter from 'gray-matter'
 import Token from 'markdown-it/lib/token.mjs'
 import { EXTENSION_AUDIOS, EXTENSION_IMAGES, EXTENSION_VIDEOS, parseRect, slugify } from 'vitepress-plugin-toolkit'
-import { findFirstFile } from './loadFiles'
+import { findFirstFile, loadFiles } from './loadFiles'
 
 const audioExtensions = EXTENSION_AUDIOS.map(ext => `.${ext}`)
 const videoExtensions = EXTENSION_VIDEOS.map(ext => `.${ext}`)
@@ -131,10 +131,15 @@ function inlineEmbedLinkDef(root: string, files: string[]): RuleInline {
   }
 }
 
-export const embedLinkPlugin: PluginWithOptions<Partial<FilesResult>> = (
+export const embedLinkMarkdownPlugin: PluginWithOptions<Partial<FilesResult>> = (
   md,
-  { root = process.cwd(), files = [] } = {},
+  options,
 ): void => {
+  if (!options)
+    options = loadFiles()
+
+  const { root = process.cwd(), files } = options as FilesResult
+
   md.block.ruler.before(
     'code',
     'obsidian_block_embed_link',

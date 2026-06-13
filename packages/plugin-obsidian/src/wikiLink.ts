@@ -15,7 +15,7 @@ import path from 'node:path'
 import process from 'node:process'
 import { isHttp } from '@pengzhanbo/utils'
 import { slugify } from 'vitepress-plugin-toolkit'
-import { findFirstFile } from './loadFiles.js'
+import { findFirstFile, loadFiles } from './loadFiles.js'
 
 function wikiLinkDef(root: string, files: string[]): RuleInline {
   return (state, silent) => {
@@ -112,9 +112,13 @@ function wikiLinkDef(root: string, files: string[]): RuleInline {
   }
 }
 
-export const wikiLinkPlugin: PluginWithOptions<Partial<FilesResult>> = (
+export const wikiLinkMarkdownPlugin: PluginWithOptions<Partial<FilesResult>> = (
   md,
-  { root = process.cwd(), files = [] } = {},
+  options,
 ): void => {
+  if (!options)
+    options = loadFiles()
+
+  const { root = process.cwd(), files } = options as FilesResult
   md.inline.ruler.before('emphasis', 'obsidian_wiki_link', wikiLinkDef(root, files))
 }

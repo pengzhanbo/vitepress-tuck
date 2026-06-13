@@ -1,6 +1,6 @@
 import MarkdownIt from 'markdown-it'
 import { describe, expect, it } from 'vitest'
-import { jsfiddleMarkdownPlugin } from '../src/node/jsfiddlePlugin'
+import { jsfiddleMarkdownPlugin } from '../src/node/markdown'
 
 describe('jsfiddleMarkdownPlugin', () => {
   it('should render jsfiddle embed', () => {

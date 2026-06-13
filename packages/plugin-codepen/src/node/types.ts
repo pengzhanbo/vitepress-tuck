@@ -5,7 +5,7 @@ import type { SizeOptions } from 'vitepress-plugin-toolkit'
  *
  * CodePen 令牌元数据
  */
-export interface CodepenTokenMeta extends SizeOptions {
+export interface CodepenData extends SizeOptions {
   /**
    * Pen title
    *

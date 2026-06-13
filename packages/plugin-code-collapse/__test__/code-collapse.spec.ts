@@ -1,6 +1,6 @@
 import MarkdownIt from 'markdown-it'
 import { describe, expect, it } from 'vitest'
-import { collapsedLinesMarkdownPlugin } from '../src/node/codeCollapsePlugin'
+import { collapsedLinesMarkdownPlugin } from '../src/node/markdown'
 import { resolveCollapsedLines } from '../src/node/resolveCollapsedLine'
 
 describe('resolveCollapsedLines', () => {

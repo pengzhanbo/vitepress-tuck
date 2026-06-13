@@ -5,7 +5,7 @@
  */
 
 import type { PluginSimple } from 'markdown-it'
-import type { CodepenTokenMeta } from './types.js'
+import type { CodepenData } from './types.js'
 import { createEmbedRuleBlock, parseRect, resolveAttrs, stringifyAttrs } from 'vitepress-plugin-toolkit'
 
 /**
@@ -23,11 +23,11 @@ import { createEmbedRuleBlock, parseRect, resolveAttrs, stringifyAttrs } from 'v
  * ```
  */
 export const codepenMarkdownPlugin: PluginSimple = (md) => {
-  createEmbedRuleBlock<CodepenTokenMeta>(md, {
+  createEmbedRuleBlock<CodepenData>(md, {
     type: 'codepen',
     syntaxPattern: /^@\[codepen([^\]]*)\]\(([^)]*)\)/,
     meta: ([, info, source]) => {
-      const { width, height, title, tab, ...rest } = resolveAttrs<CodepenTokenMeta>(info)
+      const { width, height, title, tab, ...rest } = resolveAttrs<CodepenData>(info)
       const [user, slash] = source.split('/')
 
       return {

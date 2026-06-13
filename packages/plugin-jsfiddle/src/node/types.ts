@@ -5,7 +5,7 @@ import type { SizeOptions } from 'vitepress-plugin-toolkit'
  *
  * JSFiddle 令牌元数据
  */
-export interface JSFiddleTokenMeta extends SizeOptions {
+export interface JSFiddleData extends SizeOptions {
   /**
    * Source URL
    *

@@ -1,16 +1,6 @@
-import { definePlugin } from 'vitepress-tuck'
-import { fieldMarkdownPlugin } from './fieldPlugin.js'
+import { field } from './plugin.js'
 
-export { fieldMarkdownPlugin } from './fieldPlugin.js'
+export * from './markdown.js'
+export * from './plugin.js'
 
-export default definePlugin(() => ({
-  name: 'vitepress-plugin-field',
-  client: {
-    enhance: 'enhanceAppWithField',
-  },
-  markdown: {
-    config(md) {
-      md.use(fieldMarkdownPlugin)
-    },
-  },
-}))
+export default field

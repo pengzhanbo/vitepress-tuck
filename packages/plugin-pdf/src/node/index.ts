@@ -1,24 +1,6 @@
-import { definePlugin } from 'vitepress-tuck'
-import { pdfMarkdownPlugin } from './pdfPlugin.js'
+import { pdf } from './plugin.js'
 
-export { pdfMarkdownPlugin }
+export * from './markdown.js'
+export * from './plugin.js'
 
-export default definePlugin(() => ({
-  name: 'vitepress-plugin-pdf',
-  client: {
-    enhance: 'enhanceAppWithPDF',
-  },
-  markdown: {
-    config: (md) => {
-      md.use(pdfMarkdownPlugin)
-    },
-  },
-  vite: {
-    ssr: {
-      noExternal: ['vitepress-plugin-pdf'],
-    },
-    optimizeDeps: {
-      include: ['@pengzhanbo/utils'],
-    },
-  },
-}))
+export default pdf

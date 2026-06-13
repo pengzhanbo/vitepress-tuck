@@ -4,14 +4,8 @@
  */
 
 import type { PluginSimple } from 'markdown-it'
+import type { CanIUseData, CanIUseMode } from './types.js'
 import { createEmbedRuleBlock, stringifyAttrs } from 'vitepress-plugin-toolkit'
-
-type CanIUseMode = 'embed' | 'baseline'
-interface CanIUseTokenMeta {
-  feature: string
-  mode: CanIUseMode
-  versions: string
-}
 
 /**
  * @example
@@ -29,7 +23,7 @@ interface CanIUseTokenMeta {
  * ```
  */
 export const caniuseMarkdownPlugin: PluginSimple = (md): void => {
-  createEmbedRuleBlock<CanIUseTokenMeta>(md, {
+  createEmbedRuleBlock<CanIUseData>(md, {
     type: 'caniuse',
     syntaxPattern: /^@\[caniuse\s*(embed|baseline)?(?:\{([0-9,\-]*)\})?\]\(([^)]*)\)/,
     meta: ([, mode, versions = '', feature = '']) => ({
@@ -44,7 +38,7 @@ export const caniuseMarkdownPlugin: PluginSimple = (md): void => {
 const UNDERLINE_RE = /_+/g
 let uuid = 0
 
-function resolveCanIUse({ feature, mode, versions }: CanIUseTokenMeta): string {
+function resolveCanIUse({ feature, mode, versions }: CanIUseData): string {
   if (!feature)
     return ''
 
