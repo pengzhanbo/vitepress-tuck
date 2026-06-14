@@ -1,3 +1,12 @@
+# [0.3.0](https://github.com/pengzhanbo/vitepress-tuck/compare/v0.2.0...v0.3.0) (2026-06-14)
+
+
+### Features
+
+* add `plugin-plantuml` ([a1758d2](https://github.com/pengzhanbo/vitepress-tuck/commit/a1758d26f66843f42e1ab4de699db56d767d104e))
+* add zoom and drag actions to charts ([0526bf9](https://github.com/pengzhanbo/vitepress-tuck/commit/0526bf942e3885399309bcff9fc797a2d8b42475))
+* **plugin-video:** ignore `dashjs` compile warn ([ae1bce2](https://github.com/pengzhanbo/vitepress-tuck/commit/ae1bce2143dd4838d2442f3fbcbef0e7257cce44))
+
 # [0.2.0](https://github.com/pengzhanbo/vitepress-tuck/compare/v0.1.1...v0.2.0) (2026-06-07)
 
 
