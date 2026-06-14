@@ -65,5 +65,12 @@
     "*": "eslint --fix",
     "*.{css,vue}": "stylelint --fix",
     "*.{js,ts,mjs,cjs}": "cross-env TZ=Etc/UTC vitest related --run"
+  },
+  "bugs": {
+    "url": "https://github.com/owner/repo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
   }
 }
