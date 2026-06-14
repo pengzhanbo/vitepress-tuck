@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useScrollLock } from '@vueuse/core'
-import { VPTabSwitch } from 'vitepress-plugin-toolkit/client'
-import { inBrowser, useData } from 'vitepress/client'
-import { computed, useTemplateRef } from 'vue'
+import { useFullscreen } from '@vueuse/core'
+import { useZoomAndDrag, VPTabSwitch } from 'vitepress-plugin-toolkit/client'
+import { useData } from 'vitepress/client'
+import { nextTick, onMounted, useTemplateRef, watch } from 'vue'
 import { useLocale } from './composables/locales.js'
 import { useTabs } from './composables/tabs.js'
 
@@ -10,11 +10,20 @@ const { isDark } = useData()
 const { tab, tabs } = useTabs()
 const locale = useLocale()
 const el = useTemplateRef<HTMLDivElement>('el')
+const { actorStyle, reset, zoom, zoomIn, zoomOut, resetZoom } = useZoomAndDrag(el)
 
-const imgSelector = computed(() => isDark.value ? '.dark' : '.light')
+const { isFullscreen, isSupported, enter } = useFullscreen(el)
+watch(isFullscreen, newVal => reset(newVal))
+
+onMounted(() => watch(isDark, () => {
+  const img = el.value?.querySelector(isDark.value ? '.dark' : '.light') as HTMLImageElement
+  if (!img)
+    return
+  img.onload = () => nextTick(reset)
+}, { immediate: true }))
 
 function download() {
-  const img = el.value?.querySelector(imgSelector.value) as HTMLImageElement
+  const img = el.value?.querySelector(isDark.value ? '.dark' : '.light') as HTMLImageElement
   if (!img)
     return
   const url = img.src
@@ -23,25 +32,6 @@ function download() {
   a.download = ''
   a.click()
   a.remove()
-}
-
-const isLocked = useScrollLock(() => inBrowser ? document.body : null)
-function onFullscreen() {
-  const img = el.value?.querySelector(imgSelector.value) as HTMLImageElement
-  if (!img)
-    return
-  isLocked.value = true
-  const div = document.createElement('div')
-  div.classList.add('vp-plantuml-fullscreen')
-  div.appendChild(img.cloneNode(true))
-  document.body.append(div)
-
-  div.addEventListener('click', (event) => {
-    if (event.target === div) {
-      div.remove()
-      isLocked.value = false
-    }
-  })
 }
 </script>
 
@@ -55,14 +45,28 @@ function onFullscreen() {
           <span class="vpi-download" />
           {{ locale.download }}
         </button>
-        <button class="fullscreen" @click="onFullscreen">
+        <button v-if="isSupported" class="fullscreen" @click="enter">
           <span class="vpi-fullscreen" />
           {{ locale.fullscreen }}
         </button>
       </div>
     </div>
     <div v-show="tab === 'chart'" ref="el" class="plantuml-view">
-      <slot />
+      <div class="content" :style="actorStyle">
+        <slot />
+      </div>
+      <div class="plantuml-zoom" :class="{ fullscreen: isFullscreen }">
+        <button @click="zoomOut">
+          <span class="vpi-zoom-out" />
+        </button>
+        <span>{{ zoom }}</span>
+        <button @click="zoomIn">
+          <span class="vpi-zoom-in" />
+        </button>
+        <button @click="resetZoom">
+          <span class="vpi-zoom-reset" />
+        </button>
+      </div>
     </div>
     <div v-show="tab === 'source'" class="plantuml-source">
       <slot name="source" />

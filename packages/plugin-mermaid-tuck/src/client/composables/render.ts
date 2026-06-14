@@ -7,7 +7,7 @@ import { useMermaidOptions } from './options.js'
 const DEFAULT_CHART_OPTIONS = { useMaxWidth: false }
 const { themeVariables: defaultThemeVariables, ...defaultMermaidOptions } = defaultOptions
 
-const diagrams = ['flowchat', 'sequence', 'gantt', 'journey', 'timeline', 'class', 'state', 'er', 'pie', 'quadrantChart', 'xyChart', 'requirement', 'architecture', 'mindmap', 'ishikawa', 'kanban', 'gitGraph', 'c4', 'sankey', 'packet', 'block', 'eventmodeling', 'treeView', 'radar', 'venn', 'wardley-beta']
+const diagrams = ['flowchart', 'sequence', 'gantt', 'journey', 'timeline', 'class', 'state', 'er', 'pie', 'quadrantChart', 'xyChart', 'requirement', 'architecture', 'mindmap', 'ishikawa', 'kanban', 'gitGraph', 'c4', 'sankey', 'packet', 'block', 'eventmodeling', 'treeView', 'radar', 'venn', 'wardley-beta']
 
 const chartOptions = diagrams.reduce((acc, diagram) => ({ ...acc, [diagram]: DEFAULT_CHART_OPTIONS }), {})
 
