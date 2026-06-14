@@ -1,0 +1,3735 @@
+---
+url: /guide/api.md
+---
+# API Reference
+
+## vitepress-tuck
+
+### defineConfig
+
+`defineConfig` is the core function of `vitepress-tuck`, used as a replacement for VitePress's `defineConfig`.
+
+```ts
+import { defineConfig } from 'vitepress-tuck'
+
+function defineConfig<ThemeConfig = DefaultTheme.Config>(
+  config: UserConfig<NoInfer<ThemeConfig>> & PluginsConfig,
+): UserConfig<NoInfer<ThemeConfig>>
+```
+
+#### Parameters
+
+| Parameter | Type                         | Description                                  |
+| --------- | ---------------------------- | -------------------------------------------- |
+| `config`  | `UserConfig & PluginsConfig` | VitePress original config + `plugins` option |
+
+`PluginsConfig` definition:
+
+```ts
+interface PluginsConfig {
+  /**
+   * vitepress plugin list
+   */
+  plugins?: VitepressPlugin[]
+}
+```
+
+#### Return Value
+
+Returns the merged and complete VitePress `UserConfig` object.
+
+#### How It Works
+
+1. Iterates through the `plugins` array, merging each plugin's `markdown`, `vite`, `vue` and other configurations.
+2. Collects all hooks (`buildEnd`, `transformHead`, `transformHtml`, `transformPageData`, `postRender`)
+   and merges them according to their respective strategies:
+   * `markdown.config`, `buildEnd` → concurrent execution
+   * `transformHead` → concurrent execution with result merging
+   * `transformHtml`, `transformPageData`, `postRender` → sequential execution, chained
+3. Injects the `client` configuration from plugins into the built-in `virtual-enhance-app` virtual module.
+4. Finally merges the user's own configuration.
+
+***
+
+### definePlugin
+
+Used to define VitePress plugins. It is a type helper function that helps developers create plugins in a standardized way.
+
+```ts
+import { definePlugin } from 'vitepress-tuck'
+
+function definePlugin<T>(
+  plugin: (option?: T) => VitepressPlugin,
+): (option?: T) => VitepressPlugin
+```
+
+#### Parameters
+
+| Parameter | Type                              | Description                                                                 |
+| --------- | --------------------------------- | --------------------------------------------------------------------------- |
+| `plugin`  | `(option?: T) => VitepressPlugin` | Plugin factory function, receives optional options, returns a plugin object |
+
+***
+
+### VitepressPlugin
+
+Type definition for plugin objects:
+
+````ts
+interface VitepressPlugin extends Pick<
+  UserConfig,
+  'markdown' | 'vite' | 'vue' | 'buildEnd' | 'transformHead' | 'transformHtml' | 'transformPageData' | 'postRender'
+> {
+  /**
+   * Plugin name (required, for identification and debugging)
+   */
+  name: string
+
+  /**
+   * Client configuration, automatically injected into virtual:enhance-app
+   */
+  client?: {
+    /**
+     * Custom import statement list
+     *
+     * @example
+     * ```ts
+     * imports: ['import "my-plugin/style.css"']
+     * ```
+     */
+    imports?: string[]
+
+    /**
+     * Client-side enhance function name.
+     * - Not set: no enhanceApp function is injected
+     * - true: default function name is `enhanceApp`
+     * - string: the specified function name
+     *
+     * @example
+     * ```ts
+     * enhance: 'enhanceAppWithMyPlugin'
+     * ```
+     */
+    enhance?: string | boolean
+  }
+}
+````
+
+#### Supported VitePress Configuration Options
+
+| Property            | Type                              | Description                                                                                          |
+| ------------------- | --------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `markdown`          | `UserConfig['markdown']`          | Markdown-related configuration, commonly used with `markdown.config` to register markdown-it plugins |
+| `vite`              | `UserConfig['vite']`              | Vite configuration, for registering Vite plugins and optimization options                            |
+| `vue`               | `UserConfig['vue']`               | Vue application-level configuration                                                                  |
+| `buildEnd`          | `UserConfig['buildEnd']`          | Build completion hook (concurrent)                                                                   |
+| `transformHead`     | `UserConfig['transformHead']`     | HTML head transform hook (concurrent, results merged)                                                |
+| `transformHtml`     | `UserConfig['transformHtml']`     | HTML content transform hook (sequential, chained)                                                    |
+| `transformPageData` | `UserConfig['transformPageData']` | Page data transform hook (sequential, chained)                                                       |
+| `postRender`        | `UserConfig['postRender']`        | Post-render hook (sequential, chained)                                                               |
+
+***
+
+### virtual:enhance-app
+
+`virtual:enhance-app` is a virtual module provided by `vitepress-tuck`. It automatically collects all plugins' `client` configurations and generates the corresponding code.
+
+Import it in the theme entry:
+
+```ts [.vitepress/theme/index.ts]
+import enhanceApp from 'virtual:enhance-app'
+import DefaultTheme from 'vitepress/theme'
+
+export default {
+  extends: DefaultTheme,
+  enhanceApp(ctx) {
+    enhanceApp(ctx)
+  },
+}
+```
+
+TypeScript support requires adding the type reference:
+
+```json [tsconfig.json]
+{
+  "compilerOptions": {
+    "types": ["vitepress-tuck/client-types"]
+  }
+}
+```
+
+---
+
+---
+url: /plugins/caniuse.md
+---
+# Can I Use
+
+Embed browser compatibility data from [caniuse.com](https://caniuse.com/), displaying browser support for CSS/JS features on the page.
+
+## Installation
+
+::: npm-to
+
+```sh
+npm install vitepress-plugin-caniuse
+```
+
+:::
+
+## Usage
+
+### vitepress-tuck Mode Recommended
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress-tuck'
+import caniuse from 'vitepress-plugin-caniuse'
+
+export default defineConfig({
+  plugins: [caniuse()],
+})
+```
+
+[Learn more about **vitepress-tuck**](../guide/quick-start.md){.readmore}
+
+### Native Mode
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress'
+import { caniuseMarkdownPlugin } from 'vitepress-plugin-caniuse' // [!code ++]
+
+export default defineConfig({
+  markdown: {
+    config: (md) => {
+      md.use(caniuseMarkdownPlugin) // [!code ++]
+    },
+  },
+})
+```
+
+```ts [.vitepress/theme/index.ts]
+import type { Theme } from 'vitepress'
+import { enhanceAppWithCaniuse } from 'vitepress-plugin-caniuse/client' // [!code ++]
+import DefaultTheme from 'vitepress/theme'
+
+export default {
+  extends: DefaultTheme,
+  enhanceApp(ctx) {
+    enhanceAppWithCaniuse(ctx) // [!code ++]
+  },
+} satisfies Theme
+```
+
+## Syntax
+
+Use `@[caniuse]()` to embed browser compatibility data:
+
+```md
+@[caniuse](feature_name)
+```
+
+### Baseline Mode
+
+Use baseline mode to display a feature support overview:
+
+```md
+@[caniuse baseline](feature_name)
+```
+
+### Custom Version Range
+
+Use `{}` to specify a version range:
+
+```md
+@[caniuse{-2,4}](feature_name)
+@[caniuse baseline{-3,2}](feature_name)
+```
+
+* `{past, future}`: past is the number of versions to look back, future is the number to look ahead
+* Default is `{5, 2}` — 5 versions back,  2 versions forward
+
+### Getting Feature Names
+
+Search for the feature you want to display on [caniuse.com](https://caniuse.com/),
+click the `#` on the left side of the card, and you'll get the feature name in the browser's address bar.
+
+::: details Not sure which part is the feature name?
+**Take CSS `grid` as an example**
+
+Search for `grid` on caniuse.com, then click the `#` on the first card. The address bar will change to `https://caniuse.com/css-grid`.
+
+The feature name is `css-grid`.
+
+Verify here: <https://caniuse.com/?search=grid>
+:::
+
+## Examples
+
+### Display browser support for the `fetch` feature
+
+```md
+@[caniuse](fetch)
+```
+
+@[caniuse](fetch)
+
+### Display baseline for the `fetch` feature
+
+```md
+@[caniuse baseline](fetch)
+```
+
+@[caniuse baseline](fetch)
+
+---
+
+---
+url: /plugins/code-collapse.md
+---
+# Code Collapse
+
+Code block folding plugin that automatically collapses code blocks exceeding a specified number of lines, improving page readability.
+
+## Installation
+
+::: npm-to
+
+```sh
+npm install vitepress-plugin-code-collapse
+```
+
+:::
+
+## Usage
+
+### vitepress-tuck Mode Recommended
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress-tuck'
+import collapsedLines from 'vitepress-plugin-code-collapse'
+
+export default defineConfig({
+  plugins: [
+    collapsedLines(),
+  ],
+})
+```
+
+[Learn more about **vitepress-tuck**](../guide/quick-start.md){.readmore}
+
+### Native Mode
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress'
+import { collapsedLinesMarkdownPlugin } from 'vitepress-plugin-code-collapse'
+
+export default defineConfig({
+  markdown: {
+    config: (md) => {
+      md.use(collapsedLinesMarkdownPlugin)
+    },
+  },
+})
+```
+
+```ts [.vitepress/theme/index.ts]
+import type { Theme } from 'vitepress'
+import { enhanceAppWithCollapsedLines } from 'vitepress-plugin-code-collapse/client'
+import DefaultTheme from 'vitepress/theme'
+
+export default {
+  extends: DefaultTheme,
+  enhanceApp(ctx) {
+    enhanceAppWithCollapsedLines(ctx)
+  },
+} satisfies Theme
+```
+
+## Syntax
+
+### Global Folding
+
+When `options` is set to a number, or `true` (defaults to 15 lines), all code blocks exceeding that line count will be automatically folded.
+
+### Per-Block Folding
+
+Use the `:collapsed-lines={N}` syntax in the code block's info string to control individual blocks:
+
+````md
+```ts :collapsed-lines
+// Folds using the default value (15 lines)
+```
+
+```ts :collapsed-lines=10
+// Folds starting from line 10
+```
+````
+
+## Configuration
+
+```ts
+/**
+ * Collapsed lines configuration
+ * - `true`: Fold when exceeding 15 lines
+ * - `number`: Fold when exceeding the specified line count
+ * - `false`: No global folding, allows per-block control (default)
+ * - `'disable'`: Fully disable the plugin
+ * @default 'false'
+ */
+type options = boolean | number | 'disable'
+```
+
+## Example
+
+````md
+```ts :collapsed-lines=10
+const a1 = 1
+const a2 = 2
+const a3 = 1
+const a4 = 1
+const a5 = 1
+const a6 = 2
+const a7 = 1
+const a8 = 1
+const a9 = 1
+const a10 = 2
+const a11 = 1
+const a12 = 1
+```
+````
+
+```ts :line-numbers=1 :collapsed-lines=10
+const a1 = 1
+const a2 = 2
+const a3 = 1
+const a4 = 1
+const a5 = 1
+const a6 = 2
+const a7 = 1
+const a8 = 1
+const a9 = 1
+const a10 = 2
+const a11 = 1
+const a12 = 1
+```
+
+---
+
+---
+url: /plugins/codepen.md
+---
+# CodePen
+
+Embed [CodePen](https://codepen.io/) projects into VitePress pages.
+
+## Installation
+
+::: npm-to
+
+```sh
+npm install vitepress-plugin-codepen
+```
+
+:::
+
+## Usage
+
+### vitepress-tuck Mode Recommended
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress-tuck'
+import codepen from 'vitepress-plugin-codepen'
+
+export default defineConfig({
+  plugins: [codepen()],
+})
+```
+
+[Learn more about **vitepress-tuck**](../guide/quick-start.md){.readmore}
+
+### Native Mode
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress'
+import { codepenPlugin } from 'vitepress-plugin-codepen'
+
+export default defineConfig({
+  markdown: {
+    config: (md) => {
+      md.use(codepenPlugin)
+    },
+  },
+})
+```
+
+```ts [.vitepress/theme/index.ts]
+import type { Theme } from 'vitepress'
+import { enhanceAppWithCodepen } from 'vitepress-plugin-codepen/client'
+import DefaultTheme from 'vitepress/theme'
+
+export default {
+  extends: DefaultTheme,
+  enhanceApp(ctx) {
+    enhanceAppWithCodepen(ctx)
+  },
+} satisfies Theme
+```
+
+## Syntax
+
+### Basic Usage
+
+```md
+@[codepen](user/slash)
+```
+
+### With Options
+
+```md
+@[codepen preview editable title="Example" height="400px" tab="css,result" theme="dark"](leimapapa/RwOZQOW)
+```
+
+### Attribute Reference
+
+| Attribute  | Type      | Default    | Description                         |
+| ---------- | --------- | ---------- | ----------------------------------- |
+| `title`    | `string`  | -          | Title                               |
+| `user`     | `string`  | -          | CodePen username (parsed from link) |
+| `slash`    | `string`  | -          | Pen identifier (parsed from link)   |
+| `tab`      | `string`  | `'result'` | Default tab to display              |
+| `theme`    | `string`  | -          | Theme                               |
+| `preview`  | `boolean` | `false`    | Preview mode                        |
+| `editable` | `boolean` | `false`    | Editable mode                       |
+| `width`    | `string`  | `'100%'`   | Width                               |
+| `height`   | `string`  | -          | Height                              |
+
+## Example
+
+```md
+@[codepen](leimapapa/RwOZQOW)
+```
+
+@[codepen](leimapapa/RwOZQOW)
+
+---
+
+---
+url: /plugins/field.md
+---
+# Field
+
+Field container plugin for rendering structured API fields and properties documentation in Markdown,
+with support for field grouping and JSDoc-style tag annotations.
+
+## Installation
+
+::: npm-to
+
+```sh
+npm install vitepress-plugin-field
+```
+
+:::
+
+## Usage
+
+### vitepress-tuck Mode Recommended
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress-tuck'
+import field from 'vitepress-plugin-field'
+
+export default defineConfig({
+  plugins: [field()],
+})
+```
+
+[Learn more about **vitepress-tuck**](../guide/quick-start.md){.readmore}
+
+### Native Mode
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress'
+import { fieldMarkdownPlugin } from 'vitepress-plugin-field'
+
+export default defineConfig({
+  markdown: {
+    config: (md) => {
+      md.use(fieldMarkdownPlugin)
+    },
+  },
+})
+```
+
+```ts [.vitepress/theme/index.ts]
+import type { Theme } from 'vitepress'
+import { enhanceAppWithField } from 'vitepress-plugin-field/client'
+import DefaultTheme from 'vitepress/theme'
+
+export default {
+  extends: DefaultTheme,
+  enhanceApp(ctx) {
+    enhanceAppWithField(ctx)
+  },
+} satisfies Theme
+```
+
+## Syntax
+
+Use the `::: field` container to document API fields and properties, with JSDoc-style tags for metadata.
+
+### Basic Field
+
+```md
+::: field count
+@type Number
+@default 0
+Total number of users.
+:::
+```
+
+### Field Tags
+
+Supported tags: `@name`, `@type`, `@default`, `@required`, `@deprecated`, `@optional`, `@description`.
+
+```md
+::: field userName
+@type String
+@required
+Unique identifier for the user.
+:::
+
+::: field email
+@type String
+@optional
+@default example@mail.com
+Contact email address.
+:::
+
+::: field oldField
+@type String
+@deprecated
+This field is deprecated, please use the new field instead.
+:::
+```
+
+**Rendered Result:**
+
+::: field userName
+@type String
+@required
+Unique identifier for the user.
+:::
+
+::: field email
+@type String
+@optional
+@default example@mail.com
+Contact email address.
+:::
+
+::: field oldField
+@type String
+@deprecated
+This field is deprecated, please use the new field instead.
+:::
+
+### Tag Reference
+
+| Tag            | Description                                                          |
+| -------------- | -------------------------------------------------------------------- |
+| `@name`        | Override the field name (defaults to the name from `info`)           |
+| `@type`        | Field type annotation                                                |
+| `@default`     | Default value for the field                                          |
+| `@required`    | Mark the field as required                                           |
+| `@optional`    | Mark the field as optional                                           |
+| `@deprecated`  | Mark the field as deprecated                                         |
+| `@description` | Explicit description text; any non-tag line also becomes description |
+
+### Field Group
+
+Use the `::: field-group` container to group related fields together.
+
+```md
+:::: field-group
+
+::: field id
+@type Number
+@required
+Unique identifier.
+:::
+
+::: field name
+@type String
+@optional
+Display name.
+:::
+
+::: field createdAt
+@type Date
+@default Date.now()
+Creation timestamp.
+:::
+
+::::
+```
+
+**Rendered Result:**
+
+:::: field-group
+
+::: field id
+@type Number
+@required
+Unique identifier.
+:::
+
+::: field name
+@type String
+@optional
+Display name.
+:::
+
+::: field createdAt
+@type Date
+@default Date.now()
+Creation timestamp.
+:::
+
+::::
+
+### Explicit Description
+
+Use the `@description` tag to specify description text explicitly. Any non-tag lines are also automatically treated as description content.
+
+```md
+::: field count
+@description Total number of users. This field represents the count of active users in the system.
+@type Number
+@default 0
+:::
+```
+
+---
+
+---
+url: /plugins/file-tree.md
+---
+# File Tree
+
+File tree display plugin for rendering file directory structures in Markdown.
+
+## Installation
+
+::: npm-to
+
+```sh
+npm install vitepress-plugin-file-tree
+```
+
+:::
+
+## Usage
+
+### vitepress-tuck Mode Recommended
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress-tuck'
+import fileTree from 'vitepress-plugin-file-tree'
+
+export default defineConfig({
+  plugins: [fileTree()],
+})
+```
+
+[Learn more about **vitepress-tuck**](../guide/quick-start.md){.readmore}
+
+### Native Mode
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress'
+import { fileTreeMarkdownPlugin } from 'vitepress-plugin-file-tree'
+
+export default defineConfig({
+  markdown: {
+    config: (md) => {
+      md.use(fileTreeMarkdownPlugin)
+    },
+  },
+})
+```
+
+```ts [.vitepress/theme/index.ts]
+import type { Theme } from 'vitepress'
+import { enhanceAppWithFileTree } from 'vitepress-plugin-file-tree/client'
+import DefaultTheme from 'vitepress/theme'
+
+export default {
+  extends: DefaultTheme,
+  enhanceApp(ctx) {
+    enhanceAppWithFileTree(ctx)
+  },
+} satisfies Theme
+```
+
+## Syntax
+
+### Container Syntax
+
+Use the `::: file-tree` container to represent file hierarchy via indentation:
+
+```md
+::: file-tree title="Project Structure"
+
+- src/
+  - components/
+    - Button.vue
+    - Nav.vue
+  - index.ts
+- package.json
+- tsconfig.json
+
+:::
+```
+
+### Fenced Code Syntax
+
+Alternatively, use a fenced code block with the `tree` or `file-tree` language identifier.
+The content follows the output format of the `tree` command-line tool (using Unicode
+box-drawing characters):
+
+````md
+```tree
+.
+├── src/
+│   ├── components/
+│   │   ├── Button.vue
+│   │   └── Nav.vue
+│   └── index.ts
+├── package.json
+└── tsconfig.json
+```
+````
+
+This is especially useful when you already have a `tree` command output and want to
+paste it directly into your Markdown without reformatting.
+
+### Node Annotations
+
+Both syntaxes support the following node annotations:
+
+| Syntax               | Description                          |
+| -------------------- | ------------------------------------ |
+| `**filename**`       | Highlight/focus the file             |
+| `-- filename`        | Mark as removed                      |
+| `++ filename`        | Mark as added                        |
+| `filename # comment` | Add a comment                        |
+| `folder/`            | Mark as folder, collapsed by default |
+| `…`                  | Ellipsis marker                      |
+
+Container example with annotations:
+
+```md
+::: file-tree title="Changed Files"
+
+- src/
+  - -- old-file.ts
+  - ++ new-file.ts
+  - **main.ts** # Core entry
+  - …
+
+:::
+```
+
+Fenced code example with annotations:
+
+````md
+```tree
+.
+├── src/
+│   ├── -- old-file.ts
+│   ├── ++ new-file.ts
+│   └── **main.ts** # Core entry
+└── …
+```
+````
+
+## Example
+
+```md
+::: file-tree
+
+- docs
+  - .vitepress
+    - ++ config.ts
+  - -- page1.md
+  - index.md
+- theme  # A **theme** directory
+  - client
+    - components
+      - **Navbar.vue**
+    - composables
+      - useNavbar.ts
+    - styles
+      - navbar.css
+    - config.ts
+  - node/
+- package.json
+- pnpm-lock.yaml
+- .gitignore
+- README.md
+- …
+:::
+```
+
+::: file-tree
+
+* docs
+  * .vitepress
+    * ++ config.ts
+  * \-- page1.md
+  * index.md
+* theme  # A **theme** directory
+  * client
+    * components
+      * **Navbar.vue**
+    * composables
+      * useNavbar.ts
+    * styles
+      * navbar.css
+    * config.ts
+  * node/
+* package.json
+* pnpm-lock.yaml
+* .gitignore
+* README.md
+* …
+  :::
+
+---
+
+---
+url: /plugins/jsfiddle.md
+---
+# JSFiddle
+
+Embed [JSFiddle](https://jsfiddle.net/) projects into VitePress pages.
+
+## Installation
+
+::: npm-to
+
+```sh
+npm install vitepress-plugin-jsfiddle
+```
+
+:::
+
+## Usage
+
+### vitepress-tuck Mode Recommended
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress-tuck'
+import jsfiddle from 'vitepress-plugin-jsfiddle'
+
+export default defineConfig({
+  plugins: [jsfiddle()],
+})
+```
+
+[Learn more about **vitepress-tuck**](../guide/quick-start.md){.readmore}
+
+### Native Mode
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress'
+import { jsfiddleMarkdownPlugin } from 'vitepress-plugin-jsfiddle'
+
+export default defineConfig({
+  markdown: {
+    config: (md) => {
+      md.use(jsfiddleMarkdownPlugin)
+    },
+  },
+})
+```
+
+```ts [.vitepress/theme/index.ts]
+import type { Theme } from 'vitepress'
+import { enhanceAppWithJsFiddle } from 'vitepress-plugin-jsfiddle/client'
+import DefaultTheme from 'vitepress/theme'
+
+export default {
+  extends: DefaultTheme,
+  enhanceApp(ctx) {
+    enhanceAppWithJsFiddle(ctx)
+  },
+} satisfies Theme
+```
+
+## Syntax
+
+### Basic Usage
+
+```md
+@[jsfiddle](user/id)
+```
+
+### With Options
+
+```md
+@[jsfiddle title="JS Fiddle" theme="dark" tab="js,css,html,result" height="400px"](pengzhanbo/1xbwz2p9)
+```
+
+### Attribute Reference
+
+| Attribute | Type               | Default                | Description                                       |
+| --------- | ------------------ | ---------------------- | ------------------------------------------------- |
+| `title`   | `string`           | `'JS Fiddle'`          | Title                                             |
+| `theme`   | `string`           | -                      | Theme (e.g. `dark`)                               |
+| `tab`     | `string`           | `'js,css,html,result'` | Tabs to display (comma-separated, spaces removed) |
+| `width`   | `string`           | `'100%'`               | Width                                             |
+| `height`  | `string`           | -                      | Height                                            |
+| `ratio`   | `number \| string` | -                      | Aspect ratio                                      |
+
+## Example
+
+```md
+@[jsfiddle](pengzhanbo/1xbwz2p9)
+```
+
+@[jsfiddle](pengzhanbo/1xbwz2p9)
+
+---
+
+---
+url: /plugins/mermaid.md
+---
+# Mermaid
+
+Mermaid diagram plugin, supporting Mermaid chart rendering in Markdown.
+
+## Installation
+
+::: npm-to
+
+```sh
+npm install vitepress-plugin-mermaid-tuck
+```
+
+:::
+
+## Usage
+
+### vitepress-tuck Mode Recommended
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress-tuck'
+import mermaid from 'vitepress-plugin-mermaid-tuck'
+
+export default defineConfig({
+  plugins: [
+    mermaid(),
+  ],
+})
+```
+
+[Learn more about **vitepress-tuck**](../guide/quick-start.md){.readmore}
+
+### Native Mode
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress'
+import { mermaidMarkdownPlugin, mermaidVitePlugin } from 'vitepress-plugin-mermaid-tuck'
+
+export default defineConfig({
+  vite: {
+    plugins: [mermaidVitePlugin({
+      options: { theme: 'default' },
+    })],
+  },
+  markdown: {
+    config: (md) => {
+      md.use(mermaidMarkdownPlugin)
+    },
+  },
+})
+```
+
+```ts [.vitepress/theme/index.ts]
+import type { Theme } from 'vitepress'
+import { enhanceAppWithMermaid } from 'vitepress-plugin-mermaid-tuck/client'
+import DefaultTheme from 'vitepress/theme'
+
+export default {
+  extends: DefaultTheme,
+  enhanceApp(ctx) {
+    enhanceAppWithMermaid(ctx)
+  },
+} satisfies Theme
+```
+
+## Syntax
+
+Use code blocks with the `mermaid` language tag:
+
+````md
+```mermaid
+flowchart LR
+  Start --> Stop
+```
+````
+
+````md
+```mermaid
+sequenceDiagram
+  Alice->>John: Hello John, how are you?
+  John-->>Alice: Great!
+  Alice->>John: See you later!
+```
+````
+
+## Configuration
+
+### MermaidPluginOptions
+
+```ts
+interface MermaidPluginOptions {
+  /**
+   * Mermaid configuration (excluding startOnLoad and themeVariables)
+   */
+  options?: Omit<MermaidConfig, 'startOnLoad' | 'themeVariables'> & {
+    themeVariables?: MermaidThemeVariables
+  }
+
+  /**
+   * Locale configuration
+   */
+  locales?: Record<string, MermaidLocaleData>
+}
+```
+
+### MermaidThemeVariables
+
+Supports custom theme variables for various Mermaid diagram types, covering:
+
+* Basic variables (background, text color, line color, etc.)
+* C4, Class, ER diagram variables
+* Flowchart variables
+* Gantt chart variables
+* Git graph variables
+* Journey diagram variables
+* Pie chart variables
+* Requirement diagram variables
+* State diagram variables
+* Sequence diagram variables
+
+### MermaidLocaleData
+
+```ts
+interface MermaidLocaleData {
+  chart?: string       // Default 'Chart'
+  source?: string      // Default 'Source'
+  fullscreen?: string  // Default 'Fullscreen'
+  download?: string    // Default 'Download'
+}
+```
+
+## Built-in Languages
+
+The plugin includes built-in support for the following languages:
+
+* English (en, en-US)
+* 简体中文 (zh, zh-CN)
+* 日本語 (ja)
+* 한국어 (ko)
+* Español (es)
+* Français (fr)
+* Русский (ru)
+* Deutsch (de)
+* Português (pt)
+
+## Examples
+
+```mermaid
+---
+title: Flowchart
+---
+flowchart TB
+    c1-->a2
+    subgraph one
+    a1-->a2
+    end
+    subgraph two
+    b1-->b2
+    end
+    subgraph three
+    c1-->c2
+    end
+    one --> two
+    three --> two
+    two --> c2
+```
+
+```mermaid
+---
+title: Sequence Diagram
+---
+sequenceDiagram
+  Alice ->> Bob: Hello Bob, how are you?
+  Bob-->>John: How about you John?
+  Bob--x Alice: I am good thanks!
+  Bob-x John: I am good thanks!
+  Note right of John: Bob thinks a long<br/>long time, so long<br/>that the text does<br/>not fit on a row.
+
+  Bob-->Alice: Checking with John...
+  Alice->John: Yes... John, how are you?
+```
+
+```mermaid
+---
+title: Animal Example
+---
+classDiagram
+  note "From Duck till Zebra"
+  Animal <|-- Duck
+  note for Duck "can fly<br>can swim<br>can dive<br>can help in debugging"
+  Animal <|-- Fish
+  Animal <|-- Zebra
+  Animal : +int age
+  Animal : +String gender
+  Animal: +isMammal()
+  Animal: +mate()
+  class Duck{
+    +String beakColor
+    +swim()
+    +quack()
+  }
+  class Fish{
+    -int sizeInFeet
+    -canEat()
+  }
+  class Zebra{
+    +bool is_wild
+    +run()
+  }
+```
+
+```mermaid
+gantt
+  dateFormat  YYYY-MM-DD
+  title       Adding GANTT diagram functionality to mermaid
+  excludes    weekends
+  %% (`excludes` accepts specific dates in YYYY-MM-DD format, days of the week ("sunday") or "weekends", but not the word "weekdays".)
+
+  section A section
+  Completed task            :done,    des1, 2014-01-06,2014-01-08
+  Active task               :active,  des2, 2014-01-09, 3d
+  Future task               :         des3, after des2, 5d
+  Future task2              :         des4, after des3, 5d
+
+  section Critical tasks
+  Completed task in the critical line :crit, done, 2014-01-06,24h
+  Implement parser                    :crit, done, after des1, 2d
+  Create tests for parser             :crit, active, 3d
+  Future task in critical line        :crit, 5d
+  Create tests for renderer           :2d
+  Add to mermaid                      :1d
+
+  section Documentation
+  Describe gantt syntax               :active, a1, after des1, 3d
+  Add gantt diagram to demo page      :after a1  , 20h
+  Add another diagram to demo page    :doc1, after a1  , 48h
+
+  section Last section
+  Describe gantt syntax               :after doc1, 3d
+  Add gantt diagram to demo page      :20h
+  Add another diagram to demo page    :48h
+```
+
+---
+
+---
+url: /plugins/npm-to.md
+---
+# Npm To
+
+Automatically converts npm commands to equivalent commands for other package managers (pnpm, yarn, bun, deno).
+
+## Installation
+
+::: npm-to
+
+```sh
+npm install vitepress-plugin-npm-to
+```
+
+:::
+
+## Usage
+
+### vitepress-tuck Mode Recommended
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress-tuck'
+import npmTo from 'vitepress-plugin-npm-to'
+
+export default defineConfig({
+  plugins: [
+    npmTo(['npm', 'pnpm', 'yarn']),
+  ],
+})
+```
+
+[Learn more about **vitepress-tuck**](../guide/quick-start.md){.readmore}
+
+### Native Mode
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress'
+import { npmToPlugin } from 'vitepress-plugin-npm-to'
+
+export default defineConfig({
+  markdown: {
+    config: (md) => {
+      md.use(npmToPlugin, ['npm', 'pnpm', 'yarn'])
+    },
+  },
+})
+```
+
+## Syntax
+
+Use the `::: npm-to` container to wrap npm commands. The plugin automatically converts them into multi-tab code groups:
+
+````md
+::: npm-to
+```sh
+npm install vitepress-plugin-steps
+```
+:::
+````
+
+After rendering, it displays as multiple tabs, each showing the corresponding package manager's install command:
+
+* **npm**: `npm install vitepress-plugin-steps`
+* **pnpm**: `pnpm add vitepress-plugin-steps`
+* **yarn**: `yarn add vitepress-plugin-steps`
+
+### Supported Command Types
+
+The plugin supports automatic conversion of the following npm commands:
+
+| Command                 | Example               | Support                                   |
+| ----------------------- | --------------------- | ----------------------------------------- |
+| `npm install` / `npm i` | `npm install react`   | Converts to each manager's add command    |
+| `npm install` (no args) | `npm install`         | Converts to pure install command          |
+| `npm uninstall`         | `npm uninstall react` | Converts to each manager's remove command |
+| `npm run`               | `npm run build`       | Converts to each manager's run command    |
+| `npm create`            | `npm create vite`     | Converts to each manager's create command |
+| `npm init`              | `npm init -y`         | Converts to each manager's init command   |
+| `npx`                   | `npx eslint .`        | Converts to each manager's equivalent     |
+| `npm ci`                | `npm ci`              | Converts to each manager's ci command     |
+
+### Custom Tabs
+
+You can specify which tabs to display using the `tabs` attribute:
+
+````md
+::: npm-to tabs="npm,pnpm"
+```sh
+npm install vitepress-plugin-steps
+```
+:::
+````
+
+## Configuration
+
+```ts
+type NpmToPluginOptions =
+  | NpmToPackageManager[]   // e.g. ['npm', 'pnpm', 'yarn']
+  | {
+      tabs?: NpmToPackageManager[]
+    }
+
+type NpmToPackageManager = 'npm' | 'pnpm' | 'yarn' | 'bun' | 'deno'
+```
+
+* Displays `npm`, `pnpm`, `yarn` tabs by default
+* Supports `bun` and `deno` conversion
+
+### Example
+
+````md
+::: npm-to
+```sh
+npm install vitepress-plugin-steps
+```
+:::
+````
+
+::: npm-to
+
+```sh
+npm install vitepress-plugin-steps
+```
+
+:::
+
+---
+
+---
+url: /plugins/obsidian.md
+---
+# Obsidian
+
+Provides Obsidian-style Markdown syntax support, including Wiki links, Callout annotations, embedded files, and comment syntax.
+
+## Installation
+
+::: npm-to
+
+```sh
+npm install vitepress-plugin-obsidian
+```
+
+:::
+
+## Usage
+
+### vitepress-tuck Mode Recommended
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress-tuck'
+import obsidian from 'vitepress-plugin-obsidian'
+
+export default defineConfig({
+  plugins: [
+    obsidian({
+      // All optional, default to true
+      callout: true,
+      comment: true,
+      embedLink: true,
+      wikiLink: true,
+    }),
+  ],
+})
+```
+
+[Learn more about **vitepress-tuck**](../guide/quick-start.md){.readmore}
+
+### Native Mode
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress'
+import { obsidianMarkdownPlugin } from 'vitepress-plugin-obsidian'
+
+export default defineConfig({
+  markdown: {
+    config: (md) => {
+      md.use(obsidianMarkdownPlugin, {
+        callout: true,
+        comment: true,
+        embedLink: true,
+        wikiLink: true,
+      })
+    },
+  },
+})
+```
+
+## Wiki Links
+
+Wiki links are Obsidian's syntax for linking to other notes. Use double brackets `[[ ]]` to create internal links.
+
+### Syntax
+
+```md
+[[filename]]
+[[filename#heading]]
+[[filename#heading#subheading]]
+[[filename|alias]]
+[[filename#heading|alias]]
+[[https://example.com|external link]]
+```
+
+### File Name Search Rules
+
+When using Wiki links, file names are matched according to the following search rules:
+
+**Matching Priority:**
+
+1. **Full Path** — exact match of the file path
+2. **Fuzzy Match** — match by filename at the end of the path, preferring the shortest path
+
+**Path Resolution Rules:**
+
+* **Relative paths** (starting with `.`): resolved relative to the current file's directory
+* **Absolute paths** (not starting with `.`): searched across the entire document tree, preferring the shortest match
+* **Directory form** (ending with `/`): matches the `index.md` in that directory
+
+**Example:**
+
+Given the following document structure:
+
+```txt
+docs/
+├── index.md
+├── guide/
+│   ├── index.md
+│   └── markdown/
+│       └── obsidian.md
+```
+
+In `docs/guide/markdown/obsidian.md`:
+
+| Syntax         | Match Result                                                    |
+| -------------- | --------------------------------------------------------------- |
+| `[[obsidian]]` | matches `docs/guide/markdown/obsidian.md` (via filename search) |
+| `[[./]]`       | matches `docs/guide/markdown/index.md` (relative path)          |
+| `[[../]]`      | matches `docs/guide/README.md` (parent directory)               |
+| `[[guide/]]`   | matches `docs/guide/README.md` (directory form)                 |
+
+### Examples
+
+**External Link:**
+
+**Input:**
+
+```md
+[[https://example.com|external link]]
+```
+
+**Output:**
+
+\[\[https://example.com|external link]]
+
+**Internal Anchor Links:**
+
+**Input:**
+
+```md
+[[npm-to]]  <!-- via filename search -->
+[[#Wiki Links]]  <!-- current page heading -->
+[[file-tree#Configuration]]  <!-- via filename search, link to heading -->
+```
+
+**Output:**
+
+\[\[npm-to]]
+
+\[\[#Wiki Links]]
+
+\[\[file-tree#Configuration]]
+
+[Obsidian Official - **Wiki Links**](https://help.obsidian.md/links){.readmore}
+
+## Embedded Content
+
+Embed syntax allows you to insert content from other files into the current page.
+
+### Syntax
+
+```md
+![[filename]]
+![[filename#heading]]
+![[filename#heading#subheading]]
+```
+
+File name search rules are the same as [Wiki Links](#file-name-search-rules).
+
+::: info Paths starting with `/` or without a `./` prefix load resources from the `public` directory
+:::
+
+### Image Embedding
+
+**Syntax:**
+
+```md
+![[image]]
+![[image|width]]
+![[image|widthxheight]]
+```
+
+Supported formats: `jpg`, `jpeg`, `png`, `gif`, `avif`, `webp`, `svg`, `bmp`, `ico`, `tiff`, `apng`, `jfif`, `pjpeg`, `pjp`, `xbm`
+
+**Example:**
+
+```md
+![[tuck-logo.svg]]
+```
+
+!\[\[tuck-logo.svg|125]]
+
+### PDF Embedding
+
+> \[!NOTE]
+> PDF embedding requires the [vitepress-plugin-pdf](./pdf.md) plugin to work properly.
+
+**Syntax:**
+
+```md
+![[document.pdf]]
+![[document.pdf#page=1]]  <!-- #page=1 for first page -->
+![[document.pdf#page=1#height=300]]  <!-- #page=page #height=height -->
+```
+
+Supported formats: `pdf`
+
+**Example:**
+
+```md
+![[https://plume.pengzhanbo.cn/files/sample-1.pdf]]
+```
+
+!\[\[https://plume.pengzhanbo.cn/files/sample-1.pdf]]
+
+***
+
+### Audio Embedding
+
+**Syntax:**
+
+```md
+![[audio file]]
+```
+
+Supported formats: `mp3`, `flac`, `wav`, `ogg`, `opus`, `webm`, `acc`
+
+***
+
+### Video Embedding
+
+> \[!NOTE]
+> Video embedding requires the [vitepress-plugin-video](./video.md) plugin to work properly.
+
+**Syntax:**
+
+```md
+![[video file]]
+![[video file#height=400]]  <!-- Set video height -->
+```
+
+Supported formats: `mp4`, `webm`, `mov`, etc.
+
+***
+
+### Content Fragment Embedding
+
+Use `#heading` to embed content fragments under specific headings:
+
+**Input:**
+
+```md
+![[my-note]]
+![[my-note#heading-one]]
+![[my-note#heading-one#subheading]]
+```
+
+[Obsidian Official - Embed Files](https://help.obsidian.md/embeds){.readmore}
+[Obsidian Official - File Formats](https://help.obsidian.md/file-formats){.readmore}
+
+## Callout
+
+Callout is a syntax for highlighting important information, similar to VitePress's `::: note` alert syntax.
+
+### Syntax
+
+```md
+> [!note]
+> Content
+```
+
+**Optional Title:**
+
+```md
+> [!tip] Custom Title
+> Content
+```
+
+### Types
+
+Callout supports the following types, with aliases automatically mapping to the corresponding main type:
+
+| Type        | Aliases                                                             | Description                |
+| ----------- | ------------------------------------------------------------------- | -------------------------- |
+| `note`      | `quote`, `cite`                                                     | Notes, quotes              |
+| `tip`       | `hint`, `check`, `done`, `success`                                  | Tips, hints                |
+| `info`      | `todo`                                                              | Info, todos                |
+| `warning`   | `question`, `help`, `faq`                                           | Warnings, questions, help  |
+| `caution`   | `attention`, `failure`, `fail`, `missing`, `danger`, `error`, `bug` | Cautions, failures, danger |
+| `important` | `example`                                                           | Important, examples        |
+| `details`   | `abstract`, `summary`, `tldr`                                       | Details, summaries         |
+
+### Examples
+
+**Basic Usage:**
+
+**Input:**
+
+```md
+> [!NOTE]
+> This is a note callout.
+```
+
+**Output:**
+
+> \[!NOTE]
+> This is a note callout.
+
+***
+
+**With Title:**
+
+**Input:**
+
+```md
+> [!TIP] Useful Tip
+> Using `pnpm` can significantly speed up dependency installation.
+```
+
+**Output:**
+
+> \[!TIP] Useful Tip
+> Using `pnpm` can significantly speed up dependency installation.
+
+***
+
+**Multiple Types:**
+
+**Input:**
+
+```md
+> [!success]
+> Operation completed successfully!
+>
+> [!warning]
+> This is a warning message.
+>
+> [!caution]
+> Proceed with caution, this operation is irreversible.
+```
+
+**Output:**
+
+> \[!success]
+> Operation completed successfully!
+
+> \[!warning]
+> This is a warning message.
+
+> \[!caution]
+> Proceed with caution, this operation is irreversible.
+
+***
+
+**Details Type:**
+
+The `details` type renders as an HTML `<details>` element, supporting expand/collapse:
+
+**Input:**
+
+```md
+> [!details]
+> Click to expand more content
+>
+> This is hidden content.
+```
+
+**Output:**
+
+> \[!details]
+> Click to expand more content
+>
+> This is hidden content.
+
+[Obsidian Official - Callouts](https://help.obsidian.md/callouts){.readmore}
+
+## Comments
+
+Content wrapped with `%%` is treated as a comment and will not be rendered on the page.
+
+### Syntax
+
+**Inline Comments:**
+
+```md
+This is an %%inline comment%% example.
+```
+
+**Block Comments:**
+
+```md
+%%
+This is a block comment.
+It can span multiple lines.
+%%
+```
+
+### Examples
+
+**Inline Comment:**
+
+**Input:**
+
+```md
+This is an %%inline comment%% example.
+```
+
+**Output:**
+
+This is an %%inline comment%% example.
+
+***
+
+**Block Comment:**
+
+**Input:**
+
+```md
+Content before the comment
+
+%%
+This is a block comment.
+
+It can span multiple lines.
+%%
+
+Content after the comment
+```
+
+**Output:**
+
+Content before the comment
+
+%%
+This is a block comment.
+%%
+
+It can span multiple lines.
+
+[Obsidian Official - Comments](https://help.obsidian.md/syntax#comments){.readmore}
+
+## Notes
+
+* These plugins provide **compatibility support**, not a full implementation of all Obsidian features
+* Some Obsidian-specific features (such as graph view for internal links, backlinks, etc.) are not supported
+* When embedding content, the embedded page also participates in the theme's build process
+* PDF embedding requires the [vitepress-plugin-pdf](./pdf.md) plugin to work properly
+* Video embedding requires the [vitepress-plugin-video](./video.md) plugin to work properly
+* Embedded resources starting with `/` or using `./` form will be loaded from the `public` directory
+
+---
+
+---
+url: /plugins/pdf.md
+---
+# PDF
+
+PDF file embedding plugin for displaying a PDF viewer in the page.
+
+## Installation
+
+::: npm-to
+
+```sh
+npm install vitepress-plugin-pdf
+```
+
+:::
+
+## Usage
+
+### vitepress-tuck Mode Recommended
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress-tuck'
+import pdf from 'vitepress-plugin-pdf'
+
+export default defineConfig({
+  plugins: [pdf()],
+})
+```
+
+[Learn more about **vitepress-tuck**](../guide/quick-start.md){.readmore}
+
+### Native Mode
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress'
+import { pdfMarkdownPlugin } from 'vitepress-plugin-pdf'
+
+export default defineConfig({
+  markdown: {
+    config: (md) => {
+      md.use(pdfMarkdownPlugin)
+    },
+  },
+})
+```
+
+```ts [.vitepress/theme/index.ts]
+import type { Theme } from 'vitepress'
+import { enhanceAppWithPDF } from 'vitepress-plugin-pdf/client' // [!code ++]
+import DefaultTheme from 'vitepress/theme'
+
+export default {
+  extends: DefaultTheme,
+  enhanceApp(ctx) {
+    enhanceAppWithPDF(ctx) // [!code ++]
+  },
+} satisfies Theme
+```
+
+## Syntax
+
+Embed a PDF using `@[pdf]()`:
+
+```md
+@[pdf](https://example.com/sample.pdf)
+@[pdf](./sample.pdf)
+```
+
+### Specifying a Page
+
+```md
+@[pdf 3](https://example.com/sample.pdf)
+```
+
+### Configuration Options
+
+```md
+@[pdf no-toolbar width="100%" height="600px" zoom="100"](https://example.com/sample.pdf)
+```
+
+### Attribute Reference
+
+| Attribute    | Type               | Default  | Description  |
+| ------------ | ------------------ | -------- | ------------ |
+| `width`      | `string`           | `'100%'` | Width        |
+| `height`     | `string`           | -        | Height       |
+| `ratio`      | `number \| string` | -        | Aspect ratio |
+| `zoom`       | `number`           | `50`     | Zoom level   |
+| `no-toolbar` | `boolean`          | `false`  | Hide toolbar |
+
+## Example
+
+```md
+@[pdf](https://plume.pengzhanbo.cn/files/sample-1.pdf)
+```
+
+@[pdf](https://plume.pengzhanbo.cn/files/sample-1.pdf)
+
+---
+
+---
+url: /plugins/plantuml.md
+---
+# PlantUML
+
+PlantUML diagram plugin, supporting PlantUML chart rendering in Markdown.
+
+## Installation
+
+::: npm-to
+
+```sh
+npm install vitepress-plugin-plantuml
+```
+
+:::
+
+## Usage
+
+### vitepress-tuck Mode Recommended
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress-tuck'
+import plantuml from 'vitepress-plugin-plantuml'
+
+export default defineConfig({
+  plugins: [
+    plantuml(),
+  ],
+})
+```
+
+[Learn more about **vitepress-tuck**](../guide/quick-start.md){.readmore}
+
+### Native Mode
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress'
+import { plantumlMarkdownPlugin, plantumlVitePlugin } from 'vitepress-plugin-plantuml'
+
+export default defineConfig({
+  vite: {
+    plugins: [plantumlVitePlugin()],
+  },
+  markdown: {
+    config: (md) => {
+      md.use(plantumlMarkdownPlugin)
+    },
+  },
+})
+```
+
+```ts [.vitepress/theme/index.ts]
+import type { Theme } from 'vitepress'
+import { enhanceAppWithPlantuml } from 'vitepress-plugin-plantuml/client'
+import DefaultTheme from 'vitepress/theme'
+
+export default {
+  extends: DefaultTheme,
+  enhanceApp(ctx) {
+    enhanceAppWithPlantuml(ctx)
+  },
+} satisfies Theme
+```
+
+## Syntax
+
+Use code blocks with the `plantuml` language tag:
+
+````md
+```plantuml
+@startuml
+Alice -> Bob: Authentication Request
+Bob --> Alice: Authentication Response
+@enduml
+```
+````
+
+### Output Format
+
+The plugin supports `svg` (default) and `png` output formats. You can specify the format per diagram:
+
+````md
+```plantuml png
+@startuml
+class Example {
+  +attribute: string
+  +method(): void
+}
+@enduml
+```
+````
+
+Or set a global default:
+
+```ts
+plantuml('png') // default is 'svg'
+```
+
+## Configuration
+
+### PlantumlPluginOptions
+
+```ts
+interface PlantumlPluginOptions {
+  /**
+   * Output format, 'svg' | 'png'
+   * @default 'svg'
+   */
+  format?: PlantumlFormat
+}
+```
+
+## Features
+
+* **Dark / Light mode** — Automatically generates both dark and light diagram variants, following the VitePress theme
+* **Chart / Source tabs** — Toggle between the rendered diagram and its PlantUML source code
+* **Fullscreen mode** — Click the fullscreen button to view the diagram in an overlay
+* **Download** — Download the current diagram as an image file
+* **Multi-language** — Built-in support for English, Chinese, Japanese, Korean, Spanish, French, Russian, German, and Portuguese
+* **SVG optimization** — SVGs are automatically optimized via SVGO, removing redundant styles and background layers
+* **Build caching** — Rendered diagrams are cached to disk for faster incremental builds
+
+## Built-in Languages
+
+The plugin includes built-in support for the following languages:
+
+* English (en, en-US)
+* 简体中文 (zh, zh-CN)
+* 日本語 (ja)
+* 한국어 (ko)
+* Español (es)
+* Français (fr)
+* Русский (ru)
+* Deutsch (de)
+* Português (pt)
+
+## Examples
+
+### Sequence Diagram
+
+```plantuml
+@startuml
+Alice -> Bob: Authentication Request
+Bob --> Alice: Authentication Response
+
+Alice -> Bob: Another authentication Request
+Alice <-- Bob: Another authentication Response
+@enduml
+```
+
+### Use Case Diagram
+
+```plantuml
+@startuml
+left to right direction
+actor "Customer" as customer
+actor "Cashier" as cashier
+
+rectangle "POS System" {
+  customer -- (Checkout)
+  (Checkout) -- cashier
+  (Checkout) .> (Print Receipt) : include
+  (Checkout) .> (Payment) : include
+  (Payment) .> (Cash Payment)
+  (Payment) .> (Scan to Pay)
+}
+@enduml
+```
+
+### Class Diagram
+
+```plantuml
+@startuml
+class Vehicle
+class Car
+class Bike
+
+Vehicle <|-- Car
+Vehicle <|-- Bike
+
+class Engine
+class Wheel
+
+Car *-- Engine
+Car *-- Wheel
+@enduml
+```
+
+### Activity Diagram
+
+```plantuml
+@startuml
+start
+:User Login;
+if (Authenticated?) then (yes)
+  :Enter Dashboard;
+  if (New Messages?) then (yes)
+    :Show Notification;
+  else (no)
+    :Continue Browsing;
+  endif
+else (no)
+  :Show Error;
+  :Return to Login;
+endif
+stop
+@enduml
+```
+
+---
+
+---
+url: /plugins/plot.md
+---
+# Plot
+
+Hidden text plugin that reveals concealed text content on click or hover.
+
+## Installation
+
+::: npm-to
+
+```sh
+npm install vitepress-plugin-plot
+```
+
+:::
+
+## Usage
+
+### vitepress-tuck Mode Recommended
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress-tuck'
+import plot from 'vitepress-plugin-plot'
+
+export default defineConfig({
+  plugins: [
+    plot({
+      trigger: 'hover',  // 'hover' | 'click', default 'hover'
+      effect: 'mask',    // 'mask' | 'blur', default 'mask'
+    }),
+  ],
+})
+```
+
+[Learn more about **vitepress-tuck**](../guide/quick-start.md){.readmore}
+
+### Native Mode
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress'
+import { plotMarkdownPlugin } from 'vitepress-plugin-plot'
+
+export default defineConfig({
+  markdown: {
+    config: (md) => {
+      md.use(plotMarkdownPlugin, {
+        trigger: 'hover',
+        effect: 'mask',
+      })
+    },
+  },
+})
+```
+
+```ts
+// .vitepress/theme/index.ts
+import type { Theme } from 'vitepress'
+import { enhanceAppWithPlot } from 'vitepress-plugin-plot/client' // [!code ++]
+import DefaultTheme from 'vitepress/theme'
+
+export default {
+  extends: DefaultTheme,
+  enhanceApp(ctx) {
+    enhanceAppWithPlot(ctx) // [!code ++]
+  },
+} satisfies Theme
+```
+
+## Syntax
+
+Wrap hidden text with `!!`:
+
+```md
+The answer is !!plot!!
+```
+
+Use `classname` to set interaction behavior:
+
+```md
+!!plot!!{.click .blur}
+```
+
+Supported `classname` values:
+
+* `.click` / `.hover`: Reveal on click / Reveal on hover
+* `.blur` / `.mask`: Blur effect / Mask effect
+
+## Configuration
+
+```ts
+interface PlotOptions {
+  /**
+   * Trigger method
+   * - 'hover': Reveal on hover
+   * - 'click': Reveal on click
+   * @default 'hover'
+   */
+  trigger?: 'hover' | 'click'
+
+  /**
+   * Hide effect
+   * - 'mask': Mask effect (default)
+   * - 'blur': Blur effect
+   * @default 'mask'
+   */
+  effect?: 'mask' | 'blur'
+}
+```
+
+## Examples
+
+```md
+Lu Xun once said: "!!I never said that!!"
+```
+
+Lu Xun once said: "!!I never said that!!"
+
+```md
+There is no royal road to learning, !!but hard work pays off!!{.click .blur}.
+```
+
+There is no royal road to learning, !!but hard work pays off!!{.click .blur}.
+
+---
+
+---
+url: /guide/plugin-dev.md
+---
+# Plugin Development
+
+`vitepress-tuck` provides the `definePlugin` function to help developers easily create VitePress plugins.
+With `definePlugin`, you can centralize options like `markdown`, `vite`, and `vue` — which would
+otherwise require scattered configuration by users — into a single plugin function.
+
+## Basic Structure
+
+A plugin based on `vitepress-tuck` consists of the following parts:
+
+```ts
+import { definePlugin } from 'vitepress-tuck'
+
+export default definePlugin((options?: MyPluginOptions) => ({
+  name: 'vitepress-plugin-my-plugin',
+
+  // Client configuration: auto-injected into virtual:enhance-app
+  client: {
+    imports: [],
+    enhance: 'enhanceAppWithMyPlugin',
+  },
+
+  // Markdown configuration: register markdown-it plugins
+  markdown: {
+    config: (md) => {
+      md.use(myMarkdownPlugin, options?.markdownOptions)
+    },
+  },
+
+  // Vite configuration
+  vite: {
+    plugins: [myVitePlugin(options?.viteOptions)],
+  },
+
+  // Other VitePress hooks
+  buildEnd: (site) => { /* ... */ },
+  transformHead: (ctx) => { /* ... */ },
+  transformHtml: (code, id, ctx) => { /* ... */ },
+  transformPageData: (pageData, ctx) => { /* ... */ },
+  postRender: (context) => { /* ... */ },
+}))
+```
+
+## Core Concepts
+
+### name
+
+Each plugin must have a unique `name` for identification and debugging:
+
+```ts
+{
+  name: 'vitepress-plugin-my-plugin'
+}
+```
+
+### client
+
+The `client` configuration is used to inject code into the client side. `vitepress-tuck` automatically injects this code into the `virtual:enhance-app` virtual module.
+
+#### client.imports
+
+Add custom import statements, commonly used for importing style files:
+
+```ts
+{
+  client: {
+    imports: [
+      'import "vitepress-plugin-my-plugin/style.css"',
+    ],
+  }
+}
+```
+
+#### client.enhance
+
+Specifies the client-side enhance function name. This function will be called within the VitePress theme's `enhanceApp(ctx)`.
+
+* When set to `true`, the default function name is `enhanceApp`
+* When set to a string, that string is the function name
+
+```ts
+{
+  client: {
+    enhance: 'enhanceAppWithMyPlugin',
+  }
+}
+```
+
+Correspondingly, export a function with the same name in the plugin's client entry file:
+
+```ts
+// client/index.ts
+import type { EnhanceAppContext } from 'vitepress'
+
+export function enhanceAppWithMyPlugin({ app }: EnhanceAppContext) {
+  // Register components, directives, etc.
+  app.component('MyComponent', MyComponent)
+}
+```
+
+### markdown
+
+Configure markdown-it plugins to extend Markdown syntax:
+
+```ts
+{
+  markdown: {
+    config: (md) => {
+      // Register custom containers
+      md.use(containerPlugin)
+      // Register inline rules
+      md.inline.ruler.before('emphasis', 'my_rule', myRule)
+    },
+  }
+}
+```
+
+### vite
+
+Configure Vite plugins and optimization options:
+
+```ts
+{
+  vite: {
+    plugins: [myVitePlugin()],
+    ssr: {
+      noExternal: ['my-plugin-package'],
+    },
+  }
+}
+```
+
+### Hooks
+
+`definePlugin` supports various VitePress lifecycle hooks:
+
+| Hook | Description | Execution |
+| ---- | ----------- | --------- |
+| `buildEnd` | Triggered on build completion | Concurrent |
+| `transformHead` | Transforms HTML head | Concurrent, results merged |
+| `transformHtml` | Transforms HTML content | Sequential, chained |
+| `transformPageData` | Transforms page data | Sequential, chained |
+| `postRender` | Triggered after page rendering | Sequential, chained |
+
+## Client Code Organization
+
+When a plugin needs to provide client-side code (e.g., Vue components), the recommended directory structure is:
+
+::: file-tree title="my-plugin"
+
+* my-plugin
+  * src
+    * client
+      * components
+        * MyComponent.vue
+      * index.ts # Export enhanceApp function
+    * node
+      * myPlugin.ts # Plugin core logic
+      * index.ts # Plugin entry, using definePlugin
+  * package.json
+  * tsconfig.json
+
+:::
+
+Configure `exports` in `package.json` to export client code separately:
+
+```json
+{
+  "exports": {
+    ".": {
+      "types": "./dist/node/index.d.ts",
+      "default": "./dist/node/index.js"
+    },
+    "./client": {
+      "browser": "./dist/client/browser/index.js",
+      "default": "./dist/client/ssr/index.js"
+    }
+  }
+}
+```
+
+## Recommended: vitepress-plugin-toolkit
+
+`vitepress-plugin-toolkit` provides a rich set of utility functions to assist plugin development, including:
+
+* `createContainerPlugin` — Create markdown-it custom containers
+* `createContainerSyntaxPlugin` — Create custom syntax containers
+* `createEmbedRuleBlock` — Create embed syntax blocks
+* `resolveAttrs` / `stringifyAttrs` — Attribute parsing and serialization
+* `createLogger` — Logging utility
+* `createLocales` — Internationalization support
+* `useSize` — Responsive size calculation
+
+See the [Toolkit API documentation](./toolkit) for details.
+
+## Complete Example
+
+Here is a simple step plugin built with `definePlugin`:
+
+```ts [node/index.ts]
+import { definePlugin } from 'vitepress-tuck'
+import { createContainerPlugin } from 'vitepress-plugin-toolkit'
+
+export const stepsPlugin = (md) => {
+  createContainerPlugin(md, 'steps', {
+    before: () => '<div class="vp-steps">',
+  })
+}
+
+export default definePlugin(() => ({
+  name: 'vitepress-plugin-steps',
+  client: {
+    imports: ['import "vitepress-plugin-steps/style.css"'],
+  },
+  markdown: {
+    config: (md) => {
+      md.use(stepsPlugin)
+    },
+  },
+}))
+```
+
+Users simply need to:
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress-tuck'
+import steps from 'vitepress-plugin-steps'
+
+export default defineConfig({
+  plugins: [steps()],
+})
+```
+
+---
+
+---
+url: /plugins/intro.md
+---
+# Plugin Overview
+
+The `vitepress-tuck` ecosystem provides a rich set of plugins covering Markdown syntax extensions,
+content embedding, code enhancement, and more.
+
+All plugins support two usage modes:
+
+1. **vitepress-tuck mode (recommended)**: One-click integration via the `plugins` option
+2. **Native mode**: Manual configuration in VitePress
+
+## Plugin List
+
+| Plugin                           | Package                          | Description                                                     |
+| -------------------------------- | -------------------------------- | --------------------------------------------------------------- |
+| [Steps](./steps)                 | `vitepress-plugin-steps`         | Step container for creating guided content                      |
+| [Obsidian](./obsidian)           | `vitepress-plugin-obsidian`      | Obsidian syntax support: Wiki links, Callouts, embeds, comments |
+| [Video](./video)                 | `vitepress-plugin-video`         | Video embedding: Bilibili, YouTube, AcFun, ArtPlayer            |
+| [Mermaid](./mermaid)             | `vitepress-plugin-mermaid-tuck`  | Mermaid diagram support                                         |
+| [PlantUML](./plantuml)           | `vitepress-plugin-plantuml`      | PlantUML diagram support                                        |
+| [Field](./field)                 | `vitepress-plugin-field`         | API field documentation, with JSDoc-style tags for metadata     |
+| [Npm To](./npm-to)               | `vitepress-plugin-npm-to`        | Auto-convert npm commands to other package managers             |
+| [File Tree](./file-tree)         | `vitepress-plugin-file-tree`     | File tree display                                               |
+| [PDF](./pdf)                     | `vitepress-plugin-pdf`           | PDF file embedding                                              |
+| [QRCode](./qrcode)               | `vitepress-plugin-qrcode`        | QR code generation                                              |
+| [Plot](./plot)                   | `vitepress-plugin-plot`          | Hidden text reveal on click/hover                               |
+| [Can I Use](./caniuse)           | `vitepress-plugin-caniuse`       | Embed browser compatibility data from caniuse.com               |
+| [Code Collapse](./code-collapse) | `vitepress-plugin-code-collapse` | Code block folding                                              |
+| [CodePen](./codepen)             | `vitepress-plugin-codepen`       | CodePen embedding                                               |
+| [JSFiddle](./jsfiddle)           | `vitepress-plugin-jsfiddle`      | JSFiddle embedding                                              |
+
+---
+
+---
+url: /plugins/qrcode.md
+---
+# QRCode
+
+QR code generation plugin, generating QR codes from text or links.
+
+## Installation
+
+::: npm-to
+
+```sh
+npm install vitepress-plugin-qrcode
+```
+
+:::
+
+## Usage
+
+### vitepress-tuck Mode Recommended
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress-tuck'
+import qrcode from 'vitepress-plugin-qrcode'
+
+export default defineConfig({
+  plugins: [qrcode()],
+})
+```
+
+[Learn more about **vitepress-tuck**](../guide/quick-start.md){.readmore}
+
+### Native Mode
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress'
+import { qrcodeMarkdownPlugin } from 'vitepress-plugin-qrcode'
+
+export default defineConfig({
+  markdown: {
+    config: (md) => {
+      md.use(qrcodeMarkdownPlugin)
+    },
+  },
+})
+```
+
+```ts [.vitepress/theme/index.ts]
+import type { Theme } from 'vitepress'
+import { enhanceAppWithQrcode } from 'vitepress-plugin-qrcode/client'
+import DefaultTheme from 'vitepress/theme'
+
+export default {
+  extends: DefaultTheme,
+  enhanceApp(ctx) {
+    enhanceAppWithQrcode(ctx)
+  },
+} satisfies Theme
+```
+
+## Syntax
+
+### Embed Block Syntax
+
+```md
+@[qrcode](https://www.baidu.com)
+@[qrcode](arbitrary text)
+@[qrcode](./caniuse.md)
+```
+
+### Styled Card Mode
+
+```md
+@[qrcode card title="Scan to visit"](https://www.baidu.com)
+```
+
+### Container Syntax
+
+Suitable for long text:
+
+```md
+::: qrcode title="Scan to visit"
+https://www.baidu.com
+:::
+```
+
+### Attribute Reference
+
+| Attribute  | Type      | Description                            |
+| ---------- | --------- | -------------------------------------- |
+| `card`     | `boolean` | Display in card mode                   |
+| `title`    | `string`  | Card title                             |
+| `logo`     | `string`  | QR code logo, link format, optional    |
+| `logoSize` | `number`  | Logo size ratio, optional, default 0.2 |
+| `width`    | `number`  | QR code width, optional                |
+
+## Examples
+
+```md
+@[qrcode](https://www.baidu.com)
+```
+
+@[qrcode](https://www.baidu.com)
+
+**Internal links auto-add logo:**
+
+```md
+@[qrcode](./file-tree.md)
+```
+
+@[qrcode](./file-tree.md)
+
+**Using card mode:**
+
+```md
+@[qrcode card title="Scan to visit File Tree Plugin"](./file-tree.md)
+```
+
+@[qrcode card title="Scan to visit File Tree Plugin"](./file-tree.md)
+
+---
+
+---
+url: /guide/quick-start.md
+---
+# Quick Start
+
+## What is vitepress-tuck?
+
+`vitepress-tuck` provides simple, flexible, and low-barrier plugin development and integration capabilities
+for VitePress. It wraps VitePress's `defineConfig` to provide an additional `plugins` option, shifting the
+complexity of plugin integration into the plugins themselves, so users only need to add plugins to the `plugins` array.
+
+## Installation
+
+::: npm-to
+
+```sh
+npm install vitepress vitepress-tuck
+```
+
+:::
+
+## Using in a VitePress Site
+
+::: steps
+
+* ### Replace the Configuration File
+
+  Replace `defineConfig` in `.vitepress/config.ts` with `vitepress-tuck`'s `defineConfig`:
+
+  ```ts [.vitepress/config.ts]
+  import { defineConfig } from 'vitepress' // [!code --]
+  import { defineConfig } from 'vitepress-tuck' // [!code ++]
+
+  export default defineConfig({
+    // [!code ++:3]
+    plugins: [
+      // Add plugins here
+    ],
+    // Other VitePress config options ...
+  })
+  ```
+
+* ### Configure the Client Entry
+
+  Import `virtual:enhance-app` in `.vitepress/theme/index.ts`:
+
+  ```ts [.vitepress/theme/index.ts]
+  import type { Theme } from 'vitepress'
+  import enhanceApp from 'virtual:enhance-app' // [!code ++]
+  import DefaultTheme from 'vitepress/theme'
+
+  export default {
+    extends: DefaultTheme,
+    enhanceApp(ctx) {
+      enhanceApp(ctx) // [!code ++]
+    },
+  } satisfies Theme
+  ```
+
+  `virtual:enhance-app` is a virtual module. `vitepress-tuck` automatically injects plugin client code into it — no manual configuration required.
+
+* ### TypeScript Support
+
+  If your project uses TypeScript, add the type reference in `tsconfig.json`:
+
+  ```json
+  {
+    "compilerOptions": {
+      "types": ["vitepress-tuck/client-types"]
+    }
+  }
+  ```
+
+:::
+
+## Using Plugins
+
+Using plugins is simple — just import and invoke them in the `plugins` array:
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress-tuck'
+import steps from 'vitepress-plugin-steps'
+import mermaid from 'vitepress-plugin-mermaid-tuck'
+
+export default defineConfig({
+  plugins: [
+    steps(),
+    mermaid({
+      // Plugin options can be passed here
+    }),
+  ],
+})
+```
+
+Refer to each plugin's documentation for its configuration options.
+
+---
+
+---
+url: /plugins/steps.md
+---
+# Steps
+
+Step container plugin for creating step-by-step guided content in Markdown.
+
+## Installation
+
+::: npm-to
+
+```sh
+npm install vitepress-plugin-steps
+```
+
+:::
+
+## Usage
+
+### vitepress-tuck Mode Recommended
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress-tuck'
+import steps from 'vitepress-plugin-steps'
+
+export default defineConfig({
+  plugins: [steps()],
+})
+```
+
+[Learn more about **vitepress-tuck**](../guide/quick-start.md){.readmore}
+
+### Native Mode
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress'
+import { stepsMarkdownPlugin } from 'vitepress-plugin-steps'
+
+export default defineConfig({
+  markdown: {
+    config: (md) => {
+      md.use(stepsMarkdownPlugin)
+    },
+  },
+})
+```
+
+Also import the styles in the theme:
+
+```ts [.vitepress/theme/index.ts]
+import 'vitepress-plugin-steps/style.css'
+```
+
+## Syntax
+
+Use the `::: steps` container to wrap step content, with each step starting from an unordered/ordered list item:
+
+```md
+::: steps
+
+- Step One
+
+  Description for step one
+
+- Step Two
+
+  Description for step two
+
+- Step Three
+
+  Description for step three, supports heading syntax
+
+:::
+```
+
+**Rendered Result:**
+
+::: steps
+
+* Step One
+
+  Description for step one
+
+* Step Two
+
+  Description for step two
+
+* Step Three
+
+  Description for step three, supports heading syntax
+
+:::
+
+---
+
+---
+url: /guide/toolkit.md
+---
+# Toolkit API
+
+`vitepress-plugin-toolkit` is a VitePress plugin development toolkit that provides a rich set of utility functions to assist plugin development.
+
+Installation:
+
+::: npm-to
+
+```sh
+npm install vitepress-plugin-toolkit
+```
+
+:::
+
+## Node-side API
+
+Import from `vitepress-plugin-toolkit`:
+
+```ts
+import {
+  createContainerPlugin,
+  createContainerSyntaxPlugin,
+  createEmbedRuleBlock,
+  resolveAttrs,
+  resolveAttr,
+  stringifyAttrs,
+  createLogger,
+  createLocales,
+  getVitepressConfig,
+  getLocaleWithPath,
+  resolveRouteLink,
+  parseRect,
+  slugify,
+  treatAsHtml,
+} from 'vitepress-plugin-toolkit'
+```
+
+***
+
+### createContainerPlugin
+
+Create a markdown-it custom container plugin. Used for processing `::: type` syntax, where content is parsed normally by markdown-it.
+
+```ts
+function createContainerPlugin(
+  md: MarkdownIt,
+  type: string,
+  options?: ContainerOptions,
+): void
+```
+
+**ContainerOptions:**
+
+```ts
+interface ContainerOptions {
+  /**
+   * Callback for rendering container opening tag
+   */
+  before?: (info: string, tokens: Token[], index: number, options: Options, env: any) => string
+  /**
+   * Callback for rendering container closing tag
+   */
+  after?: (info: string, tokens: Token[], index: number, options: Options, env: any) => string
+}
+```
+
+**Usage Example:**
+
+```ts
+import { createContainerPlugin } from 'vitepress-plugin-toolkit'
+
+function myPlugin(md) {
+  createContainerPlugin(md, 'steps', {
+    before: () => '<div class="vp-steps">',
+  })
+}
+```
+
+***
+
+### createContainerSyntaxPlugin
+
+Create a custom syntax container plugin. Unlike `createContainerPlugin`, the content is not parsed by markdown-it and must be handled manually.
+
+```ts
+function createContainerSyntaxPlugin(
+  md: MarkdownIt,
+  type: string,
+  render?: RenderRule,
+): void
+```
+
+Raw content inside the container is accessible via `token.content`, and metadata via `token.meta`.
+
+**Usage Example:**
+
+```ts
+import { createContainerSyntaxPlugin } from 'vitepress-plugin-toolkit'
+
+function myPlugin(md) {
+  createContainerSyntaxPlugin(md, 'file-tree', (tokens, index) => {
+    const { content, meta } = tokens[index]
+    return `<div class="file-tree">${content}</div>`
+  })
+}
+```
+
+***
+
+### createEmbedRuleBlock
+
+Create an embed rule block for handling `@[type ...](args)` syntax.
+
+```ts
+function createEmbedRuleBlock<Meta extends Record<string, any>>(
+  md: MarkdownIt,
+  options: EmbedRuleBlockOptions<Meta>,
+): void
+```
+
+**EmbedRuleBlockOptions:**
+
+```ts
+interface EmbedRuleBlockOptions<Meta extends Record<string, any>> {
+  /** Embed type, e.g. 'pdf', 'qrcode' */
+  type: string
+  /** Token name, defaults to type */
+  name?: string
+  /** Name of the rule to insert before, default 'code' */
+  beforeName?: string
+  /** Syntax pattern regex */
+  syntaxPattern: RegExp
+  /** Rule options */
+  ruleOptions?: RuleOptions
+  /** Extract metadata from match */
+  meta: (match: RegExpMatchArray) => Meta
+  /** Generate content from metadata */
+  content: (meta: Meta, content: string, env: MarkdownEnv) => string
+}
+```
+
+**Usage Example:**
+
+```ts
+import { createEmbedRuleBlock } from 'vitepress-plugin-toolkit'
+
+function myPlugin(md) {
+  createEmbedRuleBlock(md, {
+    type: 'pdf',
+    syntaxPattern: /^@\[pdf([^\]]*)\]\(([^)]*)\)/,
+    meta: (match) => ({
+      attrs: match[1] || '',
+      src: match[2] || '',
+    }),
+    content: (meta) => {
+      return `<VPPdf src="${meta.src}" ${meta.attrs} />`
+    },
+  })
+}
+```
+
+***
+
+### resolveAttrs
+
+Parse an attribute string into an object.
+
+```ts
+function resolveAttrs<T extends Record<string, any> = Record<string, any>>(info: string): T
+```
+
+**Example:**
+
+```ts
+resolveAttrs('width="100%" height="400" dark')
+// => { width: '100%', height: '400', dark: true }
+```
+
+***
+
+### resolveAttr
+
+Parse a single attribute value from an info string.
+
+```ts
+function resolveAttr(info: string, key: string): string | undefined
+```
+
+***
+
+### stringifyAttrs
+
+Serialize an attributes object into an HTML attribute string.
+
+```ts
+function stringifyAttrs<T extends object = object>(
+  attrs: T,
+  withUndefinedOrNull?: boolean,
+  forceStringify?: (keyof T)[],
+): string
+```
+
+**Example:**
+
+```ts
+stringifyAttrs({ width: '100%', height: 400, dark: true })
+// => ' width="100%" :height="400" dark'
+```
+
+***
+
+### createLogger
+
+Create a logger instance.
+
+```ts
+function createLogger(
+  prefix: string,
+  defaultLevel?: LogLevel,
+): Logger
+```
+
+**LogLevel:**
+
+```ts
+type LogLevel = 'info' | 'warn' | 'error' | 'debug' | 'silent'
+```
+
+**Example:**
+
+```ts
+const logger = createLogger('my-plugin', 'info')
+
+logger.info('Plugin loaded')       // [my-plugin] Plugin loaded
+logger.warn('Potential issue')     // [my-plugin] Potential issue
+logger.error('An error occurred')  // [my-plugin] An error occurred
+logger.debug('Debug info', true)   // [my-plugin] Debug info
+```
+
+***
+
+### createLocales
+
+Create multi-language configuration, automatically matching VitePress's language settings.
+
+```ts
+function createLocales<LocaleData extends Record<string, unknown>>(
+  builtinLocales: BuiltinLocales<LocaleData>,
+  userLocales?: Record<string, LocaleData>,
+): Record<string, LocaleData>
+```
+
+**Example:**
+
+```ts
+const locales = createLocales(
+  [
+    [['en', 'en-US'], { chart: 'Chart', source: 'Source' }],
+    [['zh', 'zh-CN'], { chart: '图表', source: '源码' }],
+  ],
+  userLocales,
+)
+```
+
+***
+
+### getVitepressConfig
+
+Get the current VitePress site configuration.
+
+```ts
+function getVitepressConfig(): SiteConfig
+```
+
+***
+
+### getLocaleWithPath
+
+Get language information based on a file path.
+
+```ts
+function getLocaleWithPath(path: string): { lang: string, locale: string }
+```
+
+***
+
+### resolveRouteLink
+
+Convert a relative path to a VitePress route link.
+
+```ts
+function resolveRouteLink(url: string, env: MarkdownEnv): string
+```
+
+***
+
+### parseRect
+
+Parse a size string, automatically appending a unit if a number is passed.
+
+```ts
+function parseRect(str: string, unit?: string): string
+```
+
+**Example:**
+
+```ts
+parseRect('400')     // => '400px'
+parseRect('50%')     // => '50%'
+parseRect('10', 'rem') // => '10rem'
+```
+
+***
+
+### slugify
+
+Convert a string to a URL-friendly slug format.
+
+```ts
+function slugify(str: string): string
+```
+
+***
+
+### treatAsHtml
+
+Determine whether a filename should be treated as HTML (non-known-resource extensions are treated as HTML).
+
+```ts
+function treatAsHtml(filename: string): boolean
+```
+
+***
+
+## Client-side API
+
+Import from `vitepress-plugin-toolkit/client`:
+
+```ts
+import {
+  VPCopyButton,
+  VPLoading,
+  useSize,
+  isiPhone,
+  isWindows,
+  isiPad,
+  isIOS,
+  isMacOS,
+  isMobile,
+  isSafari,
+} from 'vitepress-plugin-toolkit/client'
+```
+
+### VPCopyButton
+
+Copy button component.
+
+```vue
+<template>
+  <VPCopyButton :text="code" />
+</template>
+```
+
+### VPLoading
+
+Loading state component.
+
+```vue
+<template>
+  <VPLoading />
+</template>
+```
+
+### useSize
+
+Responsive size calculation composable.
+
+```ts
+function useSize<T extends HTMLElement>(
+  el: TemplateRef<T>,
+  options: ToRefs<SizeOptions>,
+  extraHeight?: MaybeRef<number>,
+): {
+  width: Ref<string>
+  height: Ref<string>
+  resize: () => void
+}
+```
+
+**SizeOptions:**
+
+```ts
+interface SizeOptions {
+  width?: string
+  height?: string
+  ratio?: number | string
+}
+```
+
+### Device Detection Utilities
+
+| Function | Description |
+| -------- | ----------- |
+| `isIPhone()` | Check if iPhone |
+| `isIPad()` | Check if iPad |
+| `isIOS()` | Check if iOS device |
+| `isMacOS()` | Check if macOS |
+| `isWindows()` | Check if Windows |
+| `isMobile()` | Check if mobile device |
+| `isSafari()` | Check if Safari browser |
+
+***
+
+## Shared Utilities
+
+Can be imported from either `vitepress-plugin-toolkit` or `vitepress-plugin-toolkit/client`:
+
+```ts
+import { isExternal, isLinkWithProtocol } from 'vitepress-plugin-toolkit'
+```
+
+### isExternal
+
+Check if a link is an external link.
+
+```ts
+function isExternal(path: string): boolean
+```
+
+### isLinkWithProtocol
+
+Check if a link contains a protocol prefix.
+
+```ts
+function isLinkWithProtocol(link: string): boolean
+```
+
+***
+
+## CSS Transition Animations
+
+`vitepress-plugin-toolkit` provides predefined CSS transition animations that can be imported in plugins:
+
+```css
+@import 'vitepress-plugin-toolkit/styles/transition/fade-in.css';
+@import 'vitepress-plugin-toolkit/styles/transition/fade-in-up.css';
+@import 'vitepress-plugin-toolkit/styles/transition/fade-in-down.css';
+@import 'vitepress-plugin-toolkit/styles/transition/fade-in-left.css';
+@import 'vitepress-plugin-toolkit/styles/transition/fade-in-right.css';
+@import 'vitepress-plugin-toolkit/styles/transition/slide-in-up.css';
+@import 'vitepress-plugin-toolkit/styles/transition/slide-in-down.css';
+@import 'vitepress-plugin-toolkit/styles/transition/slide-in-left.css';
+@import 'vitepress-plugin-toolkit/styles/transition/slide-in-right.css';
+@import 'vitepress-plugin-toolkit/styles/transition/fade-in-scale-up.css';
+@import 'vitepress-plugin-toolkit/styles/transition/fade-in-width-expand.css';
+@import 'vitepress-plugin-toolkit/styles/transition/fade-in-height-expand.css';
+```
+
+---
+
+---
+url: /plugins/video.md
+---
+# Video
+
+Multi-platform video embedding plugin, supporting Bilibili, YouTube, AcFun, and ArtPlayer.
+
+## Installation
+
+::: npm-to
+
+```sh
+npm install vitepress-plugin-video
+```
+
+:::
+
+## Usage
+
+### vitepress-tuck Mode Recommended
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress-tuck'
+import video from 'vitepress-plugin-video'
+
+export default defineConfig({
+  plugins: [
+    video({
+      // All optional, default to true
+      artplayer: true,
+      youtube: true,
+      bilibili: true,
+      acfun: true,
+    }),
+  ],
+})
+```
+
+[Learn more about **vitepress-tuck**](../guide/quick-start.md){.readmore}
+
+### Native Mode
+
+```ts [.vitepress/config.ts]
+import { defineConfig } from 'vitepress'
+import { videoMarkdownPlugin } from 'vitepress-plugin-video'
+
+export default defineConfig({
+  markdown: {
+    config: (md) => {
+      md.use(videoMarkdownPlugin, {
+        artplayer: true,
+        youtube: true,
+        bilibili: true,
+        acfun: true,
+      })
+    },
+  },
+})
+```
+
+```ts [.vitepress/theme/index.ts]
+import type { Theme } from 'vitepress'
+import { enhanceAppWithVideo } from 'vitepress-plugin-video/client'
+import DefaultTheme from 'vitepress/theme'
+
+export default {
+  extends: DefaultTheme,
+  enhanceApp(ctx) {
+    enhanceAppWithVideo(ctx)
+  },
+} satisfies Theme
+```
+
+## Syntax
+
+### Bilibili
+
+Embed Bilibili videos:
+
+```md
+@[bilibili](bvid)
+@[bilibili](aid cid)
+@[bilibili p2 autoplay time=30](bvid)
+```
+
+| Option      | Type               | Description                            |
+| ----------- | ------------------ | -------------------------------------- |
+| `p{number}` | -                  | Video part number                      |
+| `autoplay`  | `boolean`          | Auto play                              |
+| `time`      | `number \| string` | Start time, seconds or HH:MM:SS format |
+
+### YouTube
+
+Embed YouTube videos:
+
+```md
+@[youtube](video_id)
+@[youtube autoplay loop start=10 end=120](video_id)
+```
+
+| Option     | Type      | Description           |
+| ---------- | --------- | --------------------- |
+| `autoplay` | `boolean` | Auto play             |
+| `loop`     | `boolean` | Loop playback         |
+| `start`    | `number`  | Start time in seconds |
+| `end`      | `number`  | End time in seconds   |
+
+### AcFun
+
+Embed AcFun videos:
+
+```md
+@[acfun](ac_id)
+```
+
+### ArtPlayer
+
+Use ArtPlayer to embed local or remote videos:
+
+```md
+@[artPlayer](/videos/demo.mp4)
+@[artPlayer muted autoplay poster="/cover.jpg" width="800px"](/videos/demo.mp4)
+```
+
+| Option     | Type      | Default  | Description               |
+| ---------- | --------- | -------- | ------------------------- |
+| `autoplay` | `boolean` | `false`  | Auto play                 |
+| `muted`    | `boolean` | `false`  | Muted                     |
+| `loop`     | `boolean` | `false`  | Loop playback             |
+| `volume`   | `number`  | `0.75`   | Volume level              |
+| `poster`   | `string`  | -        | Cover image URL           |
+| `autoMini` | `boolean` | `false`  | Auto mini mode            |
+| `width`    | `string`  | `"100%"` | Player width              |
+| `height`   | `string`  | -        | Player height             |
+| `ratio`    | `string`  | -        | Aspect ratio, e.g. "16:9" |
+
+Supports `mp4`, `mp3`, `webm`, `ogg`, `mkv`, `mov` formats.
+
+If your video is in `mpd` or `dash` format, you'll also need to install `dashjs`:
+
+:::npm-to
+
+```sh
+npm i dashjs
+```
+
+:::
+
+If your video is in `m3u8` or `hls` format, you'll also need to install `hls.js`:
+
+:::npm-to
+
+```sh
+npm i hls.js
+```
+
+:::
+
+If your video is in `ts` or `flv` format, you'll also need to install `mpegts.js`:
+
+:::npm-to
+
+```sh
+npm i mpegts.js
+```
+
+:::
+
+## Configuration
+
+```ts
+interface VideoPluginOptions {
+  /**
+   * Enable ArtPlayer
+   * @default true
+   */
+  artplayer?: boolean
+
+  /**
+   * Enable YouTube video embedding
+   * @default true
+   */
+  youtube?: boolean
+
+  /**
+   * Enable Bilibili video embedding
+   * @default true
+   */
+  bilibili?: boolean
+
+  /**
+   * Enable AcFun video embedding
+   * @default true
+   */
+  acfun?: boolean
+}
+```
+
+## Examples
+
+### Bilibili
+
+```md
+@[bilibili](BV1EZ42187Hg)
+```
+
+@[bilibili](BV1EZ42187Hg)
+
+### YouTube
+
+```md
+@[youtube](0JJPfz5dg20)
+```
+
+@[youtube](0JJPfz5dg20)
+
+### AcFun
+
+```md
+@[acfun](ac47431669)
+```
+
+@[acfun](ac47431669)
+
+### ArtPlayer
+
+```md
+@[artPlayer](https://artplayer.org/assets/sample/video.mp4)
+```
+
+@[artPlayer](https://artplayer.org/assets/sample/video.mp4)
+
+---
+
+---
+url: /guide/wrap-plugin.md
+---
+# Wrapping Existing Plugins
+
+If your VitePress site is already using plugins, or you have a plugin that hasn't been packaged
+for `vitepress-tuck` mode, you can easily wrap it into a compatible form.
+
+## Why Wrap?
+
+Traditional VitePress plugins often require users to configure multiple locations:
+
+```ts
+// Traditional approach — configuration scattered across multiple places
+import { defineConfig } from 'vitepress'
+import { someMarkdownPlugin } from 'some-plugin'
+
+export default defineConfig({
+  markdown: {
+    config: (md) => {
+      md.use(someMarkdownPlugin)
+    },
+  },
+  vite: {
+    plugins: [someVitePlugin()],
+  },
+})
+```
+
+By wrapping into a `vitepress-tuck` plugin, users only need to add it to the `plugins` array — all
+configuration is handled internally by the plugin.
+
+## Wrapping Methods
+
+### Wrapping with definePlugin
+
+For any existing plugin logic, use `definePlugin` to wrap it:
+
+```ts
+import { definePlugin } from 'vitepress-tuck'
+import { someMarkdownPlugin } from 'some-plugin'
+import { someVitePlugin } from 'some-plugin/vite'
+
+export default definePlugin((options?: MyOptions) => ({
+  name: 'vitepress-plugin-some-plugin',
+  markdown: {
+    config: (md) => {
+      md.use(someMarkdownPlugin, options)
+    },
+  },
+  vite: {
+    plugins: [someVitePlugin(options)],
+  },
+}))
+```
+
+### Wrapping a Markdown-Only Plugin
+
+If the plugin only involves a markdown-it extension, wrapping is very simple:
+
+```ts
+import { definePlugin } from 'vitepress-tuck'
+
+export default definePlugin(() => ({
+  name: 'vitepress-plugin-my-plugin',
+  markdown: {
+    config: (md) => {
+      md.use(myMarkdownItPlugin)
+    },
+  },
+}))
+```
+
+### Wrapping a Vite-Only Plugin
+
+If the plugin only needs Vite configuration:
+
+```ts
+import { definePlugin } from 'vitepress-tuck'
+import myVitePlugin from 'vite-plugin-my'
+
+export default definePlugin((options?: MyOptions) => ({
+  name: 'vitepress-plugin-my-plugin',
+  vite: {
+    plugins: [myVitePlugin(options)],
+  },
+}))
+```
+
+### Wrapping a Plugin That Requires Client Injection
+
+If the plugin needs to inject components or styles on the client side, configure the `client` option:
+
+```ts
+import { definePlugin } from 'vitepress-tuck'
+
+export default definePlugin(() => ({
+  name: 'vitepress-plugin-my-plugin',
+  client: {
+    imports: [
+      // Inject styles
+      'import "my-plugin/style.css"',
+    ],
+    enhance: 'enhanceAppWithMyPlugin',
+  },
+  markdown: {
+    config: (md) => {
+      md.use(myMarkdownPlugin)
+    },
+  },
+  vite: {
+    ssr: {
+      // Ensure correct bundling during SSR
+      noExternal: ['my-plugin'],
+    },
+  },
+}))
+```
+
+And export the enhance function in the client entry file:
+
+```ts
+// client/index.ts
+import type { EnhanceAppContext } from 'vitepress'
+import MyComponent from './components/MyComponent.vue'
+
+export function enhanceAppWithMyPlugin({ app }: EnhanceAppContext) {
+  app.component('MyComponent', MyComponent)
+}
+```
+
+## Real-World Example
+
+Here's how to wrap `vitepress-plugin-group-icons` into a `vitepress-tuck` plugin:
+
+```ts
+import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons'
+import { definePlugin } from 'vitepress-tuck'
+
+export default definePlugin(() => ({
+  name: 'vitepress-plugin-group-icons',
+  client: {
+    imports: ['import \'virtual:group-icons.css\''],
+  },
+  markdown: {
+    config: (md) => {
+      md.use(groupIconMdPlugin)
+    },
+  },
+  vite: {
+    plugins: [
+      groupIconVitePlugin(),
+    ],
+    ssr: {
+      noExternal: [
+        'vitepress-plugin-group-icons',
+      ],
+    },
+  },
+}))
+```
+
+## Maintaining Compatibility
+
+Wrapped plugins can still be used independently (without `vitepress-tuck`). Simply provide both usage modes in the plugin's README:
+
+```ts
+// Method 1: vitepress-tuck mode (recommended)
+import { defineConfig } from 'vitepress-tuck'
+import myPlugin from 'my-plugin'
+
+export default defineConfig({
+  plugins: [myPlugin()],
+})
+
+// Method 2: Native VitePress mode
+import { defineConfig } from 'vitepress'
+import { myPlugin } from 'my-plugin/raw'
+
+export default defineConfig({
+  markdown: {
+    config: (md) => {
+      md.use(myPlugin)
+    },
+  },
+})
+```

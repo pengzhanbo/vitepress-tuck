@@ -1,0 +1,1 @@
+var e=`/tuck-logo.svg`;export{e as t};
