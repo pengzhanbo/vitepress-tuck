@@ -65,5 +65,9 @@
     "*": "eslint --fix",
     "*.{css,vue}": "stylelint --fix",
     "*.{js,ts,mjs,cjs}": "cross-env TZ=Etc/UTC vitest related --run"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/pengzhanbo/vitepress-tuck/issues"
+  },
+  "homepage": "https://github.com/pengzhanbo/vitepress-tuck#readme"
 }
