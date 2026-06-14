@@ -13,13 +13,13 @@ Enhance vitepress configuration and provide plugin development capabilities.
 Install
 
 ```bash
-npm
+# npm
 npm install vitepress vitepress-tuck
 
-pnpm
+# pnpm
 pnpm add vitepress vitepress-tuck
 
-yarn
+# yarn
 yarn add vitepress vitepress-tuck
 ```
 

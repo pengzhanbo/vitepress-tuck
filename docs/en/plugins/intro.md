@@ -16,6 +16,7 @@ All plugins support two usage modes:
 | [Obsidian](./obsidian)           | `vitepress-plugin-obsidian`      | Obsidian syntax support: Wiki links, Callouts, embeds, comments |
 | [Video](./video)                 | `vitepress-plugin-video`         | Video embedding: Bilibili, YouTube, AcFun, ArtPlayer            |
 | [Mermaid](./mermaid)             | `vitepress-plugin-mermaid-tuck`  | Mermaid diagram support                                         |
+| [PlantUML](./plantuml)           | `vitepress-plugin-plantuml`      | PlantUML diagram support                                        |
 | [Field](./field)                 | `vitepress-plugin-field`         | API field documentation, with JSDoc-style tags for metadata     |
 | [Npm To](./npm-to)               | `vitepress-plugin-npm-to`        | Auto-convert npm commands to other package managers             |
 | [File Tree](./file-tree)         | `vitepress-plugin-file-tree`     | File tree display                                               |

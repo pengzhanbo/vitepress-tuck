@@ -79,6 +79,7 @@ export default {
 | [Plot](./docs/zh/plugins/plot.md)                   | `vitepress-plugin-plot`          | 隐文遮罩，点击或悬停显示隐藏文本（`!!text!!` 语法）           |
 | [Npm To](./docs/zh/plugins/npm-to.md)               | `vitepress-plugin-npm-to`        | npm 命令自动转换为 pnpm / yarn / bun / deno 等包管理器命令    |
 | [Mermaid](./docs/zh/plugins/mermaid.md)             | `vitepress-plugin-mermaid-tuck`  | Mermaid 图表渲染，支持 i18n 多语言                            |
+| [PlantUML](./docs/zh/plugins/plantuml.md)           | `vitepress-plugin-plantuml`      | PlantUML 图表渲染，支持 i18n 多语言                           |
 | [QRCode](./docs/zh/plugins/qrcode.md)               | `vitepress-plugin-qrcode`        | 二维码生成，支持图片 / 卡片两种模式                           |
 | [Video](./docs/zh/plugins/video.md)                 | `vitepress-plugin-video`         | 多平台视频嵌入（Bilibili、YouTube、AcFun、ArtPlayer）         |
 | [Obsidian](./docs/zh/plugins/obsidian.md)           | `vitepress-plugin-obsidian`      | Obsidian 风格 Markdown 语法（Wiki 链接、Callout、嵌入、注释） |
