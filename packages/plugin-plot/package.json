@@ -5,10 +5,14 @@
   "description": "Add spoiler/hidden text with `!!text!!` syntax. Text is masked until hovered or clicked.",
   "author": "pengzhanbo <q942450674@outlook.com> (https://github.com/pengzhanbo/)",
   "license": "MIT",
+  "homepage": "https://tuck.pengzhanbo.cn/plugins/plot",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pengzhanbo/vitepress-tuck.git",
     "directory": "packages/plugin-plot"
+  },
+  "bugs": {
+    "url": "https://github.com/pengzhanbo/vitepress-tuck/issues"
   },
   "keywords": [
     "vitepress",

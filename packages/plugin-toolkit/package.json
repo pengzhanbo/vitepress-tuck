@@ -5,10 +5,14 @@
   "description": "Development toolkit for vitepress plugins",
   "author": "pengzhanbo <q942450674@outlook.com> (https://github.com/pengzhanbo/)",
   "license": "MIT",
+  "homepage": "https://tuck.pengzhanbo.cn/guide/toolkit",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pengzhanbo/vitepress-tuck.git",
     "directory": "packages/plugin-toolkit"
+  },
+  "bugs": {
+    "url": "https://github.com/pengzhanbo/vitepress-tuck/issues"
   },
   "keywords": [
     "vitepress",

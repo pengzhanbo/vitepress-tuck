@@ -5,10 +5,14 @@
   "description": "Render file tree structure in your VitePress site.",
   "author": "pengzhanbo <q942450674@outlook.com> (https://github.com/pengzhanbo/)",
   "license": "MIT",
+  "homepage": "https://tuck.pengzhanbo.cn/plugins/file-tree",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pengzhanbo/vitepress-tuck.git",
     "directory": "packages/plugin-file-tree"
+  },
+  "bugs": {
+    "url": "https://github.com/pengzhanbo/vitepress-tuck/issues"
   },
   "keywords": [
     "vitepress",
