@@ -52,6 +52,13 @@ export default defineConfig({
     zh: { label: '简体中文', lang: 'zh-CN', dir: 'ltr' },
   },
 
+  // vite: {
+  //   define: {
+  //     // debug hydration mismatch
+  //     __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'true',
+  //   },
+  // },
+
   plugins: [
     steps(),
     plot(),

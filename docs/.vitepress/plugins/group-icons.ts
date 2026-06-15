@@ -13,7 +13,7 @@ export default definePlugin(() => ({
   },
   vite: {
     plugins: [
-      groupIconVitePlugin() as any,
+      groupIconVitePlugin(),
     ],
     ssr: {
       noExternal: [
