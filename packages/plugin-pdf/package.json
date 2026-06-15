@@ -10,6 +10,10 @@
     "url": "git+https://github.com/pengzhanbo/vitepress-tuck.git",
     "directory": "packages/plugin-pdf"
   },
+  "homepage": "https://github.com/pengzhanbo/vitepress-tuck/tree/main/packages/plugin-pdf#readme",
+  "bugs": {
+    "url": "https://github.com/pengzhanbo/vitepress-tuck/issues"
+  },
   "keywords": [
     "vitepress",
     "vitepress-plugin",
