@@ -26,7 +26,7 @@ watch(isFullscreen, newVal => reset(newVal))
     <div class="mermaid-header">
       <VPTabSwitch v-model="tab" :items="tabs" />
 
-      <div class="mermaid-actions">
+      <div class="mermaid-actions" data-allow-mismatch>
         <button @click="download('svg')">
           <span class="vpi-download" />
           SVG
@@ -48,7 +48,7 @@ watch(isFullscreen, newVal => reset(newVal))
         <button @click="zoomOut">
           <span class="vpi-zoom-out" />
         </button>
-        <span>{{ zoom }}</span>
+        <span data-allow-mismatch>{{ zoom }}</span>
         <button @click="zoomIn">
           <span class="vpi-zoom-in" />
         </button>

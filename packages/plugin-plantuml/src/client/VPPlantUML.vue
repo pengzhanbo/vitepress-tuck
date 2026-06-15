@@ -40,7 +40,7 @@ function download() {
     <div class="plantuml-header">
       <VPTabSwitch v-model="tab" :items="tabs" />
 
-      <div class="plantuml-actions">
+      <div class="plantuml-actions" data-allow-mismatch>
         <button @click="download">
           <span class="vpi-download" />
           {{ locale.download }}
