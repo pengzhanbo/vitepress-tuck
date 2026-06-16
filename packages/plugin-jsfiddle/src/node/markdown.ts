@@ -10,8 +10,7 @@ import { createEmbedRuleBlock, parseRect, resolveAttrs, stringifyAttrs } from 'v
 export const jsfiddleMarkdownPlugin: PluginSimple = (md) => {
   createEmbedRuleBlock<JSFiddleData>(md, {
     type: 'jsfiddle',
-    syntaxPattern: /^@\[jsfiddle([^\]]*)\]\(([^)]*)\)/,
-    meta([, info, source]) {
+    meta(info, source) {
       const { width, height, title, tab, theme } = resolveAttrs<JSFiddleData>(info)
 
       return {

@@ -24,7 +24,7 @@ describe('caniuseMarkdownPlugin', () => {
     const md = new MarkdownIt()
     md.use(caniuseMarkdownPlugin)
 
-    const result = md.render('@[caniuse{-2,3}](fetch)')
+    const result = md.render('@[caniuse {-2,3}](fetch)')
     expect(result).toContain('<VPCaniuse')
   })
 

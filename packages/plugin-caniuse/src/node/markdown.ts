@@ -7,6 +7,9 @@ import type { PluginSimple } from 'markdown-it'
 import type { CanIUseData, CanIUseMode } from './types.js'
 import { createEmbedRuleBlock, stringifyAttrs } from 'vitepress-plugin-toolkit'
 
+const UNDERLINE_RE = /_+/g
+let uuid = 0
+
 /**
  * @example
  * `.vitepress/config.ts`
@@ -25,28 +28,25 @@ import { createEmbedRuleBlock, stringifyAttrs } from 'vitepress-plugin-toolkit'
 export const caniuseMarkdownPlugin: PluginSimple = (md): void => {
   createEmbedRuleBlock<CanIUseData>(md, {
     type: 'caniuse',
-    syntaxPattern: /^@\[caniuse\s*(embed|baseline)?(?:\{([0-9,\-]*)\})?\]\(([^)]*)\)/,
-    meta: ([, mode, versions = '', feature = '']) => ({
-      feature,
-      mode: (mode as CanIUseMode) || 'embed',
-      versions,
-    }),
-    content: resolveCanIUse,
+    meta: (info, source) => {
+      const [mode, versions = ''] = info.split('{')
+      return {
+        feature: source,
+        mode: (mode.trim() as CanIUseMode) || 'embed',
+        versions: versions.replace('}', ''),
+      }
+    },
+    content: ({ feature, mode, versions }) => {
+      if (!feature)
+        return ''
+
+      feature = feature.replace(UNDERLINE_RE, '_')
+      const { past, future } = resolveVersions(versions)
+      const meta = `${feature}-${uuid++}`
+
+      return `<VPCaniuse${stringifyAttrs({ feature, meta, past, future, baseline: mode === 'baseline' })} />`
+    },
   })
-}
-
-const UNDERLINE_RE = /_+/g
-let uuid = 0
-
-function resolveCanIUse({ feature, mode, versions }: CanIUseData): string {
-  if (!feature)
-    return ''
-
-  feature = feature.replace(UNDERLINE_RE, '_')
-  const { past, future } = resolveVersions(versions)
-  const meta = `${feature}-${uuid++}`
-
-  return `<VPCaniuse${stringifyAttrs({ feature, meta, past, future, baseline: mode === 'baseline' })} />`
 }
 
 function resolveVersions(versions: string): { past: number, future: number } {

@@ -109,7 +109,7 @@ function myPlugin(md) {
 
 ### createEmbedRuleBlock
 
-创建嵌入规则块，用于处理 `@[type ...](args)` 语法。
+创建嵌入规则块，用于处理 `@[type info](source)` 语法。
 
 ```ts
 function createEmbedRuleBlock<Meta extends Record<string, any>>(
@@ -128,29 +128,28 @@ interface EmbedRuleBlockOptions<Meta extends Record<string, any>> {
   name?: string
   /** 插入到哪个规则之前，默认 'code' */
   beforeName?: string
-  /** 语法匹配正则 */
-  syntaxPattern: RegExp
   /** 规则选项 */
   ruleOptions?: RuleOptions
-  /** 从匹配中提取元数据 */
-  meta: (match: RegExpMatchArray) => Meta
+  /** 解析 `@[type info](source)` 中的 `info` 和 `source`，转换为元数据对象 */
+  meta: (info: string, source: string) => Meta
   /** 从元数据生成内容 */
-  content: (meta: Meta, content: string, env: MarkdownEnv) => string
+  content?: (meta: Meta, env: MarkdownEnv) => string
+  /** 渲染函数 */
+  render?: (tokens: Token[], index: number, env: MarkdownEnv) => string
 }
 ```
 
 **使用示例：**
 
 ```ts
-import { createEmbedRuleBlock } from 'vitepress-plugin-toolkit'
+import { createEmbedRuleBlock, resolveAttrs } from 'vitepress-plugin-toolkit'
 
 function myPlugin(md) {
   createEmbedRuleBlock(md, {
     type: 'pdf',
-    syntaxPattern: /^@\[pdf([^\]]*)\]\(([^)]*)\)/,
-    meta: (match) => ({
-      attrs: match[1] || '',
-      src: match[2] || '',
+    meta: (info, source) => ({
+      attrs: info,
+      src: source,
     }),
     content: (meta) => {
       return `<VPPdf src="${meta.src}" ${meta.attrs} />`

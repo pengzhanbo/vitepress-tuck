@@ -128,14 +128,14 @@ interface EmbedRuleBlockOptions<Meta extends Record<string, any>> {
   name?: string
   /** Name of the rule to insert before, default 'code' */
   beforeName?: string
-  /** Syntax pattern regex */
-  syntaxPattern: RegExp
   /** Rule options */
   ruleOptions?: RuleOptions
-  /** Extract metadata from match */
-  meta: (match: RegExpMatchArray) => Meta
+  /** Parse the `info` and `source` in `@[type info](source)` and convert them into a metadata object. */
+  meta: (info: string, source: string) => Meta
   /** Generate content from metadata */
-  content: (meta: Meta, content: string, env: MarkdownEnv) => string
+  content?: (meta: Meta, env: MarkdownEnv) => string
+  /** Render function */
+  render?: (tokens: Token[], index: number, env: MarkdownEnv) => string
 }
 ```
 
@@ -147,12 +147,11 @@ import { createEmbedRuleBlock } from 'vitepress-plugin-toolkit'
 function myPlugin(md) {
   createEmbedRuleBlock(md, {
     type: 'pdf',
-    syntaxPattern: /^@\[pdf([^\]]*)\]\(([^)]*)\)/,
-    meta: (match) => ({
-      attrs: match[1] || '',
-      src: match[2] || '',
+    meta: (info, source) => ({
+      attrs: info,
+      src: source,
     }),
-    content: (meta) => {
+    content: (meta, env) => {
       return `<VPPdf src="${meta.src}" ${meta.attrs} />`
     },
   })

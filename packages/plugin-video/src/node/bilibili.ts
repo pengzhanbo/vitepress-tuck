@@ -16,16 +16,19 @@ export const bilibiliMarkdownPlugin: PluginSimple = (md) => {
   createEmbedRuleBlock(md, {
     type: 'bilibili',
     name: 'video_bilibili',
-    // eslint-disable-next-line regexp/no-super-linear-backtracking
-    syntaxPattern: /^@\[bilibili(?:\s+p(\d+))?([^\]]*)\]\(([^)]*)\)/,
-    meta([, page, info, source]) {
+    meta(info, source) {
+      let page = 0
+      info = info.replace(/^p(\d+)/, (_, p) => {
+        page = +p
+        return ''
+      })
       const attrs = resolveAttrs(info)
       const ids = source.trim().split(/\s+/)
       const bvid = ids.find(id => id.startsWith('BV'))
       const [aid, cid] = ids.filter(id => !id.startsWith('BV'))
 
       return {
-        page: +page,
+        page,
         bvid,
         aid,
         cid,

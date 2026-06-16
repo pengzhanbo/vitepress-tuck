@@ -97,12 +97,12 @@ export default {
 ### With Options
 
 ```md
-@[pdf 3 no-toolbar width="80%" height="600px" zoom="100"](/demo.pdf)
+@[pdf page="3" no-toolbar width="80%" height="600px" zoom="100"](/demo.pdf)
 ```
 
 | Option       | Type      | Default  | Description                  |
 | ------------ | --------- | -------- | ---------------------------- |
-| `{page}`     | `number`  | `1`      | Page number to display       |
+| `page`       | `number`  | `1`      | Page number to display       |
 | `no-toolbar` | `boolean` | `false`  | Hide PDF.js toolbar          |
 | `width`      | `string`  | `"100%"` | Embed width                  |
 | `height`     | `string`  | `""`     | Embed height                 |

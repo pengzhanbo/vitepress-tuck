@@ -1,5 +1,6 @@
 import type MarkdownIt from 'markdown-it'
 import type { RuleOptions } from 'markdown-it/lib/ruler.mjs'
+import type Token from 'markdown-it/lib/token.mjs'
 import type { MarkdownEnv } from 'vitepress'
 
 /**
@@ -29,37 +30,43 @@ export interface EmbedRuleBlockOptions<Meta extends Record<string, any>> {
    */
   beforeName?: string
   /**
-   * Syntax pattern regular expression
-   *
-   * 语法模式正则表达式
-   */
-  syntaxPattern: RegExp
-  /**
    * Rule options
    *
    * 规则选项
    */
   ruleOptions?: RuleOptions
   /**
-   * Extract metadata from match
+   * Parse the `info` and `source` in `@[type info](source)` and convert them into a metadata object.
    *
-   * 从匹配中提取元数据
+   * 解析 `@[type info](source)` 中的 `info` 和 `source`，转换为元数据对象
    *
-   * @param match - RegExp match array / 正则表达式匹配数组
+   * @param info - Information / 信息
+   * @param source - Source / 来源
    * @returns Metadata object / 元数据对象
    */
-  meta: (match: RegExpMatchArray) => Meta
+  meta: (info: string, source: string) => Meta
   /**
    * Generate content from metadata
    *
    * 从元数据生成内容
    *
    * @param meta - Metadata / 元数据
-   * @param content - Original content / 原始内容
    * @param env - Markdown environment / Markdown 环境
    * @returns Generated content / 生成的内容
    */
-  content: (meta: Meta, content: string, env: MarkdownEnv) => string
+  content?: (meta: Meta, env: MarkdownEnv) => string
+
+  /**
+   * Render content from tokens
+   *
+   * 从令牌渲染内容
+   *
+   * @param tokens - Tokens / 令牌
+   * @param index - Index / 索引
+   * @param env - Markdown environment / Markdown 环境
+   * @returns Generated content / 生成的内容
+   */
+  render?: (tokens: Token[], index: number, env: MarkdownEnv) => string
 }
 
 /**
@@ -80,15 +87,17 @@ export function createEmbedRuleBlock<Meta extends Record<string, any> = Record<s
   {
     type,
     name = type,
-    syntaxPattern,
     beforeName = 'code',
     ruleOptions = { alt: ['paragraph', 'reference', 'blockquote', 'list'] },
     meta,
     content,
+    render,
   }: EmbedRuleBlockOptions<Meta>,
 ): void {
   const MIN_LENGTH = type.length + 5
   const START_CODES = [64, 91, ...type.split('').map(c => c.charCodeAt(0))]
+  const escapedType = type.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const syntaxPattern = new RegExp(`^@\\[${escapedType}(?:\\s+([^\\]]*))?\\]\\(([^)]*)\\)$`)
 
   md.block.ruler.before(
     beforeName,
@@ -111,7 +120,7 @@ export function createEmbedRuleBlock<Meta extends Record<string, any> = Record<s
 
       // check if it's matched the syntax
       // 检查是否匹配语法
-      const content = state.src.slice(pos, max)
+      const content = state.src.slice(pos, max).trim()
       const match = content.match(syntaxPattern)
       if (!match)
         return false
@@ -124,7 +133,8 @@ export function createEmbedRuleBlock<Meta extends Record<string, any> = Record<s
 
       const token = state.push(name, '', 0)
 
-      token.meta = meta(match)
+      const [, info = '', source = ''] = match
+      token.meta = meta(info.trim(), source.trim())
       token.content = content
       token.map = [startLine, startLine + 1]
 
@@ -136,8 +146,8 @@ export function createEmbedRuleBlock<Meta extends Record<string, any> = Record<s
   )
 
   md.renderer.rules[name] = (tokens, index, _, env: MarkdownEnv) => {
-    const token = tokens[index]!
-    token.content = content(token.meta, token.content, env)
-    return token.content
+    return content?.(tokens[index].meta, env)
+      ?? render?.(tokens, index, env)
+      ?? tokens[index].content
   }
 }
