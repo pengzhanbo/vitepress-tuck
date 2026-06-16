@@ -45,6 +45,7 @@ export default defineConfig({
     config: (md) => {
       md.use(plantumlMarkdownPlugin)
     },
+    languageAlias: { plantuml: 'txt' },
   },
 })
 ```
@@ -93,7 +94,7 @@ class Example {
 Or set a global default:
 
 ```ts
-plantuml('png') // default is 'svg'
+plantuml({ format: 'png' }) // default is 'svg'
 ```
 
 ## Configuration
@@ -107,6 +108,12 @@ interface PlantumlPluginOptions {
    * @default 'svg'
    */
   format?: PlantumlFormat
+
+  /**
+   * PlantUML server URL
+   * @default 'https://www.plantuml.com/plantuml'
+   */
+  serverURL?: string
 }
 ```
 

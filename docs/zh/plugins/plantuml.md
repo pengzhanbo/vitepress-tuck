@@ -45,6 +45,7 @@ export default defineConfig({
     config: (md) => {
       md.use(plantumlMarkdownPlugin)
     },
+    languageAlias: { plantuml: 'txt' },
   },
 })
 ```
@@ -93,7 +94,7 @@ class Example {
 或全局配置默认格式：
 
 ```ts
-plantuml('png') // 默认为 'svg'
+plantuml({ format: 'png' }) // 默认为 'svg'
 ```
 
 ## 配置
@@ -107,6 +108,12 @@ interface PlantumlPluginOptions {
    * @default 'svg'
    */
   format?: PlantumlFormat
+
+  /**
+   * PlantUML 服务器 URL
+   * @default 'https://www.plantuml.com/plantuml'
+   */
+  serverURL?: string
 }
 ```
 

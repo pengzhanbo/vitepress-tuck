@@ -1,12 +1,13 @@
 import type { PluginWithOptions } from 'markdown-it'
-import type { PlantumlFormat } from './types.js'
+import type { PlantumlFormat, PlantumlMarkdownPluginOptions } from './types.js'
 import ansis from 'ansis'
 import { genHash } from 'vitepress-plugin-toolkit'
 import { getVitepressConfig, isBuild } from 'vitepress-plugin-toolkit'
 import { SERVER_PREFIX } from './constants.js'
 import { cache, getFilename, getOutputPath } from './utils.js'
 
-export const plantumlMarkdownPlugin: PluginWithOptions<PlantumlFormat> = (md, format = 'svg') => {
+export const plantumlMarkdownPlugin: PluginWithOptions<PlantumlMarkdownPluginOptions> = (md, options = {}) => {
+  const { format = 'svg' } = options
   const config = getVitepressConfig()
   const cacheDir = config.cacheDir
   const name = 'plantuml'

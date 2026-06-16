@@ -1,6 +1,6 @@
 import type { ResolvedConfig } from 'vite'
 import type { Plugin } from 'vitepress'
-import type { PlantumlAllFormat, PlantumlLocaleData } from './types.js'
+import type { PlantumlAllFormat, PlantumlVitePluginOptions } from './types.js'
 import { Buffer } from 'node:buffer'
 import fs, { createReadStream } from 'node:fs'
 import path from 'node:path'
@@ -11,7 +11,7 @@ import { fallbackPNG, fallbackSVG, OUTPUT_DIR, plantumlUrl, SERVER_PREFIX } from
 import { builtinLocales } from './locales.js'
 import { cache, encodePlantuml, getOutputPath, parseFilename } from './utils.js'
 
-export function plantumlVitePlugin(options: { locales?: Record<string, PlantumlLocaleData> } = {}): Plugin[] {
+export function plantumlVitePlugin(options: PlantumlVitePluginOptions = {}): Plugin[] {
   const moduleId = 'virtual:vitepress-plantuml'
   const resolveId = `\0${moduleId}`
   return [
@@ -44,11 +44,11 @@ export function plantumlVitePlugin(options: { locales?: Record<string, PlantumlL
       name: 'zoom-reset',
       svg: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M2 12a9 9 0 0 0 9 9c2.39 0 4.68-.94 6.4-2.6l-1.5-1.5A6.7 6.7 0 0 1 11 19c-6.24 0-9.36-7.54-4.95-11.95S18 5.77 18 12h-3l4 4h.1l3.9-4h-3a9 9 0 0 0-18 0'/%3E%3C/svg%3E")`,
     }]),
-    isBuild ? plantumlVitePluginWithBuild() : plantumlVitePluginWithServer(),
+    isBuild ? plantumlVitePluginWithBuild(options) : plantumlVitePluginWithServer(options),
   ]
 }
 
-function plantumlVitePluginWithServer(): Plugin {
+function plantumlVitePluginWithServer(options: PlantumlVitePluginOptions = {}): Plugin {
   let config!: ResolvedConfig
   return {
     name: 'vitepress:plantuml',
@@ -77,7 +77,7 @@ function plantumlVitePluginWithServer(): Plugin {
         }
 
         const promise = cached.promise ?? attemptAsync(async () => {
-          const buffer = await fetchPlantuml(cached.content, (isDark ? 'd' : '') + format as PlantumlAllFormat)
+          const buffer = await fetchPlantuml(cached.content, (isDark ? 'd' : '') + format as PlantumlAllFormat, options.serverURL)
           buffer && await fs.promises.writeFile(outputPath, buffer)
           return buffer
         })
@@ -94,7 +94,7 @@ function plantumlVitePluginWithServer(): Plugin {
   }
 }
 
-function plantumlVitePluginWithBuild(): Plugin {
+function plantumlVitePluginWithBuild(options: PlantumlVitePluginOptions = {}): Plugin {
   let config!: ResolvedConfig
   return {
     name: 'vitepress:plantuml',
@@ -122,7 +122,7 @@ function plantumlVitePluginWithBuild(): Plugin {
           }
           const { isDark, format } = parseFilename(filename)
           const promise = cached.promise ?? attemptAsync(async () => {
-            const buffer = await fetchPlantuml(cached.content, (isDark ? 'd' : '') + format as PlantumlAllFormat)
+            const buffer = await fetchPlantuml(cached.content, (isDark ? 'd' : '') + format as PlantumlAllFormat, options.serverURL)
             if (!buffer) {
               config.logger.error(`Failed to render: \n${indent(cached.content, '  ')}`)
 
@@ -145,9 +145,9 @@ function plantumlVitePluginWithBuild(): Plugin {
 
 const RE_PLANTUML_TAG = /<\?plantuml.*?\?>/g
 
-async function fetchPlantuml(source: string, format: PlantumlAllFormat): Promise<Buffer | null> {
+async function fetchPlantuml(source: string, format: PlantumlAllFormat, serverURL?: string): Promise<Buffer | null> {
   const encoded = encodePlantuml(source)
-  const url = `${plantumlUrl}/${format}/${encoded}`
+  const url = `${serverURL || plantumlUrl}/${format}/${encoded}`
   const res = await fetch(url)
   if (!res.ok)
     return null

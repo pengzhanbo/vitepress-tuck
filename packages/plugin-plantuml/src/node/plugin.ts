@@ -1,4 +1,4 @@
-import type { PlantumlFormat } from './types.js'
+import type { PlantumlPluginOptions } from './types.js'
 import { definePlugin } from 'vitepress-tuck'
 import { plantumlMarkdownPlugin } from './markdown.js'
 import { plantumlVitePlugin } from './vite.js'
@@ -14,16 +14,16 @@ import { plantumlVitePlugin } from './vite.js'
  * })
  * ```
  */
-export const plantuml = definePlugin((format?: PlantumlFormat) => ({
+export const plantuml = definePlugin((options?: PlantumlPluginOptions) => ({
   name: 'vitepress-plugin-plantuml',
   client: { enhance: 'enhanceAppWithPlantuml' },
   markdown: {
     config(md) {
-      md.use(plantumlMarkdownPlugin, format)
+      md.use(plantumlMarkdownPlugin, options)
     },
     languageAlias: { plantuml: 'txt' },
   },
   vite: {
-    plugins: [plantumlVitePlugin()],
+    plugins: [plantumlVitePlugin(options)],
   },
 }))
