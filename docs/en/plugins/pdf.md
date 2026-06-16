@@ -69,7 +69,8 @@ Embed a PDF using `@[pdf]()`:
 ### Specifying a Page
 
 ```md
-@[pdf 3](https://example.com/sample.pdf)
+@[pdf page="3"](https://example.com/sample.pdf)
+@[pdf p="3"](https://example.com/sample.pdf)
 ```
 
 ### Configuration Options

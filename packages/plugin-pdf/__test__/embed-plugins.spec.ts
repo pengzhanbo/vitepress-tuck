@@ -16,8 +16,11 @@ describe('pdfMarkdownPlugin', () => {
     const md = new MarkdownIt()
     md.use(pdfMarkdownPlugin)
 
-    const result = md.render('@[pdf 3](https://example.com/sample.pdf)')
+    const result = md.render('@[pdf page=3](https://example.com/sample.pdf)')
     expect(result).toContain('<VPPdf')
+
+    const result2 = md.render('@[pdf p=3](https://example.com/sample.pdf)')
+    expect(result2).toContain('<VPPdf')
   })
 
   it('should support width and height options', () => {

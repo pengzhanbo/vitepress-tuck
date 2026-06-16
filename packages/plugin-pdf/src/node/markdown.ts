@@ -10,13 +10,11 @@ import { createEmbedRuleBlock, parseRect, resolveAttrs, stringifyAttrs } from 'v
 export const pdfMarkdownPlugin: PluginSimple = (md) => {
   createEmbedRuleBlock(md, {
     type: 'pdf',
-    // eslint-disable-next-line regexp/no-super-linear-backtracking
-    syntaxPattern: /^@\[pdf(?:\s+(\d+))?([^\]]*)\]\(([^)]*)\)/,
-    meta([, page, info, src]) {
+    meta(info, src) {
       const attrs = resolveAttrs(info!)
       return {
         src,
-        page: +page! || 1,
+        page: +(attrs.page || attrs.p || 1),
         noToolbar: Boolean(attrs.noToolbar ?? false),
         zoom: +attrs.zoom || 50,
         width: attrs.width ? parseRect(attrs.width) : '100%',

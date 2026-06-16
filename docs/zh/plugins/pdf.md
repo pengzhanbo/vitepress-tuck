@@ -69,7 +69,8 @@ export default {
 ### 指定页码
 
 ```md
-@[pdf 3](https://example.com/sample.pdf)
+@[pdf page="3"](https://example.com/sample.pdf)
+@[pdf p="3"](https://example.com/sample.pdf)
 ```
 
 ### 配置选项

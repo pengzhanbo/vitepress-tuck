@@ -43,8 +43,7 @@ export const artPlayerMarkdownPlugin: PluginSimple = (md) => {
   createEmbedRuleBlock(md, {
     type: 'artPlayer',
     name: 'video_artPlayer',
-    syntaxPattern: /^@\[artPlayer([^\]]*)\]\(([^)]*)\)/,
-    meta([, info, source]) {
+    meta(info, source) {
       const attrs = resolveAttrs(info)
       const url = source.trim()
       checkSupportType(attrs.type ?? url.split('.').pop())

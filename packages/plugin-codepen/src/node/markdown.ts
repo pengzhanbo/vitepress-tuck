@@ -25,8 +25,7 @@ import { createEmbedRuleBlock, parseRect, resolveAttrs, stringifyAttrs } from 'v
 export const codepenMarkdownPlugin: PluginSimple = (md) => {
   createEmbedRuleBlock<CodepenData>(md, {
     type: 'codepen',
-    syntaxPattern: /^@\[codepen([^\]]*)\]\(([^)]*)\)/,
-    meta: ([, info, source]) => {
+    meta: (info, source) => {
       const { width, height, title, tab, ...rest } = resolveAttrs<CodepenData>(info)
       const [user, slash] = source.split('/')
 

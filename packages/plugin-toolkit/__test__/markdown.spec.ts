@@ -112,10 +112,9 @@ describe('createEmbedRuleBlock', () => {
     const md = new MarkdownIt()
     createEmbedRuleBlock(md, {
       type: 'pdf',
-      syntaxPattern: /^@\[pdf([^\]]*)\]\(([^)]*)\)/,
-      meta: match => ({
-        src: match[2] || '',
-        attrs: match[1] || '',
+      meta: (info, source) => ({
+        src: source || '',
+        attrs: info || '',
       }),
       content: meta => `<VPPdf src="${meta.src}" ${meta.attrs} />`,
     })
@@ -129,10 +128,9 @@ describe('createEmbedRuleBlock', () => {
     const md = new MarkdownIt()
     createEmbedRuleBlock(md, {
       type: 'qrcode',
-      syntaxPattern: /^@\[qrcode([^\]]*)\]\(([^)]*)\)/,
-      meta: match => ({
-        text: match[2] || '',
-        attrs: match[1] || '',
+      meta: (info, source) => ({
+        text: source || '',
+        attrs: info || '',
       }),
       content: meta => `<VPQrcode text="${meta.text}" ${meta.attrs} />`,
     })
@@ -145,7 +143,6 @@ describe('createEmbedRuleBlock', () => {
     const md = new MarkdownIt()
     createEmbedRuleBlock(md, {
       type: 'pdf',
-      syntaxPattern: /^@\[pdf([^\]]*)\]\(([^)]*)\)/,
       meta: () => ({}),
       content: () => '<PDF />',
     })
@@ -159,8 +156,7 @@ describe('createEmbedRuleBlock', () => {
     createEmbedRuleBlock(md, {
       type: 'custom',
       name: 'my-custom-token',
-      syntaxPattern: /^@\[custom\]\(([^)]*)\)/,
-      meta: ([, src]) => ({ src }),
+      meta: (_info, source) => ({ src: source }),
       content: meta => `<Custom src="${meta.src}" />`,
     })
 
@@ -172,13 +168,77 @@ describe('createEmbedRuleBlock', () => {
     const md = new MarkdownIt()
     createEmbedRuleBlock(md, {
       type: 'longtype',
-      syntaxPattern: /^@\[longtype\]\(([^)]*)\)/,
-      meta: ([, src]) => ({ src }),
+      meta: (_info, source) => ({ src: source }),
       content: () => '',
     })
 
     // line too short
     const result = md.render('@[lon')
     expect(result).toBe('<p>@[lon</p>\n')
+  })
+
+  it('should use render function when content is not provided', () => {
+    const md = new MarkdownIt()
+    createEmbedRuleBlock(md, {
+      type: 'bilibili',
+      meta: (_info, source) => ({ bv: source }),
+      render: (_tokens, _idx, _env) => `<VPBilibili />`,
+    })
+
+    const result = md.render('@[bilibili](BV1xx411c7mD)')
+    expect(result).toContain('<VPBilibili')
+  })
+
+  it('should pass meta info and source separately to meta function', () => {
+    const md = new MarkdownIt()
+    createEmbedRuleBlock(md, {
+      type: 'video',
+      meta: (info, source) => ({
+        src: source,
+        type: info || 'default',
+      }),
+      content: meta => `<VPVideo src="${meta.src}" type="${meta.type}" />`,
+    })
+
+    const result = md.render('@[video mp4](https://example.com/video.mp4)')
+    expect(result).toContain('type="mp4"')
+    expect(result).toContain('https://example.com/video.mp4')
+  })
+
+  it('should fallback to raw token content when neither content nor render is provided', () => {
+    const md = new MarkdownIt()
+    createEmbedRuleBlock(md, {
+      type: 'raw',
+      meta: () => ({}),
+    })
+
+    const result = md.render('@[raw](something)')
+    expect(result).toContain('@[raw](something)')
+  })
+
+  it('should not match line where type prefix is part of another word', () => {
+    const md = new MarkdownIt()
+    createEmbedRuleBlock(md, {
+      type: 'pdf',
+      meta: (_info, source) => ({ src: source }),
+      content: () => '<PDF />',
+    })
+
+    const result = md.render('Check out something@[pdf](url)')
+    expect(result).not.toContain('<PDF />')
+  })
+
+  it('should handle empty info and source gracefully', () => {
+    const md = new MarkdownIt()
+    createEmbedRuleBlock(md, {
+      type: 'test',
+      meta: (info, source) => ({ info, source }),
+      content: meta => `<Test info="${meta.info}" src="${meta.source}" />`,
+    })
+
+    const result = md.render('@[test]()')
+    expect(result).toContain('<Test')
+    expect(result).toContain('info=""')
+    expect(result).toContain('src=""')
   })
 })

@@ -13,8 +13,7 @@ export const youtubeMarkdownPlugin: PluginSimple = (md) => {
   createEmbedRuleBlock(md, {
     type: 'youtube',
     name: 'video_youtube',
-    syntaxPattern: /^@\[youtube([^\]]*)\]\(([^)]*)\)/,
-    meta([, info, id]) {
+    meta(info, id) {
       const attrs = resolveAttrs(info)
 
       return {

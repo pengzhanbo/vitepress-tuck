@@ -10,8 +10,7 @@ import { createContainerSyntaxPlugin, createEmbedRuleBlock, isLinkWithProtocol, 
 export const qrcodeMarkdownPlugin: PluginSimple = (md) => {
   createEmbedRuleBlock(md, {
     type: 'qrcode',
-    syntaxPattern: /^@\[qrcode([^\]]*)\]\(([^)]*)\)/,
-    meta([, info, text]) {
+    meta(info, text) {
       const attrs = resolveAttrs(info)
       const { card, ...rest } = omit(attrs, ['text'])
 
@@ -21,7 +20,7 @@ export const qrcodeMarkdownPlugin: PluginSimple = (md) => {
         mode: rest.mode || (card ? 'card' : 'img'),
       }
     },
-    content(meta, _, env) {
+    content(meta, env) {
       meta.text = processText(meta.text, env)
       return `<VPQrcode${stringifyAttrs(meta)} />`
     },
