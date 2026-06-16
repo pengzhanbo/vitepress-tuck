@@ -12,9 +12,11 @@ export const pdfMarkdownPlugin: PluginSimple = (md) => {
     type: 'pdf',
     meta(info, src) {
       const attrs = resolveAttrs(info!)
+      const rawPage = attrs.page ?? attrs.p
+      const parsedPage = Number(rawPage)
       return {
         src,
-        page: +(attrs.page || attrs.p || 1),
+        page: Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1,
         noToolbar: Boolean(attrs.noToolbar ?? false),
         zoom: +attrs.zoom || 50,
         width: attrs.width ? parseRect(attrs.width) : '100%',

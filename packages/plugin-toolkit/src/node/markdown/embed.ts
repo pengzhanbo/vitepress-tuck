@@ -36,9 +36,9 @@ export interface EmbedRuleBlockOptions<Meta extends Record<string, any>> {
    */
   ruleOptions?: RuleOptions
   /**
-   * Extract metadata from match
+   * Parse the `info` and `source` in `@[type info](source)` and convert them into a metadata object.
    *
-   * 从匹配中提取元数据
+   * 解析 `@[type info](source)` 中的 `info` 和 `source`，转换为元数据对象
    *
    * @param info - Information / 信息
    * @param source - Source / 来源
@@ -96,7 +96,8 @@ export function createEmbedRuleBlock<Meta extends Record<string, any> = Record<s
 ): void {
   const MIN_LENGTH = type.length + 5
   const START_CODES = [64, 91, ...type.split('').map(c => c.charCodeAt(0))]
-  const syntaxPattern = new RegExp(`^@\\[${type}([^\\]]*)\\]\\(([^)]*)\\)$`)
+  const escapedType = type.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const syntaxPattern = new RegExp(`^@\\[${escapedType}(?:\\s+([^\\]]*))?\\]\\(([^)]*)\\)$`)
 
   md.block.ruler.before(
     beforeName,
@@ -132,7 +133,7 @@ export function createEmbedRuleBlock<Meta extends Record<string, any> = Record<s
 
       const token = state.push(name, '', 0)
 
-      const [, info, source] = match
+      const [, info = '', source = ''] = match
       token.meta = meta(info.trim(), source.trim())
       token.content = content
       token.map = [startLine, startLine + 1]
@@ -146,7 +147,7 @@ export function createEmbedRuleBlock<Meta extends Record<string, any> = Record<s
 
   md.renderer.rules[name] = (tokens, index, _, env: MarkdownEnv) => {
     return content?.(tokens[index].meta, env)
-      || render?.(tokens, index, env)
-      || tokens[index].content
+      ?? render?.(tokens, index, env)
+      ?? tokens[index].content
   }
 }

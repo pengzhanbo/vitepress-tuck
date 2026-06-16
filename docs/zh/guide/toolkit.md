@@ -130,10 +130,10 @@ interface EmbedRuleBlockOptions<Meta extends Record<string, any>> {
   beforeName?: string
   /** 规则选项 */
   ruleOptions?: RuleOptions
-  /** 从匹配中提取元数据 */
+  /** 解析 `@[type info](source)` 中的 `info` 和 `source`，转换为元数据对象 */
   meta: (info: string, source: string) => Meta
   /** 从元数据生成内容 */
-  content: (meta: Meta, env: MarkdownEnv) => string
+  content?: (meta: Meta, env: MarkdownEnv) => string
   /** 渲染函数 */
   render?: (tokens: Token[], index: number, env: MarkdownEnv) => string
 }

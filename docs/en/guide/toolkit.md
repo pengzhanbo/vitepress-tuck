@@ -130,7 +130,7 @@ interface EmbedRuleBlockOptions<Meta extends Record<string, any>> {
   beforeName?: string
   /** Rule options */
   ruleOptions?: RuleOptions
-  /** Extract metadata from match */
+  /** Parse the `info` and `source` in `@[type info](source)` and convert them into a metadata object. */
   meta: (info: string, source: string) => Meta
   /** Generate content from metadata */
   content?: (meta: Meta, env: MarkdownEnv) => string

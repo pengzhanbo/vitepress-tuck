@@ -18,9 +18,11 @@ describe('pdfMarkdownPlugin', () => {
 
     const result = md.render('@[pdf page=3](https://example.com/sample.pdf)')
     expect(result).toContain('<VPPdf')
+    expect(result).toContain('page="3"')
 
     const result2 = md.render('@[pdf p=3](https://example.com/sample.pdf)')
     expect(result2).toContain('<VPPdf')
+    expect(result2).toContain('page="3"')
   })
 
   it('should support width and height options', () => {
