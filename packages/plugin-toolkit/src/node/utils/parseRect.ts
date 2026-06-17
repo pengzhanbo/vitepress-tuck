@@ -6,6 +6,12 @@
  * @param str - Size string / 尺寸字符串
  * @param unit - Unit to append (default: 'px') / 要添加的单位（默认：'px'）
  * @returns Size string with unit / 带单位的尺寸字符串
+ * @example
+ * ```ts
+ * parseRect('100') // '100px'
+ * parseRect('50%') // '50%'
+ * parseRect('200', 'rpx') // '200rpx'
+ * ```
  */
 export function parseRect(str: string, unit = 'px'): string {
   if (Number.parseFloat(str) === Number(str))

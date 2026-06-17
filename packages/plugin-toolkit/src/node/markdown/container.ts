@@ -41,6 +41,13 @@ export interface ContainerOptions {
  * @param options - Optional before/after render hooks / 可选的 before/after 渲染钩子
  * @param options.before - Callback for rendering container opening tag / 渲染容器起始标签时的回调函数
  * @param options.after - Callback for rendering container closing tag / 渲染容器结束标签时的回调函数
+ * @example
+ * ```ts
+ * md.use(createContainerPlugin, 'tip', {
+ *   before: info => `<div class="tip">${info}`,
+ *   after: () => '</div>',
+ * })
+ * ```
  */
 export function createContainerPlugin(
   md: MarkdownIt,

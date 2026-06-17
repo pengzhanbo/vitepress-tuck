@@ -81,6 +81,14 @@ export interface EmbedRuleBlockOptions<Meta extends Record<string, any>> {
  * @param md - Markdown instance / Markdown 实例
  * @param {EmbedRuleBlockOptions} options - Embed rule block options / 嵌入规则块选项
  * @typeParam Meta - Metadata type / 元数据类型
+ * @example
+ * ```ts
+ * createEmbedRuleBlock(md, {
+ *   type: 'video',
+ *   meta: (info, source) => ({ src: source, title: info }),
+ *   content: meta => `<video src="${meta.src}" title="${meta.title}"></video>`,
+ * })
+ * ```
  */
 export function createEmbedRuleBlock<Meta extends Record<string, any> = Record<string, any>>(
   md: MarkdownIt,

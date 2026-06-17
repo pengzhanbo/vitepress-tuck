@@ -2,19 +2,41 @@ import type { FileTreeNode } from './types.js'
 import { removeTrailingSlash } from '@pengzhanbo/utils'
 
 /**
- * Regex for focus marker
+ * Regular expression for the focus marker `**filename**`.
  *
- * 高亮标记正则
+ * 聚焦标记 `**filename**` 的正则表达式。
+ *
+ * A filename wrapped in double asterisks is highlighted as a focused node.
+ * The marker may be followed by a space and an inline comment.
  */
 const RE_FOCUS = /^\*\*(.*)\*\*(?:$|\s+)/
 
 /**
- * Parse single node info string, extract filename, comment, type, etc.
+ * Parse a single node info string, extracting filename, comment, type, and
+ * other metadata.
  *
- * 解析单个节点的 info 字符串，提取文件名、注释、类型等属性
+ * 解析单个节点的 info 字符串，提取文件名、注释、类型等属性。
+ *
+ * Recognizes the following syntax within the info string:
+ * - `++filename` — marks the node as a diff addition
+ * - `--filename` — marks the node as a diff removal
+ * - `**filename**` — highlights the node as focused
+ * - `filename # comment` — attaches an inline comment after `#`
+ * - `filename/` — treats the entry as a folder (trailing slash removed)
  *
  * @param info - Node description string / 节点描述字符串
- * @returns File tree node props / 文件树节点属性
+ * @returns File tree node properties excluding `children` and `level` / 文件树节点属性（不含 `children` 和 `level`）
+ *
+ * @example
+ * ```ts
+ * parseNodeInfo('src/  # source folder')
+ * // { filename: 'src', comment: '# source folder', focus: false,
+ * //   expanded: false, type: 'folder', diff: undefined }
+ *
+ * parseNodeInfo('**index.ts**')
+ * // { filename: 'index.ts', comment: '', focus: true,
+ * //   expanded: true, type: 'file', diff: undefined }
+ * ```
  */
 export function parseNodeInfo(info: string): Omit<FileTreeNode, 'children' | 'level'> {
   let filename = ''

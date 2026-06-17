@@ -1,9 +1,19 @@
 /**
- * Wiki Link 是属于 obsidian 官方扩展的 markdown 语法
+ * Wiki Link is an official Obsidian markdown extension.
  *
- * [[文件名]]  [[文件名#标题]]  [[文件名#标题#标题]] [[文件名#标题|别名]]
+ * Wiki Link 是属于 Obsidian 官方扩展的 markdown 语法。
+ *
+ * Supported forms:
+ * 支持的形式：
+ * - `[[文件名]]`
+ * - `[[文件名#标题]]`
+ * - `[[文件名#标题#标题]]`
+ * - `[[文件名#标题|别名]]`
  *
  * @see - https://obsidian.md/zh/help/links
+ *
+ * The plugin provides compatibility support for this syntax, not a full
+ * reimplementation of Obsidian's behavior.
  *
  * 插件提供的是对该语法的兼容性支持，并非实现其完全的功能。
  */
@@ -17,6 +27,34 @@ import { isHttp } from '@pengzhanbo/utils'
 import { slugify } from 'vitepress-plugin-toolkit'
 import { findFirstFile, loadFiles } from './loadFiles.js'
 
+/**
+ * Build an inline rule that recognizes Obsidian wiki link syntax `[[...]]`.
+ *
+ * 构造识别 Obsidian wiki 链接语法 `[[...]]` 的行内规则。
+ *
+ * 解析流程：
+ * 1. 校验当前位置以 `[[` 开头，并扫描至配对的 `]]`。
+ * 2. 将内容按 `|` 拆分为文件名与别名，按 `#` 拆分文件名与标题层级。
+ * 3. 根据文件名类型分别处理：
+ *    - HTTP(S) 外部链接：输出带 `target` 与 `rel` 属性的 `<a>`。
+ *    - 空文件名（页内锚点）：仅生成 `#slug` 形式的 href。
+ *    - 站内 markdown 文件（通过 `findFirstFile` 命中）：生成相对路径 href。
+ *    - 其他情况：按绝对或相对路径直接作为 href。
+ * 4. 别名缺省时，回退为 `文件名 > 标题` 形式的文本。
+ *
+ * @example
+ * ```ts
+ * import MarkdownIt from 'markdown-it'
+ * import { wikiLinkMarkdownPlugin } from 'vitepress-plugin-obsidian'
+ *
+ * const md = new MarkdownIt().use(wikiLinkMarkdownPlugin, { root: '.', files: [] })
+ * md.render('[[guide|指南]]')
+ * ```
+ *
+ * @param root - Absolute path of the VitePress source root / VitePress 源根目录的绝对路径
+ * @param files - Markdown file list for internal link resolution / 用于内部链接解析的 markdown 文件列表
+ * @returns markdown-it inline rule / markdown-it 行内规则
+ */
 function wikiLinkDef(root: string, files: string[]): RuleInline {
   return (state, silent) => {
     let found = false
@@ -112,6 +150,26 @@ function wikiLinkDef(root: string, files: string[]): RuleInline {
   }
 }
 
+/**
+ * markdown-it plugin that registers the Obsidian wiki link inline rule.
+ *
+ * markdown-it 插件，注册 Obsidian wiki 链接的行内规则。
+ *
+ * 在 `emphasis` 规则之前插入 `obsidian_wiki_link` 规则。当未显式传入 `options`
+ * 时，会调用 `loadFiles()` 收集站点 markdown 文件列表用于内部链接解析。
+ *
+ * @example
+ * ```ts
+ * import MarkdownIt from 'markdown-it'
+ * import { wikiLinkMarkdownPlugin } from 'vitepress-plugin-obsidian'
+ *
+ * const md = new MarkdownIt().use(wikiLinkMarkdownPlugin)
+ * md.render('[[guide]]')
+ * ```
+ *
+ * @param md - markdown-it instance / markdown-it 实例
+ * @param options - Optional `FilesResult` to reuse a precomputed file list / 可选的 `FilesResult`，用于复用预先计算的文件列表
+ */
 export const wikiLinkMarkdownPlugin: PluginWithOptions<Partial<FilesResult>> = (
   md,
   options,

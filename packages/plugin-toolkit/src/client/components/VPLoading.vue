@@ -1,6 +1,20 @@
 <script setup lang="ts">
+/**
+ * A loading indicator component with an animated SVG spinner.
+ *
+ * 带有 SVG 动画旋转图标的加载指示器组件。
+ *
+ * @example
+ * ```vue
+ * <VPLoading />
+ *
+ * <VPLoading absolute height="200px" />
+ * ```
+ */
 defineProps<{
+  /** Whether to position the loader absolutely / 是否以绝对定位渲染加载器 */
   absolute?: boolean
+  /** Custom height for the loading container / 加载容器的自定义高度 */
   height?: string
 }>()
 </script>

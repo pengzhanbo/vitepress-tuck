@@ -48,7 +48,11 @@ export interface FieldObject {
   description?: string
 }
 
-/** Tags that carry structured meaning; everything else is description text. */
+/**
+ * Tags that carry structured meaning; everything else is description text.
+ *
+ * 携带结构化含义的标签；其他内容均视为描述文本。
+ */
 const KNOWN_TAGS = new Set([
   'name',
   'type',
@@ -88,8 +92,8 @@ const KNOWN_TAGS = new Set([
  * 未知的以 `@` 开头的标签将被视为描述文本。
  * 空行会被忽略，且不会中断描述段落。
  *
- * @param content Raw text inside the `:::` container
- * @param info    Text after `::: field` on the opening line (the field name)
+ * @param content - Raw text inside the `:::` container / `:::` 容器内的原始文本
+ * @param info - Text after `::: field` on the opening line (the field name) / 起始行中 `::: field` 之后的文本（字段名称）
  */
 export function parseFieldContent(content: string, info: string): FieldObject {
   const lines = content.split('\n')
@@ -99,11 +103,16 @@ export function parseFieldContent(content: string, info: string): FieldObject {
     description: '',
   }
 
-  /** Accumulates the current description paragraph. */
+  /** Accumulates the current description paragraph. / 累积当前描述段落。 */
   let currentDesc = ''
-  /** Completed description segments, joined with `\n` at the end. */
+  /** Completed description segments, joined with `\n` at the end. / 已完成的描述片段，最后以 `\n` 连接。 */
   const descriptions: string[] = []
 
+  /**
+   * Flushes the accumulated description paragraph into the `descriptions` array.
+   *
+   * 将已累积的描述段落刷新到 `descriptions` 数组中。
+   */
   function flushDesc(): void {
     if (currentDesc) {
       descriptions.push(currentDesc)

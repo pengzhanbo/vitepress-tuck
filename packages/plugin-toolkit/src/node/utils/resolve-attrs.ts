@@ -15,6 +15,13 @@ const RE_ATTR_VALUE = /(?:^|\s+)(?<attr>[\w-]+)(?:=(?<quote>['"])(?<valueWithQuo
  * @param info - Attribute string / 属性字符串
  * @returns Object with attrs and rawAttrs / 包含 attrs 和 rawAttrs 的对象
  * @typeParam T - Attribute type / 属性类型
+ * @example
+ * ```ts
+ * resolveAttrs('width="100" height="50"')
+ * // { width: '100', height: '50' }
+ * resolveAttrs('disabled title="Hello"')
+ * // { disabled: true, title: 'Hello' }
+ * ```
  */
 export function resolveAttrs<T extends Record<string, any> = Record<string, any>>(info: string): T {
   info = info.trim()
@@ -53,6 +60,11 @@ export function resolveAttrs<T extends Record<string, any> = Record<string, any>
  * @param info - Info string / 信息字符串
  * @param key - Attribute key / 属性键
  * @returns Attribute value or undefined / 属性值或 undefined
+ * @example
+ * ```ts
+ * resolveAttr('width="100" height="50"', 'width') // '100'
+ * resolveAttr('width="100" height="50"', 'color') // undefined
+ * ```
  */
 export function resolveAttr(info: string, key: string): string | undefined {
   const pattern = new RegExp(`(?:^|\\s+)${key}(?:=(?<quote>['"])(?<valueWithQuote>.+?)\\k<quote>|=(?<valueWithoutQuote>\\S+))?(?:\\s+|$)`)

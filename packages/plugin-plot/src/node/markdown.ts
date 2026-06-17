@@ -9,18 +9,43 @@ import type { RuleInline } from 'markdown-it/lib/parser_inline.mjs'
 import type { PlotOptions } from './types.js'
 
 /**
- * Plot plugin - Hide text with spoiler effect
+ * Plot markdown-it plugin - Hide text with a spoiler effect.
  *
- * 黑幕插件 - 使用黑幕效果隐藏文本
+ * 黑幕 markdown-it 插件 - 使用黑幕效果隐藏文本。
  *
- * Syntax: !!hidden text!!
+ * Registers an inline rule that parses `!!hidden text!!` syntax and emits
+ * `plot_inline_open` / `plot_inline_close` tokens wrapping a text token.
+ * The rule is inserted before the `emphasis` rule to avoid conflicts.
  *
- * 语法：!!隐藏文本!!
+ * 注册一个内联规则，解析 `!!隐藏文本!!` 语法，并生成
+ * `plot_inline_open` / `plot_inline_close` 包裹文本 token 的结构。
+ * 该规则插入到 `emphasis` 规则之前以避免冲突。
  *
- * @param md - Markdown-it instance / Markdown-it 实例
+ * @param md - Markdown-it instance to extend / 要扩展的 Markdown-it 实例
+ * @param options - Plugin options / 插件选项
+ * @example
+ * ```ts
+ * import MarkdownIt from 'markdown-it'
+ * import { plotMarkdownPlugin } from 'vitepress-plugin-plot/node'
+ *
+ * const md = new MarkdownIt()
+ * md.use(plotMarkdownPlugin, { trigger: 'click', effect: 'blur' })
+ *
+ * md.render('!!secret!!')
+ * // => <p><Plot trigger="click" effect="blur">secret</Plot></p>
+ * ```
  */
 export const plotMarkdownPlugin: PluginWithOptions<PlotOptions> = (md, options = {}) => {
   const { trigger, effect } = options
+  /**
+   * Inline rule that matches `!!content!!` spoiler syntax.
+   *
+   * 匹配 `!!内容!!` 黑幕语法的内联规则。
+   *
+   * @param state - Inline parser state / 内联解析器状态
+   * @param silent - If true, only probe without mutating state / 为 true 时仅探测，不修改状态
+   * @returns True when the syntax is matched and tokens are emitted / 匹配成功并生成 token 时返回 true
+   */
   const plotDef: RuleInline = (state, silent) => {
     let found = false
     const max = state.posMax

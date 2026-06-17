@@ -1,18 +1,32 @@
+/**
+ * Options for the video plugin, used to enable or disable individual video
+ * embed providers.
+ *
+ * 视频插件选项，用于启用或禁用各个视频嵌入提供商。
+ */
 export interface VideoPluginOptions {
   /**
-   * 是否开启 artplayer
+   * Enable the ArtPlayer provider for self-hosted videos.
+   *
+   * 是否开启 artplayer。
    */
   artplayer?: boolean
   /**
-   * 是否开启 youtube
+   * Enable the YouTube embed provider.
+   *
+   * 是否开启 youtube。
    */
   youtube?: boolean
   /**
-   * 是否开启 bilibili
+   * Enable the Bilibili embed provider.
+   *
+   * 是否开启 bilibili。
    */
   bilibili?: boolean
   /**
-   * 是否开启 acfun
+   * Enable the AcFun embed provider.
+   *
+   * 是否开启 acfun。
    */
   acfun?: boolean
 }

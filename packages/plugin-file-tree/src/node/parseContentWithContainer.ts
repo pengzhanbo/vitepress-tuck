@@ -4,10 +4,27 @@ import { parseNodeInfo } from './parseNodeInfo.js'
 /**
  * Parse the content from the `::: file-tree` container into a node tree structure.
  *
- * 从 `::: file-tree` 容器中解析内容为节点树结构
+ * 从 `::: file-tree` 容器中解析内容为节点树结构。
+ *
+ * Accepts indented list-style text where each entry starts with `- ` and
+ * indentation is measured in two-space increments. The first line's leading
+ * whitespace is stripped to normalize the root level. Each entry is passed
+ * to `parseNodeInfo` to extract the filename, comment, type, and other
+ * metadata.
  *
  * @param content - Raw file tree text content / 文件树的原始文本内容
  * @returns File tree node array / 文件树节点数组
+ *
+ * @example
+ * ```ts
+ * const content = `
+ * - src/  # source folder
+ *   - index.ts
+ *   - utils.ts
+ * - package.json
+ * `
+ * parseContentWithContainer(content)
+ * ```
  */
 export function parseContentWithContainer(content: string): FileTreeNode[] {
   const root: FileTreeNode = { level: -1, children: [] } as unknown as FileTreeNode

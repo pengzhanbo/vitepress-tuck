@@ -1,11 +1,18 @@
 /**
- * obsidian callouts，其表现形式类似于 vuepress alerts
+ * Obsidian callouts, similar in appearance to VitePress alerts.
  *
- * 差异点：在语法上支持 标题 和 折叠展开
+ * Obsidian callouts 标注块，其表现形式类似于 VitePress alerts。
  *
- * 1. 此插件将 callouts 所有类型映射到 vuepress alerts 支持的类型中
- * 2. 忽略 折叠展开功能，在 语法解析上 不处理 折叠展开逻辑
- * 3. 支持 标题
+ * Differences: the syntax supports a custom title and collapsible state.
+ *
+ * 差异点：在语法上支持 标题 和 折叠展开。
+ *
+ * 1. This plugin maps every Obsidian callout type to a VitePress alert type.
+ *    此插件将 callouts 所有类型映射到 VitePress alerts 支持的类型中。
+ * 2. The collapsible behavior is ignored at the parsing stage.
+ *    忽略 折叠展开功能，在 语法解析上 不处理 折叠展开逻辑。
+ * 3. Custom titles are supported.
+ *    支持 标题。
  *
  * @see - https://obsidian.md/zh/help/callouts
  */
@@ -15,7 +22,14 @@ import type { RuleBlock } from 'markdown-it/lib/parser_block.mjs'
 import type { MarkdownEnv } from 'vitepress'
 import { objectEntries, uniq, upperCase } from '@pengzhanbo/utils'
 
-// 将 obsidian callout 映射到 vitepress alert 的类型
+/**
+ * Mapping from VitePress alert types to their Obsidian callout aliases.
+ *
+ * VitePress alert 类型到其 Obsidian callout 别名的映射表。
+ *
+ * 键为 VitePress alert 类型，值为该类型在 Obsidian 中可识别的别名列表。
+ * 解析时所有别名都会归一化到对应的 VitePress 类型。
+ */
 const calloutsToAlerts: Record<string, string[]> = {
   note: ['quote', 'cite'],
   tip: ['hint', 'check', 'done', 'success'],
@@ -33,6 +47,27 @@ const calloutAlias = objectEntries(calloutsToAlerts)
     return acc
   }, {} as Record<string, string>)
 
+/**
+ * Block rule that recognizes Obsidian callout syntax (`> [!type] title`).
+ *
+ * 块级规则，识别 Obsidian callout 语法（`> [!type] title`）。
+ *
+ * 解析流程：
+ * 1. 校验起始行以 `>` 开头，并跳过可选的空格或制表符。
+ * 2. 读取 `[!type]` 中的类型名，校验其是否为受支持的 callout 类型。
+ * 3. 读取 `]` 之后的标题内容。
+ * 4. 逐行扫描块体，处理块引用标记、缩进与终止条件，确定块的结束行。
+ * 5. 推送 `obsidian_callout_open`、`obsidian_callout_title` 与
+ *    `obsidian_callout_close` token，并对块体递归调用 tokenize。
+ *
+ * 当 `silent` 为 `true` 时仅做识别，不修改状态，用于其他规则的探测。
+ *
+ * @param state - markdown-it block parser state / markdown-it 块解析器状态
+ * @param startLine - First line index of the candidate block / 候选块的起始行号
+ * @param endLine - Exclusive end line index of the scanning range / 扫描范围的结束行号（不含）
+ * @param silent - When true, only detect without mutating state / 为 true 时仅探测，不修改状态
+ * @returns `true` if the line starts a valid callout, otherwise `false` / 若该行是有效的 callout 起始则返回 `true`，否则返回 `false`
+ */
 const calloutsDef: RuleBlock = (state, startLine, endLine, silent) => {
   // if it's indented more than 3 spaces, it should be a code block
   if (state.sCount[startLine]! - state.blkIndent >= 4)
@@ -378,6 +413,28 @@ const calloutsDef: RuleBlock = (state, startLine, endLine, silent) => {
   return true
 }
 
+/**
+ * markdown-it plugin that registers the Obsidian callout block rule and renderers.
+ *
+ * markdown-it 插件，注册 Obsidian callout 块规则与对应的渲染器。
+ *
+ * 注册内容：
+ * - 在 `blockquote` 规则之前插入 `github-alerts` 块规则（即 `calloutsDef`）。
+ * - `obsidian_callout_open` / `obsidian_callout_close` 渲染器：输出带类型类名的
+ *   `div`（或 `details`）容器标签。
+ * - `obsidian_callout_title` 渲染器：输出标题元素，缺省标题时回退为大写的类型名。
+ *
+ * @example
+ * ```ts
+ * import MarkdownIt from 'markdown-it'
+ * import { calloutMarkdownPlugin } from 'vitepress-plugin-obsidian'
+ *
+ * const md = new MarkdownIt().use(calloutMarkdownPlugin)
+ * md.render('> [!tip] 提示\n> 内容')
+ * ```
+ *
+ * @param md - markdown-it instance / markdown-it 实例
+ */
 export const calloutMarkdownPlugin: PluginSimple = (md): void => {
   md.block.ruler.before(
     'blockquote',

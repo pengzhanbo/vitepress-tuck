@@ -1,4 +1,13 @@
 <script setup lang="ts">
+/**
+ * Vue component that renders a PlantUML diagram with interactive controls.
+ *
+ * Vue 组件，渲染 PlantUML 图表并提供交互控件。
+ *
+ * 该组件提供图表与源代码两个标签页切换，支持亮色/暗色主题自适应、
+ * 缩放、全屏和下载等交互能力。亮色与暗色图片由 Markdown-it 插件
+ * 预生成并通过默认插槽注入。
+ */
 import { useFullscreen } from '@vueuse/core'
 import { useZoomAndDrag, VPTabSwitch } from 'vitepress-plugin-toolkit/client'
 import { useData } from 'vitepress/client'
@@ -22,6 +31,13 @@ onMounted(() => watch(isDark, () => {
   img.onload = () => nextTick(reset)
 }, { immediate: true }))
 
+/**
+ * Download the currently displayed PlantUML image.
+ *
+ * 下载当前显示的 PlantUML 图片。
+ *
+ * 根据当前主题选择对应的图片元素，触发浏览器下载行为。
+ */
 function download() {
   const img = el.value?.querySelector(isDark.value ? '.dark' : '.light') as HTMLImageElement
   if (!img)

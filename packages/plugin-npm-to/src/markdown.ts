@@ -33,12 +33,20 @@ import { logger } from './logger.js'
 import { ALLOW_LIST, BOOL_FLAGS, DEFAULT_TABS, MANAGERS_CONFIG } from './npmTo.js'
 
 /**
- * npm-to plugin - Convert npm commands to multiple package manager commands
+ * markdown-it plugin that registers the `::: npm-to` container and converts
+ * a single npm/npx code block into a `code-group` with one tab per
+ * configured package manager.
  *
- * 注册 npm-to 容器插件，将 npm 代码块自动转换为多包管理器命令分组
+ * 注册 `::: npm-to` 容器的 markdown-it 插件，将单个 npm/npx 代码块
+ * 转换为按配置的包管理器各显示一个选项卡的 `code-group`。
  *
- * @param md - Markdown instance / Markdown 实例
- * @param options - npm-to options / npm-to 选项
+ * @param md - markdown-it instance to extend / 要扩展的 markdown-it 实例
+ * @param options - Plugin options, either an array of manager names or an
+ * options object / 插件选项，包管理器名称数组或选项对象
+ * @example
+ * ```ts
+ * md.use(npmToMarkdownPlugin, { tabs: ['npm', 'pnpm', 'yarn'] })
+ * ```
  */
 export const npmToMarkdownPlugin: PluginWithOptions<NpmToPluginOptions> = (md, options = {}): void => {
   const opt = isArray(options) ? { tabs: options } : options
@@ -69,15 +77,20 @@ export const npmToMarkdownPlugin: PluginWithOptions<NpmToPluginOptions> = (md, o
 }
 
 /**
- * Convert npm commands to package manager command groups
+ * Build a `::: code-group` block by translating each npm/npx command line
+ * into the equivalent command for every requested package manager tab.
  *
- * 将 npm 命令转换为各包管理器命令分组
+ * 将每行 npm/npx 命令翻译为各请求包管理器选项卡的等价命令，
+ * 构建一个 `::: code-group` 代码块。
  *
- * @param lines - Command line array / 命令行数组
- * @param info - Code block type / 代码块类型
- * @param idx - Token index / token 索引
- * @param tabs - Package managers to support / 需要支持的包管理器
- * @returns code-tabs formatted string / code-tabs 格式字符串
+ * @param lines - Source command lines (may include separators like `\n` or `&&`)
+ * / 源命令行（可能包含 `\n` 或 `&&` 等分隔符）
+ * @param info - Fence info string of the original code block, reused for
+ * each generated tab / 原代码块的 fence 信息字符串，复用于每个生成的选项卡
+ * @param idx - Index of the container token, used to keep generated tab ids
+ * unique / 容器 token 的索引，用于保证生成的选项卡 id 唯一
+ * @param tabs - Package managers to generate tabs for / 要生成选项卡的包管理器列表
+ * @returns Rendered `::: code-group` markdown string / 渲染后的 `::: code-group` markdown 字符串
  */
 function resolveNpmTo(lines: string[], info: string, idx: number, tabs: NpmToPackageManager[]): string {
   tabs = validateTabs(tabs)
@@ -119,12 +132,15 @@ function resolveNpmTo(lines: string[], info: string, idx: number, tabs: NpmToPac
 }
 
 /**
- * Find package manager config by command line content
+ * Find the matching {@link CommandConfig} for a command line by testing
+ * it against each command pattern in {@link MANAGERS_CONFIG}.
  *
- * 根据命令行内容查找对应的包管理器配置
+ * 通过将命令行与 {@link MANAGERS_CONFIG} 中每个命令的正则进行匹配，
+ * 查找对应的 {@link CommandConfig}。
  *
- * @param line - Command line / 命令行
- * @returns Command config / 命令配置
+ * @param line - Single command line / 单行命令
+ * @returns Matching command config, or `undefined` when no pattern matches
+ * / 匹配的命令配置，无匹配时返回 `undefined`
  */
 function findConfig(line: string): CommandConfig | undefined {
   for (const { pattern, ...config } of Object.values(MANAGERS_CONFIG)) {
@@ -136,12 +152,15 @@ function findConfig(line: string): CommandConfig | undefined {
 }
 
 /**
- * Validate tabs, return allowed package manager list
+ * Filter the requested tabs against {@link ALLOW_LIST} and fall back to
+ * {@link DEFAULT_TABS} when none survive.
  *
- * 校验 tabs 合法性，返回允许的包管理器列表
+ * 按 {@link ALLOW_LIST} 过滤请求的选项卡，若全部被过滤则回退到
+ * {@link DEFAULT_TABS}。
  *
- * @param tabs - Package managers / 包管理器
- * @returns Validated tabs / 验证后的标签
+ * @param tabs - Requested package manager tabs / 请求的包管理器选项卡
+ * @returns Validated, non-empty list of package manager tabs
+ * / 校验后的非空包管理器选项卡列表
  */
 function validateTabs(tabs: NpmToPackageManager[]): NpmToPackageManager[] {
   tabs = tabs.filter(tab => ALLOW_LIST.includes(tab))
@@ -152,32 +171,47 @@ function validateTabs(tabs: NpmToPackageManager[]): NpmToPackageManager[] {
 }
 
 /**
- * Command line parse result type
+ * Result of parsing a single npm/npx command line.
  *
- * 命令行解析结果类型
+ * 单行 npm/npx 命令的解析结果。
  */
 interface LineParsed {
-  env: string // Environment variable prefix / 环境变量前缀
-  cli: string // CLI tool (npm/npx ...) / 命令行工具
-  cmd: string // Command/script name / 命令/脚本名
-  args?: string // Arguments / 参数
-  scriptArgs?: string // Script arguments / 脚本参数
+  /** Environment variable prefix, such as `NODE_ENV=production` / 环境变量前缀，例如 `NODE_ENV=production` */
+  env: string
+  /** CLI tool name, such as `npm` or `npx` / CLI 工具名称，例如 `npm` 或 `npx` */
+  cli: string
+  /** Command or script name, such as `install` or a `run` script / 命令或脚本名，例如 `install` 或 `run` 脚本 */
+  cmd: string
+  /** Flags and arguments portion of the command / 命令的标志与参数部分 */
+  args?: string
+  /** Arguments passed through `--` to the underlying script / 通过 `--` 传递给底层脚本的参数 */
+  scriptArgs?: string
 }
 
 /**
- * Regex for parsing npm/npx commands
+ * Regex for parsing npm/npx commands. Captures an optional environment
+ * prefix, the `npm`/`npx` binary, and the remaining command text.
  *
- * 解析 npm/npx 命令的正则
+ * 解析 npm/npx 命令的正则。捕获可选的环境变量前缀、`npm`/`npx`
+ * 可执行文件名以及剩余的命令文本。
  */
 const LINE_REG = /(.*)(npm|npx)\s+(.*)/
 
 /**
- * Parse a line of npm/npx command, split env, command, args, etc.
+ * Parse a single npm/npx command line into its component parts:
+ * environment prefix, CLI tool, command, args, and script args.
  *
- * 解析一行 npm/npx 命令，拆分出环境变量、命令、参数等
+ * 将单行 npm/npx 命令解析为各组成部分：环境变量前缀、CLI 工具、
+ * 命令、参数以及脚本参数。
  *
- * @param line - Command line / 命令行
- * @returns Parsed result / 解析结果
+ * @param line - Command line to parse / 要解析的命令行
+ * @returns Parsed result, or `false` when the line is not an npm/npx command
+ * / 解析结果，非 npm/npx 命令时返回 `false`
+ * @example
+ * ```ts
+ * parseLine('NODE_ENV=production npm run build -- --silent')
+ * // { env: 'NODE_ENV=production', cli: 'npm run', cmd: 'build', scriptArgs: '--silent' }
+ * ```
  */
 export function parseLine(line: string): false | LineParsed {
   const match = line.match(LINE_REG)
@@ -206,12 +240,20 @@ export function parseLine(line: string): false | LineParsed {
 }
 
 /**
- * Parse npm command arguments, distinguish command, args, script args
+ * Parse the argument portion of an npm command, separating the command
+ * name, flags/args, and script args (after `--`).
  *
- * 解析 npm 命令参数，区分命令、参数、脚本参数
+ * 解析 npm 命令的参数部分，区分命令名、标志/参数以及脚本参数
+ * （`--` 之后的部分）。
  *
- * @param line - Arguments line / 参数字符串
- * @returns Parsed args / 解析后的参数
+ * Handles quoted command names and boolean flags listed in
+ * {@link BOOL_FLAGS}.
+ *
+ * 处理带引号的命令名以及 {@link BOOL_FLAGS} 中列出的布尔标志。
+ *
+ * @param line - Argument portion of the command / 命令的参数部分
+ * @returns Object with `cmd`, `args`, and `scriptArgs` fields
+ * / 包含 `cmd`、`args` 和 `scriptArgs` 字段的对象
  */
 function parseArgs(line: string): { cmd: string, args?: string, scriptArgs?: string } {
   line = line?.trim()
