@@ -6,6 +6,28 @@ import { getVitepressConfig, isBuild } from 'vitepress-plugin-toolkit'
 import { SERVER_PREFIX } from './constants.js'
 import { cache, getFilename, getOutputPath } from './utils.js'
 
+/**
+ * Markdown-it plugin that transforms PlantUML fenced code blocks into renderable images.
+ *
+ * Markdown-it 插件，将 PlantUML 围栏代码块转换为可渲染的图片元素。
+ *
+ * 该插件拦截以 `plantuml` 开头的代码块，根据内容生成哈希并缓存，
+ * 在开发环境通过本地服务器提供图片，在构建环境直接引用输出路径。
+ * 支持亮色和暗色双主题输出。
+ *
+ * @param md - The markdown-it instance / markdown-it 实例
+ * @param options - Plugin options / 插件选项
+ * @param options.format - Default output format, defaults to `'svg'` / 默认输出格式，默认为 `'svg'`
+ *
+ * @example
+ * ```ts
+ * import MarkdownIt from 'markdown-it'
+ * import { plantumlMarkdownPlugin } from 'vitepress-plugin-plantuml/node'
+ *
+ * const md = new MarkdownIt()
+ * md.use(plantumlMarkdownPlugin, { format: 'svg' })
+ * ```
+ */
 export const plantumlMarkdownPlugin: PluginWithOptions<PlantumlMarkdownPluginOptions> = (md, options = {}) => {
   const { format = 'svg' } = options
   const config = getVitepressConfig()
@@ -45,6 +67,7 @@ export const plantumlMarkdownPlugin: PluginWithOptions<PlantumlMarkdownPluginOpt
     cached.paths.add(env.path)
 
     // 开发环境使用 `:src=` 包装为字符串变量，避免被 vite 处理为 `import`
+    // In dev mode, wrap with `:src=` to avoid Vite treating it as an import
     const lightUrl = isBuild
       ? `src="${getOutputPath(cacheDir, light)}"`
       : `:src="\`${SERVER_PREFIX}${light}\`"`

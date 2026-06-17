@@ -1,8 +1,18 @@
 import { isBoolean } from '@pengzhanbo/utils'
 import ansis from 'ansis'
 
+/**
+ * Log type for categorizing log messages.
+ *
+ * 用于分类日志消息的日志类型。
+ */
 export type LogType = 'info' | 'warn' | 'error' | 'debug'
 
+/**
+ * Log level controlling the verbosity of the logger.
+ *
+ * 控制日志输出详细程度的日志级别。
+ */
 export type LogLevel = LogType | 'silent'
 
 /**
@@ -58,6 +68,13 @@ export const logLevels: Record<LogLevel, number> = {
  * @param prefix - Log prefix / 日志前缀
  * @param defaultLevel - Default log level / 默认日志级别
  * @returns Logger instance / 日志实例
+ * @example
+ * ```ts
+ * const logger = createLogger('my-plugin', 'info')
+ * logger.info('Starting build')
+ * logger.warn('Deprecated feature used')
+ * logger.debug('Verbose details', 'debug')
+ * ```
  */
 export function createLogger(
   prefix: string,

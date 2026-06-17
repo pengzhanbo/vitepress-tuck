@@ -1,61 +1,113 @@
 import type { NpmToPackageManager } from './types.js'
 
 /**
- * Package command types
+ * Categories of package commands recognized by the plugin.
  *
- * 包命令类型
+ * Each value corresponds to a `npm` subcommand (or `npx`) that the plugin
+ * knows how to translate into the equivalent invocation for other package
+ * managers.
+ *
+ * 插件识别的包命令类别。
+ *
+ * 每个值对应一个 `npm` 子命令（或 `npx`），插件能够将其翻译为
+ * 其他包管理器的等价调用。
  */
 export type PackageCommand = 'install' | 'add' | 'remove' | 'run' | 'create' | 'init' | 'npx' | 'ci'
 
 /**
- * Command config item
+ * Configuration item describing how a single package manager handles a
+ * given npm command.
  *
- * 命令配置项
+ * 描述单个包管理器如何处理给定 npm 命令的配置项。
  */
 export interface CommandConfigItem {
+  /**
+   * The CLI invocation used by this package manager, for example
+   * `pnpm add` or `yarn remove`.
+   *
+   * 该包管理器使用的 CLI 调用，例如 `pnpm add` 或 `yarn remove`。
+   */
   cli: string
+  /**
+   * Map of npm flag to the equivalent flag for this package manager.
+   * An empty string means the flag is unsupported and will be dropped.
+   *
+   * npm 标志到该包管理器等价标志的映射。
+   * 空字符串表示该标志不受支持，将被移除。
+   */
   flags?: Record<string, string>
 }
 
 /**
- * Command config for package managers (excluding npm)
+ * Per-manager command configuration for a single npm command, excluding
+ * `npm` itself (the source).
  *
- * 包管理器的命令配置（不包括 npm）
+ * 单个 npm 命令在各包管理器上的配置（不含源管理器 `npm`）。
  */
 export type CommandConfig = Record<Exclude<NpmToPackageManager, 'npm'>, CommandConfigItem | false>
 
 /**
- * Command configs for all package commands
+ * Full configuration table mapping every supported {@link PackageCommand}
+ * to its detection pattern and per-manager translations.
  *
- * 所有包命令的配置
+ * 完整的配置表，将每个支持的 {@link PackageCommand} 映射到其检测正则
+ * 与各包管理器的翻译配置。
  */
 export type CommandConfigs = Record<PackageCommand, { pattern: RegExp } & CommandConfig>
 
 /**
- * Allowed package managers list
+ * Allow-list of package manager names accepted by the plugin.
  *
- * 允许的包管理器列表
+ * Any tab name not present in this list is filtered out during validation.
+ *
+ * 插件接受的包管理器名称白名单。
+ *
+ * 校验时，不在此列表中的选项卡名称将被过滤掉。
  */
 export const ALLOW_LIST = ['npm', 'pnpm', 'yarn', 'bun', 'deno'] as const
 
 /**
- * Boolean flags for npm commands
+ * npm flags that behave as boolean switches (they take no value).
  *
- * npm 命令的布尔标志
+ * Used by the argument parser to distinguish a flag that expects a
+ * following value from one that does not.
+ *
+ * 作为布尔开关的 npm 标志（不接受值）。
+ *
+ * 参数解析器据此区分需要后续值的标志与不需要值的标志。
  */
 export const BOOL_FLAGS: string[] = ['--no-save', '-B', '--save-bundle', '--save-dev', '-D', '--save-prod', '-P', '--save-peer', '-O', '--save-optional', '-E', '--save-exact', '-y', '--yes', '-g', '--global']
 
 /**
- * Default tabs to display
+ * Default package manager tabs rendered when the user does not specify
+ * a `tabs` option.
  *
- * 默认显示的标签
+ * 用户未指定 `tabs` 选项时渲染的默认包管理器选项卡。
  */
 export const DEFAULT_TABS: NpmToPackageManager[] = ['npm', 'pnpm', 'yarn']
 
 /**
- * Package manager configurations
+ * Translation table from npm/npx commands to equivalent commands for
+ * each supported package manager.
  *
- * 包管理器配置
+ * Each entry contains a `pattern` used to detect the command in source
+ * text, plus per-manager configs that specify the replacement CLI and
+ * any flag mappings. Flag values of `''` indicate the flag is not
+ * supported by that manager and is dropped from the output.
+ *
+ * 将 npm/npx 命令翻译为各支持包管理器等价命令的对照表。
+ *
+ * 每个条目包含用于在源文本中检测命令的 `pattern`，以及各管理器的
+ * 配置（指定替换 CLI 和标志映射）。标志值为 `''` 表示该管理器不支持
+ * 该标志，输出时会将其移除。
+ *
+ * @example
+ * // `npm install` becomes:
+ * // - pnpm install
+ * // - yarn
+ * // - bun install
+ * // - deno install
+ * MANAGERS_CONFIG.install
  */
 export const MANAGERS_CONFIG: CommandConfigs = {
   install: {

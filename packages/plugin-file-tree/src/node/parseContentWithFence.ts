@@ -2,7 +2,9 @@ import type { FileTreeNode } from './types.js'
 import { parseNodeInfo } from './parseNodeInfo.js'
 
 /**
- * Regex for matching a single line of `tree` command output.
+ * Regular expression for matching a single line of `tree` command output.
+ *
+ * 匹配 `tree` 命令输出的单行正则。
  *
  * Matches lines like:
  *   ├── filename
@@ -13,13 +15,13 @@ import { parseNodeInfo } from './parseNodeInfo.js'
  * - Group 1: prefix segments, each is either `│   ` (has next sibling) or `    ` (last sibling)
  * - Group 2: branch marker, either `├── ` (non-last) or `└── ` (last)
  * - Group 3: the filename with optional comment
- *
- * 匹配 `tree` 命令输出的单行正则
  */
 const TREE_LINE_RE = /^((?:│ {3}| {4})*)([├└]── )(.+)$/u
 
 /**
  * Parse `tree` command output format into a structured file tree node array.
+ *
+ * 将 `tree` 命令行输出格式解析为结构化的文件树节点数组。
  *
  * Converts text like:
  * ```
@@ -31,9 +33,10 @@ const TREE_LINE_RE = /^((?:│ {3}| {4})*)([├└]── )(.+)$/u
  * ```
  *
  * into a `FileTreeNode[]` tree structure, with support for inline comments
- * (text after `#`) on each entry.
- *
- * 将 `tree` 命令行输出格式解析为结构化的文件树节点数组
+ * (text after `#`) on each entry. The leading root marker line (`.`) is
+ * skipped if present. Indentation depth is derived from the 4-character
+ * prefix segments, and any parent node that gains children is automatically
+ * promoted to the `folder` type.
  *
  * @param content - Raw `tree` command output text / `tree` 命令输出的原始文本
  * @returns Structured file tree node array / 结构化的文件树节点数组

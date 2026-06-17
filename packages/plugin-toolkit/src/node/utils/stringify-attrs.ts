@@ -10,6 +10,13 @@ import { isBoolean, isNull, isNumber, isString, isUndefined, kebabCase, objectEn
  * @param forceStringify - Keys to force stringify / 强制字符串化的键
  * @returns HTML attribute string / HTML 属性字符串
  * @typeParam T - Attribute type / 属性类型
+ * @example
+ * ```ts
+ * stringifyAttrs({ width: 100, disabled: true })
+ * // ' :width="100" disabled'
+ * stringifyAttrs({ title: 'hello', visible: false })
+ * // ' title="hello"'
+ * ```
  */
 export function stringifyAttrs<T extends object = object>(
   attrs: T,

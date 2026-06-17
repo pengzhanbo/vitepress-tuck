@@ -1,6 +1,26 @@
 import { useEventListener, useMediaQuery, useMutationObserver } from '@vueuse/core'
 import { computed, nextTick, onMounted, ref, shallowRef, type TemplateRef } from 'vue'
 
+/**
+ * Composable that provides zoom and drag interaction for a content stage,
+ * supporting mouse drag, touch drag, pinch-to-zoom, and programmatic zoom.
+ *
+ * 为内容舞台提供缩放和拖拽交互的组合式函数，支持鼠标拖拽、触摸拖拽、双指缩放和编程式缩放。
+ *
+ * @param parentEl - Template ref to the stage container element / 舞台容器元素的模板 ref
+ * @returns Interaction controls and reactive state, including:
+ *   - `actorStyle`: Reactive style object for the actor element / actor 元素的响应式样式对象
+ *   - `zoom`: Reactive zoom percentage string / 响应式缩放百分比字符串
+ *   - `reset`: Reset layout to fit the stage / 重置布局以适配舞台
+ *   - `zoomIn`: Zoom in by one step / 放大一个步长
+ *   - `zoomOut`: Zoom out by one step / 缩小一个步长
+ *   - `resetZoom`: Reset zoom to the initial state / 重置缩放至初始状态
+ * @example
+ * ```ts
+ * const stageEl = ref<HTMLDivElement>()
+ * const { actorStyle, zoom, zoomIn, zoomOut, resetZoom, reset } = useZoomAndDrag(stageEl)
+ * ```
+ */
 export function useZoomAndDrag(parentEl: TemplateRef<HTMLDivElement>) {
   const actorEl = shallowRef<HTMLDivElement>()
   let ratio = 0
@@ -19,6 +39,14 @@ export function useZoomAndDrag(parentEl: TemplateRef<HTMLDivElement>) {
   }, { subtree: true, childList: true, attributes: false })
   onMounted(() => nextTick(initialize))
 
+  /**
+   * Initialize the actor layout by measuring content size and computing the
+   * initial zoom, position, and stage height to fit the available space.
+   *
+   * 通过测量内容尺寸并计算初始缩放、位置和舞台高度来初始化 actor 布局，以适配可用空间。
+   *
+   * @param isFullscreen - Whether the stage is in fullscreen mode / 舞台是否处于全屏模式
+   */
   function initialize(isFullscreen = false) {
     if (!parentEl.value)
       return
@@ -136,6 +164,16 @@ export function useZoomAndDrag(parentEl: TemplateRef<HTMLDivElement>) {
     isDragging = false
   }, { passive: false })
 
+  /**
+   * Adjust the zoom level by a fixed step, or reset to the initial state.
+   *
+   * 按固定步长调整缩放级别，或重置到初始状态。
+   *
+   * @param type - Zoom direction, can be:
+   *   - `1`: Zoom in by one step / 放大一个步长
+   *   - `-1`: Zoom out by one step / 缩小一个步长
+   *   - `0`: Reset to the initial zoom and position / 重置到初始缩放和位置
+   */
   function zoom(type: 1 | -1 | 0) {
     if (typeof width.value === 'undefined' || !actorEl.value)
       return
@@ -162,6 +200,12 @@ export function useZoomAndDrag(parentEl: TemplateRef<HTMLDivElement>) {
   }
 
   let zoomTimer: NodeJS.Timeout | undefined
+  /**
+   * Temporarily add a `zooming` class to the actor element to enable CSS
+   * transitions during zoom, and remove it after the transition completes.
+   *
+   * 临时为 actor 元素添加 `zooming` 类以在缩放时启用 CSS 过渡，并在过渡结束后移除该类。
+   */
   function zooming() {
     actorEl.value?.classList.add('zooming')
     if (zoomTimer)

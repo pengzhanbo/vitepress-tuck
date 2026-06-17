@@ -7,12 +7,17 @@ import { useLocale } from './composables/locales.js'
 import { useMermaidRender } from './composables/render.js'
 import { useTabs } from './composables/tabs.js'
 
+/**
+ * URL-encoded mermaid graph source code.
+ *
+ * URL 编码后的 mermaid 图表源代码。
+ */
 const { graph } = defineProps<{ graph: string }>()
 
 const svgEl = useTemplateRef<HTMLDivElement>('svgEl')
 
 const locale = useLocale()
-const { loaded, svg } = useMermaidRender(computed(() => graph))
+const { loaded, svg } = useMermaidRender(computed(() => decodeURIComponent(graph)))
 const { tab, tabs } = useTabs()
 const { actorStyle, reset, zoom, zoomIn, zoomOut, resetZoom } = useZoomAndDrag(svgEl)
 

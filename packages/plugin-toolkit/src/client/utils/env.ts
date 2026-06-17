@@ -1,5 +1,12 @@
+/**
+ * User-Agent Client Hints data provided by modern browsers.
+ *
+ * 现代浏览器提供的 User-Agent 客户端提示数据。
+ */
 interface NavigatorUAData {
+  /** Operating system platform identifier / 操作系统平台标识符 */
   platform?: string
+  /** Whether the device is a mobile device / 设备是否为移动设备 */
   mobile?: boolean
 }
 
@@ -9,9 +16,25 @@ declare global {
   }
 }
 
+/**
+ * Get the platform string of the user device, preferring UA-CH data over the
+ * legacy `navigator.platform`.
+ *
+ * 获取用户设备的平台字符串，优先使用 UA-CH 数据，其次使用传统的 `navigator.platform`。
+ *
+ * @returns Platform string / 平台字符串
+ */
 function getPlatform(): string {
   return navigator.userAgentData?.platform ?? navigator.platform
 }
+
+/**
+ * Get the user agent string of the browser.
+ *
+ * 获取浏览器的 user agent 字符串。
+ *
+ * @returns User agent string / user agent 字符串
+ */
 const getUA = (): string => navigator.userAgent
 
 /**

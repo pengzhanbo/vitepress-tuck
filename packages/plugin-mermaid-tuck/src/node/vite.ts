@@ -3,6 +3,30 @@ import type { MermaidPluginOptions } from './types.js'
 import { createLocales, iconPlugin } from 'vitepress-plugin-toolkit'
 import { builtinLocales } from './locales.js'
 
+/**
+ * Creates the Vite plugins required by the mermaid-tuck plugin.
+ *
+ * 创建 mermaid-tuck 插件所需的 Vite 插件集合。
+ *
+ * The returned plugins perform two tasks:
+ * 1. Register SVG icons (download, fullscreen, zoom controls) via the toolkit
+ *    `iconPlugin` so they are available as CSS background images.
+ * 2. Provide a virtual module `virtual:vitepress-mermaid` that exposes the
+ *    user-supplied mermaid options and resolved locale map to the client.
+ *
+ * 返回的插件承担两项职责：
+ * 1. 通过 toolkit 的 `iconPlugin` 注册 SVG 图标（下载、全屏、缩放控件），
+ *    使其可作为 CSS 背景图使用。
+ * 2. 提供虚拟模块 `virtual:vitepress-mermaid`，将用户配置的 mermaid 选项
+ *    与解析后的语言映射暴露给客户端。
+ *
+ * @returns Array of Vite plugins / Vite 插件数组
+ * @example
+ * ```ts
+ * import { mermaidVitePlugin } from 'vitepress-plugin-mermaid-tuck/node'
+ * vite: { plugins: [...mermaidVitePlugin({ options: { theme: 'dark' } })] }
+ * ```
+ */
 export function mermaidVitePlugin({ options, locales }: MermaidPluginOptions = {}): Plugin[] {
   const moduleId = 'virtual:vitepress-mermaid'
   const resolveId = `\0${moduleId}`

@@ -1,6 +1,12 @@
 /**
- * comment 是 obsidian 提供的注释语法。使用 `%%` 包裹文本来添加注释, 注释仅在编辑模式中可见。
+ * Obsidian comment syntax using `%%` delimiters. Comments are only visible in
+ * edit mode; in this compatibility implementation, content wrapped by `%%` is
+ * ignored and not rendered to the page.
+ *
+ * Obsidian 提供的注释语法，使用 `%%` 包裹文本来添加注释，注释仅在编辑模式中可见。
  * 在此兼容实现中，被 `%%` 包裹的内容，将会直接被忽略，不渲染到页面中。
+ *
+ * 支持行内注释与跨多行的块级注释：
  *
  * ```markdown
  * 这是一个 %%行内%% 注释。
@@ -16,6 +22,27 @@
 
 import type { PluginSimple } from 'markdown-it'
 
+/**
+ * markdown-it plugin that registers Obsidian `%%` comment rules and renderers.
+ *
+ * markdown-it 插件，注册 Obsidian `%%` 注释规则与渲染器。
+ *
+ * 注册内容：
+ * - 行内规则 `obsidian_inline_comment`：在 `html_inline` 之前识别 `%%...%%`。
+ * - 块级规则 `obsidian_block_comment`：在 `html_block` 之前识别以 `%%` 起止的块。
+ * - 两个渲染器均返回空字符串，从而在输出中移除注释内容。
+ *
+ * @example
+ * ```ts
+ * import MarkdownIt from 'markdown-it'
+ * import { commentMarkdownPlugin } from 'vitepress-plugin-obsidian'
+ *
+ * const md = new MarkdownIt().use(commentMarkdownPlugin)
+ * md.render('可见内容 %%注释%%') // 注释不会出现在输出中
+ * ```
+ *
+ * @param md - markdown-it instance / markdown-it 实例
+ */
 export const commentMarkdownPlugin: PluginSimple = (md): void => {
   md.inline.ruler.before(
     'html_inline',

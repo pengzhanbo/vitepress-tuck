@@ -11,6 +11,19 @@ import { fallbackPNG, fallbackSVG, OUTPUT_DIR, plantumlUrl, SERVER_PREFIX } from
 import { builtinLocales } from './locales.js'
 import { cache, encodePlantuml, getOutputPath, parseFilename } from './utils.js'
 
+/**
+ * Create the Vite plugin set for the PlantUML plugin.
+ *
+ * 为 PlantUML 插件创建 Vite 插件集合。
+ *
+ * 返回的插件集合包含三个部分：
+ * 1. 虚拟模块插件，提供客户端所需的多语言数据；
+ * 2. 图标插件，注册下载、全屏、缩放等内置 SVG 图标；
+ * 3. 根据当前环境选择开发服务器插件或构建插件，负责图片的生成与提供。
+ *
+ * @param options - Plugin options / 插件选项
+ * @returns Array of Vite plugins / Vite 插件数组
+ */
 export function plantumlVitePlugin(options: PlantumlVitePluginOptions = {}): Plugin[] {
   const moduleId = 'virtual:vitepress-plantuml'
   const resolveId = `\0${moduleId}`
@@ -48,6 +61,17 @@ export function plantumlVitePlugin(options: PlantumlVitePluginOptions = {}): Plu
   ]
 }
 
+/**
+ * Create the dev-server Vite plugin for PlantUML.
+ *
+ * 创建 PlantUML 的开发服务器 Vite 插件。
+ *
+ * 在开发环境下，通过 Vite 开发服务器的中间件机制拦截以
+ * `SERVER_PREFIX` 开头的请求，按需从 PlantUML 服务器获取图片并缓存到本地。
+ *
+ * @param options - Plugin options / 插件选项
+ * @returns Vite plugin instance / Vite 插件实例
+ */
 function plantumlVitePluginWithServer(options: PlantumlVitePluginOptions = {}): Plugin {
   let config!: ResolvedConfig
   return {
@@ -94,6 +118,18 @@ function plantumlVitePluginWithServer(options: PlantumlVitePluginOptions = {}): 
   }
 }
 
+/**
+ * Create the build-time Vite plugin for PlantUML.
+ *
+ * 创建 PlantUML 的构建时 Vite 插件。
+ *
+ * 在构建环境下，通过 `transform` 钩子在处理 Markdown 文件时，
+ * 预先获取所有引用的 PlantUML 图片并写入缓存目录。渲染失败时
+ * 使用兜底图片占位，确保构建不会中断。
+ *
+ * @param options - Plugin options / 插件选项
+ * @returns Vite plugin instance / Vite 插件实例
+ */
 function plantumlVitePluginWithBuild(options: PlantumlVitePluginOptions = {}): Plugin {
   let config!: ResolvedConfig
   return {
@@ -145,6 +181,16 @@ function plantumlVitePluginWithBuild(options: PlantumlVitePluginOptions = {}): P
 
 const RE_PLANTUML_TAG = /<\?plantuml.*?\?>/g
 
+/**
+ * Fetch a rendered PlantUML image buffer from the PlantUML server.
+ *
+ * 从 PlantUML 服务器获取渲染后的图片 Buffer。
+ *
+ * @param source - PlantUML source text / PlantUML 源文本
+ * @param format - Output format, including dark-mode variants / 输出格式，包含暗色模式变体
+ * @param serverURL - Optional custom server URL / 可选的自定义服务器地址
+ * @returns Rendered image buffer, or `null` on failure / 渲染后的图片 Buffer，失败时返回 `null`
+ */
 async function fetchPlantuml(source: string, format: PlantumlAllFormat, serverURL?: string): Promise<Buffer | null> {
   const encoded = encodePlantuml(source)
   const url = `${serverURL || plantumlUrl}/${format}/${encoded}`
@@ -161,6 +207,15 @@ async function fetchPlantuml(source: string, format: PlantumlAllFormat, serverUR
   return Buffer.from(await res.arrayBuffer())
 }
 
+/**
+ * Optimize an SVG string using SVGO with a custom plugin that removes
+ * the root background style and the corresponding full-size rect element.
+ *
+ * 使用 SVGO 优化 SVG 字符串，自定义插件会移除根背景样式及对应的满尺寸 rect 元素。
+ *
+ * @param svg - Raw SVG string / 原始 SVG 字符串
+ * @returns Optimized SVG string / 优化后的 SVG 字符串
+ */
 function svgo(svg: string) {
   return optimize(svg, {
     multipass: true,

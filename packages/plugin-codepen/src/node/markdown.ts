@@ -9,7 +9,24 @@ import type { CodepenData } from './types.js'
 import { createEmbedRuleBlock, parseRect, resolveAttrs, stringifyAttrs } from 'vitepress-plugin-toolkit'
 
 /**
+ * markdown-it plugin that registers the `@codepen` embed block rule.
+ *
+ * markdown-it 插件，注册 `@codepen` 嵌入块规则。
+ *
+ * Supported syntaxes:
+ * - `@[codepen](user/slash)` — default embed view / 默认嵌入视图
+ * - `@[codepen preview](user/slash)` — preview embed view / 预览嵌入视图
+ * - `@[codepen preview editable title="" height="400px" tab="css,result" theme="dark"](user/slash)`
+ *   — fully customized embed / 完全自定义的嵌入
+ *
+ * 支持的语法：
+ * - `@[codepen](user/slash)` — 默认嵌入视图
+ * - `@[codepen preview](user/slash)` — 预览嵌入视图
+ * - `@[codepen preview editable title="" height="400px" tab="css,result" theme="dark"](user/slash)`
+ *   — 完全自定义的嵌入
+ *
  * @example
+ * `.vitepress/config.ts`
  * ```ts
  * import { codepenMarkdownPlugin } from 'vitepress-plugin-codepen'
  * import { defineConfig } from 'vitepress'
