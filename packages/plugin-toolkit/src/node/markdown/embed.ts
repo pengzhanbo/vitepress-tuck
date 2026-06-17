@@ -1,7 +1,6 @@
 import type MarkdownIt from 'markdown-it'
-import type { RuleOptions } from 'markdown-it/lib/ruler.mjs'
-import type Token from 'markdown-it/lib/token.mjs'
 import type { MarkdownEnv } from 'vitepress'
+import ansis from 'ansis'
 
 /**
  * Embed rule block options
@@ -24,18 +23,6 @@ export interface EmbedRuleBlockOptions<Meta extends Record<string, any>> {
    */
   name?: string
   /**
-   * Name of the rule to insert before
-   *
-   * 要插入在其前面的规则名称
-   */
-  beforeName?: string
-  /**
-   * Rule options
-   *
-   * 规则选项
-   */
-  ruleOptions?: RuleOptions
-  /**
    * Parse the `info` and `source` in `@[type info](source)` and convert them into a metadata object.
    *
    * 解析 `@[type info](source)` 中的 `info` 和 `source`，转换为元数据对象
@@ -55,19 +42,9 @@ export interface EmbedRuleBlockOptions<Meta extends Record<string, any>> {
    * @returns Generated content / 生成的内容
    */
   content?: (meta: Meta, env: MarkdownEnv) => string
-
-  /**
-   * Render content from tokens
-   *
-   * 从令牌渲染内容
-   *
-   * @param tokens - Tokens / 令牌
-   * @param index - Index / 索引
-   * @param env - Markdown environment / Markdown 环境
-   * @returns Generated content / 生成的内容
-   */
-  render?: (tokens: Token[], index: number, env: MarkdownEnv) => string
 }
+
+const EXISTS_TYPES = new WeakMap<MarkdownIt, Set<string>>()
 
 /**
  * Create embed rule block
@@ -92,23 +69,29 @@ export interface EmbedRuleBlockOptions<Meta extends Record<string, any>> {
  */
 export function createEmbedRuleBlock<Meta extends Record<string, any> = Record<string, any>>(
   md: MarkdownIt,
-  {
-    type,
-    name = type,
-    beforeName = 'code',
-    ruleOptions = { alt: ['paragraph', 'reference', 'blockquote', 'list'] },
-    meta,
-    content,
-    render,
-  }: EmbedRuleBlockOptions<Meta>,
+  { type, name = `embed_${type}`, meta, content }: EmbedRuleBlockOptions<Meta>,
 ): void {
+  if (!type) {
+    console.warn(`${ansis.yellow('[markdown-it]')} Embed rule block type is empty`)
+    return
+  }
+  let exists = EXISTS_TYPES.get(md)
+  !exists && EXISTS_TYPES.set(md, exists = new Set())
+
+  if (exists.has(type)) {
+    console.warn(`${ansis.yellow('[markdown-it]')} Embed rule block type ${ansis.green(type)} already exists`)
+    return
+  }
+
+  exists.add(type)
+
   const MIN_LENGTH = type.length + 5
   const START_CODES = [64, 91, ...type.split('').map(c => c.charCodeAt(0))]
   const escapedType = type.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
   const syntaxPattern = new RegExp(`^@\\[${escapedType}(?:\\s+([^\\]]*))?\\]\\(([^)]*)\\)$`)
 
   md.block.ruler.before(
-    beforeName,
+    'code',
     name,
     (state, startLine, endLine, silent) => {
       const pos = state.bMarks[startLine]! + state.tShift[startLine]!
@@ -150,12 +133,14 @@ export function createEmbedRuleBlock<Meta extends Record<string, any> = Record<s
 
       return true
     },
-    ruleOptions,
+    { alt: ['paragraph', 'reference', 'blockquote', 'list'] },
   )
 
-  md.renderer.rules[name] = (tokens, index, _, env: MarkdownEnv) => {
-    return content?.(tokens[index].meta, env)
-      ?? render?.(tokens, index, env)
-      ?? tokens[index].content
+  if (md.renderer.rules[name]) {
+    console.warn(`Embed rule block ${type} (${name}) already exists`)
+    return
   }
+
+  md.renderer.rules[name] = (tokens, index, _, env: MarkdownEnv) =>
+    content?.(tokens[index].meta, env) ?? tokens[index].content
 }
