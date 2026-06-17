@@ -64,7 +64,7 @@ export function useMermaidRender(graph: Ref<string>) {
       startOnLoad: false,
     })
 
-    svg.value = (await mermaid.render(id, decodeURIComponent(graph.value))).svg
+    svg.value = (await mermaid.render(id, graph.value)).svg
     loaded.value = true
   }
 

@@ -17,7 +17,7 @@ const { graph } = defineProps<{ graph: string }>()
 const svgEl = useTemplateRef<HTMLDivElement>('svgEl')
 
 const locale = useLocale()
-const { loaded, svg } = useMermaidRender(computed(() => graph))
+const { loaded, svg } = useMermaidRender(computed(() => decodeURIComponent(graph)))
 const { tab, tabs } = useTabs()
 const { actorStyle, reset, zoom, zoomIn, zoomOut, resetZoom } = useZoomAndDrag(svgEl)
 

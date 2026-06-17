@@ -11,18 +11,15 @@
  * @example
  * `.vitepress/config.ts`
  * ```ts
- * import { defineConfig } from 'vitepress'
+ * import { defineConfig } from 'vitepress-tuck'
  * import qrcode from 'vitepress-plugin-qrcode'
  *
  * export default defineConfig({
- *   markdown: {
- *     config(md) {
- *       md.use(qrcode)
- *     },
- *   },
+ *   plugins: [qrcode()],
  * })
  * ```
  */
+
 import { qrcode } from './plugin.js'
 
 export * from './markdown.js'

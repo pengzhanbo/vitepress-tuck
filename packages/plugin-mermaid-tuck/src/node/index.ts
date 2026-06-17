@@ -12,7 +12,7 @@
  * @example
  * ```ts
  * import mermaid from 'vitepress-plugin-mermaid-tuck'
- * import { defineConfig } from 'vitepress'
+ * import { defineConfig } from 'vitepress-tuck'
  * export default defineConfig({
  *   vite: { plugins: [mermaid()] },
  * })
