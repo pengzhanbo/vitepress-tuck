@@ -170,7 +170,7 @@ export function createContainerSyntaxPlugin(
 
   // Default render function
   const defaultRender: RenderRule = (tokens, index) => {
-    const { content } = tokens[index]!
+    const { content } = tokens[index]
     return `<div class="custom-container ${type}">${content}</div>`
   }
 

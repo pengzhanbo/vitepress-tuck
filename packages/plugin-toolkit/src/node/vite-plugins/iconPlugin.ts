@@ -113,8 +113,8 @@ function iconPlugin(icons: Icon[]): Plugin {
       for (const icon of iconList) {
         const classname = Array.from(icon.classname)
           .map(name => `.vpi-${name}`)
-          .join(',\n')
-        css += `${classname} {\n  --icon: ${icon.svg};\n}\n`
+          .join(',')
+        css += `${classname} { --icon: ${icon.svg}; }\n`
       }
       isProcessing = false
       return css
