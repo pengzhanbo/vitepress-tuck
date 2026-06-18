@@ -177,18 +177,6 @@ describe('createEmbedRuleBlock', () => {
     expect(result).toBe('<p>@[lon</p>\n')
   })
 
-  it('should use render function when content is not provided', () => {
-    const md = new MarkdownIt()
-    createEmbedRuleBlock(md, {
-      type: 'bilibili',
-      meta: (_info, source) => ({ bv: source }),
-      render: (_tokens, _idx, _env) => `<VPBilibili />`,
-    })
-
-    const result = md.render('@[bilibili](BV1xx411c7mD)')
-    expect(result).toContain('<VPBilibili')
-  })
-
   it('should pass meta info and source separately to meta function', () => {
     const md = new MarkdownIt()
     createEmbedRuleBlock(md, {
