@@ -83,6 +83,11 @@ export function createEmbedRuleBlock<Meta extends Record<string, any> = Record<s
     return
   }
 
+  if (md.renderer.rules[name]) {
+    console.warn(`${ansis.yellow('[markdown-it]')} Embed rule block ${type} (${name}) already exists`)
+    return
+  }
+
   exists.add(type)
 
   const MIN_LENGTH = type.length + 5
@@ -135,11 +140,6 @@ export function createEmbedRuleBlock<Meta extends Record<string, any> = Record<s
     },
     { alt: ['paragraph', 'reference', 'blockquote', 'list'] },
   )
-
-  if (md.renderer.rules[name]) {
-    console.warn(`Embed rule block ${type} (${name}) already exists`)
-    return
-  }
 
   md.renderer.rules[name] = (tokens, index, _, env: MarkdownEnv) =>
     content?.(tokens[index].meta, env) ?? tokens[index].content
