@@ -1,7 +1,7 @@
 import type { CodeTreeFile, CodeTreeFileLoader } from './types.js'
 import fs from 'node:fs'
 import path from 'node:path'
-import { ensureLeadingSlash, isFunction, slash } from '@pengzhanbo/utils'
+import { ensureLeadingSlash, escape, isFunction, slash } from '@pengzhanbo/utils'
 import { bundledLanguagesInfo } from 'shiki'
 import { createMatcher, EXTENSION_IMAGES, getVitepressConfig } from 'vitepress-plugin-toolkit'
 
@@ -84,10 +84,10 @@ const defaultLoader: CodeTreeFileLoader[] = [
     filter: ({ extname }) => EXTENSION_IMAGES.includes(extname),
     load: (file) => {
       const config = getVitepressConfig()
-      const publicDir = path.join(config.srcDir, 'public')
+      const publicDir = path.join(config.srcDir, 'public/')
       // Resolve image src: use public path if in public dir, otherwise relative path
       const src = file.absolutePath.startsWith(publicDir) ? ensureLeadingSlash(file.absolutePath.replace(publicDir, '')) : file.relativePath
-      return `<img src="${slash(src)}" alt="${file.basename}" data-filepath="${file.path}">`
+      return `<img src="${escape(slash(src))}" alt="${escape(file.basename)}" data-filepath="${escape(file.path)}">`
     },
   },
   // Known file types supported by Shiki syntax highlighting
