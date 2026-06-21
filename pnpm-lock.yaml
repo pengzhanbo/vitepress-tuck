@@ -81,68 +81,13 @@ catalogs:
     unrun:
       specifier: ^0.3.1
       version: 0.3.1
-    vitepress-plugin-group-icons:
-      specifier: ^1.7.5
-      version: 1.7.5
-    vitepress-plugin-llms:
-      specifier: ^1.13.1
-      version: 1.13.1
     vitest:
       specifier: ^4.1.8
       version: 4.1.8
     vue-tsc:
       specifier: ^3.3.5
       version: 3.3.5
-  peer:
-    dashjs:
-      specifier: ^5.2.0
-      version: 5.2.0
-    hls.js:
-      specifier: ^1.6.16
-      version: 1.6.16
-    mpegts.js:
-      specifier: 1.7.3
-      version: 1.7.3
   prod:
-    '@pengzhanbo/utils':
-      specifier: ^3.7.3
-      version: 3.7.3
-    '@vueuse/core':
-      specifier: ^14.3.0
-      version: 14.3.0
-    ansis:
-      specifier: ^4.3.1
-      version: 4.3.1
-    artplayer:
-      specifier: ^5.4.0
-      version: 5.4.0
-    gray-matter:
-      specifier: ^4.0.3
-      version: 4.0.3
-    local-pkg:
-      specifier: ^1.2.1
-      version: 1.2.1
-    markdown-it-container:
-      specifier: ^4.0.0
-      version: 4.0.0
-    mermaid:
-      specifier: ^11.15.0
-      version: 11.15.0
-    picomatch:
-      specifier: ^4.0.4
-      version: 4.0.4
-    qrcode:
-      specifier: ^1.5.4
-      version: 1.5.4
-    shiki:
-      specifier: ^4.2.0
-      version: 4.2.0
-    svgo:
-      specifier: ^4.0.1
-      version: 4.0.1
-    tinyglobby:
-      specifier: ^0.2.17
-      version: 0.2.17
     vue:
       specifier: ^3.5.38
       version: 3.5.38

@@ -20,6 +20,7 @@ All plugins support two usage modes:
 | [Field](./field)                 | `vitepress-plugin-field`         | API field documentation, with JSDoc-style tags for metadata     |
 | [Npm To](./npm-to)               | `vitepress-plugin-npm-to`        | Auto-convert npm commands to other package managers             |
 | [File Tree](./file-tree)         | `vitepress-plugin-file-tree`     | File tree display                                               |
+| [Code Tree](./code-tree)         | `vitepress-plugin-code-tree`     | Code tree with file tree sidebar                                |
 | [PDF](./pdf)                     | `vitepress-plugin-pdf`           | PDF file embedding                                              |
 | [QRCode](./qrcode)               | `vitepress-plugin-qrcode`        | QR code generation                                              |
 | [Plot](./plot)                   | `vitepress-plugin-plot`          | Hidden text reveal on click/hover                               |

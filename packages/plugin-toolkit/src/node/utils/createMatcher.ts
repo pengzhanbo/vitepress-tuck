@@ -52,6 +52,9 @@ export function resolveMatcherPattern(include?: string | string[], exclude?: str
     }
   })
 
+  if (pattern.length === 0)
+    pattern.push('*')
+
   return { pattern, ignore }
 }
 

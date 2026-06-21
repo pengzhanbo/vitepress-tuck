@@ -6,5 +6,5 @@ export default config({
     erasableOnly: true,
   },
   vue: { a11y: true },
-  ignores: ['**/*.md'],
+  ignores: ['**/*.md', '**/__test__/fixtures/**'],
 })

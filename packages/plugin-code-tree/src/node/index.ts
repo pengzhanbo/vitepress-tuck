@@ -12,6 +12,7 @@
 
 import { codeTree } from './plugin.js'
 
+export { loadCodeContent } from './loader.js'
 export * from './markdown.js'
 export * from './plugin.js'
 export * from './types.js'
