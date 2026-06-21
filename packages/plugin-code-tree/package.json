@@ -1,15 +1,15 @@
 {
-  "name": "vitepress-plugin-toolkit",
+  "name": "vitepress-plugin-code-tree",
   "type": "module",
   "version": "0.3.0",
-  "description": "Development toolkit for vitepress plugins",
+  "description": "Render code tree structure in your VitePress site.",
   "author": "pengzhanbo <q942450674@outlook.com> (https://github.com/pengzhanbo/)",
   "license": "MIT",
-  "homepage": "https://tuck.pengzhanbo.cn/guide/toolkit",
+  "homepage": "https://tuck.pengzhanbo.cn/plugins/code-tree",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pengzhanbo/vitepress-tuck.git",
-    "directory": "packages/plugin-toolkit"
+    "directory": "packages/plugin-code-tree"
   },
   "bugs": {
     "url": "https://github.com/pengzhanbo/vitepress-tuck/issues"
@@ -17,19 +17,15 @@
   "keywords": [
     "vitepress",
     "vitepress-plugin",
-    "toolkit"
+    "code-tree"
   ],
-  "sideEffects": false,
   "exports": {
-    ".": {
-      "types": "./dist/node/index.d.ts",
-      "default": "./dist/node/index.js"
-    },
+    ".": "./dist/node/index.js",
     "./client": {
       "browser": "./dist/client/browser/index.js",
       "default": "./dist/client/ssr/index.js"
     },
-    "./styles/*": "./dist/client/styles/*"
+    "./style.css": "./dist/client/style.css"
   },
   "module": "./dist/node/index.js",
   "types": "./dist/node/index.d.ts",
@@ -42,7 +38,8 @@
     "build": "pnpm tsdown && pnpm copy",
     "copy": "cpx \"src/**/*.css\" dist",
     "copy:watch": "pnpm copy -w",
-    "tsdown": "tsdown --config-loader unrun"
+    "tsdown": "tsdown --config-loader unrun",
+    "tsdown:watch": "pnpm tsdown -w"
   },
   "peerDependencies": {
     "vitepress": "^1.6.4 || ^2.0.0-alpha.17",
@@ -52,8 +49,11 @@
     "@pengzhanbo/utils": "catalog:prod",
     "@vueuse/core": "catalog:prod",
     "ansis": "catalog:prod",
-    "markdown-it-container": "catalog:prod",
-    "picomatch": "catalog:prod"
+    "shiki": "catalog:prod",
+    "tinyglobby": "catalog:prod",
+    "vitepress-plugin-file-tree": "workspace:*",
+    "vitepress-plugin-toolkit": "workspace:*",
+    "vitepress-tuck": "workspace:*"
   },
   "publishConfig": {
     "access": "public",

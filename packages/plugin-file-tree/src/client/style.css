@@ -12,7 +12,6 @@
 .vp-file-tree {
   position: relative;
   max-width: 100%;
-  padding: 16px;
   overflow: auto hidden;
   font-size: 14px;
   background-color: var(--vp-file-tree-bg);
@@ -22,11 +21,10 @@
 }
 
 .vp-file-tree .vp-file-tree-title {
-  padding-block: 8px;
   padding-inline: 16px;
-  margin-block: -16px 8px;
-  margin-inline: -16px;
+  margin-block: 0;
   font-weight: bold;
+  line-height: 47px;
   color: var(--vp-c-text-1);
   border-bottom: solid 1px var(--vp-c-divider);
   transition: color 0.25s ease, border-color 0.25s ease;
@@ -34,6 +32,10 @@
 
 .vp-file-tree .vp-file-tree-title + .vp-copy {
   top: calc(45px + 1em) !important;
+}
+
+.vp-file-tree .file-tree-content {
+  padding: 16px;
 }
 
 .vp-file-tree .vp-file-tree-info {

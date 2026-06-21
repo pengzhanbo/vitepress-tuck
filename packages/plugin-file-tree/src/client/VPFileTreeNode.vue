@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Ref } from 'vue'
 import { inject, ref } from 'vue'
+import { ACTIVE_NODE_KEY, ON_NODE_CLICK } from './constants.js'
 
 const { type, filename, level, diff, expanded, focus, filepath } = defineProps<{
   /** Node type, either a folder or a file. / 节点类型，文件夹或文件。 */
@@ -19,11 +19,9 @@ const { type, filename, level, diff, expanded, focus, filepath } = defineProps<{
   filepath?: string
 }>()
 
-const activeFileTreeNode = inject<Ref<string>>('active-file-tree-node', ref(''))
+const activeFileTreeNode = inject(ACTIVE_NODE_KEY, ref(''))
 
-const onNodeClick = inject<
-  (filename: string, type: 'file' | 'folder') => void
->('on-file-tree-node-click', () => {})
+const onNodeClick = inject(ON_NODE_CLICK, () => {})
 
 const active = ref(expanded)
 

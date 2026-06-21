@@ -3,6 +3,7 @@ import type { EnhanceAppContext } from 'vitepress/client'
 import { default as VPFileTree } from './VPFileTree.vue'
 import { default as VPFileTreeNode } from './VPFileTreeNode.vue'
 
+export * from './constants.js'
 export { VPFileTree, VPFileTreeNode }
 
 /**
@@ -19,6 +20,8 @@ export { VPFileTree, VPFileTreeNode }
  * @param ctx.app - The VitePress Vue app instance / VitePress 的 Vue 应用实例
  */
 export function enhanceAppWithFileTree({ app }: EnhanceAppContext) {
-  app.component('VPFileTree', VPFileTree)
-  app.component('VPFileTreeNode', VPFileTreeNode)
+  if (!app._context.components.VPFileTree)
+    app.component('VPFileTree', VPFileTree)
+  if (!app._context.components.VPFileTreeNode)
+    app.component('VPFileTreeNode', VPFileTreeNode)
 }

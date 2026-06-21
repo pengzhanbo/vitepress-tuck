@@ -1,4 +1,5 @@
 export * from './constants.js'
+export * from './createMatcher.js'
 export * from './hash.js'
 export * from './logger.js'
 export * from './parseRect.js'

@@ -38,6 +38,7 @@
     "@types/markdown-it": "catalog:dev",
     "@types/markdown-it-container": "catalog:dev",
     "@types/node": "catalog:dev",
+    "@types/picomatch": "catalog:dev",
     "@types/qrcode": "catalog:dev",
     "@vitest/coverage-v8": "catalog:dev",
     "bumpp": "catalog:dev",

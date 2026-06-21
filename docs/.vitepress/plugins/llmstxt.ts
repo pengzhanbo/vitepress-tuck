@@ -8,7 +8,7 @@ export default definePlugin(() => ({
   name: 'vitepress-plugin-llms',
   markdown: {
     config(md) {
-      md.use(copyOrDownloadAsMarkdownButtons)
+      isProd && md.use(copyOrDownloadAsMarkdownButtons)
     },
   },
   vite: {
