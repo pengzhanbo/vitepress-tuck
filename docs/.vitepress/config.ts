@@ -1,5 +1,6 @@
 import caniuse from 'vitepress-plugin-caniuse'
 import codeCollapse from 'vitepress-plugin-code-collapse'
+import codeTree from 'vitepress-plugin-code-tree'
 import codepen from 'vitepress-plugin-codepen'
 import field from 'vitepress-plugin-field'
 import fileTree from 'vitepress-plugin-file-tree'
@@ -60,6 +61,11 @@ export default defineConfig({
   // },
 
   plugins: [
+    // wrap external plugins
+    llmstxt(),
+    groupIcons(),
+
+    // monorepo internal plugins
     steps(),
     plot(),
     fileTree(),
@@ -75,9 +81,6 @@ export default defineConfig({
     codeCollapse(),
     field(),
     plantuml(),
-
-    // wrap external plugins
-    llmstxt(),
-    groupIcons(),
+    codeTree(),
   ],
 })

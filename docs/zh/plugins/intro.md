@@ -19,6 +19,7 @@
 | [Field](./field)                 | `vitepress-plugin-field`         | API 字段文档，支持 JSDoc 标签                      |
 | [Npm To](./npm-to)               | `vitepress-plugin-npm-to`        | npm 命令自动转换为其他包管理器命令                 |
 | [File Tree](./file-tree)         | `vitepress-plugin-file-tree`     | 文件树展示                                         |
+| [Code Tree](./code-tree)         | `vitepress-plugin-code-tree`     | 代码树，带文件树侧边栏                             |
 | [PDF](./pdf)                     | `vitepress-plugin-pdf`           | PDF 文件嵌入                                       |
 | [QRCode](./qrcode)               | `vitepress-plugin-qrcode`        | 二维码生成                                         |
 | [Plot](./plot)                   | `vitepress-plugin-plot`          | 隐文遮罩，点击或悬停显示隐藏文本                   |

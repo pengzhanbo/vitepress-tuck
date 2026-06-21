@@ -19,6 +19,7 @@ export default defineAdditionalConfig({
         { text: 'Overview', link: 'intro' },
         { text: 'Steps', link: 'steps' },
         { text: 'File Tree', link: 'file-tree' },
+        { text: 'Code Tree', link: 'code-tree' },
         { text: 'Field', link: 'field' },
         { text: 'Plot', link: 'plot' },
         { text: 'Npm To', link: 'npm-to' },

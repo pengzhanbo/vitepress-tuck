@@ -11,6 +11,7 @@
     "vitepress": "catalog:prod",
     "vitepress-plugin-caniuse": "workspace:*",
     "vitepress-plugin-code-collapse": "workspace:*",
+    "vitepress-plugin-code-tree": "workspace:*",
     "vitepress-plugin-codepen": "workspace:*",
     "vitepress-plugin-field": "workspace:*",
     "vitepress-plugin-file-tree": "workspace:*",
