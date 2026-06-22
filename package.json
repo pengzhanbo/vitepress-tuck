@@ -23,7 +23,7 @@
     "lint:css": "stylelint '**/*.{css,vue}'",
     "lint:fix": "pnpm lint:check --fix && pnpm lint:css --fix",
     "test": "cross-env TZ=Etc/UTC vitest --coverage",
-    "prepare": "husky",
+    "prepare": "simple-git-hooks",
     "release:changelog": "conventional-changelog -p angular",
     "release:check": "pnpm lint && pnpm build",
     "release:sync": "node scripts/mirror-sync.mjs",
@@ -47,11 +47,11 @@
     "cpx2": "catalog:dev",
     "cross-env": "catalog:dev",
     "eslint": "catalog:dev",
-    "husky": "catalog:dev",
-    "lint-staged": "catalog:dev",
     "markdown-it": "catalog:dev",
+    "nano-staged": "catalog:dev",
     "oxc-minify": "catalog:dev",
     "rimraf": "catalog:dev",
+    "simple-git-hooks": "catalog:dev",
     "stylelint": "catalog:dev",
     "tsdown": "catalog:dev",
     "typescript": "catalog:dev",
@@ -62,7 +62,10 @@
     "vue": "catalog:prod",
     "vue-tsc": "catalog:dev"
   },
-  "lint-staged": {
+  "simple-git-hooks": {
+    "pre-commit": "./node_modules/.bin/nano-staged --allow-empty"
+  },
+  "nano-staged": {
     "*": "eslint --fix",
     "*.{css,vue}": "stylelint --fix",
     "*.{js,ts,mjs,cjs}": "cross-env TZ=Etc/UTC vitest related --run"

@@ -62,6 +62,8 @@
     "codepen",
     "codesandbox",
     "jsfiddle",
-    "qrcode"
+    "qrcode",
+    "shiki",
+    "unrun"
   ]
 }
