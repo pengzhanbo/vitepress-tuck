@@ -1,3 +1,18 @@
+# [0.4.0](https://github.com/pengzhanbo/vitepress-tuck/compare/v0.3.0...v0.4.0) (2026-06-22)
+
+
+### Bug Fixes
+
+* fix hydration mismatch ([7559d65](https://github.com/pengzhanbo/vitepress-tuck/commit/7559d6515025c6e4fa71a1bb63cadb0ce7ecdf5b))
+
+
+### Features
+
+* add plugin-code-tree ([#10](https://github.com/pengzhanbo/vitepress-tuck/issues/10)) ([0e53bc2](https://github.com/pengzhanbo/vitepress-tuck/commit/0e53bc229b47e48327f2cb205887c5431bfdf5d6))
+* optimize embed rule block ([#7](https://github.com/pengzhanbo/vitepress-tuck/issues/7)) ([a1ab6c6](https://github.com/pengzhanbo/vitepress-tuck/commit/a1ab6c6952d0324ac2591d24ccf39a69999d3b0c))
+* **plugin-plantuml:** improve plugin options ([472f0a4](https://github.com/pengzhanbo/vitepress-tuck/commit/472f0a4e84ec00b1e9eb7f19058f0787db4eca67))
+* update plantuml icons ([ff661a5](https://github.com/pengzhanbo/vitepress-tuck/commit/ff661a53c2fe1b1b2c076fe445d7c22533751331))
+
 # [0.3.0](https://github.com/pengzhanbo/vitepress-tuck/compare/v0.2.0...v0.3.0) (2026-06-14)
 
 
