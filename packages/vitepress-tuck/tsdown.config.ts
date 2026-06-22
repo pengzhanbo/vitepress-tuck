@@ -1,10 +1,3 @@
-import { defineConfig } from 'tsdown'
+import { build } from '../../scripts/tsdown'
 
-export default defineConfig({
-  entry: 'src/index.ts',
-  outDir: 'dist',
-  format: 'esm',
-  dts: true,
-  target: 'node20.19.0',
-  fixedExtension: false,
-})
+export default build({ mode: 'only-node' })
