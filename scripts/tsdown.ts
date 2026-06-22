@@ -45,6 +45,7 @@ export function build({
       entry: 'src/node/index.ts',
       outDir: 'dist/node',
       dts: true,
+      target: 'node20.19.0',
     }, nodeConfig),
     // ssr 环境
     mergeConfig({}, baseConfig, {
