@@ -65,5 +65,8 @@
     "qrcode",
     "shiki",
     "unrun"
+  ],
+  "npmx.ignore.replacement": [
+    "rimraf"
   ]
 }
