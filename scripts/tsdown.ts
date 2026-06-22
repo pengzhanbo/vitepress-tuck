@@ -36,9 +36,8 @@ export function build({
     }, nodeConfig)
   }
 
-  if (inlineStyle) {
-    styleAssets.unshift('../style.css')
-  }
+  if (inlineStyle)
+    styleAssets = ['../style.css', ...styleAssets]
 
   return [
     // node 环境
