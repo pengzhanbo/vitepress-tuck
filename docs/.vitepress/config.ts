@@ -12,6 +12,7 @@ import pdf from 'vitepress-plugin-pdf'
 import plantuml from 'vitepress-plugin-plantuml'
 import plot from 'vitepress-plugin-plot'
 import qrcode from 'vitepress-plugin-qrcode'
+import repoCard from 'vitepress-plugin-repo-card'
 import steps from 'vitepress-plugin-steps'
 import video from 'vitepress-plugin-video'
 import { defineConfig } from 'vitepress-tuck'
@@ -82,5 +83,6 @@ export default defineConfig({
     field(),
     plantuml(),
     codeTree(),
+    repoCard(),
   ],
 })

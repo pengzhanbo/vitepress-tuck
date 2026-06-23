@@ -25,6 +25,7 @@
     "vitepress-plugin-plantuml": "workspace:*",
     "vitepress-plugin-plot": "workspace:*",
     "vitepress-plugin-qrcode": "workspace:*",
+    "vitepress-plugin-repo-card": "workspace:*",
     "vitepress-plugin-steps": "workspace:*",
     "vitepress-plugin-toolkit": "workspace:*",
     "vitepress-plugin-video": "workspace:*",
