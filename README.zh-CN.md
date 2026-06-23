@@ -1,5 +1,7 @@
 # vitepress-tuck
 
+[英文](./README.md) | 简体中文
+
 > 一个低门槛、易扩展的 VitePress 插件开发库与插件生态
 
 ## 概览

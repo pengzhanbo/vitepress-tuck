@@ -1,5 +1,7 @@
 # vitepress-tuck
 
+英文 | [简体中文] (./README.zh-CN.md)
+
 > A low-barrier, extensible plugin development library and plugin ecosystem for VitePress
 
 ## Overview
@@ -77,22 +79,22 @@ All plugins are built on `vitepress-tuck` while remaining compatible with native
 
 | Plugin                                              | Package                          | Description                                                          |
 | --------------------------------------------------- | -------------------------------- | -------------------------------------------------------------------- |
-| [Steps](./docs/zh/plugins/steps.md)                 | `vitepress-plugin-steps`         | Step-by-step container for creating guided content                   |
-| [File Tree](./docs/zh/plugins/file-tree.md)         | `vitepress-plugin-file-tree`     | Render file directory trees with expand/collapse                     |
-| [Code Tree](./docs/zh/plugins/code-tree.md)         | `vitepress-plugin-code-tree`     | Code tree with file tree sidebar                                     |
-| [Plot](./docs/zh/plugins/plot.md)                   | `vitepress-plugin-plot`          | Hidden text with click/hover reveal (`!!text!!` syntax)              |
-| [Npm To](./docs/zh/plugins/npm-to.md)               | `vitepress-plugin-npm-to`        | Convert npm commands to pnpm / yarn / bun / deno equivalents         |
-| [Repo Card](./docs/zh/plugins/repo-card.md)         | `vitepress-plugin-repo-card`     | GitHub / Gitee repository card display                               |
-| [Mermaid](./docs/zh/plugins/mermaid.md)             | `vitepress-plugin-mermaid-tuck`  | Mermaid diagram rendering with i18n support                          |
-| [PlantUML](./docs/zh/plugins/plantuml.md)           | `vitepress-plugin-plantuml`      | PlantUML diagram rendering with i18n support                         |
-| [QRCode](./docs/zh/plugins/qrcode.md)               | `vitepress-plugin-qrcode`        | Generate QR codes (image/card modes)                                 |
-| [Video](./docs/zh/plugins/video.md)                 | `vitepress-plugin-video`         | Multi-platform video embedding (Bilibili, YouTube, AcFun, ArtPlayer) |
-| [Obsidian](./docs/zh/plugins/obsidian.md)           | `vitepress-plugin-obsidian`      | Obsidian-style Markdown (Wiki links, Callouts, embeds, comments)     |
-| [PDF](./docs/zh/plugins/pdf.md)                     | `vitepress-plugin-pdf`           | Embed PDF files with page/zoom/toolbar options                       |
-| [Can I Use](./docs/zh/plugins/caniuse.md)           | `vitepress-plugin-caniuse`       | Embed browser compatibility data from caniuse.com                    |
-| [Code Collapse](./docs/zh/plugins/code-collapse.md) | `vitepress-plugin-code-collapse` | Fold long code blocks (global / per-block configuration)             |
-| [CodePen](./docs/zh/plugins/codepen.md)             | `vitepress-plugin-codepen`       | Embed CodePen demos with custom tabs and themes                      |
-| [JSFiddle](./docs/zh/plugins/jsfiddle.md)           | `vitepress-plugin-jsfiddle`      | Embed JSFiddle demos with custom tabs                                |
+| [Steps](./docs/en/plugins/steps.md)                 | `vitepress-plugin-steps`         | Step-by-step container for creating guided content                   |
+| [File Tree](./docs/en/plugins/file-tree.md)         | `vitepress-plugin-file-tree`     | Render file directory trees with expand/collapse                     |
+| [Code Tree](./docs/en/plugins/code-tree.md)         | `vitepress-plugin-code-tree`     | Code tree with file tree sidebar                                     |
+| [Plot](./docs/en/plugins/plot.md)                   | `vitepress-plugin-plot`          | Hidden text with click/hover reveal (`!!text!!` syntax)              |
+| [Npm To](./docs/en/plugins/npm-to.md)               | `vitepress-plugin-npm-to`        | Convert npm commands to pnpm / yarn / bun / deno equivalents         |
+| [Repo Card](./docs/en/plugins/repo-card.md)         | `vitepress-plugin-repo-card`     | GitHub / Gitee repository card display                               |
+| [Mermaid](./docs/en/plugins/mermaid.md)             | `vitepress-plugin-mermaid-tuck`  | Mermaid diagram rendering with i18n support                          |
+| [PlantUML](./docs/en/plugins/plantuml.md)           | `vitepress-plugin-plantuml`      | PlantUML diagram rendering with i18n support                         |
+| [QRCode](./docs/en/plugins/qrcode.md)               | `vitepress-plugin-qrcode`        | Generate QR codes (image/card modes)                                 |
+| [Video](./docs/en/plugins/video.md)                 | `vitepress-plugin-video`         | Multi-platform video embedding (Bilibili, YouTube, AcFun, ArtPlayer) |
+| [Obsidian](./docs/en/plugins/obsidian.md)           | `vitepress-plugin-obsidian`      | Obsidian-style Markdown (Wiki links, Callouts, embeds, comments)     |
+| [PDF](./docs/en/plugins/pdf.md)                     | `vitepress-plugin-pdf`           | Embed PDF files with page/zoom/toolbar options                       |
+| [Can I Use](./docs/en/plugins/caniuse.md)           | `vitepress-plugin-caniuse`       | Embed browser compatibility data from caniuse.com                    |
+| [Code Collapse](./docs/en/plugins/code-collapse.md) | `vitepress-plugin-code-collapse` | Fold long code blocks (global / per-block configuration)             |
+| [CodePen](./docs/en/plugins/codepen.md)             | `vitepress-plugin-codepen`       | Embed CodePen demos with custom tabs and themes                      |
+| [JSFiddle](./docs/en/plugins/jsfiddle.md)           | `vitepress-plugin-jsfiddle`      | Embed JSFiddle demos with custom tabs                                |
 
 ## Developing Plugins
 
@@ -141,7 +143,7 @@ export default definePlugin((options?: MyPluginOptions) => ({
 
 - Use [vitepress-plugin-toolkit](./packages/plugin-toolkit) which provides `createEmbedRuleBlock`,
   `createContainerPlugin`, `createContainerSyntaxPlugin` and other utilities for quickly building markdown-it plugins.
-- See the [full API reference](./docs/zh/guide/api.md) for `VitepressPlugin` type definitions.
+- See the [full API reference](./docs/en/guide/api.md) for `VitepressPlugin` type definitions.
 - Refer to existing plugins in this repository as development examples.
 
 ### Wrapping Existing Plugins
