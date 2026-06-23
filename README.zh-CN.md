@@ -76,8 +76,10 @@ export default {
 | --------------------------------------------------- | -------------------------------- | ------------------------------------------------------------- |
 | [Steps](./docs/zh/plugins/steps.md)                 | `vitepress-plugin-steps`         | 步骤容器，用于创建步骤引导内容                                |
 | [File Tree](./docs/zh/plugins/file-tree.md)         | `vitepress-plugin-file-tree`     | 文件目录树展示，支持展开/折叠                                 |
+| [Code Tree](./docs/zh/plugins/code-tree.md)         | `vitepress-plugin-code-tree`     | 代码树展示，支持展开/折叠                                     |
 | [Plot](./docs/zh/plugins/plot.md)                   | `vitepress-plugin-plot`          | 隐文遮罩，点击或悬停显示隐藏文本（`!!text!!` 语法）           |
 | [Npm To](./docs/zh/plugins/npm-to.md)               | `vitepress-plugin-npm-to`        | npm 命令自动转换为 pnpm / yarn / bun / deno 等包管理器命令    |
+| [Repo Card](./docs/zh/plugins/repo-card.md)         | `vitepress-plugin-repo-card`     | github / gitee 仓库卡片展示                                   |
 | [Mermaid](./docs/zh/plugins/mermaid.md)             | `vitepress-plugin-mermaid-tuck`  | Mermaid 图表渲染，支持 i18n 多语言                            |
 | [PlantUML](./docs/zh/plugins/plantuml.md)           | `vitepress-plugin-plantuml`      | PlantUML 图表渲染，支持 i18n 多语言                           |
 | [QRCode](./docs/zh/plugins/qrcode.md)               | `vitepress-plugin-qrcode`        | 二维码生成，支持图片 / 卡片两种模式                           |
@@ -134,7 +136,8 @@ export default definePlugin((options?: MyPluginOptions) => ({
 
 ### 开发资源
 
-- 使用 [vitepress-plugin-toolkit](./packages/plugin-toolkit) 提供的 `createEmbedRuleBlock`、`createContainerPlugin`、`createContainerSyntaxPlugin` 等工具快速构建 markdown-it 插件
+- 使用 [vitepress-plugin-toolkit](./packages/plugin-toolkit) 提供的 `createEmbedRuleBlock`
+  `createContainerPlugin`、`createContainerSyntaxPlugin` 等工具快速构建 markdown-it 插件
 - 查看 [Core API 文档](./docs/zh/guide/api.md) 了解 `VitepressPlugin` 类型定义
 - 参考本项目中的已有插件作为开发范例
 

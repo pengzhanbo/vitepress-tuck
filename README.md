@@ -4,11 +4,14 @@
 
 ## Overview
 
-`vitepress-tuck` is a plugin development library and plugin collection designed for **VitePress**. It provides a clean, unified plugin interface and configuration merging mechanism, significantly lowering the barrier to developing VitePress plugins while offering a more user-friendly integration experience.
+`vitepress-tuck` is a plugin development library and plugin collection designed for **VitePress**.
+It provides a clean, unified plugin interface and configuration merging mechanism,
+significantly lowering the barrier to developing VitePress plugins while offering a more user-friendly integration experience.
 
 ### Design Philosophy
 
-- **Low Barrier** — Plugin developers only need to focus on core logic; no need to handle complex VitePress configuration merging and lifecycle orchestration.
+- **Low Barrier** — Plugin developers only need to focus on core logic; no need to handle complex
+  VitePress configuration merging and lifecycle orchestration.
 - **Easy Integration** — Plugin users simply pass a `plugins` array to `defineConfig`, and plugins automatically handle configuration injection.
 - **Progressive Compatibility** — All plugins work with both `vitepress-tuck` and native VitePress integration.
 
@@ -76,8 +79,10 @@ All plugins are built on `vitepress-tuck` while remaining compatible with native
 | --------------------------------------------------- | -------------------------------- | -------------------------------------------------------------------- |
 | [Steps](./docs/zh/plugins/steps.md)                 | `vitepress-plugin-steps`         | Step-by-step container for creating guided content                   |
 | [File Tree](./docs/zh/plugins/file-tree.md)         | `vitepress-plugin-file-tree`     | Render file directory trees with expand/collapse                     |
+| [Code Tree](./docs/zh/plugins/code-tree.md)         | `vitepress-plugin-code-tree`     | Code tree with file tree sidebar                                     |
 | [Plot](./docs/zh/plugins/plot.md)                   | `vitepress-plugin-plot`          | Hidden text with click/hover reveal (`!!text!!` syntax)              |
 | [Npm To](./docs/zh/plugins/npm-to.md)               | `vitepress-plugin-npm-to`        | Convert npm commands to pnpm / yarn / bun / deno equivalents         |
+| [Repo Card](./docs/zh/plugins/repo-card.md)         | `vitepress-plugin-repo-card`     | GitHub / Gitee repository card display                               |
 | [Mermaid](./docs/zh/plugins/mermaid.md)             | `vitepress-plugin-mermaid-tuck`  | Mermaid diagram rendering with i18n support                          |
 | [PlantUML](./docs/zh/plugins/plantuml.md)           | `vitepress-plugin-plantuml`      | PlantUML diagram rendering with i18n support                         |
 | [QRCode](./docs/zh/plugins/qrcode.md)               | `vitepress-plugin-qrcode`        | Generate QR codes (image/card modes)                                 |
@@ -134,7 +139,8 @@ export default definePlugin((options?: MyPluginOptions) => ({
 
 ### Development Resources
 
-- Use [vitepress-plugin-toolkit](./packages/plugin-toolkit) which provides `createEmbedRuleBlock`, `createContainerPlugin`, `createContainerSyntaxPlugin` and other utilities for quickly building markdown-it plugins.
+- Use [vitepress-plugin-toolkit](./packages/plugin-toolkit) which provides `createEmbedRuleBlock`,
+  `createContainerPlugin`, `createContainerSyntaxPlugin` and other utilities for quickly building markdown-it plugins.
 - See the [full API reference](./docs/zh/guide/api.md) for `VitepressPlugin` type definitions.
 - Refer to existing plugins in this repository as development examples.
 

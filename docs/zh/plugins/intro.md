@@ -18,6 +18,7 @@
 | [PlantUML](./plantuml)           | `vitepress-plugin-plantuml`      | PlantUML 图表支持                                  |
 | [Field](./field)                 | `vitepress-plugin-field`         | API 字段文档，支持 JSDoc 标签                      |
 | [Npm To](./npm-to)               | `vitepress-plugin-npm-to`        | npm 命令自动转换为其他包管理器命令                 |
+| [Repo Card](./repo-card)         | `vitepress-plugin-repo-card`     | github / gitee 仓库卡片展示                        |
 | [File Tree](./file-tree)         | `vitepress-plugin-file-tree`     | 文件树展示                                         |
 | [Code Tree](./code-tree)         | `vitepress-plugin-code-tree`     | 代码树，带文件树侧边栏                             |
 | [PDF](./pdf)                     | `vitepress-plugin-pdf`           | PDF 文件嵌入                                       |
