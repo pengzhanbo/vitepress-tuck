@@ -1,6 +1,6 @@
 # vitepress-tuck
 
-英文 | [简体中文](./README.zh-CN.md)
+English | [简体中文](./README.zh-CN.md)
 
 > A low-barrier, extensible plugin development library and plugin ecosystem for VitePress
 
