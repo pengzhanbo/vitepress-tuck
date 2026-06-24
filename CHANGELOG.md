@@ -1,3 +1,12 @@
+# [0.5.0](https://github.com/pengzhanbo/vitepress-tuck/compare/v0.4.0...v0.5.0) (2026-06-24)
+
+
+### Features
+
+* add `plugin-repo-card` ([#12](https://github.com/pengzhanbo/vitepress-tuck/issues/12)) ([3dc6108](https://github.com/pengzhanbo/vitepress-tuck/commit/3dc6108f0780d073220700ce1421bc59b095d076))
+* add plugin-watermark ([#13](https://github.com/pengzhanbo/vitepress-tuck/issues/13)) ([bf95f73](https://github.com/pengzhanbo/vitepress-tuck/commit/bf95f735f905a32bb4e3b2c11c2ff82ba0c8742e))
+* add support auto-import components ([#14](https://github.com/pengzhanbo/vitepress-tuck/issues/14)) ([8d66665](https://github.com/pengzhanbo/vitepress-tuck/commit/8d66665a11c2b48eb952805f703f93963e979228))
+
 # [0.4.0](https://github.com/pengzhanbo/vitepress-tuck/compare/v0.3.0...v0.4.0) (2026-06-22)
 
 

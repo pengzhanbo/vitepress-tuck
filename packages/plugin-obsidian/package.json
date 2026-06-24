@@ -1,7 +1,7 @@
 {
   "name": "vitepress-plugin-obsidian",
   "type": "module",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Support Obsidian-flavored Markdown syntax in your VitePress site.",
   "author": "pengzhanbo <q942450674@outlook.com> (https://github.com/pengzhanbo/)",
   "license": "MIT",
