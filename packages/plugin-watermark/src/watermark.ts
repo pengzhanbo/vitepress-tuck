@@ -15,7 +15,7 @@ export function setupWatermark(options?: MaybeRef<SetupWatermarkOptions>) {
   if (!inBrowser)
     return
 
-  const { frontmatter, site, page } = useData()
+  const { frontmatter, site, page, localeIndex } = useData()
   const pageOptions = computed<FrontMatterWatermark>(() => frontmatter.value.watermark)
 
   const defaultEnabled = computed(() => {
@@ -28,7 +28,7 @@ export function setupWatermark(options?: MaybeRef<SetupWatermarkOptions>) {
   const getOptions = () => {
     const { enabled, ...clientOptions } = toValue(options) || {}
 
-    const locale = typeof site.value.localeIndex !== 'undefined' ? site.value.locales[site.value.localeIndex] : undefined
+    const locale = site.value.locales[localeIndex.value]
 
     const mergedOptions: Partial<WatermarkOptions> = {
       content: locale?.title || site.value.title,
@@ -48,7 +48,7 @@ export function setupWatermark(options?: MaybeRef<SetupWatermarkOptions>) {
   }
 
   watch(
-    [() => toValue(options), pageOptions, defaultEnabled],
+    [() => toValue(options), localeIndex.value, pageOptions.value, defaultEnabled.value],
     () => {
       const opts = getOptions()
       if (opts === false) {

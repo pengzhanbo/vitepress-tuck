@@ -17,7 +17,7 @@
   "keywords": [
     "vitepress",
     "vitepress-plugin",
-    "plot"
+    "watermark"
   ],
   "exports": {
     ".": "./dist/index.js"
@@ -41,10 +41,6 @@
     "vue": "^3.5.0"
   },
   "dependencies": {
-    "@pengzhanbo/utils": "catalog:prod",
-    "@vueuse/core": "catalog:prod",
-    "vitepress-plugin-toolkit": "workspace:*",
-    "vitepress-tuck": "workspace:*",
     "watermark-js-plus": "catalog:prod"
   },
   "publishConfig": {
