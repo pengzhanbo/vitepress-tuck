@@ -32,9 +32,7 @@ import { mermaidVitePlugin } from './vite.js'
  */
 export const mermaid = definePlugin((options?: MermaidPluginOptions) => ({
   name: 'vitepress-plugin-mermaid-tuck',
-  client: {
-    enhance: 'enhanceAppWithMermaid',
-  },
+  componentResolver: ['VPMermaid'],
   markdown: {
     config(md) {
       md.use(mermaidMarkdownPlugin)

@@ -24,9 +24,7 @@ import { codepenMarkdownPlugin } from './markdown.js'
  */
 export const codepen = definePlugin(() => ({
   name: 'vitepress-plugin-codepen',
-  client: {
-    enhance: 'enhanceAppWithCodepen',
-  },
+  componentResolver: ['VPCodepen'],
   markdown: {
     config(md) {
       md.use(codepenMarkdownPlugin)

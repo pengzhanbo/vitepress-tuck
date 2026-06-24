@@ -12,24 +12,31 @@
 import { defineConfig } from 'vitepress-tuck'
 
 function defineConfig<ThemeConfig = DefaultTheme.Config>(
-  config: UserConfig<NoInfer<ThemeConfig>> & PluginsConfig,
+  config: UserConfig<NoInfer<ThemeConfig>> & TuckConfig,
 ): UserConfig<NoInfer<ThemeConfig>>
 ```
 
 #### Parameters
 
-| Parameter | Type                         | Description                                  |
-| --------- | ---------------------------- | -------------------------------------------- |
-| `config`  | `UserConfig & PluginsConfig` | VitePress original config + `plugins` option |
+| Parameter | Type                      | Description                                  |
+| --------- | ------------------------- | -------------------------------------------- |
+| `config`  | `UserConfig & TuckConfig` | VitePress original config + `plugins` option |
 
-`PluginsConfig` definition:
+`TuckConfig` definition:
 
 ```ts
-interface PluginsConfig {
+interface TuckConfig {
   /**
    * vitepress plugin list
    */
   plugins?: VitepressPlugin[]
+
+  /**
+   * Options for the unplugin-vue-components plugin.
+   *
+   * @see - https://github.com/unplugin/unplugin-vue-components
+   */
+  components?: ComponentsOptions
 }
 ```
 
@@ -46,7 +53,8 @@ Returns the merged and complete VitePress `UserConfig` object.
    - `transformHead` → concurrent execution with result merging
    - `transformHtml`, `transformPageData`, `postRender` → sequential execution, chained
 3. Injects the `client` configuration from plugins into the built-in `virtual-enhance-app` virtual module.
-4. Finally merges the user's own configuration.
+4. Collects `componentResolver` declarations from plugins into the built-in `unplugin-vue-components` resolver list.
+5. Finally merges the user's own configuration.
 
 ---
 
@@ -111,6 +119,20 @@ interface VitepressPlugin extends Pick<
      */
     enhance?: string | boolean
   }
+
+  /**
+   * Component resolvers for unplugin-vue-components auto-import.
+   *
+   * - String array: declared component names are resolved from `<plugin-name>/client`
+   * - ComponentResolver object: custom resolve logic
+   *
+   * @example
+   * ```ts
+   * // Simple form
+   * componentResolver: ['MyComponent', 'OtherComponent']
+   * ```
+   */
+  componentResolver?: string[] | ComponentResolver
 }
 ```
 
@@ -131,7 +153,8 @@ interface VitepressPlugin extends Pick<
 
 ### virtual:enhance-app
 
-`virtual:enhance-app` is a virtual module provided by `vitepress-tuck`. It automatically collects all plugins' `client` configurations and generates the corresponding code.
+`virtual:enhance-app` is a virtual module provided by `vitepress-tuck`.
+It automatically collects all plugins' `client` configurations and generates the corresponding code.
 
 Import it in the theme entry:
 
@@ -156,3 +179,41 @@ TypeScript support requires adding the type reference:
   }
 }
 ```
+
+---
+
+### Built-in Plugin: auto-components
+
+`vitepress-tuck` integrates [`unplugin-vue-components`](https://github.com/unplugin/unplugin-vue-components) as
+a built-in plugin, providing automatic on-demand component importing. This plugin is enabled by default — no manual registration required.
+
+#### Default Behavior
+
+- Scans `.vue` and `.md` files for component usage
+- Generates type declarations at `node_modules/.vite/components.d.ts`
+- Automatically collects `componentResolver` declarations from all plugins
+
+#### Custom Configuration
+
+Customize `unplugin-vue-components` behavior via the `components` option in `defineConfig`:
+
+```ts
+import { defineConfig } from 'vitepress-tuck'
+
+export default defineConfig({
+  components: {
+    // Custom scan directories
+    dirs: ['src/components'],
+    // Use directory as namespace
+    directoryAsNamespace: true,
+    // Other unplugin-vue-components options...
+  },
+  plugins: [],
+})
+```
+
+::: tip
+Plugin `componentResolver` declarations are merged with the user's `components` configuration.
+Plugin developers only need to declare `componentResolver` in their plugin,
+and users can use the corresponding components directly in Markdown or Vue files without manual imports.
+:::

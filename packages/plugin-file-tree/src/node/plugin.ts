@@ -29,9 +29,7 @@ import { fileTreeMarkdownPlugin } from './markdown.js'
  */
 export const fileTree = definePlugin(() => ({
   name: 'vitepress-plugin-file-tree',
-  client: {
-    enhance: 'enhanceAppWithFileTree',
-  },
+  componentResolver: ['VPFileTree', 'VPFileTreeNode'],
   markdown: {
     config: (md) => {
       md.use(fileTreeMarkdownPlugin)

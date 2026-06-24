@@ -1,12 +1,12 @@
 import type { EnhanceAppContext } from 'vitepress/client'
-import Plot from './Plot.vue'
+import VPPlot from './VPPlot.vue'
 
-export { Plot }
+export { VPPlot }
 
 /**
- * Registers the `Plot` component globally during VitePress app enhancement.
+ * Registers the `VPPlot` component globally during VitePress app enhancement.
  *
- * 在 VitePress 应用增强阶段全局注册 `Plot` 组件。
+ * 在 VitePress 应用增强阶段全局注册 `VPPlot` 组件。
  *
  * Invoked automatically by `virtual:enhance-app` when the plot plugin is
  * enabled, so users do not need to register the component manually.
@@ -15,5 +15,5 @@ export { Plot }
  * 用户无需手动注册该组件。
  */
 export function enhanceAppWithPlot({ app }: EnhanceAppContext) {
-  app.component('Plot', Plot)
+  app.component('VPPlot', VPPlot)
 }

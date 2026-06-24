@@ -70,6 +70,27 @@ export default {
 > }
 > ```
 
+### 自动组件导入
+
+`vitepress-tuck` 内置集成了 [`unplugin-vue-components`](https://github.com/unplugin/unplugin-vue-components) 插件
+为 `.vue` 和 `.md` 文件提供自动按需组件导入能力，无需手动 import 或注册组件。
+插件可通过 `componentResolver` 字段声明提供的 Vue 组件，用户在 Markdown 或 Vue 文件中直接使用组件名即可。
+
+可通过 `components` 选项自定义行为：
+
+```ts
+// .vitepress/config.ts
+import { defineConfig } from 'vitepress-tuck'
+
+export default defineConfig({
+  components: {
+    // 任意 unplugin-vue-components 选项，例如：
+    dirs: ['src/components'],
+  },
+  plugins: [],
+})
+```
+
 ## 插件生态
 
 所有插件均基于 `vitepress-tuck` 开发，同时兼容 VitePress 原生接入方式。
@@ -111,6 +132,9 @@ export default definePlugin((options?: MyPluginOptions) => ({
     ],
     enhance: 'enhanceAppWithExample',
   },
+
+  // 组件解析器：声明组件，支持自动按需导入
+  componentResolver: ['MyComponent', 'OtherComponent'],
 
   // Markdown 配置：注册 markdown-it 插件
   markdown: {

@@ -95,7 +95,7 @@ export default definePlugin((options?: MyPluginOptions) => ({
 {
   "exports": {
     ".": "./node/index.js",
-    "client": "./client/index.js"
+    "./client": "./client/index.js"
   }
 }
 ```
@@ -111,3 +111,61 @@ export function enhanceAppWithMyPlugin({ app }: EnhanceAppContext) {
 ```
 
 `vitepress-tuck` 会检查 `client` 配置，将代码自动注入到 `virtual:enhance-app` 中。
+
+当插件提供需要自动导入的 Vue 组件时，可通过 `componentResolver` 字段声明。最简单的形式是组件名数组，这些组件会从 `<插件名>/client` 自动解析：
+
+```ts
+import { definePlugin } from 'vitepress-tuck'
+
+export default definePlugin(() => ({
+  name: 'vitepress-plugin-my-plugin',
+  // 此处列出的组件会从 'vitepress-plugin-my-plugin/client' 自动导入
+  componentResolver: ['MyComponent', 'OtherComponent'],
+  // ...其他配置
+}))
+```
+
+对于更复杂的场景，也可以传入来自 `unplugin-vue-components` 的自定义 `ComponentResolver` 对象：
+
+```ts
+import type { ComponentResolver } from 'unplugin-vue-components'
+import { definePlugin } from 'vitepress-tuck'
+
+const myResolver: ComponentResolver = {
+  type: 'component',
+  resolve: (name) => {
+    if (name.startsWith('My')) {
+      return { name, from: 'vitepress-plugin-my-plugin/client' }
+    }
+  },
+}
+
+export default definePlugin(() => ({
+  name: 'vitepress-plugin-my-plugin',
+  componentResolver: myResolver,
+  // ...其他配置
+}))
+```
+
+## 自动组件导入
+
+`vitepress-tuck` 内置集成了 [`unplugin-vue-components`](https://github.com/unplugin/unplugin-vue-components) 插件，
+为 `.vue` 和 `.md` 文件提供自动按需组件导入能力，无需手动 import 和注册组件。
+
+默认情况下，内置插件会扫描 `.vue` 和 `.md` 文件，并在 `node_modules/.vite/components.d.ts` 生成类型声明。你可以通过 `components` 选项自定义行为：
+
+```ts
+// .vitepress/config.ts
+import { defineConfig } from 'vitepress-tuck'
+
+export default defineConfig({
+  components: {
+    // 任意 unplugin-vue-components 选项，例如：
+    dirs: ['src/components'],
+    directoryAsNamespace: true,
+  },
+  plugins: [],
+})
+```
+
+当插件提供 Vue 组件时，可通过 `componentResolver` 字段声明，以便由 `unplugin-vue-components` 自动解析 —— 详见[插件开发](#插件开发)。

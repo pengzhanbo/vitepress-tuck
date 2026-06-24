@@ -22,6 +22,9 @@ export default definePlugin((options?: MyPluginOptions) => ({
     enhance: 'enhanceAppWithMyPlugin',
   },
 
+  // Component resolver: declare plugin components for auto on-demand import
+  componentResolver: ['MyComponent', 'OtherComponent'],
+
   // Markdown configuration: register markdown-it plugins
   markdown: {
     config: (md) => {
@@ -57,7 +60,8 @@ Each plugin must have a unique `name` for identification and debugging:
 
 ### client
 
-The `client` configuration is used to inject code into the client side. `vitepress-tuck` automatically injects this code into the `virtual:enhance-app` virtual module.
+The `client` configuration is used to inject code into the client side. `vitepress-tuck` automatically
+injects this code into the `virtual:enhance-app` virtual module.
 
 #### client.imports
 
@@ -100,6 +104,59 @@ export function enhanceAppWithMyPlugin({ app }: EnhanceAppContext) {
 }
 ```
 
+### componentResolver
+
+The `componentResolver` declares the Vue components a plugin provides, enabling automatic on-demand import via
+the built-in `unplugin-vue-components`. Users can use component names directly in Markdown or Vue files without manual imports.
+
+#### String Array Form
+
+The simplest form is an array of component names — they are resolved from `<plugin-name>/client`:
+
+```ts
+{
+  name: 'vitepress-plugin-my-plugin',
+  componentResolver: ['MyComponent', 'OtherComponent'],
+}
+```
+
+Correspondingly, export these components in the plugin's client entry:
+
+```ts
+// client/index.ts
+import MyComponent from './components/MyComponent.vue'
+import OtherComponent from './components/OtherComponent.vue'
+
+export { MyComponent, OtherComponent }
+```
+
+#### Custom ComponentResolver
+
+For more complex resolution logic, pass a `ComponentResolver` object from `unplugin-vue-components`:
+
+```ts
+import type { ComponentResolver } from 'unplugin-vue-components'
+
+const myResolver: ComponentResolver = {
+  type: 'component',
+  resolve: (name) => {
+    if (name.startsWith('My')) {
+      return { name, from: 'vitepress-plugin-my-plugin/client' }
+    }
+  },
+}
+
+export default definePlugin(() => ({
+  name: 'vitepress-plugin-my-plugin',
+  componentResolver: myResolver,
+}))
+```
+
+::: tip
+When a plugin uses both `client.enhance` for component registration and `componentResolver`,
+prefer `componentResolver` for on-demand importing to reduce unnecessary component bundling.
+:::
+
 ### markdown
 
 Configure markdown-it plugins to extend Markdown syntax:
@@ -136,13 +193,13 @@ Configure Vite plugins and optimization options:
 
 `definePlugin` supports various VitePress lifecycle hooks:
 
-| Hook | Description | Execution |
-| ---- | ----------- | --------- |
-| `buildEnd` | Triggered on build completion | Concurrent |
-| `transformHead` | Transforms HTML head | Concurrent, results merged |
-| `transformHtml` | Transforms HTML content | Sequential, chained |
-| `transformPageData` | Transforms page data | Sequential, chained |
-| `postRender` | Triggered after page rendering | Sequential, chained |
+| Hook                | Description                    | Execution                  |
+| ------------------- | ------------------------------ | -------------------------- |
+| `buildEnd`          | Triggered on build completion  | Concurrent                 |
+| `transformHead`     | Transforms HTML head           | Concurrent, results merged |
+| `transformHtml`     | Transforms HTML content        | Sequential, chained        |
+| `transformPageData` | Transforms page data           | Sequential, chained        |
+| `postRender`        | Triggered after page rendering | Sequential, chained        |
 
 ## Client Code Organization
 

@@ -73,6 +73,28 @@ export default {
 > }
 > ```
 
+### Auto Components
+
+`vitepress-tuck` integrates [`unplugin-vue-components`](https://github.com/unplugin/unplugin-vue-components) as
+a built-in plugin, enabling automatic on-demand component importing for `.vue` and `.md` files — no manual import
+or registration required. Plugins can declare their Vue components via the `componentResolver` field,
+and users can use them directly in Markdown or Vue files.
+
+You can customize the behavior via the `components` option:
+
+```ts
+// .vitepress/config.ts
+import { defineConfig } from 'vitepress-tuck'
+
+export default defineConfig({
+  components: {
+    // Any unplugin-vue-components options, e.g.:
+    dirs: ['src/components'],
+  },
+  plugins: [],
+})
+```
+
 ## Plugin Ecosystem
 
 All plugins are built on `vitepress-tuck` while remaining compatible with native VitePress.
@@ -114,6 +136,9 @@ export default definePlugin((options?: MyPluginOptions) => ({
     ],
     enhance: 'enhanceAppWithExample',
   },
+
+  // Component resolver: declare components for auto on-demand import
+  componentResolver: ['MyComponent', 'OtherComponent'],
 
   // Markdown configuration: register markdown-it plugins
   markdown: {

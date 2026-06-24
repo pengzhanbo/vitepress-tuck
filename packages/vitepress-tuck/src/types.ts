@@ -1,3 +1,4 @@
+import type { ComponentResolver, Options as ComponentsOptions } from 'unplugin-vue-components'
 import type { UserConfig } from 'vitepress'
 
 /**
@@ -83,6 +84,14 @@ export interface VitepressPlugin extends Pick<
      */
     enhance?: string | boolean
   }
+
+  /**
+   * Component resolvers to be used by `unplugin-vue-components` plugin.
+   *
+   * 用于 `unplugin-vue-components` 插件的组件解析器。
+   *
+   */
+  componentResolver?: string[] | ComponentResolver
 }
 
 /**
@@ -91,11 +100,59 @@ export interface VitepressPlugin extends Pick<
  *
  * 用户配置扩展，为 VitePress 的 `UserConfig` 新增 `plugins` 字段。
  */
-export interface PluginsConfig {
+export interface TuckConfig {
   /**
    * List of vitepress-tuck plugins to be processed by `defineConfig`.
    *
    * 由 `defineConfig` 处理的 vitepress-tuck 插件列表。
    */
   plugins?: VitepressPlugin[]
+
+  /**
+   * Options for `unplugin-vue-components` plugin.
+   *
+   * `unplugin-vue-components` 插件的选项。
+   *
+   * @see - https://github.com/unplugin/unplugin-vue-components
+   */
+  components?: ComponentsOptions
+}
+
+/**
+ * Internal collection of lifecycle hooks gathered from all plugins.
+ *
+ * Hooks are grouped by their execution strategy: parallel hooks store an array
+ * of functions that run concurrently, while sequential hooks store an array of
+ * functions that run in order with each receiving the previous result.
+ *
+ * 从所有插件收集的生命周期钩子集合。
+ *
+ * 钩子按执行策略分组：并发类钩子存储并发执行的函数数组，顺序链式类钩子存储
+ * 按顺序执行的函数数组，每个函数接收上一个的结果。
+ */
+export interface VitepressPluginHooks {
+  /**
+   * `buildEnd` hooks, executed in parallel / `buildEnd` 钩子，并发执行
+   */
+  buildEnd: NonNullable<UserConfig['buildEnd']>[]
+  /**
+   * `transformHead` hooks, executed in parallel with merged results / `transformHead` 钩子，并发执行并合并结果
+   */
+  transformHead: NonNullable<UserConfig['transformHead']>[]
+  /**
+   * `transformHtml` hooks, executed sequentially with chained results / `transformHtml` 钩子，顺序链式执行
+   */
+  transformHtml: NonNullable<UserConfig['transformHtml']>[]
+  /**
+   * `transformPageData` hooks, executed sequentially with chained results / `transformPageData` 钩子，顺序链式执行
+   */
+  transformPageData: NonNullable<UserConfig['transformPageData']>[]
+  /**
+   * `postRender` hooks, executed sequentially with chained results / `postRender` 钩子，顺序链式执行
+   */
+  postRender: NonNullable<UserConfig['postRender']>[]
+  /**
+   * `markdown.config` hooks, executed in parallel / `markdown.config` 钩子，并发执行
+   */
+  markdownConfig: NonNullable<NonNullable<UserConfig['markdown']>['config']>[]
 }

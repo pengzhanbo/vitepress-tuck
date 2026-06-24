@@ -20,6 +20,9 @@ export default definePlugin((options?: MyPluginOptions) => ({
     enhance: 'enhanceAppWithMyPlugin',
   },
 
+  // 组件解析器：声明插件提供的组件，支持自动按需导入
+  componentResolver: ['MyComponent', 'OtherComponent'],
+
   // Markdown 配置：注册 markdown-it 插件
   markdown: {
     config: (md) => {
@@ -97,6 +100,57 @@ export function enhanceAppWithMyPlugin({ app }: EnhanceAppContext) {
   app.component('MyComponent', MyComponent)
 }
 ```
+
+### componentResolver
+
+`componentResolver` 用于声明插件提供的 Vue 组件，使其能被内置的 `unplugin-vue-components` 自动按需导入。用户在 Markdown 或 Vue 文件中直接使用组件名即可，无需手动 import。
+
+#### 字符串数组形式
+
+最简单的形式是传入组件名数组，这些组件会从 `<插件名>/client` 自动解析：
+
+```ts
+{
+  name: 'vitepress-plugin-my-plugin',
+  componentResolver: ['MyComponent', 'OtherComponent'],
+}
+```
+
+对应的，在插件的客户端入口中导出这些组件：
+
+```ts
+// client/index.ts
+import MyComponent from './components/MyComponent.vue'
+import OtherComponent from './components/OtherComponent.vue'
+
+export { MyComponent, OtherComponent }
+```
+
+#### 自定义 ComponentResolver
+
+对于更复杂的解析逻辑，可以传入来自 `unplugin-vue-components` 的 `ComponentResolver` 对象：
+
+```ts
+import type { ComponentResolver } from 'unplugin-vue-components'
+
+const myResolver: ComponentResolver = {
+  type: 'component',
+  resolve: (name) => {
+    if (name.startsWith('My')) {
+      return { name, from: 'vitepress-plugin-my-plugin/client' }
+    }
+  },
+}
+
+export default definePlugin(() => ({
+  name: 'vitepress-plugin-my-plugin',
+  componentResolver: myResolver,
+}))
+```
+
+::: tip
+当插件同时设置了 `client.enhance` 用于注册组件和 `componentResolver` 时，推荐使用 `componentResolver` 来实现按需导入，这样可以减少不必要的组件打包。
+:::
 
 ### markdown
 

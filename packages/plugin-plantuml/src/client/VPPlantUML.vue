@@ -8,6 +8,7 @@
  * 缩放、全屏和下载等交互能力。亮色与暗色图片由 Markdown-it 插件
  * 预生成并通过默认插槽注入。
  */
+
 import { useFullscreen } from '@vueuse/core'
 import { useZoomAndDrag, VPTabSwitch } from 'vitepress-plugin-toolkit/client'
 import { useData } from 'vitepress/client'

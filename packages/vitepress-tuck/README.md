@@ -1,16 +1,18 @@
-vitepress-tuck
+# vitepress-tuck
 
 Enhance vitepress configuration and provide plugin development capabilities.
 
 > [!NOTE]
-> vitepress itself does not provide complete plugin development capabilities. Some existing slightly complex plugins often need to be configured in both the `markdown` and `vite` sections of the configuration file. The process of integrating plugins in vitepress for users is scattered and difficult to maintain.
+> vitepress itself does not provide complete plugin development capabilities.
+> Some existing slightly complex plugins often need to be configured in both the `markdown` and `vite` sections of the configuration file.
+> The process of integrating plugins in vitepress for users is scattered and difficult to maintain.
 >
 > `tuck` provides vitepress with simple, flexible, and low-barrier plugin development capabilities:
 >
 > - Developers can directly develop plugins using `definePlugin`;
 > - Users only need to add plugins in the `plugins` configuration.
 
-Install
+## Install
 
 ```bash
 # npm
@@ -23,7 +25,7 @@ pnpm add vitepress vitepress-tuck
 yarn add vitepress vitepress-tuck
 ```
 
-Using tuck in vitepress
+## Using tuck in vitepress
 
 Replace `defineConfig` from `vitepress` with `defineConfig` from `vitepress-tuck`
 
@@ -55,7 +57,7 @@ export default {
 } satisfies Theme
 ```
 
-Plugin Development
+## Plugin Development
 
 Develop plugins using `definePlugin`.
 
@@ -97,7 +99,7 @@ Use the `client` field in the `exports` of `package.json` to export client code:
 {
   "exports": {
     ".": "./node/index.js",
-    "client": "./client/index.js"
+    "./client": "./client/index.js"
   }
 }
 ```
@@ -113,3 +115,65 @@ export function enhanceAppWithMyPlugin({ app }: EnhanceAppContext) {
 ```
 
 `vitepress-tuck` will check the `client` configuration and automatically inject the code into `virtual:enhance-app`.
+
+When a plugin provides Vue components that should be auto-imported, declare them via the `componentResolver` field.
+The simplest form is an array of component names — they will be resolved from `<plugin-name>/client`:
+
+```ts
+import { definePlugin } from 'vitepress-tuck'
+
+export default definePlugin(() => ({
+  name: 'vitepress-plugin-my-plugin',
+  // Components listed here are auto-imported from 'vitepress-plugin-my-plugin/client'
+  componentResolver: ['MyComponent', 'OtherComponent'],
+  // ...other config
+}))
+```
+
+For more advanced use cases, you can also pass a custom `ComponentResolver` object from `unplugin-vue-components`:
+
+```ts
+import type { ComponentResolver } from 'unplugin-vue-components'
+import { definePlugin } from 'vitepress-tuck'
+
+const myResolver: ComponentResolver = {
+  type: 'component',
+  resolve: (name) => {
+    if (name.startsWith('My')) {
+      return { name, from: 'vitepress-plugin-my-plugin/client' }
+    }
+  },
+}
+
+export default definePlugin(() => ({
+  name: 'vitepress-plugin-my-plugin',
+  componentResolver: myResolver,
+  // ...other config
+}))
+```
+
+## Auto Components
+
+`vitepress-tuck` integrates [`unplugin-vue-components`](https://github.com/unplugin/unplugin-vue-components) as
+a built-in plugin, enabling automatic on-demand component importing for `.vue` and `.md` files.
+You no longer need to manually import and register components.
+
+By default, the built-in plugin scans `.vue` and `.md` files and generates type declarations
+at `node_modules/.vite/components.d.ts`. You can customize the behavior via the `components` option:
+
+```ts
+// .vitepress/config.ts
+import { defineConfig } from 'vitepress-tuck'
+
+export default defineConfig({
+  components: {
+    // Any unplugin-vue-components options, e.g.:
+    dirs: ['src/components'],
+    directoryAsNamespace: true,
+  },
+  plugins: [],
+})
+```
+
+When a plugin provides Vue components, it can declare them via the `componentResolver` field so that they
+are automatically resolved by `unplugin-vue-components` — see [Plugin Development](#plugin-development).

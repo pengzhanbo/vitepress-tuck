@@ -1,48 +1,11 @@
-import type { DefaultTheme, HeadConfig, PageData, UserConfig } from 'vitepress'
+import type { ComponentResolver } from 'unplugin-vue-components'
+import type { DefaultTheme, UserConfig } from 'vitepress'
 import type { EnhanceOptions } from './builtin-plugins/virtual-enhance-app.js'
-import type { PluginsConfig, VitepressPlugin } from './types.js'
-import { isString, toTruthy } from '@pengzhanbo/utils'
+import type { TuckConfig, VitepressPlugin } from './types.js'
+import { isArray, isString } from '@pengzhanbo/utils'
 import { mergeConfig } from 'vitepress'
 import { builtinPlugins } from './builtin-plugins/index.js'
-
-/**
- * Internal collection of lifecycle hooks gathered from all plugins.
- *
- * Hooks are grouped by their execution strategy: parallel hooks store an array
- * of functions that run concurrently, while sequential hooks store an array of
- * functions that run in order with each receiving the previous result.
- *
- * 从所有插件收集的生命周期钩子集合。
- *
- * 钩子按执行策略分组：并发类钩子存储并发执行的函数数组，顺序链式类钩子存储
- * 按顺序执行的函数数组，每个函数接收上一个的结果。
- */
-interface Hooks {
-  /**
-   * `buildEnd` hooks, executed in parallel / `buildEnd` 钩子，并发执行
-   */
-  buildEnd: NonNullable<UserConfig['buildEnd']>[]
-  /**
-   * `transformHead` hooks, executed in parallel with merged results / `transformHead` 钩子，并发执行并合并结果
-   */
-  transformHead: NonNullable<UserConfig['transformHead']>[]
-  /**
-   * `transformHtml` hooks, executed sequentially with chained results / `transformHtml` 钩子，顺序链式执行
-   */
-  transformHtml: NonNullable<UserConfig['transformHtml']>[]
-  /**
-   * `transformPageData` hooks, executed sequentially with chained results / `transformPageData` 钩子，顺序链式执行
-   */
-  transformPageData: NonNullable<UserConfig['transformPageData']>[]
-  /**
-   * `postRender` hooks, executed sequentially with chained results / `postRender` 钩子，顺序链式执行
-   */
-  postRender: NonNullable<UserConfig['postRender']>[]
-  /**
-   * `markdown.config` hooks, executed in parallel / `markdown.config` 钩子，并发执行
-   */
-  markdownConfig: NonNullable<NonNullable<UserConfig['markdown']>['config']>[]
-}
+import { createHooks, mergePluginHooks } from './hooks.js'
 
 /**
  * Defines a VitePress configuration with plugin lifecycle management.
@@ -91,19 +54,15 @@ interface Hooks {
  * ```
  */
 export function defineConfig<ThemeConfig = DefaultTheme.Config>(
-  config: UserConfig<NoInfer<ThemeConfig>> & PluginsConfig,
+  config: UserConfig<NoInfer<ThemeConfig>> & TuckConfig,
 ): UserConfig<NoInfer<ThemeConfig>> {
-  const hooks: Hooks = {
-    buildEnd: [],
-    transformHead: [],
-    transformHtml: [],
-    transformPageData: [],
-    postRender: [],
-    markdownConfig: [],
-  }
-  const { plugins = [], ...userConfig } = config
+  const hooks = createHooks()
+  const { plugins = [], components = {}, ...userConfig } = config
   let mergedConfig = {} as UserConfig<NoInfer<ThemeConfig>>
+
   const enhanceApp: Required<EnhanceOptions> = { imports: [], enhances: [] }
+
+  components.resolvers ??= []
   /**
    * Iterates a list of plugins, extracting client config, lifecycle hooks, and
    * VitePress config fragments into the shared accumulators (`hooks`,
@@ -116,7 +75,7 @@ export function defineConfig<ThemeConfig = DefaultTheme.Config>(
    */
   const processPlugins = (plugins: VitepressPlugin[]) => {
     plugins.forEach((plugin) => {
-      const { name, client, buildEnd, transformHead, transformHtml, transformPageData, postRender, ...customConfig } = plugin
+      const { name, client, componentResolver, buildEnd, transformHead, transformHtml, transformPageData, postRender, ...customConfig } = plugin
 
       // 注入 client 配置
       if (client) {
@@ -126,6 +85,9 @@ export function defineConfig<ThemeConfig = DefaultTheme.Config>(
           exportName: isString(client.enhance) ? client.enhance : 'enhanceApp',
         })
       }
+
+      // 注入组件Resolver
+      componentResolver && components.resolvers!.push(normalizeComponentResolver(name, componentResolver))
 
       // 提取各种钩子函数
       if (customConfig.markdown?.config) {
@@ -145,84 +107,24 @@ export function defineConfig<ThemeConfig = DefaultTheme.Config>(
   // 先处理外部插件
   processPlugins(plugins)
   // 再处理内置插件
-  processPlugins(builtinPlugins({ enhanceApp }))
-
+  processPlugins(builtinPlugins({ enhanceApp, components }))
   // 合并 userConfig
   mergedConfig = mergeConfig(mergedConfig, userConfig)
-
-  // 合并钩子，根据不同钩子的特性，确保顺序、入参、出参一致
-
-  // 合并 markdown config 钩子， 此钩子可直接并发执行
-  const useMarkdownConfig = mergedConfig.markdown?.config
-  if (hooks.markdownConfig.length) {
-    mergedConfig.markdown ??= {}
-    mergedConfig.markdown.config = async (md) => {
-      await Promise.all([
-        ...hooks.markdownConfig.map(config => config(md)),
-        useMarkdownConfig?.(md),
-      ].filter(toTruthy))
-    }
-  }
-
-  // 合并 buildEnd 钩子， 此钩子可并发执行
-  if (hooks.buildEnd.length) {
-    const buildEnd = mergedConfig.buildEnd
-    mergedConfig.buildEnd = async (site) => {
-      await Promise.all([
-        ...hooks.buildEnd.map(hook => hook(site)),
-        buildEnd?.(site),
-      ].filter(toTruthy))
-    }
-  }
-
-  // 合并 transformHead 钩子， 此钩子可并发执行， 但需要合并所有结果
-  if (hooks.transformHead.length) {
-    const transformHead = mergedConfig.transformHead
-    mergedConfig.transformHead = async (site) => {
-      const result = await Promise.all([
-        ...hooks.transformHead.map(hook => hook(site)),
-        transformHead?.(site),
-      ].filter(toTruthy))
-      const headConfigs: HeadConfig[] = []
-      for (const item of result) {
-        item && headConfigs.push(...item)
-      }
-      return headConfigs
-    }
-  }
-
-  // 合并 transformHtml 钩子， 此钩子需要按顺序执行， 且上个执行结果作为下一个的参数
-  if (hooks.transformHtml.length) {
-    const transformHtml = mergedConfig.transformHtml
-    mergedConfig.transformHtml = async (code, id, ctx) => {
-      for (const hook of hooks.transformHtml) {
-        code = await hook(code, id, ctx) || code
-      }
-      return await transformHtml?.(code, id, ctx) || code
-    }
-  }
-
-  // 合并 transformPageData 钩子， 此钩子需要按顺序执行， 且上个执行结果作为下一个的参数
-  if (hooks.transformPageData.length) {
-    const transformPageData = mergedConfig.transformPageData
-    mergedConfig.transformPageData = async (pageData, ctx) => {
-      for (const hook of hooks.transformPageData) {
-        pageData = (await hook(pageData, ctx) || pageData) as PageData
-      }
-      return await transformPageData?.(pageData, ctx) || pageData
-    }
-  }
-
-  // 合并 postRender 钩子， 此钩子需要按顺序执行， 且上个执行结果作为下一个的参数
-  if (hooks.postRender.length) {
-    const postRender = mergedConfig.postRender
-    mergedConfig.postRender = async (context) => {
-      for (const hook of hooks.postRender) {
-        context = await hook(context) || context
-      }
-      return await postRender?.(context) || context
-    }
-  }
+  // 合并钩子
+  mergePluginHooks(hooks, mergedConfig)
 
   return mergedConfig
+}
+
+function normalizeComponentResolver(pluginName: string, componentResolver: string[] | ComponentResolver): ComponentResolver {
+  return isArray(componentResolver)
+    ? {
+        type: 'component',
+        resolve: (componentName) => {
+          if (componentResolver.includes(componentName)) {
+            return { name: componentName, from: `${pluginName}/client` }
+          }
+        },
+      }
+    : componentResolver
 }
