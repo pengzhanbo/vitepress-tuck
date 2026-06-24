@@ -1,7 +1,7 @@
 import type { EnhanceAppContext } from 'vitepress/client'
 import VPRepoCard from './VPRepoCard.vue'
 
-export { VPRepoCard }
+export { VPRepoCard as RepoCard, VPRepoCard }
 export * from './use-repo.js'
 
 /**
@@ -16,9 +16,12 @@ export * from './use-repo.js'
  * import { enhanceAppWithRepoCard } from 'vitepress-plugin-repo-card/client'
  *
  * export default {
- *   enhanceApp: enhanceAppWithRepoCard,
+ *   enhanceApp(ctx) {
+ *     enhanceAppWithRepoCard(ctx)
+ *   },
  * }
  */
 export function enhanceAppWithRepoCard({ app }: EnhanceAppContext) {
+  app.component('VPRepoCard', VPRepoCard)
   app.component('RepoCard', VPRepoCard)
 }

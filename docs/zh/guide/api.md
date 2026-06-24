@@ -12,24 +12,31 @@
 import { defineConfig } from 'vitepress-tuck'
 
 function defineConfig<ThemeConfig = DefaultTheme.Config>(
-  config: UserConfig<NoInfer<ThemeConfig>> & PluginsConfig,
+  config: UserConfig<NoInfer<ThemeConfig>> & TuckConfig,
 ): UserConfig<NoInfer<ThemeConfig>>
 ```
 
 #### 参数
 
-| 参数     | 类型                         | 说明                                |
-| -------- | ---------------------------- | ----------------------------------- |
-| `config` | `UserConfig & PluginsConfig` | VitePress 原始配置 + `plugins` 选项 |
+| 参数     | 类型                      | 说明                                |
+| -------- | ------------------------- | ----------------------------------- |
+| `config` | `UserConfig & TuckConfig` | VitePress 原始配置 + `plugins` 选项 |
 
-`PluginsConfig` 定义：
+`TuckConfig` 定义：
 
 ```ts
-interface PluginsConfig {
+interface TuckConfig {
   /**
    * vitepress 插件列表
    */
   plugins?: VitepressPlugin[]
+
+  /**
+   * unplugin-vue-components 插件选项
+   *
+   * @see - https://github.com/unplugin/unplugin-vue-components
+   */
+  components?: ComponentsOptions
 }
 ```
 
@@ -45,7 +52,8 @@ interface PluginsConfig {
    - `transformHead` → 并发执行后合并结果
    - `transformHtml`、`transformPageData`、`postRender` → 顺序执行，链式传递
 3. 将插件中的 `client` 配置注入到内置的 `virtual-enhance-app` 虚拟模块
-4. 最后合并用户自身的配置项
+4. 将插件中的 `componentResolver` 收集到内置的 `unplugin-vue-components` 解析器列表
+5. 最后合并用户自身的配置项
 
 ---
 
@@ -110,6 +118,20 @@ interface VitepressPlugin extends Pick<
      */
     enhance?: string | boolean
   }
+
+  /**
+   * 组件解析器，用于 unplugin-vue-components 自动按需导入。
+   *
+   * - 字符串数组：声明的组件名将从 `<插件名>/client` 自动解析
+   * - ComponentResolver 对象：自定义解析逻辑
+   *
+   * @example
+   * ```ts
+   * // 简单形式
+   * componentResolver: ['MyComponent', 'OtherComponent']
+   * ```
+   */
+  componentResolver?: string[] | ComponentResolver
 }
 ```
 
@@ -155,3 +177,38 @@ TypeScript 类型支持需要添加类型引用：
   }
 }
 ```
+
+---
+
+### 内置插件：auto-components
+
+`vitepress-tuck` 内置集成了 [`unplugin-vue-components`](https://github.com/unplugin/unplugin-vue-components) 插件，提供自动按需组件导入能力。该插件作为内置插件自动启用，无需手动注册。
+
+#### 默认行为
+
+- 扫描 `.vue` 和 `.md` 文件中的组件使用
+- 类型声明文件生成到 `node_modules/.vite/components.d.ts`
+- 自动收集所有插件的 `componentResolver` 声明
+
+#### 自定义配置
+
+通过 `defineConfig` 的 `components` 选项可以自定义 `unplugin-vue-components` 的行为：
+
+```ts
+import { defineConfig } from 'vitepress-tuck'
+
+export default defineConfig({
+  components: {
+    // 自定义扫描目录
+    dirs: ['src/components'],
+    // 目录作为命名空间
+    directoryAsNamespace: true,
+    // 其他 unplugin-vue-components 选项...
+  },
+  plugins: [],
+})
+```
+
+::: tip
+插件的 `componentResolver` 声明会与用户在 `components` 中的配置合并。插件开发者只需在插件中声明 `componentResolver`，用户即可直接在 Markdown 或 Vue 文件中使用对应组件，无需手动 import。
+:::

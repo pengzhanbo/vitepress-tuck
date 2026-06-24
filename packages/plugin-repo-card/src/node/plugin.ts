@@ -19,7 +19,7 @@ import { repoCardMarkdownPlugin } from './markdown.js'
  */
 export const repoCard = definePlugin(() => ({
   name: 'vitepress-plugin-repo-card',
-  client: { enhance: 'enhanceAppWithRepoCard' },
+  componentResolver: ['VPRepoCard', 'RepoCard'],
   markdown: {
     config(md) {
       md.use(repoCardMarkdownPlugin)

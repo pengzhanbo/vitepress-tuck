@@ -24,9 +24,7 @@ import { jsfiddleMarkdownPlugin } from './markdown.js'
  */
 export const jsfiddle = definePlugin(() => ({
   name: 'vitepress-plugin-jsfiddle',
-  client: {
-    enhance: 'enhanceAppWithJsFiddle',
-  },
+  componentResolver: ['VPJsfiddle'],
   markdown: {
     config(md) {
       md.use(jsfiddleMarkdownPlugin)

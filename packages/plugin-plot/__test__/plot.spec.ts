@@ -8,7 +8,7 @@ describe('plotMarkdownPlugin', () => {
     md.use(plotMarkdownPlugin)
 
     const result = md.render('The answer is !!plot!!')
-    expect(result).toContain('Plot')
+    expect(result).toContain('VPPlot')
     // Should still render the text content
     expect(result).toContain('The answer is')
   })
@@ -62,7 +62,7 @@ describe('plotMarkdownPlugin', () => {
     // So it matches the inner content as plot
     const result = md.render('!!!not hidden!!!')
     // The outer '!' and trailing '!' remain as text, inner !!not hidden!! becomes plot
-    expect(result).toContain('Plot')
+    expect(result).toContain('VPPlot')
   })
 
   it('should not match !!text !! (trailing space before !!)', () => {

@@ -31,7 +31,17 @@ import { codeTreeMarkdownPlugin } from './markdown.js'
  */
 export const codeTree = definePlugin((options?: CodeTreePluginOptions) => ({
   name: 'vitepress-plugin-code-tree',
-  client: { enhance: 'enhanceAppWithCodeTree' },
+  componentResolver: {
+    type: 'component',
+    resolve: (name) => {
+      if (name === 'VPCodeTree') {
+        return { name, from: 'vitepress-plugin-code-tree/client' }
+      }
+      if (name === 'VPFileTreeNode') {
+        return { name, from: 'vitepress-plugin-file-tree/client' }
+      }
+    },
+  },
   markdown: {
     config(md) {
       md.use(codeTreeMarkdownPlugin, options)

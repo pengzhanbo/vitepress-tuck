@@ -26,7 +26,7 @@ import { plantumlVitePlugin } from './vite.js'
  */
 export const plantuml = definePlugin((options?: PlantumlPluginOptions) => ({
   name: 'vitepress-plugin-plantuml',
-  client: { enhance: 'enhanceAppWithPlantuml' },
+  componentResolver: ['VPPlantUML'],
   markdown: {
     config(md) {
       md.use(plantumlMarkdownPlugin, options)

@@ -27,9 +27,7 @@ import { qrcodeMarkdownPlugin } from './markdown.js'
  */
 export const qrcode = definePlugin(() => ({
   name: 'vitepress-plugin-qrcode',
-  client: {
-    enhance: 'enhanceAppWithQrcode',
-  },
+  componentResolver: ['VPQrcode'],
   markdown: {
     config(md) {
       md.use(qrcodeMarkdownPlugin)

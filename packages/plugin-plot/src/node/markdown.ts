@@ -102,7 +102,7 @@ export const plotMarkdownPlugin: PluginWithOptions<PlotOptions> = (md, options =
     state.posMax = state.pos
     state.pos = start + 2
 
-    const openToken = state.push('plot_inline_open', 'Plot', 1)
+    const openToken = state.push('plot_inline_open', 'VPPlot', 1)
     openToken.markup = '!!'
     openToken.content = content
     if (trigger)
@@ -113,7 +113,7 @@ export const plotMarkdownPlugin: PluginWithOptions<PlotOptions> = (md, options =
     const contentToken = state.push('text', '', 0)
     contentToken.content = content
 
-    const closeToken = state.push('plot_inline_close', 'Plot', -1)
+    const closeToken = state.push('plot_inline_close', 'VPPlot', -1)
     closeToken.markup = '!!'
 
     state.pos = state.posMax + 2

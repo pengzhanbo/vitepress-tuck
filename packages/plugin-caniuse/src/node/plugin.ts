@@ -25,9 +25,7 @@ PCaniuse`
  */
 export const caniuse = definePlugin(() => ({
   name: 'vitepress-plugin-caniuse',
-  client: {
-    enhance: 'enhanceAppWithCaniuse',
-  },
+  componentResolver: ['VPCaniuse'],
   markdown: {
     config: (md) => {
       md.use(caniuseMarkdownPlugin)

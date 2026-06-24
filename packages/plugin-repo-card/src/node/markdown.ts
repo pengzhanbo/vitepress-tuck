@@ -55,7 +55,7 @@ export const repoCardMarkdownPlugin: PluginSimple = (md) => {
         logger.warn(`register "${ansis.red(register)}" is not supported`)
         return `<p style="color:red;">register "${register}" is not supported, @[repo ${register}](${repo})</p>`
       }
-      return `<RepoCard${stringifyAttrs({ register, repo, fullname })}  />`
+      return `<VPRepoCard${stringifyAttrs({ register, repo, fullname })}  />`
     },
   })
 }

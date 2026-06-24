@@ -28,9 +28,7 @@ import { plotMarkdownPlugin } from './markdown.js'
  */
 export const plot = definePlugin(() => ({
   name: 'vitepress-plugin-plot',
-  client: {
-    enhance: 'enhanceAppWithPlot',
-  },
+  componentResolver: ['VPPlot'],
   markdown: {
     config: (md) => {
       md.use(plotMarkdownPlugin)

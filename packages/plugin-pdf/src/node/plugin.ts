@@ -34,9 +34,7 @@ import { pdfMarkdownPlugin } from './markdown.js'
  */
 export const pdf = definePlugin(() => ({
   name: 'vitepress-plugin-pdf',
-  client: {
-    enhance: 'enhanceAppWithPDF',
-  },
+  componentResolver: ['VPPdf'],
   markdown: {
     config: (md) => {
       md.use(pdfMarkdownPlugin)

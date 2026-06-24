@@ -1,5 +1,7 @@
+import type { Options as ComponentsOptions } from 'unplugin-vue-components'
 import type { VitepressPlugin } from '../types.js'
 import type { EnhanceOptions } from './virtual-enhance-app.js'
+import { autoComponentsPlugin } from './auto-components.js'
 
 import { virtualEnhanceAppPlugin } from './virtual-enhance-app.js'
 
@@ -15,6 +17,13 @@ interface BuiltinPluginOptions {
    * 转发给 `virtual:enhance-app` 插件的客户端注入选项。
    */
   enhanceApp?: EnhanceOptions
+
+  /**
+   * Options for the `unplugin-vue-components` plugin.
+   *
+   * `unplugin-vue-components` 插件的选项。
+   */
+  components?: ComponentsOptions
 }
 
 /**
@@ -35,6 +44,7 @@ interface BuiltinPluginOptions {
 export function builtinPlugins(options: BuiltinPluginOptions): VitepressPlugin[] {
   return [
     virtualEnhanceAppPlugin(options.enhanceApp),
+    autoComponentsPlugin(options.components),
     () => ({
       name: 'vitepress-tuck:deps',
       vite: {

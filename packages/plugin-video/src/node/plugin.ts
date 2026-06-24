@@ -34,9 +34,7 @@ import { videoMarkdownPlugin } from './markdown.js'
  */
 export const video = definePlugin((options?: VideoPluginOptions) => ({
   name: 'vitepress-plugin-video',
-  client: {
-    enhance: 'enhanceAppWithVideo',
-  },
+  componentResolver: ['VPArtPlayer', 'VPVideoEmbed'],
   markdown: {
     config(md) {
       md.use(videoMarkdownPlugin, options)
