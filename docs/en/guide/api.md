@@ -153,7 +153,8 @@ interface VitepressPlugin extends Pick<
 
 ### virtual:enhance-app
 
-`virtual:enhance-app` is a virtual module provided by `vitepress-tuck`. It automatically collects all plugins' `client` configurations and generates the corresponding code.
+`virtual:enhance-app` is a virtual module provided by `vitepress-tuck`.
+It automatically collects all plugins' `client` configurations and generates the corresponding code.
 
 Import it in the theme entry:
 
@@ -183,7 +184,8 @@ TypeScript support requires adding the type reference:
 
 ### Built-in Plugin: auto-components
 
-`vitepress-tuck` integrates [`unplugin-vue-components`](https://github.com/unplugin/unplugin-vue-components) as a built-in plugin, providing automatic on-demand component importing. This plugin is enabled by default — no manual registration required.
+`vitepress-tuck` integrates [`unplugin-vue-components`](https://github.com/unplugin/unplugin-vue-components) as
+a built-in plugin, providing automatic on-demand component importing. This plugin is enabled by default — no manual registration required.
 
 #### Default Behavior
 
@@ -211,5 +213,7 @@ export default defineConfig({
 ```
 
 ::: tip
-Plugin `componentResolver` declarations are merged with the user's `components` configuration. Plugin developers only need to declare `componentResolver` in their plugin, and users can use the corresponding components directly in Markdown or Vue files without manual imports.
+Plugin `componentResolver` declarations are merged with the user's `components` configuration.
+Plugin developers only need to declare `componentResolver` in their plugin,
+and users can use the corresponding components directly in Markdown or Vue files without manual imports.
 :::

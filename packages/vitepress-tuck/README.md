@@ -99,7 +99,7 @@ Use the `client` field in the `exports` of `package.json` to export client code:
 {
   "exports": {
     ".": "./node/index.js",
-    "client": "./client/index.js"
+    "./client": "./client/index.js"
   }
 }
 ```

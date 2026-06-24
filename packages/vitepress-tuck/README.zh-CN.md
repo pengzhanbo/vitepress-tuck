@@ -95,7 +95,7 @@ export default definePlugin((options?: MyPluginOptions) => ({
 {
   "exports": {
     ".": "./node/index.js",
-    "client": "./client/index.js"
+    "./client": "./client/index.js"
   }
 }
 ```

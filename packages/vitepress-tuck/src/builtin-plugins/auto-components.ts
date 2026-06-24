@@ -7,7 +7,7 @@ export const autoComponentsPlugin = definePlugin((options?: Options) => ({
   vite: { plugins: [
     Components({
       dts: 'node_modules/.vite/components.d.ts',
-      include: [/\.vue$/, /\.vue\?vue/, /\.vue\.[tj]sx?\?vue/, /\.md$/, /\.md?import/],
+      include: [/\.vue$/, /\.vue\?vue/, /\.vue\.[tj]sx?\?vue/, /\.md$/, /\.md\?import/],
       ...options,
     }),
   ] },
