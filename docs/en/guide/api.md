@@ -1,5 +1,7 @@
 # API Reference
 
+<NpmBadge name="vitepress-tuck" />
+
 ## vitepress-tuck
 
 ### defineConfig

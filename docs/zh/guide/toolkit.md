@@ -1,5 +1,7 @@
 # Toolkit API
 
+<NpmBadge name="vitepress-plugin-toolkit" />
+
 `vitepress-plugin-toolkit` 是 VitePress 插件开发工具包，提供了丰富的工具函数来辅助插件开发。
 
 安装：

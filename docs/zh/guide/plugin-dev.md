@@ -1,5 +1,7 @@
 # 插件开发
 
+<NpmBadge name="vitepress-tuck" />
+
 `vitepress-tuck` 提供了 `definePlugin` 函数来帮助开发者便捷地创建 VitePress 插件。通过 `definePlugin`，你可以将原本需要用户分散配置的 `markdown`、`vite`、`vue` 等选项集中在一个插件函数中。
 
 ## 基本结构

@@ -1,5 +1,7 @@
 # Plugin Development
 
+<NpmBadge name="vitepress-tuck" />
+
 `vitepress-tuck` provides the `definePlugin` function to help developers easily create VitePress plugins.
 With `definePlugin`, you can centralize options like `markdown`, `vite`, and `vue` — which would
 otherwise require scattered configuration by users — into a single plugin function.

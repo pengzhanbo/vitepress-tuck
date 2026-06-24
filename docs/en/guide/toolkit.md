@@ -1,5 +1,7 @@
 # Toolkit API
 
+<NpmBadge name="vitepress-plugin-toolkit" />
+
 `vitepress-plugin-toolkit` is a VitePress plugin development toolkit that provides a rich set of utility functions to assist plugin development.
 
 Installation:

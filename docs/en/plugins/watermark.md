@@ -20,7 +20,8 @@ npm install vitepress-plugin-watermark
 
 ## Usage
 
-This plugin only provides a client-side `setupWatermark` function, which must be called inside the `<script setup>` block of a Layout wrapper component.
+This plugin only provides a client-side `setupWatermark` function, which must be called inside the
+`<script setup>` block of a Layout wrapper component.
 
 Create a custom Layout wrapper component:
 
