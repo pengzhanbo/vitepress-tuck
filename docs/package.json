@@ -29,6 +29,7 @@
     "vitepress-plugin-steps": "workspace:*",
     "vitepress-plugin-toolkit": "workspace:*",
     "vitepress-plugin-video": "workspace:*",
+    "vitepress-plugin-watermark": "workspace:*",
     "vitepress-tuck": "workspace:*"
   }
 }
