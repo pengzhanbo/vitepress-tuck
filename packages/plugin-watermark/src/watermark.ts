@@ -48,7 +48,7 @@ export function setupWatermark(options?: MaybeRef<SetupWatermarkOptions>) {
   }
 
   watch(
-    [() => toValue(options), localeIndex.value, pageOptions.value, defaultEnabled.value],
+    [() => toValue(options), localeIndex, pageOptions, defaultEnabled],
     () => {
       const opts = getOptions()
       if (opts === false) {
