@@ -143,6 +143,9 @@ catalogs:
     vue:
       specifier: ^3.5.38
       version: 3.5.38
+    watermark-js-plus:
+      specifier: ^1.6.3
+      version: 1.6.3
 
 overrides:
   vite: ^8.0.16
@@ -305,6 +308,9 @@ importers:
       vitepress-plugin-video:
         specifier: workspace:*
         version: link:../packages/plugin-video
+      vitepress-plugin-watermark:
+        specifier: workspace:*
+        version: link:../packages/plugin-watermark
       vitepress-tuck:
         specifier: workspace:*
         version: link:../packages/vitepress-tuck
@@ -710,6 +716,30 @@ importers:
       vue:
         specifier: ^3.5.0
         version: 3.5.35(typescript@6.0.3)
+
+  packages/plugin-watermark:
+    dependencies:
+      '@pengzhanbo/utils':
+        specifier: catalog:prod
+        version: 3.7.3
+      '@vueuse/core':
+        specifier: catalog:prod
+        version: 14.3.0(vue@3.5.38(typescript@6.0.3))
+      vitepress:
+        specifier: ^2.0.0-alpha.17
+        version: 2.0.0-alpha.17(@types/node@26.0.0)(change-case@5.4.4)(esbuild@0.27.7)(jiti@2.7.0)(oxc-minify@0.137.0)(postcss@8.5.15)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
+      vitepress-plugin-toolkit:
+        specifier: workspace:*
+        version: link:../plugin-toolkit
+      vitepress-tuck:
+        specifier: workspace:*
+        version: link:../vitepress-tuck
+      vue:
+        specifier: ^3.5.0
+        version: 3.5.38(typescript@6.0.3)
+      watermark-js-plus:
+        specifier: catalog:prod
+        version: 1.6.3
 
   packages/vitepress-tuck:
     dependencies:
@@ -5262,6 +5292,9 @@ packages:
   walk-up-path@4.0.0:
     resolution: {integrity: sha512-3hu+tD8YzSLGuFYtPRb48vdhKMi0KQV5sn+uWr8+7dMEq/2G/dtLrdDinkLjqq5TIbIBjYJ4Ax/n3YiaW7QM8A==}
     engines: {node: 20 || >=22}
+
+  watermark-js-plus@1.6.3:
+    resolution: {integrity: sha512-iCLOGf70KacIwjGF9MDViYxQcRiVwOH7l42qDHLeE2HeUsQD1EQuUC9cKRG/4SErTUmdqV3yf5WnKk2dRARHPQ==}
 
   webpack-virtual-modules@0.6.2:
     resolution: {integrity: sha512-66/V2i5hQanC51vBQKPH4aI8NMAcBW59FVBs+rC7eGHupMyfn34q7rZIE+ETlJ+XTevqfUhVVBgSUNSW2flEUQ==}
@@ -10328,6 +10361,8 @@ snapshots:
       typescript: 6.0.3
 
   walk-up-path@4.0.0: {}
+
+  watermark-js-plus@1.6.3: {}
 
   webpack-virtual-modules@0.6.2: {}
 

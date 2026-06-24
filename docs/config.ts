@@ -25,6 +25,8 @@ export default defineAdditionalConfig({
         { text: 'Npm To', link: 'npm-to' },
         { text: 'Mermaid', link: 'mermaid' },
         { text: 'PlantUML', link: 'plantuml' },
+        { text: 'Repo Card', link: 'repo-card' },
+        { text: 'Watermark', link: 'watermark' },
         { text: 'QRCode', link: 'qrcode' },
         { text: 'Video', link: 'video' },
         { text: 'Obsidian', link: 'obsidian' },

@@ -26,6 +26,7 @@ export default defineAdditionalConfig({
         { text: 'Mermaid', link: 'mermaid' },
         { text: 'PlantUML', link: 'plantuml' },
         { text: 'Repo Card', link: 'repo-card' },
+        { text: '水印', link: 'watermark' },
         { text: '二维码', link: 'qrcode' },
         { text: '视频嵌入', link: 'video' },
         { text: 'Obsidian', link: 'obsidian' },
