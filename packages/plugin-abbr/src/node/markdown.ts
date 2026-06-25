@@ -52,6 +52,13 @@ interface AbbrStateCore extends StateCore {
      * 缩写词记录
      */
     abbreviations?: Record<string, string>
+
+    /**
+     * Disable abbreviation replace
+     *
+     * 禁用缩写词替换
+     */
+    disableAbbrReplace?: boolean
   }
 }
 
@@ -153,6 +160,9 @@ export const abbrMarkdownPlugin: PluginWithOptions<Record<string, string>> = (md
    * @param state - State core / 核心状态
    */
   const abbrReplace: RuleCore = (state: AbbrStateCore) => {
+    if (state.env.disableAbbrReplace)
+      return
+
     const tokens = state.tokens
     const { abbreviations: localAbbreviations } = state.env
 
@@ -266,7 +276,10 @@ export const abbrMarkdownPlugin: PluginWithOptions<Record<string, string>> = (md
    */
   md.renderer.rules.abbreviation = (tokens, idx, _, env) => {
     const { content, info } = tokens[idx]
-    const rendered = md.renderInline(info, cleanMarkdownEnv(env, ['abbreviations']))
+    const rendered = md.renderInline(info, {
+      ...cleanMarkdownEnv(env, ['abbreviations']),
+      disableAbbrReplace: true,
+    })
     const label = rendered.replace(/<[^>]*>/g, '')
     return `<VPAbbreviation aria-label="${label}">${content}${info ? `<template #tooltip>${rendered}</template>` : ''}</VPAbbreviation>`
   }

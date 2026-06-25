@@ -40,7 +40,11 @@ import { abbrMarkdownPlugin } from 'vitepress-plugin-abbr' // [!code ++]
 export default defineConfig({
   markdown: {
     config: (md) => {
-      md.use(abbrMarkdownPlugin) // [!code ++]
+      // [!code ++:4]
+      md.use(abbrMarkdownPlugin, {
+        HTML: 'HyperText Markup Language',
+        W3C: 'World Wide Web Consortium',
+      })
     },
   },
 })

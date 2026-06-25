@@ -59,8 +59,8 @@ import { abbrMarkdownPlugin } from './markdown.js'
  * ```md
  * The HTML specification is maintained by the W3C.
  *
- * [HTML]: HyperText Markup Language
- * [W3C]: World Wide Web Consortium
+ * *[HTML]: HyperText Markup Language
+ * *[W3C]: World Wide Web Consortium
  * ```
  */
 export const abbr = definePlugin((abbreviations?: Record<string, string>) => ({

@@ -17,7 +17,7 @@
  * 的完整描述。提示框被传送到 `body`，并使用 `@floating-ui/vue` 定位，
  * 应用 offset、flip、shift 和 arrow 中间件以保证在视口边缘附近的稳定定位。
  */
-import { arrow, autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/vue'
+import { arrow, autoUpdate, offset, shift, useFloating } from '@floating-ui/vue'
 import { ref, useTemplateRef } from 'vue'
 
 defineOptions({
@@ -39,7 +39,6 @@ const { floatingStyles, middlewareData } = useFloating(abbr, tooltip, {
   placement: 'bottom',
   middleware: [
     offset(10),
-    flip(),
     shift({ padding: 20 }),
     arrow({ element: tooltipArrow, padding: 4 }),
   ],
@@ -48,19 +47,19 @@ const { floatingStyles, middlewareData } = useFloating(abbr, tooltip, {
 
 <template>
   <span
-    ref="abbr"
-    role="presentation" class="vp-abbr"
-    aria-describedby="abbreviation"
-    v-bind="$attrs"
+    ref="abbr" class="vp-abbr" v-bind="$attrs"
     @mouseenter="show = true"
     @mouseleave="show = false"
-    @focusin="show = true"
-    @focusout="show = false"
   ><slot /></span>
   <ClientOnly>
     <Teleport to="body">
       <Transition name="fade-in">
-        <div v-show="show" ref="tooltip" role="tooltip" class="vp-abbr-popover" :style="floatingStyles">
+        <div
+          v-show="show" ref="tooltip"
+          role="tooltip" class="vp-abbr-popover" :style="floatingStyles"
+          @mouseenter="show = true"
+          @mouseleave="show = false"
+        >
           <span
             ref="tooltipArrow" class="tooltip-arrow" :style="{
               left: middlewareData.arrow?.x != null ? `${middlewareData.arrow.x}px` : '',
