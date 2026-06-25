@@ -1,3 +1,4 @@
+import abbr from 'vitepress-plugin-abbr'
 import caniuse from 'vitepress-plugin-caniuse'
 import codeCollapse from 'vitepress-plugin-code-collapse'
 import codeTree from 'vitepress-plugin-code-tree'
@@ -67,6 +68,7 @@ export default defineConfig({
     groupIcons(),
 
     // monorepo internal plugins
+    abbr(),
     steps(),
     plot(),
     fileTree(),

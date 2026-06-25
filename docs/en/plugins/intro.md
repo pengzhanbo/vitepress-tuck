@@ -24,6 +24,7 @@ All plugins support two usage modes:
 | [Code Tree](./code-tree)         | `vitepress-plugin-code-tree`     | Code tree with file tree sidebar                                |
 | [PDF](./pdf)                     | `vitepress-plugin-pdf`           | PDF file embedding                                              |
 | [QRCode](./qrcode)               | `vitepress-plugin-qrcode`        | QR code generation                                              |
+| [Abbr](./abbr)                   | `vitepress-plugin-abbr`          | Abbreviation tooltip, reveals full description on hover/focus   |
 | [Plot](./plot)                   | `vitepress-plugin-plot`          | Hidden text reveal on click/hover                               |
 | [Can I Use](./caniuse)           | `vitepress-plugin-caniuse`       | Embed browser compatibility data from caniuse.com               |
 | [Code Collapse](./code-collapse) | `vitepress-plugin-code-collapse` | Code block folding                                              |
