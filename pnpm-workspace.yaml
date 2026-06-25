@@ -61,6 +61,7 @@ catalogs:
     mpegts.js: 1.7.3
 
   prod:
+    '@floating-ui/vue': ^2.0.0
     '@pengzhanbo/utils': ^3.7.3
     '@vueuse/core': ^14.3.0
     ansis: ^4.3.1

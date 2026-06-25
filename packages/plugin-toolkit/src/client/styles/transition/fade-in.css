@@ -2,7 +2,7 @@
 
 .fade-in-enter-active,
 .fade-in-leave-active {
-  transition: all var(--transition-duration) var(--transition-ease-in-out) !important;
+  transition: opacity var(--transition-duration) var(--transition-ease-in-out) !important;
 }
 
 .fade-in-enter-from,

@@ -104,6 +104,9 @@ catalogs:
       specifier: 1.7.3
       version: 1.7.3
   prod:
+    '@floating-ui/vue':
+      specifier: ^2.0.0
+      version: 2.0.0
     '@pengzhanbo/utils':
       specifier: ^3.7.3
       version: 3.7.3
@@ -251,6 +254,9 @@ importers:
       vitepress:
         specifier: ^2.0.0-alpha.17
         version: 2.0.0-alpha.17(@types/node@26.0.0)(change-case@5.4.4)(esbuild@0.27.7)(jiti@2.7.0)(oxc-minify@0.137.0)(postcss@8.5.15)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
+      vitepress-plugin-abbr:
+        specifier: workspace:*
+        version: link:../packages/plugin-abbr
       vitepress-plugin-caniuse:
         specifier: workspace:*
         version: link:../packages/plugin-caniuse
@@ -317,6 +323,27 @@ importers:
       vitepress-tuck:
         specifier: workspace:*
         version: link:../packages/vitepress-tuck
+
+  packages/plugin-abbr:
+    dependencies:
+      '@floating-ui/vue':
+        specifier: catalog:prod
+        version: 2.0.0(vue@3.5.38(typescript@6.0.3))
+      '@vueuse/core':
+        specifier: catalog:prod
+        version: 14.3.0(vue@3.5.38(typescript@6.0.3))
+      vitepress:
+        specifier: ^2.0.0-alpha.17
+        version: 2.0.0-alpha.17(@types/node@26.0.0)(change-case@5.4.4)(esbuild@0.27.7)(jiti@2.7.0)(oxc-minify@0.137.0)(postcss@8.5.15)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
+      vitepress-plugin-toolkit:
+        specifier: workspace:*
+        version: link:../plugin-toolkit
+      vitepress-tuck:
+        specifier: workspace:*
+        version: link:../vitepress-tuck
+      vue:
+        specifier: ^3.5.0
+        version: 3.5.38(typescript@6.0.3)
 
   packages/plugin-caniuse:
     dependencies:
@@ -1124,6 +1151,20 @@ packages:
   '@eslint/plugin-kit@0.7.2':
     resolution: {integrity: sha512-+CNAzxglkrpNf/kKywqQfk74QjtceuOE7Qm+AF8miRvPF/wmmK5+OJOgVh3AVTT3RP2mH3+FOaxlE5v72owk0A==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
+
+  '@floating-ui/core@1.7.5':
+    resolution: {integrity: sha512-1Ih4WTWyw0+lKyFMcBHGbb5U5FtuHJuujoyyr5zTaWS5EYMeT6Jb2AuDeftsCsEuchO+mM2ij5+q9crhydzLhQ==}
+
+  '@floating-ui/dom@1.7.6':
+    resolution: {integrity: sha512-9gZSAI5XM36880PPMm//9dfiEngYoC6Am2izES1FF406YFsjvyBMmeJ2g4SAju3xWwtuynNRFL2s9hgxpLI5SQ==}
+
+  '@floating-ui/utils@0.2.11':
+    resolution: {integrity: sha512-RiB/yIh78pcIxl6lLMG0CgBXAZ2Y0eVHqMPYugu+9U0AeT6YBeiJpf7lbdJNIugFP5SIjwNRgo4DhR1Qxi26Gg==}
+
+  '@floating-ui/vue@2.0.0':
+    resolution: {integrity: sha512-I7hYpCAkgBrtXdZbfCpGaqAV+E09fENSHBIm81z6WhSgcl1ctkb3+1gW9h8PVDus0Em2FwGRR41epgxILS6YhQ==}
+    peerDependencies:
+      vue: '>=3.3.0'
 
   '@humanfs/core@0.19.2':
     resolution: {integrity: sha512-UhXNm+CFMWcbChXywFwkmhqjs3PRCmcSa/hfBgLIb7oQ5HNb1wS0icWsGtSAUNgefHeI+eBrA8I1fxmbHsGdvA==}
@@ -5721,6 +5762,23 @@ snapshots:
     dependencies:
       '@eslint/core': 1.2.1
       levn: 0.4.1
+
+  '@floating-ui/core@1.7.5':
+    dependencies:
+      '@floating-ui/utils': 0.2.11
+
+  '@floating-ui/dom@1.7.6':
+    dependencies:
+      '@floating-ui/core': 1.7.5
+      '@floating-ui/utils': 0.2.11
+
+  '@floating-ui/utils@0.2.11': {}
+
+  '@floating-ui/vue@2.0.0(vue@3.5.38(typescript@6.0.3))':
+    dependencies:
+      '@floating-ui/dom': 1.7.6
+      '@floating-ui/utils': 0.2.11
+      vue: 3.5.38(typescript@6.0.3)
 
   '@humanfs/core@0.19.2':
     dependencies:

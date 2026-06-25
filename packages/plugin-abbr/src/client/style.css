@@ -1,0 +1,44 @@
+@import url("vitepress-plugin-toolkit/styles/transition/fade-in.css");
+
+.vp-abbr {
+  position: relative;
+  text-decoration: underline dotted currentcolor;
+  text-underline-offset: 4px;
+  cursor: help;
+}
+
+.vp-abbr-popover {
+  position: absolute;
+  width: max-content;
+  padding: 4px 8px;
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--vp-c-text-1);
+  background-color: var(--vp-c-bg);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 4px;
+  box-shadow: var(--vp-shadow-2);
+  transition: 0.25s ease-in-out;
+  transition-property: color, border-color, box-shadow;
+}
+
+.vp-abbr-popover .tooltip-arrow,
+.vp-abbr-popover .tooltip-arrow::after {
+  position: absolute;
+  display: block;
+  width: 8px;
+  height: 8px;
+  border: 8px solid transparent;
+}
+
+.vp-abbr-popover .tooltip-arrow {
+  top: -16px;
+  left: 4px;
+  border-bottom-color: var(--vp-c-divider);
+}
+
+.vp-abbr-popover .tooltip-arrow::after {
+  content: "";
+  border-bottom-color: var(--vp-c-bg);
+  transform: translate(-8px, -7px);
+}

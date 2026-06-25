@@ -23,6 +23,7 @@
 | [Code Tree](./code-tree)         | `vitepress-plugin-code-tree`     | 代码树，带文件树侧边栏                             |
 | [PDF](./pdf)                     | `vitepress-plugin-pdf`           | PDF 文件嵌入                                       |
 | [QRCode](./qrcode)               | `vitepress-plugin-qrcode`        | 二维码生成                                         |
+| [缩写词](./abbr)                 | `vitepress-plugin-abbr`          | 缩写词提示框，悬停或聚焦显示完整描述               |
 | [Plot](./plot)                   | `vitepress-plugin-plot`          | 隐文遮罩，点击或悬停显示隐藏文本                   |
 | [Can I Use](./caniuse)           | `vitepress-plugin-caniuse`       | caniuse 浏览器兼容性数据嵌入                       |
 | [Code Collapse](./code-collapse) | `vitepress-plugin-code-collapse` | 代码块折叠                                         |

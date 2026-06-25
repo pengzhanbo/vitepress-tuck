@@ -28,6 +28,7 @@ export default defineAdditionalConfig({
         { text: 'Repo Card', link: 'repo-card' },
         { text: '水印', link: 'watermark' },
         { text: '二维码', link: 'qrcode' },
+        { text: '缩写词', link: 'abbr' },
         { text: '视频嵌入', link: 'video' },
         { text: 'Obsidian', link: 'obsidian' },
         { text: 'PDF', link: 'pdf' },
