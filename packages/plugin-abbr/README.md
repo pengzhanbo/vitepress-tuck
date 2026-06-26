@@ -75,25 +75,19 @@ export default defineConfig({
       md.use(abbrMarkdownPlugin)
     },
   },
-  vite: {
-    ssr: {
-      noExternal: ['vitepress-plugin-abbr'],
-    },
-  },
 })
 ```
 
 ```ts
 // .vitepress/theme/index.ts
 import type { Theme } from 'vitepress'
-import { VPAbbreviation } from 'vitepress-plugin-abbr/client'
+import { EnhanceAppWithAbbr } from 'vitepress-plugin-abbr/client'
 import DefaultTheme from 'vitepress/theme'
-import 'vitepress-plugin-abbr/style.css'
 
 export default {
   extends: DefaultTheme,
   enhanceApp(ctx) {
-    ctx.app.component('VPAbbreviation', VPAbbreviation)
+    EnhanceAppWithAbbr(ctx)
   },
 } satisfies Theme
 ```
