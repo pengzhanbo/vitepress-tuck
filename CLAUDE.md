@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-`vitepress-tuck` is a pnpm monorepo providing a plugin development framework and plugin ecosystem for VitePress. The core library wraps VitePress's `defineConfig` with plugin lifecycle management, while 13+ standalone plugins provide features like Mermaid diagrams, QR codes, video embedding, Obsidian-style markdown, and more.
+`vitepress-tuck` is a pnpm monorepo providing a plugin development framework and plugin ecosystem for VitePress.
+The core library wraps VitePress's `defineConfig` with plugin lifecycle management,
+while 13+ standalone plugins provide features like Mermaid diagrams, QR codes, video embedding, Obsidian-style markdown, and more.
 
 ## Repository Structure
 
@@ -45,20 +47,40 @@ An identity function providing TypeScript type inference for plugin authors. Plu
 interface VitepressPlugin {
   name: string
   client?: { imports?: string[]; enhance?: string | boolean }
+  componentResolver?: string[] | ComponentResolver  // declare Vue components for auto-import
   // Plus all VitePress UserConfig fields: markdown, vite, vue,
   // buildEnd, transformHead, transformHtml, transformPageData, postRender
 }
 ```
 
-### `virtual:enhance-app` (built-in plugin)
+### `TuckConfig` type (in `packages/vitepress-tuck/src/types.ts`)
 
-A Vite virtual module that auto-generates client injection code. When a plugin sets `client.enhance`, the built-in plugin generates `import { <name> } from '<plugin>/client'` and chains the calls in a single `enhanceApp(ctx)` export. Users import this once in `.vitepress/theme/index.ts`.
+Extends `UserConfig` with:
+- `plugins?: VitepressPlugin[]` — the plugin list
+- `components?: ComponentsOptions` — options forwarded to `unplugin-vue-components` (auto-imports components in `.vue` and `.md` files)
+
+### Built-in plugins (in `packages/vitepress-tuck/src/builtin-plugins/`)
+
+`defineConfig` registers three built-in plugins automatically, after user plugins:
+
+- **`virtual:enhance-app`** — A Vite virtual module that auto-generates client injection code. When a plugin sets
+  `client.enhance`, the built-in plugin generates `import { <name> } from '<plugin>/client'` and chains the calls in
+  a single `enhanceApp(ctx)` export. Users import this once in `.vitepress/theme/index.ts`.
+  For TypeScript support, add `"vitepress-tuck/client-types"` to `compilerOptions.types` in `tsconfig.json`.
+
+- **`auto-components`** — Wraps [`unplugin-vue-components`](https://github.com/unplugin/unplugin-vue-components) for
+  automatic on-demand component importing in `.vue` and `.md` files. Configurable via the `components` option in
+  `TuckConfig`. Plugin component resolvers are collected from each plugin's `componentResolver` field.
+
+- **`vitepress-tuck:deps`** — Marks `vitepress-plugin-toolkit` as `ssr.noExternal` so Vite processes its ESM
+  correctly during SSR.
 
 ### `plugin-toolkit`
 
 Shared library available to all plugins:
 
-- **Node**: `createEmbedRuleBlock`, `createContainerPlugin`, `createContainerSyntaxPlugin` (markdown-it helpers), VitePress config utilities (`createLocales`, `getVitepressConfig`), string/attr parsing utilities.
+- **Node**: `createEmbedRuleBlock`, `createContainerPlugin`, `createContainerSyntaxPlugin`
+  (markdown-it helpers), VitePress config utilities (`createLocales`, `getVitepressConfig`), string/attr parsing utilities.
 - **Client**: Vue components (`VPCopyButton`, `VPLoading`), composables, CSS transition utilities.
 - **Shared**: Link resolution, size constants.
 
@@ -74,11 +96,12 @@ pnpm -F vitepress-plugin-<name> build
 # Run docs dev server
 pnpm docs:dev                 # Starts VitePress dev server
 
-# Run tests
+# Run tests (always runs with TZ=Etc/UTC)
 pnpm test                     # All tests with coverage (watch mode)
 npx vitest                    # Watch mode without coverage
 npx vitest --run              # Single run
-npx vitest --run packages/vitepress-tuck  # Run tests for one package
+npx vitest --run packages/vitepress-tuck                         # Run tests for one package
+npx vitest --run packages/plugin-qrcode/__test__/qrcode.spec.ts  # Run a single test file
 
 # Linting
 pnpm lint                     # ESLint + Stylelint
@@ -92,8 +115,17 @@ pnpm release:publish          # publish all packages
 
 ## Build System
 
-- **tsdown** is the bundler for all packages (ESM-only output). Each package has a `tsdown.config.ts` with `entry`, `format: 'esm'`, `dts: true`.
-- Packages with CSS use `cpx` to copy styles from `src/` to `dist/`.
+- **tsdown** is the bundler for all packages (ESM-only output). Each package has a `tsdown.config.ts` that calls
+  the shared build helper from `scripts/tsdown.ts`.
+- **Three-environment build**: The shared `build()` helper (in `scripts/tsdown.ts`) generates three outputs:
+  1. **Node** (`dist/node/`) — server-side code, target `node20.19.0`, generates type declarations
+  2. **SSR** (`dist/client/ssr/`) — Vue SSR build of client code, via `unplugin-vue` with `ssr: true`
+  3. **Browser** (`dist/client/browser/`) — browser build of client code, via `unplugin-vue` with `ssr: false`; CSS
+     imports are auto-prefixed via the `banner` output option
+- For packages without client code, use `mode: 'only-node'` (entry: `src/index.ts`) or `mode: 'only-node-deep'`
+  (entry: `src/node/index.ts`, outDir: `dist/node`).
+- Packages with CSS use `cpx` to copy styles from `src/` to `dist/`. The `inlineStyle: true` option in the build
+  helper auto-appends `../style.css` to the browser bundle banner.
 - The `tsdown --config-loader unrun` flag resolves tsdown configs via unrun.
 
 ## Testing
@@ -101,6 +133,13 @@ pnpm release:publish          # publish all packages
 - **vitest** with `@vitest/coverage-v8`. Config in `vitest.config.ts` at root.
 - Test files go in `__test__/` directories, pattern: `*.spec.ts`.
 - Tests use `markdown-it` directly when testing markdown plugins — no need for a full VitePress instance.
+- if file system reads and writes are involved, it is strictly forbidden to use system temporary directories
+  (such as `os.tmpdir()`, `/tmp`, or `mkdtempSync` pointing to the system temporary directory).
+  All file operations must be confined within the project, uniformly placed under each plugin's
+  `__test__/fixtures/` directory (if a temporary directory is needed, use `__test__/fixtures/tmp/`).
+  Create the required directories in `beforeAll`/`beforeEach`, and clean them up in `afterAll`/`afterEach` to
+  ensure that tests do not pollute the system environment or leave residue.
+  The `__test__/fixtures/tmp/` directory is ignored in `.gitignore`.
 
 ## Dependencies
 
@@ -108,6 +147,19 @@ pnpm release:publish          # publish all packages
 - Plugins reference each other via `workspace:*` (e.g., `"vitepress-tuck": "workspace:*"`, `"vitepress-plugin-toolkit": "workspace:*"`).
 - Peer dependencies: `vitepress` (^1.6.4 || ^2.0.0-alpha.17), `vue` (^3.5.0).
 - Node >= 20.19.0, pnpm >= 10.
+
+## Pre-commit Hooks
+
+- **simple-git-hooks** + **nano-staged** runs on commit:
+  - `*` → `eslint --fix`
+  - `*.{css,vue}` → `stylelint --fix`
+  - `*.{js,ts,mjs,cjs}` → `vitest related --run` (runs only tests related to changed files, with `TZ=Etc/UTC`)
+
+## Release Flow
+
+1. `pnpm release:check` — lint + build (gate check)
+2. `pnpm release:version` — bumps versions via **bumpp**, generates changelog via **conventional-changelog**, commits, tags, and pushes
+3. `pnpm release:publish` — publishes all packages to npm (with `--provenance` enabled)
 
 ## Creating a New Plugin
 

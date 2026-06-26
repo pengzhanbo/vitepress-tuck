@@ -150,6 +150,8 @@ export const codeTreeMarkdownPlugin: PluginWithOptions<CodeTreePluginOptions> = 
       let activeFile: string | undefined
       for (let i = index + 1; !(tokens[i].nesting === -1 && tokens[i].type === 'container_code-tree_close'); i++) {
         const token = tokens[i]
+        // fence tokens in markdown-it always have tag === 'code'
+        /* v8 ignore next */
         if (token.type === 'fence' && token.tag === 'code') {
           const fenceInfo = md.utils.unescapeAll(token.info)
           const title = fenceInfo.match(RE_CODE_TREE_TITLE)?.[1]

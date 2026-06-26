@@ -17,7 +17,7 @@ const cache = new LRUCache<string, Matcher>({ maxSize: 100 })
 export function createMatcher(include?: string | string[], exclude?: string | string[]) {
   const key = genHash([normalize(include), normalize(exclude)])
   if (cache.has(key))
-    return cache.get(key)
+    return cache.get(key)!
 
   const { pattern, ignore } = resolveMatcherPattern(include, exclude)
   const matcher = picomatch(pattern, { ignore })

@@ -36,6 +36,6 @@ export const mermaidMarkdownPlugin: PluginSimple = (md) => {
     if (!info.trim().startsWith('mermaid'))
       return code
 
-    return `<VPMermaid id="Mermaid-${idx}" graph="${encodeURIComponent(content)}"><template #source>${code}</template></VPmermaid>`
+    return `<VPMermaid id="Mermaid-${idx}" graph="${encodeURIComponent(content)}"><template #source>${code}</template></VPMermaid>`
   }
 }

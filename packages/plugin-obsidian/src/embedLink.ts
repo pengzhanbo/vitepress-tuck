@@ -60,7 +60,7 @@ function blockEmbedLinkDef(root: string, files: string[]): RuleBlock {
     const max = state.eMarks[startLine]!
 
     // - ![[]]
-    if (max - start < 6)
+    if (max - start < 5)
       return false
 
     // 是否以 `![[` 开头
@@ -88,6 +88,10 @@ function blockEmbedLinkDef(root: string, files: string[]): RuleBlock {
     // ![[xxxx]]
     //    ^^^^  <- content
     const content = line.slice(3, -2).trim()
+
+    if (!content)
+      return false
+
     genEmbedAsset(state, content, root, files)
 
     state.line = startLine + 1

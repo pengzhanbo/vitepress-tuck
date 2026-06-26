@@ -137,7 +137,7 @@ function wikiLinkDef(root: string, files: string[]): RuleInline {
       const url = filename[0] === '.'
         ? path.join(path.dirname(state.env.relativePath), filename)
         : filename
-      linkToken.attrJoin('href', url)
+      linkToken.attrJoin('href', `${url}${slug}`)
       textToken.content ||= [filename, ...titles].join(' > ')
     }
 
