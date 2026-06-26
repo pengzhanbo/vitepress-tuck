@@ -203,8 +203,8 @@ describe('vitepress utilities', () => {
 
     it('should prefix absolute paths with site base', () => {
       const result = resolveRouteLink('/about/', {} as MarkdownEnv)
-      // base is '/base/' and path is '/about/', concatenated as '/base//about/'
-      expect(result).toBe('/base//about/')
+      // base is '/base/' and path is '/about/', concatenated as '/base/about/'
+      expect(result).toBe('/base/about/')
     })
 
     it('should slugify hash links', () => {

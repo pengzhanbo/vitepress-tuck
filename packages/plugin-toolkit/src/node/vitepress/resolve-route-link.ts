@@ -1,5 +1,5 @@
 import type { MarkdownEnv } from 'vitepress'
-import { slash } from '@pengzhanbo/utils'
+import { removeTrailingSlash, slash } from '@pengzhanbo/utils'
 import { isExternal } from '../../shared/index.js'
 import { slugify, treatAsHtml } from '../utils/index.js'
 import { getVitepressConfig } from './get-vitepress-config.js'
@@ -43,7 +43,7 @@ export function resolveRouteLink(url: string, env: MarkdownEnv): string {
   const config = getVitepressConfig()
 
   if (url.startsWith('/'))
-    return slash(config.site.base + url)
+    return slash(removeTrailingSlash(config.site.base) + url)
 
   if (url.startsWith('#'))
     return decodeURI(normalizeHash(url))

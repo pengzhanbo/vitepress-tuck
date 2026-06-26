@@ -3,10 +3,13 @@ import MarkdownIt from 'markdown-it'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { wikiLinkMarkdownPlugin } from '../src/wikiLink'
 
+let previousVitepressConfig: unknown
+
 // wikiLink 的 findFirstFile 内部调用 getLocaleWithPath，
 // 后者依赖 globalThis.VITEPRESS_CONFIG，需在 beforeAll 中设置
 beforeAll(() => {
-  (globalThis as any).VITEPRESS_CONFIG = {
+  previousVitepressConfig = (globalThis as any).VITEPRESS_CONFIG
+  ;(globalThis as any).VITEPRESS_CONFIG = {
     srcDir: __dirname,
     root: __dirname,
     userConfig: { locales: {} },
@@ -14,7 +17,12 @@ beforeAll(() => {
 })
 
 afterAll(() => {
-  delete (globalThis as any).VITEPRESS_CONFIG
+  if (previousVitepressConfig === undefined) {
+    delete (globalThis as any).VITEPRESS_CONFIG
+  }
+  else {
+    (globalThis as any).VITEPRESS_CONFIG = previousVitepressConfig
+  }
 })
 
 describe('wikiLinkMarkdownPlugin', () => {

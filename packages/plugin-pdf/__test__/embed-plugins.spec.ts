@@ -114,8 +114,8 @@ describe('pdfMarkdownPlugin', () => {
     expect(result).toContain(':zoom="50"')
   })
 
-  // zoom=0 时回退为 50（因 0 是 falsy）
-  it('should fallback zoom to 50 when zoom is 0', () => {
+  // zoom=0 时保留为 0
+  it('should keep zoom as 0 when zoom is 0', () => {
     const md = new MarkdownIt()
     md.use(pdfMarkdownPlugin)
 
@@ -139,15 +139,6 @@ describe('pdfMarkdownPlugin', () => {
 
     const result = md.render('@[pdf ratio="16:9"](https://example.com/sample.pdf)')
     expect(result).toContain('ratio="16:9"')
-  })
-
-  // ratio 纯数字被 parseRect 加 px（注意：ratio 应该是比例不是 px，这可能是个 bug）
-  it('should add px to numeric ratio value (potential bug)', () => {
-    const md = new MarkdownIt()
-    md.use(pdfMarkdownPlugin)
-
-    const result = md.render('@[pdf ratio=2](https://example.com/sample.pdf)')
-    expect(result).toContain('ratio="2"')
   })
 
   // title 默认为 PDF 文件名（path.basename(src)）

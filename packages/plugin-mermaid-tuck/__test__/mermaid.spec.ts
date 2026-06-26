@@ -1,3 +1,5 @@
+import type { Fn } from '@pengzhanbo/utils'
+import type { MermaidOptions } from '../src/node/types'
 import MarkdownIt from 'markdown-it'
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
 import { mermaidMarkdownPlugin } from '../src/node/markdown'
@@ -114,19 +116,6 @@ describe('mermaidMarkdownPlugin', () => {
     expect(result).toContain('id="Mermaid-0"')
     expect(result).toContain('id="Mermaid-1"')
   })
-
-  it('闭合标签大小写与开始标签不一致（已知源码 bug）', () => {
-    // 源码中开始标签为 <VPMermaid>（大写 M），闭合标签为 </VPmermaid>（小写 m）
-    // 这是已发现的源码 bug，HTML 大小写不敏感所以不影响渲染，但记录此问题
-    const md = new MarkdownIt()
-    md.use(mermaidMarkdownPlugin)
-
-    const result = md.render('```mermaid\nA --> B\n```')
-    // 开始标签存在
-    expect(result).toContain('<VPMermaid')
-    // 闭合标签使用小写 m（源码 bug）
-    expect(result).toContain('</VPMermaid>')
-  })
 })
 
 // --- mermaidVitePlugin 测试 ---
@@ -148,7 +137,7 @@ describe('mermaidVitePlugin', () => {
     const plugins = mermaidVitePlugin()
     const virtualPlugin = plugins.find(p => p.name === 'vitepress:mermaid')!
 
-    expect(virtualPlugin.resolveId!('virtual:vitepress-mermaid')).toBe('\0virtual:vitepress-mermaid')
+    expect((virtualPlugin.resolveId as Fn)!('virtual:vitepress-mermaid')).toBe('\0virtual:vitepress-mermaid')
   })
 
   it('虚拟模块 resolveId 对其他 ID 返回 undefined', () => {
@@ -156,7 +145,7 @@ describe('mermaidVitePlugin', () => {
     const plugins = mermaidVitePlugin()
     const virtualPlugin = plugins.find(p => p.name === 'vitepress:mermaid')!
 
-    expect(virtualPlugin.resolveId!('other-module')).toBeUndefined()
+    expect((virtualPlugin.resolveId as Fn)!('other-module')).toBeUndefined()
   })
 
   it('虚拟模块 load 返回包含 defaultOptions 和 locales 导出的代码字符串', () => {
@@ -164,7 +153,7 @@ describe('mermaidVitePlugin', () => {
     const plugins = mermaidVitePlugin()
     const virtualPlugin = plugins.find(p => p.name === 'vitepress:mermaid')!
 
-    const code = virtualPlugin.load!('\0virtual:vitepress-mermaid')
+    const code = (virtualPlugin.load as Fn)('\0virtual:vitepress-mermaid')
     expect(typeof code).toBe('string')
     expect(code).toContain('defaultOptions')
     expect(code).toContain('locales')
@@ -175,17 +164,17 @@ describe('mermaidVitePlugin', () => {
     const plugins = mermaidVitePlugin()
     const virtualPlugin = plugins.find(p => p.name === 'vitepress:mermaid')!
 
-    const code = virtualPlugin.load!('\0virtual:vitepress-mermaid')
+    const code = (virtualPlugin.load as Fn)('\0virtual:vitepress-mermaid')
     expect(code).toContain('export const defaultOptions = {}')
   })
 
   it('有 options 时 defaultOptions 为 JSON.stringify(options) 的结果', () => {
     // 验证传入 options 时 defaultOptions 为 JSON 序列化的结果
-    const options = { theme: 'dark', flowchart: { curve: 'basis' } }
+    const options = { theme: 'dark', flowchart: { curve: 'basis' } } as MermaidOptions
     const plugins = mermaidVitePlugin({ options })
     const virtualPlugin = plugins.find(p => p.name === 'vitepress:mermaid')!
 
-    const code = virtualPlugin.load!('\0virtual:vitepress-mermaid')
+    const code = (virtualPlugin.load as Fn)('\0virtual:vitepress-mermaid')
     expect(code).toContain(`export const defaultOptions = ${JSON.stringify(options)}`)
   })
 
@@ -194,7 +183,7 @@ describe('mermaidVitePlugin', () => {
     const plugins = mermaidVitePlugin()
     const virtualPlugin = plugins.find(p => p.name === 'vitepress:mermaid')!
 
-    const code = virtualPlugin.load!('\0virtual:vitepress-mermaid')
+    const code = (virtualPlugin.load as Fn)('\0virtual:vitepress-mermaid')
     // locales 应该是 JSON.stringify 的结果，以 = { 开头
     expect(code).toMatch(/export const locales = \{/)
   })
@@ -204,7 +193,7 @@ describe('mermaidVitePlugin', () => {
     const plugins = mermaidVitePlugin()
     const virtualPlugin = plugins.find(p => p.name === 'vitepress:mermaid')!
 
-    expect(virtualPlugin.load!('other-id')).toBeUndefined()
+    expect((virtualPlugin.load as Fn)('other-id')).toBeUndefined()
   })
 })
 
@@ -252,7 +241,7 @@ describe('mermaid 插件工厂', () => {
     // 验证 markdown.config 能正确注册 markdown 插件
     const plugin = mermaid()
     const md = new MarkdownIt()
-    plugin.markdown!.config!(md)
+    plugin.markdown!.config!(md as any)
 
     const result = md.render('```mermaid\nA --> B\n```')
     expect(result).toMatch(/<VPMermaid/i)

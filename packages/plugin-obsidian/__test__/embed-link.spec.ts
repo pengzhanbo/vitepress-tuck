@@ -6,10 +6,13 @@ import { embedLinkMarkdownPlugin } from '../src/embedLink'
 // fixtures 目录路径，用于测试块级 markdown 文件嵌入
 const fixturesDir = path.join(__dirname, 'fixtures')
 
+let previousVitepressConfig: unknown
+
 // embedLink 的 else 分支会调用 findFirstFile，
 // 后者依赖 globalThis.VITEPRESS_CONFIG，需在 beforeAll 中设置
 beforeAll(() => {
-  (globalThis as any).VITEPRESS_CONFIG = {
+  previousVitepressConfig = (globalThis as any).VITEPRESS_CONFIG
+  ;(globalThis as any).VITEPRESS_CONFIG = {
     srcDir: __dirname,
     root: __dirname,
     userConfig: { locales: {} },
@@ -17,7 +20,12 @@ beforeAll(() => {
 })
 
 afterAll(() => {
-  delete (globalThis as any).VITEPRESS_CONFIG
+  if (previousVitepressConfig === undefined) {
+    delete (globalThis as any).VITEPRESS_CONFIG
+  }
+  else {
+    (globalThis as any).VITEPRESS_CONFIG = previousVitepressConfig
+  }
 })
 
 describe('embedLinkMarkdownPlugin', () => {

@@ -4,10 +4,13 @@ import { findFirstFile, loadFiles } from '../src/loadFiles'
 import { obsidianMarkdownPlugin } from '../src/obsidian'
 import { obsidian } from '../src/plugin'
 
+let previousVitepressConfig: unknown
+
 // findFirstFile 内部调用 getLocaleWithPath，后者依赖 globalThis.VITEPRESS_CONFIG
 // obsidianMarkdownPlugin 默认启用 embedLink/wikiLink 时会调用 loadFiles()，同样依赖
 beforeAll(() => {
-  (globalThis as any).VITEPRESS_CONFIG = {
+  previousVitepressConfig = (globalThis as any).VITEPRESS_CONFIG
+  ;(globalThis as any).VITEPRESS_CONFIG = {
     srcDir: __dirname,
     root: __dirname,
     userConfig: { locales: {} },
@@ -15,7 +18,12 @@ beforeAll(() => {
 })
 
 afterAll(() => {
-  delete (globalThis as any).VITEPRESS_CONFIG
+  if (previousVitepressConfig === undefined) {
+    delete (globalThis as any).VITEPRESS_CONFIG
+  }
+  else {
+    (globalThis as any).VITEPRESS_CONFIG = previousVitepressConfig
+  }
 })
 
 describe('findFirstFile', () => {
