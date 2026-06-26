@@ -1,7 +1,7 @@
 {
   "name": "vitepress-plugin-npm-to",
   "type": "module",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Automatically convert npm commands to equivalent commands for other package managers (pnpm, yarn, bun, deno).",
   "author": "pengzhanbo <q942450674@outlook.com> (https://github.com/pengzhanbo/)",
   "license": "MIT",

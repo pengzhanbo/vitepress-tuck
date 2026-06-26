@@ -1,3 +1,10 @@
+# [0.6.0](https://github.com/pengzhanbo/vitepress-tuck/compare/v0.5.0...v0.6.0) (2026-06-26)
+
+
+### Features
+
+* add plugin-abbr ([#16](https://github.com/pengzhanbo/vitepress-tuck/issues/16)) ([c6a710c](https://github.com/pengzhanbo/vitepress-tuck/commit/c6a710c9919dfa271b5107e13fb873c8568b8d40))
+
 # [0.5.0](https://github.com/pengzhanbo/vitepress-tuck/compare/v0.4.0...v0.5.0) (2026-06-24)
 
 

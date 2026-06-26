@@ -1,7 +1,7 @@
 {
   "name": "vitepress-plugin-code-collapse",
   "type": "module",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "provide code block collapsed lines feature",
   "author": "pengzhanbo <q942450674@outlook.com> (https://github.com/pengzhanbo/)",
   "license": "MIT",
