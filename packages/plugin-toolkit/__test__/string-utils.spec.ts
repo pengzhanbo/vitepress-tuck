@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
   EXTENSION_AUDIOS,
   EXTENSION_IMAGES,
@@ -13,6 +13,11 @@ import {
   treatAsHtml,
 } from '../src/node/index'
 import { isExternal, isLinkWithProtocol } from '../src/shared/index'
+
+afterEach(() => {
+  vi.unstubAllEnvs()
+  vi.resetModules()
+})
 
 describe('parseRect', () => {
   it('should append "px" to numeric strings', () => {
@@ -392,8 +397,5 @@ describe('treatAsHtml extra', () => {
     expect(freshTreatAsHtml('file.vue-ext')).toBe(false)
     expect(freshTreatAsHtml('file.png')).toBe(false)
     expect(freshTreatAsHtml('file.unknown-ext')).toBe(true)
-
-    vi.unstubAllEnvs()
-    vi.resetModules()
   })
 })

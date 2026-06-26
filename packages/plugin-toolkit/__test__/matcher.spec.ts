@@ -124,9 +124,7 @@ describe('createMatcher', () => {
   it('should cache matchers for the same pattern', () => {
     const m1 = createMatcher('**/*.md', '**/node_modules/**')
     const m2 = createMatcher('**/*.md', '**/node_modules/**')
-    // Should return the same cache hit - verify they work the same
-    expect(m1('test.md')).toBe(m2('test.md'))
-    expect(m1('node_modules/test.md')).toBe(m2('node_modules/test.md'))
+    expect(m1).toBe(m2) // 同一缓存键应返回同一函数引用
   })
 
   it('should handle undefined include and exclude', () => {
