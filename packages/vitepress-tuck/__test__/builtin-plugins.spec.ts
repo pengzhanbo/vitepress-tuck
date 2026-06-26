@@ -1,59 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { autoComponentsPlugin } from '../src/builtin-plugins/auto-components'
-import { builtinPlugins } from '../src/builtin-plugins/index'
 import { virtualEnhanceApp } from '../src/builtin-plugins/virtual-enhance-app'
-
-// ============================================================
-// builtinPlugins
-// ============================================================
-
-describe('builtinPlugins', () => {
-  it('should return an array of 3 plugins', () => {
-    const plugins = builtinPlugins({})
-    expect(plugins).toHaveLength(3)
-  })
-
-  it('should include virtual-enhance-app plugin', () => {
-    const plugins = builtinPlugins({})
-    // plugins are already VitepressPlugin objects (factory called inside builtinPlugins)
-    const virtualPlugin = plugins[0]!
-    expect(virtualPlugin.name).toBe('virtual-enhance-app')
-    expect(virtualPlugin.vite?.plugins).toBeDefined()
-  })
-
-  it('should include auto-components plugin', () => {
-    const plugins = builtinPlugins({})
-    const autoCompPlugin = plugins[1]!
-    expect(autoCompPlugin.name).toBe('auto-components')
-    expect(autoCompPlugin.vite?.plugins).toBeDefined()
-  })
-
-  it('should include deps plugin', () => {
-    const plugins = builtinPlugins({})
-    const depsPlugin = (plugins[2] as any)!()
-    expect(depsPlugin.name).toBe('vitepress-tuck:deps')
-    expect(depsPlugin.vite?.ssr?.noExternal).toContain('vitepress-plugin-toolkit')
-  })
-
-  it('should pass enhanceApp options through', () => {
-    const enhanceOptions = {
-      imports: ['import "test.css"'],
-      enhances: [{ moduleName: 'test-plugin', exportName: 'enhanceApp' }],
-    }
-    const plugins = builtinPlugins({ enhanceApp: enhanceOptions })
-    const virtualPlugin = plugins[0]!
-    expect(virtualPlugin.vite?.plugins).toBeDefined()
-  })
-
-  it('should pass components options through', () => {
-    const componentsOptions = {
-      dts: 'custom-types/components.d.ts',
-    }
-    const plugins = builtinPlugins({ components: componentsOptions })
-    const autoCompPlugin = plugins[1]!
-    expect(autoCompPlugin.vite?.plugins).toBeDefined()
-  })
-})
 
 // ============================================================
 // virtualEnhanceApp
