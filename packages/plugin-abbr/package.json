@@ -48,7 +48,6 @@
   },
   "dependencies": {
     "@floating-ui/vue": "catalog:prod",
-    "@vueuse/core": "catalog:prod",
     "vitepress-plugin-toolkit": "workspace:*",
     "vitepress-tuck": "workspace:*"
   },

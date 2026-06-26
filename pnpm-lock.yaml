@@ -329,9 +329,6 @@ importers:
       '@floating-ui/vue':
         specifier: catalog:prod
         version: 2.0.0(vue@3.5.38(typescript@6.0.3))
-      '@vueuse/core':
-        specifier: catalog:prod
-        version: 14.3.0(vue@3.5.38(typescript@6.0.3))
       vitepress:
         specifier: ^2.0.0-alpha.17
         version: 2.0.0-alpha.17(@types/node@26.0.0)(change-case@5.4.4)(esbuild@0.27.7)(jiti@2.7.0)(oxc-minify@0.137.0)(postcss@8.5.15)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
