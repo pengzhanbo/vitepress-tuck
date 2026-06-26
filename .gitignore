@@ -75,3 +75,6 @@ dist
 
 # custom
 .mind/
+
+# Test fixtures temporary directories (运行时生成，测试后自动清理)
+__test__/fixtures/tmp/

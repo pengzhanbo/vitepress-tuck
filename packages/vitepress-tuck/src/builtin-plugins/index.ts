@@ -2,6 +2,7 @@ import type { Options as ComponentsOptions } from 'unplugin-vue-components'
 import type { VitepressPlugin } from '../types.js'
 import type { EnhanceOptions } from './virtual-enhance-app.js'
 import { autoComponentsPlugin } from './auto-components.js'
+import { ssrNoExternalDepsPlugin } from './ssr-no-external-deps.js'
 
 import { virtualEnhanceAppPlugin } from './virtual-enhance-app.js'
 
@@ -45,13 +46,6 @@ export function builtinPlugins(options: BuiltinPluginOptions): VitepressPlugin[]
   return [
     virtualEnhanceAppPlugin(options.enhanceApp),
     autoComponentsPlugin(options.components),
-    () => ({
-      name: 'vitepress-tuck:deps',
-      vite: {
-        ssr: {
-          noExternal: ['vitepress-plugin-toolkit'],
-        },
-      },
-    }),
+    ssrNoExternalDepsPlugin(),
   ]
 }

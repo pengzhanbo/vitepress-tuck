@@ -1,6 +1,10 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
-  logLevels,
+  EXTENSION_AUDIOS,
+  EXTENSION_IMAGES,
+  EXTENSION_VIDEOS,
+  isBuild,
+  isDev,
   parseRect,
   resolveAttr,
   resolveAttrs,
@@ -9,6 +13,11 @@ import {
   treatAsHtml,
 } from '../src/node/index'
 import { isExternal, isLinkWithProtocol } from '../src/shared/index'
+
+afterEach(() => {
+  vi.unstubAllEnvs()
+  vi.resetModules()
+})
 
 describe('parseRect', () => {
   it('should append "px" to numeric strings', () => {
@@ -268,11 +277,125 @@ describe('isLinkWithProtocol', () => {
   })
 })
 
-describe('logLevels', () => {
-  it('should have correct level hierarchy', () => {
-    expect(logLevels.silent).toBeLessThan(logLevels.error)
-    expect(logLevels.error).toBeLessThan(logLevels.warn)
-    expect(logLevels.warn).toBeLessThan(logLevels.info)
-    expect(logLevels.info).toBeLessThan(logLevels.debug)
+// ---- constants ----
+
+describe('constants', () => {
+  it('isBuild should be false in test environment', () => {
+    expect(isBuild).toBe(false)
+  })
+
+  it('isDev should depend on NODE_ENV', () => {
+    // In test environment, NODE_ENV is typically 'test', so isDev is false
+    expect(isDev).toBe(false)
+  })
+
+  it('extensionVideos should contain common video formats', () => {
+    expect(EXTENSION_VIDEOS).toContain('mp4')
+    expect(EXTENSION_VIDEOS).toContain('webm')
+    expect(EXTENSION_VIDEOS).toContain('ogg')
+    expect(EXTENSION_VIDEOS).toContain('mov')
+  })
+
+  it('extensionImages should contain common image formats', () => {
+    expect(EXTENSION_IMAGES).toContain('png')
+    expect(EXTENSION_IMAGES).toContain('jpg')
+    expect(EXTENSION_IMAGES).toContain('svg')
+    expect(EXTENSION_IMAGES).toContain('webp')
+  })
+
+  it('eXTENSION_AUDIOS should contain common audio formats', () => {
+    expect(EXTENSION_AUDIOS).toContain('mp3')
+    expect(EXTENSION_AUDIOS).toContain('wav')
+    expect(EXTENSION_AUDIOS).toContain('flac')
+  })
+})
+
+// ---- stringifyAttrs extra edge cases ----
+
+describe('stringifyAttrs extra', () => {
+  it('should handle "true" string as boolean true', () => {
+    const result = stringifyAttrs({ active: 'true' as any })
+    expect(result).toContain('active')
+    expect(result).not.toContain('=')
+  })
+
+  it('should handle "false" string as boolean false', () => {
+    const result = stringifyAttrs({ active: 'false' as any })
+    expect(result).not.toContain('active')
+  })
+
+  it('should handle "undefined" string values', () => {
+    const result = stringifyAttrs({ foo: 'undefined' as any })
+    expect(result).toBe('')
+
+    const resultWith = stringifyAttrs({ foo: 'undefined' as any }, true)
+    expect(resultWith).toContain(':foo="undefined"')
+  })
+
+  it('should handle "null" string values', () => {
+    const result = stringifyAttrs({ foo: 'null' as any })
+    expect(result).toBe('')
+
+    const resultWith = stringifyAttrs({ foo: 'null' as any }, true)
+    expect(resultWith).toContain(':foo="null"')
+  })
+
+  it('should handle dynamic key prefix (starting with :)', () => {
+    const result = stringifyAttrs({ ':onClick': 'handle' as any })
+    expect(result).toContain(':on-click="handle"')
+    expect(result).not.toContain('::')
+  })
+
+  it('should handle null and undefined with withUndefinedOrNull', () => {
+    const result = stringifyAttrs({ foo: undefined as any, bar: null as any }, true)
+    expect(result).toContain(':foo="undefined"')
+    expect(result).toContain(':bar="null"')
+  })
+
+  it('should replace double quotes with single quotes for object/array values', () => {
+    const result = stringifyAttrs({ items: '[{"a":1}]' as any })
+    expect(result).toContain(`:items="[{'a':1}]"`)
+  })
+})
+
+// ---- treatAsHtml extra edge cases ----
+
+describe('treatAsHtml extra', () => {
+  it('should handle uppercase extensions', () => {
+    expect(treatAsHtml('test.PNG')).toBe(false)
+    expect(treatAsHtml('test.JPG')).toBe(false)
+    expect(treatAsHtml('test.PDF')).toBe(false)
+  })
+
+  it('should handle filenames with multiple dots', () => {
+    expect(treatAsHtml('test.min.js')).toBe(false)
+    expect(treatAsHtml('test.spec.vue')).toBe(true) // .vue not in known list
+    expect(treatAsHtml('test.module.css')).toBe(false)
+  })
+
+  it('should handle known extensions correctly', () => {
+    expect(treatAsHtml('test.zip')).toBe(false)
+    expect(treatAsHtml('test.json')).toBe(false)
+    expect(treatAsHtml('test.xml')).toBe(false)
+    expect(treatAsHtml('test.csv')).toBe(false)
+    expect(treatAsHtml('test.ttf')).toBe(false)
+    expect(treatAsHtml('test.woff2')).toBe(false)
+    expect(treatAsHtml('test.avif')).toBe(false)
+    expect(treatAsHtml('test.opus')).toBe(false)
+    expect(treatAsHtml('test.mjs')).toBe(false)
+  })
+
+  it('should handle extra extensions from VITE_EXTRA_EXTENSIONS env', async () => {
+    // Reset modules to clear the module-level KNOWN_EXTENSIONS cache,
+    // then set the env var and dynamically import to test the branch
+    vi.resetModules()
+    vi.stubEnv('VITE_EXTRA_EXTENSIONS', 'custom-ext,vue-ext')
+
+    const { treatAsHtml: freshTreatAsHtml } = await import('../src/node/utils/treat-as-html')
+
+    expect(freshTreatAsHtml('file.custom-ext')).toBe(false)
+    expect(freshTreatAsHtml('file.vue-ext')).toBe(false)
+    expect(freshTreatAsHtml('file.png')).toBe(false)
+    expect(freshTreatAsHtml('file.unknown-ext')).toBe(true)
   })
 })

@@ -12,7 +12,7 @@ import { timeToSeconds } from './utils.js'
  *
  * YouTube 可嵌入播放器端点的基础 URL。
  */
-const YOUTUBE_LINK = 'https://www.youtube.com/embed/'
+const YOUTUBE_LINK = 'https://www.youtube.com/embed'
 
 /**
  * markdown-it plugin that registers the `@[youtube](id)` embed rule for

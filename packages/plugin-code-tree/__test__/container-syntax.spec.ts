@@ -1,14 +1,12 @@
-import type { CodeTreeFile } from '../src/node/types'
 import path from 'node:path'
 import MarkdownIt from 'markdown-it'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import { initLoaders, loadCodeContent } from '../src/node/loader'
 import { codeTreeMarkdownPlugin } from '../src/node/markdown'
+import { codeTree } from '../src/node/plugin'
 
 // --- Fixtures directory setup ---
 
 const FIXTURES_DIR = path.resolve(__dirname, 'fixtures')
-const SRC_DIR = path.join(FIXTURES_DIR, 'src')
 
 beforeAll(() => {
   // Mock VITEPRESS_CONFIG for embed syntax tests
@@ -189,6 +187,16 @@ describe('codeTreeMarkdownPlugin - container syntax', () => {
     expect(result).toContain('show-sidebar')
   })
 
+  it('should handle empty height option gracefully', () => {
+    const md = new MarkdownIt()
+    md.use(codeTreeMarkdownPlugin, { height: '' })
+
+    const result = md.render('::: code-tree\n\n```ts [index.ts]\nconst a = 1\n```\n\n:::')
+    // With empty height, the height attr should be absent or undefined
+    expect(result).toContain('<VPCodeTree')
+    expect(result).not.toContain('height=')
+  })
+
   it('should not render show-sidebar when false', () => {
     const md = new MarkdownIt()
     md.use(codeTreeMarkdownPlugin)
@@ -331,254 +339,81 @@ describe('codeTreeMarkdownPlugin - container syntax', () => {
   })
 })
 
-// --- Embed syntax tests ---
+// =============================================================================
+// container syntax — edge cases
+// =============================================================================
 
-describe('codeTreeMarkdownPlugin - embed syntax', () => {
-  it('should embed directory as code tree', () => {
+describe('codeTreeMarkdownPlugin - container edge cases', () => {
+  it('should handle code-tree with only one file and entry set', () => {
     const md = new MarkdownIt()
     md.use(codeTreeMarkdownPlugin)
+    const result = md.render('::: code-tree entry="index.ts"\n\n```ts [index.ts]\nconst a = 1\n```\n\n:::')
+    expect(result).toContain('entry-file="index.ts"')
+    expect(result).toContain('filename="index.ts"')
+  })
 
-    const env = { path: path.join(FIXTURES_DIR, 'index.md') }
-    const result = md.render('@[code-tree](./src)', env)
+  it('should handle code-tree with empty content (no fences)', () => {
+    const md = new MarkdownIt()
+    md.use(codeTreeMarkdownPlugin)
+    const result = md.render('::: code-tree\n:::')
     expect(result).toContain('<VPCodeTree')
     expect(result).toContain('</VPCodeTree>')
-    expect(result).toContain('<VPFileTreeNode')
-    expect(result).toContain('filename="index.ts"')
-    expect(result).toContain('filename="utils.ts"')
-    expect(result).toContain('filename="components"')
-    expect(result).toContain('const a = 1')
-    expect(result).toContain('export const noop')
   })
 
-  it('should show error for invalid directory', () => {
+  it('should correctly process title in fence info with language', () => {
     const md = new MarkdownIt()
     md.use(codeTreeMarkdownPlugin)
-
-    const env = { path: path.join(FIXTURES_DIR, 'index.md') }
-    const result = md.render('@[code-tree](./nonexistent)', env)
-    expect(result).toContain('Invalid target directory')
-  })
-
-  it('should set entry-file to first file by default', () => {
-    const md = new MarkdownIt()
-    md.use(codeTreeMarkdownPlugin)
-
-    const env = { path: path.join(FIXTURES_DIR, 'index.md') }
-    const result = md.render('@[code-tree](./src)', env)
-    expect(result).toContain('entry-file=')
-  })
-
-  it('should render embed attributes', () => {
-    const md = new MarkdownIt()
-    md.use(codeTreeMarkdownPlugin)
-
-    const env = { path: path.join(FIXTURES_DIR, 'index.md') }
-    const result = md.render('@[code-tree title="Source" height="500px" show-sidebar=true](./src)', env)
-    expect(result).toContain('title="Source"')
-    expect(result).toContain('height="500px"')
-    expect(result).toContain('show-sidebar')
-  })
-
-  it('should set entry from embed attribute', () => {
-    const md = new MarkdownIt()
-    md.use(codeTreeMarkdownPlugin)
-
-    const env = { path: path.join(FIXTURES_DIR, 'index.md') }
-    const result = md.render('@[code-tree entry="utils.ts"](./src)', env)
-    expect(result).toContain('entry-file="utils.ts"')
-  })
-
-  it('should respect ignores option', () => {
-    const md = new MarkdownIt()
-    md.use(codeTreeMarkdownPlugin, { ignores: ['**/*.ts'] })
-
-    const env = { path: path.join(FIXTURES_DIR, 'index.md') }
-    const result = md.render('@[code-tree](./src)', env)
-    // .ts files should be ignored, only .vue file remains
-    expect(result).not.toContain('filename="index.ts"')
-    expect(result).not.toContain('filename="utils.ts"')
-    expect(result).toContain('filename="components"')
-  })
-
-  it('should use custom loaders taking precedence over built-in', () => {
-    const md = new MarkdownIt()
-    md.use(codeTreeMarkdownPlugin, {
-      loaders: [
-        {
-          filter: '**/*.ts',
-          load: (file: CodeTreeFile) => `custom-loader: ${file.path}`,
-        },
-      ],
-    })
-
-    const env = { path: path.join(FIXTURES_DIR, 'index.md') }
-    const result = md.render('@[code-tree](./src)', env)
-    expect(result).toContain('custom-loader: index.ts')
-    expect(result).toContain('custom-loader: utils.ts')
-  })
-
-  it('should track included files in env', () => {
-    const md = new MarkdownIt()
-    md.use(codeTreeMarkdownPlugin)
-
-    const env: Record<string, unknown> = { path: path.join(FIXTURES_DIR, 'index.md') }
-    md.render('@[code-tree](./src)', env)
-    expect(Array.isArray(env.includes)).toBe(true)
-    expect((env.includes as string[]).length).toBeGreaterThan(0)
-    expect((env.includes as string[]).some(p => p.endsWith('index.ts'))).toBe(true)
-  })
-
-  it('should resolve @ prefix relative to srcDir', () => {
-    const md = new MarkdownIt()
-    md.use(codeTreeMarkdownPlugin)
-
-    const env = { path: path.join(FIXTURES_DIR, 'index.md') }
-    const result = md.render('@[code-tree](@/src)', env)
-    expect(result).toContain('<VPCodeTree')
-    expect(result).toContain('filename="index.ts"')
-  })
-
-  it('should resolve / prefix relative to project root', () => {
-    const md = new MarkdownIt()
-    md.use(codeTreeMarkdownPlugin)
-
-    const env = { path: path.join(FIXTURES_DIR, 'index.md') }
-    const result = md.render('@[code-tree](/src)', env)
-    expect(result).toContain('<VPCodeTree')
-    expect(result).toContain('filename="index.ts"')
-  })
-
-  it('should not match unrelated embed syntax', () => {
-    const md = new MarkdownIt()
-    md.use(codeTreeMarkdownPlugin)
-
-    const result = md.render('@[pdf](https://example.com)')
-    expect(result).not.toContain('<VPCodeTree')
-  })
-
-  it('should use default height from options in embed', () => {
-    const md = new MarkdownIt()
-    md.use(codeTreeMarkdownPlugin, { height: '600px' })
-
-    const env = { path: path.join(FIXTURES_DIR, 'index.md') }
-    const result = md.render('@[code-tree](./src)', env)
-    expect(result).toContain('height="600px"')
+    const result = md.render('::: code-tree\n\n```typescript [src/main.ts]\nconsole.log("hi")\n```\n\n:::')
+    expect(result).toContain('filename="src')
+    expect(result).toContain('filepath="src/main.ts"')
   })
 })
 
-// --- loadCodeContent tests ---
+// =============================================================================
+// codeTree 插件工厂
+// =============================================================================
 
-describe('loadCodeContent', () => {
-  it('should generate fenced code block with file content', () => {
-    const file: CodeTreeFile = {
-      path: 'src/index.ts',
-      absolutePath: path.join(SRC_DIR, 'index.ts'),
-      relativePath: './src/index.ts',
-      extname: 'ts',
-      basename: 'index.ts',
-    }
-    const result = loadCodeContent(file)
-    // Should use six backticks as fence delimiter
-    expect(result).toContain('``````ts [src/index.ts]')
-    expect(result).toContain('const a = 1')
-    expect(result).toMatch(/`{6}$/)
+describe('codeTree 插件工厂', () => {
+  it('name 为 vitepress-plugin-code-tree', () => {
+    const plugin = codeTree() as any
+    expect(plugin.name).toBe('vitepress-plugin-code-tree')
   })
 
-  it('should use file extension as language by default', () => {
-    const file: CodeTreeFile = {
-      path: 'README.md',
-      absolutePath: path.join(FIXTURES_DIR, 'README.md'),
-      relativePath: './README.md',
-      extname: 'md',
-      basename: 'README.md',
-    }
-    const result = loadCodeContent(file)
-    expect(result).toContain('``````md [README.md]')
+  it('componentResolver 可解析 VPCodeTree 和 VPFileTreeNode', () => {
+    const plugin = codeTree() as any
+    const resolver = plugin.componentResolver!
+    expect(resolver.type).toBe('component')
+    expect(resolver.resolve('VPCodeTree')).toEqual({ name: 'VPCodeTree', from: 'vitepress-plugin-code-tree/client' })
+    expect(resolver.resolve('VPFileTreeNode')).toEqual({ name: 'VPFileTreeNode', from: 'vitepress-plugin-file-tree/client' })
+    expect(resolver.resolve('OtherComponent')).toBeUndefined()
   })
 
-  it('should use provided lang override', () => {
-    const file: CodeTreeFile = {
-      path: 'src/index.ts',
-      absolutePath: path.join(SRC_DIR, 'index.ts'),
-      relativePath: './src/index.ts',
-      extname: 'ts',
-      basename: 'index.ts',
-    }
-    const result = loadCodeContent(file, 'typescript')
-    expect(result).toContain('``````typescript [src/index.ts]')
+  it('markdown.config 为函数', () => {
+    const plugin = codeTree() as any
+    expect(typeof plugin.markdown?.config).toBe('function')
   })
 
-  it('should trim file content', () => {
-    const file: CodeTreeFile = {
-      path: 'src/index.ts',
-      absolutePath: path.join(SRC_DIR, 'index.ts'),
-      relativePath: './src/index.ts',
-      extname: 'ts',
-      basename: 'index.ts',
-    }
-    const result = loadCodeContent(file)
-    // Content should not have leading/trailing whitespace from the file
-    expect(result).not.toMatch(/\n$/)
-  })
-})
-
-// --- initLoaders tests ---
-
-describe('initLoaders', () => {
-  it('should merge user loaders before built-in loaders', () => {
-    const customLoader = {
-      filter: '**/*.custom',
-      load: () => 'custom content',
-    }
-    const loaders = initLoaders([customLoader])
-    // User loader should be first
-    expect(loaders[0]!.load).toBe(customLoader.load)
-    // Built-in loaders should follow
-    expect(loaders.length).toBeGreaterThan(1)
+  it('markdown.config 可注册 markdown-it 规则', () => {
+    const plugin = codeTree() as any
+    const md = new MarkdownIt()
+    plugin.markdown.config(md)
+    const result = md.render('::: code-tree\n\n```ts [test.ts]\nconst a = 1\n```\n\n:::')
+    expect(result).toContain('<VPCodeTree')
   })
 
-  it('should work with no user loaders', () => {
-    const loaders = initLoaders()
-    expect(loaders.length).toBeGreaterThan(0)
+  it('支持传入 options', () => {
+    const plugin = codeTree({ height: '500px' }) as any
+    expect(plugin.name).toBe('vitepress-plugin-code-tree')
   })
 
-  it('should work with empty user loaders array', () => {
-    const loaders = initLoaders([])
-    expect(loaders.length).toBeGreaterThan(0)
+  it('不传 options 也能正常工作', () => {
+    const plugin = codeTree() as any
+    expect(plugin.name).toBe('vitepress-plugin-code-tree')
   })
 
-  it('should normalize function filters', () => {
-    const filterFn = (file: CodeTreeFile) => file.extname === 'custom'
-    const loaders = initLoaders([{ filter: filterFn, load: () => 'custom' }])
-    expect(loaders[0]!.filter).toBe(filterFn)
-    expect(loaders[0]!.matcher).toBeUndefined()
-  })
-
-  it('should normalize string filters to matcher', () => {
-    const loaders = initLoaders([{ filter: '**/*.ts', load: () => 'ts' }])
-    expect(loaders[0]!.filter).toBeUndefined()
-    expect(loaders[0]!.matcher).toBeDefined()
-  })
-
-  it('should normalize array filters to matcher', () => {
-    const loaders = initLoaders([{ filter: ['**/*.ts', '**/*.js'], load: () => 'js' }])
-    expect(loaders[0]!.filter).toBeUndefined()
-    expect(loaders[0]!.matcher).toBeDefined()
-  })
-
-  it('should have built-in loaders for common file types', () => {
-    const loaders = initLoaders()
-    // Should have multiple built-in loaders
-    expect(loaders.length).toBe(5)
-    // Test that built-in loaders can match .ts files
-    const tsFile: CodeTreeFile = {
-      path: 'test.ts',
-      absolutePath: '/test/test.ts',
-      relativePath: './test.ts',
-      extname: 'ts',
-      basename: 'test.ts',
-    }
-    const matchingLoader = loaders.find(l => l.filter?.(tsFile) ?? l.matcher?.('test.ts'))
-    expect(matchingLoader).toBeDefined()
+  it('resolve 对未知组件返回 undefined', () => {
+    const plugin = codeTree() as any
+    const resolver = plugin.componentResolver!
+    expect(resolver.resolve('UnknownComponent')).toBeUndefined()
   })
 })

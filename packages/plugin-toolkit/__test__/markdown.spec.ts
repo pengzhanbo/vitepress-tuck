@@ -1,6 +1,6 @@
 import MarkdownIt from 'markdown-it'
-import { describe, expect, it } from 'vitest'
-import { createContainerPlugin, createContainerSyntaxPlugin, createEmbedRuleBlock } from '../src/node/markdown/index'
+import { describe, expect, it, vi } from 'vitest'
+import { cleanMarkdownEnv, createContainerPlugin, createContainerSyntaxPlugin, createEmbedRuleBlock } from '../src/node/markdown/index'
 
 describe('createContainerPlugin', () => {
   it('should wrap content in a default div with custom-container class', () => {
@@ -105,6 +105,53 @@ describe('createContainerSyntaxPlugin', () => {
     // Should be treated as plain text since no closing marker
     expect(result).toBeDefined()
   })
+
+  it('should not match when marker length is insufficient', () => {
+    const md = new MarkdownIt()
+    createContainerSyntaxPlugin(md, 'test')
+    // Only 2 colons instead of 3, should not match
+    const result = md.render(':: test\nContent')
+    expect(result).not.toContain('custom-container test')
+  })
+
+  it('should not match when info does not start with registered type', () => {
+    const md = new MarkdownIt()
+    createContainerSyntaxPlugin(md, 'registered')
+    // wrong type after :::
+    const result = md.render('::: other-type\nContent\n:::')
+    expect(result).not.toContain('custom-container registered')
+  })
+
+  it('should handle multiline content with various line types', () => {
+    const md = new MarkdownIt()
+    createContainerSyntaxPlugin(md, 'multi')
+
+    const result = md.render('::: multi\nLine 1\nLine 2\n  indented\n:::')
+    expect(result).toContain('custom-container multi')
+    expect(result).toContain('Line 1')
+    expect(result).toContain('Line 2')
+    expect(result).toContain('indented')
+  })
+
+  it('should coexist with regular paragraphs and other block elements', () => {
+    const md = new MarkdownIt()
+    createContainerSyntaxPlugin(md, 'test')
+
+    // Regular paragraph before container
+    const result = md.render('Before paragraph\n\n::: test\ninside container\n:::\n\nAfter paragraph')
+    expect(result).toContain('custom-container test')
+    expect(result).toContain('inside container')
+    expect(result).toContain('Before')
+    expect(result).toContain('After')
+  })
+
+  it('should handle container with only opening and closing markers', () => {
+    const md = new MarkdownIt()
+    createContainerSyntaxPlugin(md, 'empty')
+
+    const result = md.render('::: empty\n:::')
+    expect(result).toContain('custom-container empty')
+  })
 })
 
 describe('createEmbedRuleBlock', () => {
@@ -177,6 +224,19 @@ describe('createEmbedRuleBlock', () => {
     expect(result).toBe('<p>@[lon</p>\n')
   })
 
+  it('should not match when syntax pattern does not match (wrong format)', () => {
+    const md = new MarkdownIt()
+    createEmbedRuleBlock(md, {
+      type: 'pdf',
+      meta: (_info, source) => ({ src: source }),
+      content: () => '<PDF />',
+    })
+
+    // Line is long enough but regex won't match (type is pdf but content has extra chars in wrong place)
+    const result = md.render('@[pdf-extra](url)')
+    expect(result).not.toContain('<PDF />')
+  })
+
   it('should pass meta info and source separately to meta function', () => {
     const md = new MarkdownIt()
     createEmbedRuleBlock(md, {
@@ -228,5 +288,122 @@ describe('createEmbedRuleBlock', () => {
     expect(result).toContain('<Test')
     expect(result).toContain('info=""')
     expect(result).toContain('src=""')
+  })
+
+  it('should warn and return early when type is empty', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const md = new MarkdownIt()
+    createEmbedRuleBlock(md, {
+      type: '',
+      meta: () => ({}),
+      content: () => '<Empty />',
+    })
+
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('Embed rule block type is empty'),
+    )
+
+    const result = md.render('@[](url)')
+    expect(result).not.toContain('<Empty />')
+
+    warnSpy.mockRestore()
+  })
+
+  it('should warn and return early when type already exists', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const md = new MarkdownIt()
+    createEmbedRuleBlock(md, {
+      type: 'dup',
+      meta: () => ({}),
+      content: () => '<Dup1 />',
+    })
+    createEmbedRuleBlock(md, {
+      type: 'dup',
+      meta: () => ({}),
+      content: () => '<Dup2 />',
+    })
+
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('already exists'),
+    )
+
+    const result = md.render('@[dup](url)')
+    expect(result).toContain('<Dup1 />')
+    expect(result).not.toContain('<Dup2 />')
+
+    warnSpy.mockRestore()
+  })
+
+  it('should warn and return early when renderer rule name already exists', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const md = new MarkdownIt()
+    // Manually set a renderer rule to simulate name collision
+    md.renderer.rules.embed_conflict = () => ''
+    createEmbedRuleBlock(md, {
+      type: 'conflict',
+      name: 'embed_conflict',
+      meta: () => ({}),
+      content: () => '<Conflict />',
+    })
+
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('already exists'),
+    )
+
+    warnSpy.mockRestore()
+  })
+})
+
+describe('cleanMarkdownEnv', () => {
+  it('should preserve whitelisted keys from env', () => {
+    const env = {
+      cleanUrls: true,
+      path: '/guide/',
+      realPath: '/guide/index.md',
+      relativePath: 'guide/index.md',
+      localeIndex: 'en',
+      references: {},
+      abbreviations: {},
+      annotations: {},
+      foo: 'bar',
+      baz: 123,
+    } as any
+
+    const result = cleanMarkdownEnv(env)
+
+    expect(result.cleanUrls).toBe(true)
+    expect(result.path).toBe('/guide/')
+    expect(result.realPath).toBe('/guide/index.md')
+    expect(result.relativePath).toBe('guide/index.md')
+    expect(result.localeIndex).toBe('en')
+    expect(result.references).toBeDefined()
+    expect(result.abbreviations).toBeDefined()
+    expect(result.annotations).toBeDefined()
+    expect((result as any).foo).toBeUndefined()
+    expect((result as any).baz).toBeUndefined()
+  })
+
+  it('should exclude specified keys', () => {
+    const env = {
+      cleanUrls: true,
+      path: '/guide/',
+      realPath: '/guide/index.md',
+      relativePath: 'guide/index.md',
+      localeIndex: 'en',
+      references: { some: 'ref' },
+    } as any
+
+    const result = cleanMarkdownEnv(env, ['references'])
+
+    expect(result.cleanUrls).toBe(true)
+    expect(result.path).toBe('/guide/')
+    expect((result as any).references).toBeUndefined()
+  })
+
+  it('should handle empty env gracefully', () => {
+    const result = cleanMarkdownEnv({} as any)
+    expect(result.cleanUrls).toBeUndefined()
+    expect(result.path).toBeUndefined()
+    expect(result.realPath).toBeUndefined()
   })
 })

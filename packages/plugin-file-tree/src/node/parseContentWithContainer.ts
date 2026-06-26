@@ -30,7 +30,10 @@ export function parseContentWithContainer(content: string): FileTreeNode[] {
   const root: FileTreeNode = { level: -1, children: [] } as unknown as FileTreeNode
   const stack: FileTreeNode[] = [root]
   const lines = content.trimEnd().split('\n')
-  const spaceLength = lines[0]?.match(/^\s*/)?.[0].length ?? 0 // Remove leading spaces
+  // Remove leading spaces — split() always returns >=1 element and /^\s*/
+  // always matches at least empty string, so the ?? 0 fallback is unreachable.
+  /* v8 ignore next */
+  const spaceLength = lines[0]?.match(/^\s*/)?.[0].length ?? 0
 
   for (const line of lines) {
     const match = line.match(/^(\s*)-(.*)$/)

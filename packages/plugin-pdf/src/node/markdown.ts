@@ -1,5 +1,6 @@
 import type { PluginSimple } from 'markdown-it'
 import path from 'node:path'
+import { isNumber } from '@pengzhanbo/utils'
 import { createEmbedRuleBlock, parseRect, resolveAttrs, stringifyAttrs } from 'vitepress-plugin-toolkit'
 
 /**
@@ -41,14 +42,16 @@ export const pdfMarkdownPlugin: PluginSimple = (md) => {
       const attrs = resolveAttrs(info!)
       const rawPage = attrs.page ?? attrs.p
       const parsedPage = Number(rawPage)
+      const zoom = +attrs.zoom
+
       return {
         src,
         page: Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1,
         noToolbar: Boolean(attrs.noToolbar ?? false),
-        zoom: +attrs.zoom || 50,
+        zoom: isNumber(zoom) && !Number.isNaN(zoom) ? zoom : 50,
         width: attrs.width ? parseRect(attrs.width) : '100%',
         height: attrs.height ? parseRect(attrs.height) : '',
-        ratio: attrs.ratio ? parseRect(attrs.ratio) : '',
+        ratio: attrs.ratio ?? '',
         title: path.basename(src || ''),
       }
     },
