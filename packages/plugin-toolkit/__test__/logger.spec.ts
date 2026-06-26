@@ -87,33 +87,18 @@ describe('createLogger', () => {
   })
 
   it('should respect per-call level override with boolean', () => {
-    // When level is silent, passing true as level means use defaultLevel
-    // defaultLevel is 'info', so it should log at info level
     const logger = createLogger('test', 'silent')
     logger.info('forced', true)
-    // defaultLevel is 'silent' in the constructor which sets it to 'info' since silent isn't valid...
-    // Actually: createLogger('test', 'silent') sets defaultLevel = 'silent'
-    // When level=true, it becomes defaultLevel = 'silent'
-    // thresh = logLevels['silent'] = 0, type='info' = 3, 0 >= 3 is false
-    // So it won't log. Let me adjust test...
-    // Wait: the level param: level = isBoolean(level) ? (level ? defaultLevel : 'error') : level
-    // So level=true becomes defaultLevel='silent'
-    // thresh = logLevels.silent = 0
-    // type='warn' = 2, 0 >= 2 is false, won't log
     expect(consoleLogSpy).not.toHaveBeenCalled()
   })
 
   it('should use error level when boolean false is passed', () => {
     const logger = createLogger('test', 'info')
     logger.warn('forced error level', false)
-    // level=false -> isBoolean(false) = true, so level becomes 'error'
-    // thresh = logLevels.error = 1
-    // type='warn' = 2, 1 >= 2 is false, won't log
     expect(consoleWarnSpy).not.toHaveBeenCalled()
   })
 
   it('should accept explicit log level string on per-call basis', () => {
-    // defaultLevel is 'silent', but we explicitly pass 'info' level
     const logger = createLogger('test', 'silent')
     logger.info('explicit level', 'info')
     expect(consoleLogSpy).toHaveBeenCalledTimes(1)

@@ -326,17 +326,6 @@ describe('collapsedLinesMarkdownPlugin', () => {
     const result = md.render(`\`\`\`ts :collapsed-lines=5\n${generateCodeLines(20)}\n\`\`\``)
     expect(result).toContain('has-collapsed-lines')
   })
-
-  // ---- info 字符串包含 HTML 实体 ----
-  it('info 字符串中的 HTML 实体被正确反转义', () => {
-    const md = new MarkdownIt()
-    createVitepressStyleFenceRenderer(md)
-    md.use(collapsedLinesMarkdownPlugin, false)
-
-    // markdown-it 可能会对 info 中的某些字符做转义
-    const result = md.render(`\`\`\`ts :collapsed-lines=5\n${generateCodeLines(20)}\n\`\`\``)
-    expect(result).toContain('has-collapsed-lines')
-  })
 })
 
 // =============================================================================

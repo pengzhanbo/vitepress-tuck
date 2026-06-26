@@ -81,16 +81,16 @@ function blockEmbedLinkDef(root: string, files: string[]): RuleBlock {
       return false
     }
 
-    /* istanbul ignore if -- @preserve */
-    if (silent)
-      return true
-
     // ![[xxxx]]
     //    ^^^^  <- content
     const content = line.slice(3, -2).trim()
 
     if (!content)
       return false
+
+    /* istanbul ignore if -- @preserve */
+    if (silent)
+      return true
 
     genEmbedAsset(state, content, root, files)
 

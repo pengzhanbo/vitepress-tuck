@@ -74,6 +74,7 @@ describe('wikiLinkMarkdownPlugin', () => {
     md.use(wikiLinkMarkdownPlugin, { root: '/root', files: [] })
 
     const result = md.render('[[guide#intro]]', { path: '/root/index.md', relativePath: 'index.md' })
+    expect(result).toContain('href="guide#intro"')
     expect(result).toContain('guide &gt; intro')
   })
 

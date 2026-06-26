@@ -210,6 +210,7 @@ describe('codeTreeMarkdownPlugin - embed built-in loaders', () => {
     const result = md.render('@[code-tree](./public)', env)
     // Image in public dir uses public path (starts with /) instead of relative path
     expect(result).toContain('filename="logo.svg"')
+    expect(result).toContain('src=&quot;/logo.svg&quot;')
   })
 
   it('should return empty string for unsupported file extension', () => {

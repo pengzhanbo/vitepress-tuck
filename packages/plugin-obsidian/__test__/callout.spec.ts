@@ -458,6 +458,7 @@ describe('calloutMarkdownPlugin', () => {
     const result = md.render('> [!note]\n> content\nmore text outside')
     expect(result).toContain('custom-block')
     expect(result).toContain('content')
+    expect(result).toContain('more text outside')
   })
 
   // 列表中 callout 被终止(覆盖 blkIndent 恢复分支 320-334)
