@@ -1,7 +1,7 @@
 {
   "name": "vitepress-plugin-code-tree",
   "type": "module",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Render code tree structure in your VitePress site.",
   "author": "pengzhanbo <q942450674@outlook.com> (https://github.com/pengzhanbo/)",
   "license": "MIT",

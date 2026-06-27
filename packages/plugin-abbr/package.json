@@ -1,7 +1,7 @@
 {
   "name": "vitepress-plugin-abbr",
   "type": "module",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Add abbreviation support to VitePress",
   "author": "pengzhanbo <q942450674@outlook.com> (https://github.com/pengzhanbo/)",
   "license": "MIT",

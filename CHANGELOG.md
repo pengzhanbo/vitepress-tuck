@@ -1,3 +1,22 @@
+# [0.7.0](https://github.com/pengzhanbo/vitepress-tuck/compare/v0.6.0...v0.7.0) (2026-06-27)
+
+
+### Bug Fixes
+
+* **plugin-obsidian:** fix embedLink circular reference and assets path parse ([#19](https://github.com/pengzhanbo/vitepress-tuck/issues/19)) ([dde48bc](https://github.com/pengzhanbo/vitepress-tuck/commit/dde48bce86057ba9a3916cf85dd3c86c5acd50c6))
+* **plugin-video:** encode assets url ([#20](https://github.com/pengzhanbo/vitepress-tuck/issues/20)) ([ea12f63](https://github.com/pengzhanbo/vitepress-tuck/commit/ea12f634f9f7fbbfc16b55da61e744f1e668ef41))
+* **vitepress-tuck:** fix hooks merging ([#18](https://github.com/pengzhanbo/vitepress-tuck/issues/18)) ([3b498b6](https://github.com/pengzhanbo/vitepress-tuck/commit/3b498b6095117107a7c5c51e1b77a3c93093ff64))
+
+
+### Features
+
+* **plugin-code-tree:** add directory traversal check ([#21](https://github.com/pengzhanbo/vitepress-tuck/issues/21)) ([d8e9133](https://github.com/pengzhanbo/vitepress-tuck/commit/d8e9133dac778a4328f9b379eb3d0a991b2b235e))
+
+
+### Performance Improvements
+
+* improve content escape ([2c921d7](https://github.com/pengzhanbo/vitepress-tuck/commit/2c921d70767fda54e740e41e61a8cf5055599407))
+
 # [0.6.0](https://github.com/pengzhanbo/vitepress-tuck/compare/v0.5.0...v0.6.0) (2026-06-26)
 
 

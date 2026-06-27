@@ -1,7 +1,7 @@
 {
   "name": "vitepress-plugin-toolkit",
   "type": "module",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Development toolkit for vitepress plugins",
   "author": "pengzhanbo <q942450674@outlook.com> (https://github.com/pengzhanbo/)",
   "license": "MIT",
