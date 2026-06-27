@@ -484,3 +484,208 @@ describe('embedLinkMarkdownPlugin - resolveFilenameToAssetPath', () => {
     expect(result).toContain('extra')
   })
 })
+
+// 音频/视频/PDF 资源路径解析
+// 本次修改：audio/video/pdf 分支补充传入 root 和 relativePath 参数，
+// 使其与 image 分支行为一致，支持相对路径解析
+describe('embedLinkMarkdownPlugin - audio/video/pdf path resolution', () => {
+  // 音频：HTTP 链接原样返回
+  it('should render audio with HTTP url as-is', () => {
+    const md = new MarkdownIt()
+    md.use(embedLinkMarkdownPlugin, { root: __dirname, files: [] })
+
+    const result = md.render('![[https://example.com/audio.mp3]]', { relativePath: 'index.md' })
+    expect(result).toContain('<audio')
+    expect(result).toContain('src="https://example.com/audio.mp3"')
+  })
+
+  // 音频：绝对路径原样返回
+  it('should render audio with absolute path as-is', () => {
+    const md = new MarkdownIt()
+    md.use(embedLinkMarkdownPlugin, { root: __dirname, files: [] })
+
+    const result = md.render('![[/assets/audio.mp3]]', { relativePath: 'index.md' })
+    expect(result).toContain('<audio')
+    expect(result).toContain('src="/assets/audio.mp3"')
+  })
+
+  // 音频：无 root 时返回 /filename
+  it('should render audio with /filename when root missing', () => {
+    const md = new MarkdownIt()
+    md.use(embedLinkMarkdownPlugin, { root: '', files: [] })
+
+    const result = md.render('![[audio.mp3]]', { relativePath: 'index.md' })
+    expect(result).toContain('<audio')
+    expect(result).toContain('src="/audio.mp3"')
+  })
+
+  // 音频：文件存在于 root 时返回相对路径（本次修改的核心行为变化）
+  it('should render audio with relative path when file exists in root', () => {
+    const md = new MarkdownIt()
+    md.use(embedLinkMarkdownPlugin, { root: fixturesDir, files: [] })
+
+    const result = md.render('![[audio.mp3]]', { relativePath: 'index.md' })
+    expect(result).toContain('<audio')
+    expect(result).toContain('src="./audio.mp3"')
+  })
+
+  // 音频：文件存在于当前目录时返回相对路径
+  it('should render audio with relative path when file exists in current dir', () => {
+    const md = new MarkdownIt()
+    md.use(embedLinkMarkdownPlugin, { root: __dirname, files: [] })
+
+    const result = md.render('![[audio.mp3]]', { relativePath: 'fixtures/index.md' })
+    expect(result).toContain('<audio')
+    expect(result).toContain('src="./audio.mp3"')
+  })
+
+  // 视频：HTTP 链接原样返回
+  it('should render video with HTTP url as-is', () => {
+    const md = new MarkdownIt()
+    md.use(embedLinkMarkdownPlugin, { root: __dirname, files: [] })
+
+    const result = md.render('![[https://example.com/video.mp4]]', { relativePath: 'index.md' })
+    expect(result).toContain('VPArtPlayer')
+    expect(result).toContain('src="https://example.com/video.mp4"')
+  })
+
+  // 视频：绝对路径原样返回
+  it('should render video with absolute path as-is', () => {
+    const md = new MarkdownIt()
+    md.use(embedLinkMarkdownPlugin, { root: __dirname, files: [] })
+
+    const result = md.render('![[/assets/video.mp4]]', { relativePath: 'index.md' })
+    expect(result).toContain('VPArtPlayer')
+    expect(result).toContain('src="/assets/video.mp4"')
+  })
+
+  // 视频：无 root 时返回 /filename
+  it('should render video with /filename when root missing', () => {
+    const md = new MarkdownIt()
+    md.use(embedLinkMarkdownPlugin, { root: '', files: [] })
+
+    const result = md.render('![[video.mp4]]', { relativePath: 'index.md' })
+    expect(result).toContain('VPArtPlayer')
+    expect(result).toContain('src="/video.mp4"')
+  })
+
+  // 视频：文件存在于 root 时返回相对路径（本次修改的核心行为变化）
+  it('should render video with relative path when file exists in root', () => {
+    const md = new MarkdownIt()
+    md.use(embedLinkMarkdownPlugin, { root: fixturesDir, files: [] })
+
+    const result = md.render('![[video.mp4]]', { relativePath: 'index.md' })
+    expect(result).toContain('VPArtPlayer')
+    expect(result).toContain('src="./video.mp4"')
+  })
+
+  // PDF：HTTP 链接原样返回
+  it('should render PDF with HTTP url as-is', () => {
+    const md = new MarkdownIt()
+    md.use(embedLinkMarkdownPlugin, { root: __dirname, files: [] })
+
+    const result = md.render('![[https://example.com/doc.pdf]]', { relativePath: 'index.md' })
+    expect(result).toContain('<VPPdf')
+    expect(result).toContain('src="https://example.com/doc.pdf"')
+  })
+
+  // PDF：绝对路径原样返回
+  it('should render PDF with absolute path as-is', () => {
+    const md = new MarkdownIt()
+    md.use(embedLinkMarkdownPlugin, { root: __dirname, files: [] })
+
+    const result = md.render('![[/assets/doc.pdf]]', { relativePath: 'index.md' })
+    expect(result).toContain('<VPPdf')
+    expect(result).toContain('src="/assets/doc.pdf"')
+  })
+
+  // PDF：无 root 时返回 /filename
+  it('should render PDF with /filename when root missing', () => {
+    const md = new MarkdownIt()
+    md.use(embedLinkMarkdownPlugin, { root: '', files: [] })
+
+    const result = md.render('![[doc.pdf]]', { relativePath: 'index.md' })
+    expect(result).toContain('<VPPdf')
+    expect(result).toContain('src="/doc.pdf"')
+  })
+
+  // PDF：文件存在于 root 时返回相对路径（本次修改的核心行为变化）
+  it('should render PDF with relative path when file exists in root', () => {
+    const md = new MarkdownIt()
+    md.use(embedLinkMarkdownPlugin, { root: fixturesDir, files: [] })
+
+    const result = md.render('![[doc.pdf]]', { relativePath: 'index.md' })
+    expect(result).toContain('<VPPdf')
+    expect(result).toContain('src="./doc.pdf"')
+  })
+})
+
+// 循环引用检测
+// 本次修改：在块级 markdown 嵌入分支新增 __embedLinkStack__ 机制，
+// 通过 env 上的 Set 跟踪已访问的页面，避免无限递归
+describe('embedLinkMarkdownPlugin - circular reference detection', () => {
+  // 自引用带标题：检测到循环引用时渲染为锚点链接，而非无限递归
+  it('should render anchor link for circular reference with hashes', () => {
+    const md = new MarkdownIt()
+    md.use(embedLinkMarkdownPlugin, { root: fixturesDir, files: ['self-ref.md'] })
+
+    const env = { path: path.join(fixturesDir, 'index.md'), relativePath: 'index.md' }
+    const result = md.render('![[self-ref#Section]]', env)
+    // 外层应正常展开 Section 内容
+    expect(result).toContain('This is section content')
+    // 内层循环引用应渲染为锚点链接（href="#section"），而非再次展开
+    expect(result).toContain('href="#section"')
+    expect(result).toContain('Section</a>')
+  })
+
+  // 自引用无标题：检测到循环引用时调用 console.warn
+  it('should warn for circular reference without hashes', () => {
+    const md = new MarkdownIt()
+    md.use(embedLinkMarkdownPlugin, { root: fixturesDir, files: ['self-ref-no-hash.md'] })
+
+    const env = { path: path.join(fixturesDir, 'index.md'), relativePath: 'index.md' }
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const result = md.render('![[self-ref-no-hash]]', env)
+    // 应检测到循环引用并发出警告
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('circular reference detected'))
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('self-ref-no-hash.md'))
+    // 外层应正常展开内容
+    expect(result).toContain('This is content')
+    warnSpy.mockRestore()
+  })
+
+  // 互相引用：A→B→A 检测到循环引用
+  it('should detect mutual circular reference', () => {
+    const md = new MarkdownIt()
+    md.use(embedLinkMarkdownPlugin, { root: fixturesDir, files: ['circular-a.md', 'circular-b.md'] })
+
+    const env = { path: path.join(fixturesDir, 'index.md'), relativePath: 'index.md' }
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const result = md.render('![[circular-a]]', env)
+    // 应检测到循环引用（circular-a 被再次引用时）
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('circular reference detected'))
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('circular-a.md'))
+    // 外层应展开 circular-a 内容（包含 Content A）
+    expect(result).toContain('Content A')
+    // 内层应展开 circular-b 内容（包含 Content B），未被循环检测阻止
+    expect(result).toContain('Content B')
+    warnSpy.mockRestore()
+  })
+
+  // 非循环嵌套引用：A→B（B 不引用 A）应正常展开，不触发循环检测
+  it('should not trigger circular detection for non-circular nested embed', () => {
+    const md = new MarkdownIt()
+    // circular-a.md 嵌入了 circular-b.md，但测试中只渲染 circular-b
+    // circular-b.md 嵌入 circular-a.md，但 circular-a 不在 files 中
+    md.use(embedLinkMarkdownPlugin, { root: fixturesDir, files: ['circular-b.md'] })
+
+    const env = { path: path.join(fixturesDir, 'index.md'), relativePath: 'index.md' }
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const result = md.render('![[circular-b]]', env)
+    // circular-b.md 引用 circular-a，但 circular-a.md 不在 files 中
+    // 应渲染为普通链接而非循环引用
+    expect(warnSpy).not.toHaveBeenCalledWith(expect.stringContaining('circular reference detected'))
+    expect(result).toContain('Content B')
+    warnSpy.mockRestore()
+  })
+})

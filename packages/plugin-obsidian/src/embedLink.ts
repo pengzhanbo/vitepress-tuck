@@ -277,14 +277,14 @@ function genEmbedAsset(
     token.attrSet('preload', 'metadata')
     token.attrSet('aria-label', filename)
     const sourceToken = state.push('source_open', 'source', 1)
-    sourceToken.attrSet('src', resolveFilenameToAssetPath(filename))
+    sourceToken.attrSet('src', resolveFilenameToAssetPath(filename, root, env.relativePath))
     state.push('audio_close', 'audio', -1)
   }
   // 渲染为视频
   else if (videoExtensions.includes(extname)) {
     const token = state.push('video_artPlayer_open', 'VPArtPlayer', 1)
     const type = extname.slice(1)
-    token.attrSet('src', resolveFilenameToAssetPath(filename))
+    token.attrSet('src', resolveFilenameToAssetPath(filename, root, env.relativePath))
     token.attrSet('type', type)
     token.attrSet('width', '100%')
     token.attrSet(':fullscreen', 'true')
@@ -300,7 +300,7 @@ function genEmbedAsset(
   // 渲染为 pdf
   else if (extname === '.pdf') {
     const token = state.push('pdf_open', 'VPPdf', 1)
-    token.attrSet('src', resolveFilenameToAssetPath(filename))
+    token.attrSet('src', resolveFilenameToAssetPath(filename, root, env.relativePath))
     token.attrSet('width', '100%')
     for (const hash of hashes) {
       const [key, value] = hash.split('=').map(x => x.trim())
@@ -338,6 +338,21 @@ function genEmbedAsset(
       state.push('link_close', 'a', -1)
     }
     else if (page) {
+      // 避免循环引用
+      if ((env as any).__embedLinkStack__?.includes(page)) {
+        // 存在 hashes 时，渲染为锚点链接
+        if (hashes.length > 0) {
+          const linkToken = state.push('link_open', 'a', 1)
+          linkToken.attrJoin('href', `#${slugify(hashes.at(-1)!)}`)
+          const textToken = state.push('text', '', 0)
+          textToken.content = hashes.join(' > ')
+          state.push('link_close', 'a', -1)
+        }
+        else {
+          console.warn(`[embedLinkPlugin] circular reference detected: ${page}, in ${env.relativePath}`)
+        }
+        return
+      }
       const [error, markdown] = attempt(() => fs.readFileSync(path.join(root, page), 'utf-8'))
       if (error) {
         console.warn(`[embedLinkPlugin] can not read file: ${page}`)
@@ -348,11 +363,15 @@ function genEmbedAsset(
         console.warn(`[embedLinkPlugin] file ${page} is empty`)
         return
       }
+
       const content = extractContentByHeadings(rawContent, hashes)
 
       const token = state.push('obsidian_embed_link', '', 0)
       token.content = content
-      token.children = [...state.md.parse(content, env)]
+      token.children = [...state.md.parse(content, {
+        __embedLinkStack__: [...((env as any).__embedLinkStack__ || []), page],
+        ...env,
+      })]
     }
     else {
       const linkToken = state.push('link_open', 'a', 1)
