@@ -63,7 +63,7 @@ export function mergePluginHooks<ThemeConfig = DefaultTheme.Config>(hooks: Vitep
     const transformHtml = config.transformHtml
     config.transformHtml = async (code, id, ctx) => {
       for (const hook of hooks.transformHtml) {
-        code = await hook(code, id, ctx) || code
+        code = await hook(code, id, ctx) ?? code
       }
       return await transformHtml?.(code, id, ctx) ?? code
     }
