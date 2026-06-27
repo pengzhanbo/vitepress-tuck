@@ -43,7 +43,7 @@ export const acfunMarkdownPlugin: PluginSimple = (md) => {
       const attrs = resolveAttrs(info)
 
       return {
-        id,
+        id: encodeURIComponent(id),
         title: attrs.title || 'AcFun',
         width: attrs.width ? parseRect(attrs.width) : '100%',
         height: attrs.height ? parseRect(attrs.height) : undefined,

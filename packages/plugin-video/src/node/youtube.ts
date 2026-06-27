@@ -45,7 +45,7 @@ export const youtubeMarkdownPlugin: PluginSimple = (md) => {
       const attrs = resolveAttrs(info)
 
       return {
-        id,
+        id: encodeURIComponent(id),
         autoplay: attrs.autoplay ?? false,
         loop: attrs.loop ?? false,
         start: timeToSeconds(attrs.start),

@@ -93,7 +93,7 @@ export const artPlayerMarkdownPlugin: PluginSimple = (md) => {
     name: 'video_artPlayer',
     meta(info, source) {
       const attrs = resolveAttrs(info)
-      const url = source.trim()
+      const url = md.utils.escapeHtml(source.trim())
       checkSupportType(attrs.type ?? url.split('.').pop())
 
       return {
@@ -137,6 +137,7 @@ export const artPlayerMarkdownPlugin: PluginSimple = (md) => {
  * @param type - Video type identifier (file extension or alias) / 视频类型标识（文件扩展名或别名）
  */
 export function checkSupportType(type?: string) {
+  /* istanbul ignore if -- @preserve */
   if (!type)
     return
 
