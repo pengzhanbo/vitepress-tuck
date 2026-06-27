@@ -3,7 +3,7 @@ import type { MarkdownEnv } from 'vitepress'
 import type { CodeTreeData, CodeTreeFile, CodeTreePluginOptions } from './types.js'
 import fs from 'node:fs'
 import path from 'node:path'
-import { removeLeadingSlash } from '@pengzhanbo/utils'
+import { attempt, removeLeadingSlash } from '@pengzhanbo/utils'
 import ansis from 'ansis'
 import { globSync } from 'tinyglobby'
 import {
@@ -107,7 +107,14 @@ export const codeTreeMarkdownPlugin: PluginWithOptions<CodeTreePluginOptions> = 
     type: 'code-tree',
     meta: (info, dir) => ({ dir, ...resolveAttrs<CodeTreeData>(info) }),
     content: ({ title, dir, entry, height, showSidebar }, env) => {
+      const config = getVitepressConfig()
       const targetDir = resolveCodeTreeDir(dir, env)
+
+      // 避免遍历到项目根目录以上
+      if (!targetDir.startsWith(config.root)) {
+        logger.warn(`Invalid code-tree target directory ${ansis.yellow(dir)}, in ${ansis.gray(env.relativePath)}`)
+        return `<p>@[code-tree](${dir}) <em>Invalid target directory</em></p>`
+      }
 
       if (!fs.existsSync(targetDir)) {
         logger.warn(`Invalid code-tree target directory ${ansis.yellow(dir)}, in ${ansis.gray(env.relativePath)}`)
@@ -127,8 +134,14 @@ export const codeTreeMarkdownPlugin: PluginWithOptions<CodeTreePluginOptions> = 
         env.includes ??= []
         env.includes.push(absolutePath)
         for (const { filter, matcher, load } of loaders) {
-          if (filter?.(item) ?? matcher?.(file))
-            return load(item)
+          if (filter?.(item) ?? matcher?.(file)) {
+            const [error, res] = attempt(load, item)
+            if (error) {
+              logger.error(`Error loading file ${ansis.yellow(file)}, in ${ansis.gray(env.relativePath)}`)
+              return ''
+            }
+            return res
+          }
         }
         return ''
       }).filter(Boolean).join('\n')
