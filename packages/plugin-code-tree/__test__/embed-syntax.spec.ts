@@ -1,7 +1,8 @@
 import type { CodeTreeFile } from '../src/node/types'
 import path from 'node:path'
 import MarkdownIt from 'markdown-it'
-import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
+import { logger } from '../src/node/logger'
 import { codeTreeMarkdownPlugin } from '../src/node/markdown'
 
 // --- Fixtures directory setup ---
@@ -279,5 +280,116 @@ describe('codeTreeMarkdownPlugin - embed edge cases', () => {
     const result = md.render('@[code-tree](../src)', env)
     expect(result).toContain('<VPCodeTree')
     expect(result).toContain('filename="index.ts"')
+  })
+})
+
+// =============================================================================
+// embed syntax — security check (prevent directory traversal above root)
+// =============================================================================
+
+describe('codeTreeMarkdownPlugin - embed security check', () => {
+  it('should reject directory resolving outside root via / prefix', () => {
+    const md = new MarkdownIt()
+    md.use(codeTreeMarkdownPlugin)
+    const env = { path: path.join(FIXTURES_DIR, 'index.md') }
+    // /.. resolves to parent of config.root, outside the allowed root
+    const result = md.render('@[code-tree](/..)', env)
+    expect(result).toContain('<em>Invalid target directory</em>')
+    expect(result).not.toContain('<VPCodeTree')
+  })
+
+  it('should reject directory resolving outside root via relative path', () => {
+    const md = new MarkdownIt()
+    md.use(codeTreeMarkdownPlugin)
+    const env = { path: path.join(FIXTURES_DIR, 'index.md') }
+    // ../../ resolves to grandparent of FIXTURES_DIR, outside root
+    const result = md.render('@[code-tree](../../)', env)
+    expect(result).toContain('<em>Invalid target directory</em>')
+    expect(result).not.toContain('<VPCodeTree')
+  })
+
+  it('should reject directory resolving outside root via @ prefix', () => {
+    const md = new MarkdownIt()
+    md.use(codeTreeMarkdownPlugin)
+    const env = { path: path.join(FIXTURES_DIR, 'index.md') }
+    // @/.. resolves to parent of srcDir (= config.root), outside root
+    const result = md.render('@[code-tree](@/..)', env)
+    expect(result).toContain('<em>Invalid target directory</em>')
+    expect(result).not.toContain('<VPCodeTree')
+  })
+
+  it('should allow relative path with .. that stays within root', () => {
+    const md = new MarkdownIt()
+    md.use(codeTreeMarkdownPlugin)
+    const env = { path: path.join(FIXTURES_DIR, 'index.md') }
+    // ../fixtures/src normalizes back into FIXTURES_DIR/src, still within root
+    const result = md.render('@[code-tree](../fixtures/src)', env)
+    expect(result).toContain('<VPCodeTree')
+    expect(result).toContain('filename="index.ts"')
+  })
+})
+
+// =============================================================================
+// embed syntax — loader error handling
+// =============================================================================
+
+describe('codeTreeMarkdownPlugin - embed loader error handling', () => {
+  it('should catch errors from custom loader and skip file content', () => {
+    const md = new MarkdownIt()
+    md.use(codeTreeMarkdownPlugin, {
+      loaders: [
+        {
+          filter: '**/*.ts',
+          load: () => { throw new Error('loader error') },
+        },
+      ],
+    })
+    const env = { path: path.join(FIXTURES_DIR, 'index.md') }
+    // Should not throw even though the loader throws
+    const result = md.render('@[code-tree](./src)', env)
+    expect(result).toContain('<VPCodeTree')
+    // .ts files failed to load — their content should not appear
+    expect(result).not.toContain('const a = 1')
+    expect(result).not.toContain('export const noop')
+  })
+
+  it('should continue loading other files when one loader errors', () => {
+    const md = new MarkdownIt()
+    md.use(codeTreeMarkdownPlugin, {
+      loaders: [
+        {
+          filter: (file: CodeTreeFile) => file.basename === 'index.ts',
+          load: () => { throw new Error('loader error') },
+        },
+        {
+          filter: '**/*.ts',
+          load: (file: CodeTreeFile) => `custom: ${file.path}`,
+        },
+      ],
+    })
+    const env = { path: path.join(FIXTURES_DIR, 'index.md') }
+    const result = md.render('@[code-tree](./src)', env)
+    expect(result).toContain('<VPCodeTree')
+    // index.ts errored — its custom content should not appear
+    expect(result).not.toContain('custom: index.ts')
+    // utils.ts should still load via the second loader
+    expect(result).toContain('custom: utils.ts')
+  })
+
+  it('should log error when loader throws', () => {
+    const md = new MarkdownIt()
+    md.use(codeTreeMarkdownPlugin, {
+      loaders: [
+        {
+          filter: '**/*.ts',
+          load: () => { throw new Error('loader error') },
+        },
+      ],
+    })
+    const env = { path: path.join(FIXTURES_DIR, 'index.md') }
+    const errorSpy = vi.spyOn(logger, 'error').mockImplementation(() => {})
+    md.render('@[code-tree](./src)', env)
+    expect(errorSpy).toHaveBeenCalled()
+    errorSpy.mockRestore()
   })
 })

@@ -40,7 +40,7 @@ export function parseContentWithContainer(content: string): FileTreeNode[] {
     if (!match)
       continue
 
-    const level = Math.floor((match[1]!.length - spaceLength) / 2) // Two spaces per level
+    const level = Math.max(0, Math.floor((match[1]!.length - spaceLength) / 2)) // Two spaces per level
     const info = match[2]!.trim()
 
     // Find parent node at current level
