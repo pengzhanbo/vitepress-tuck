@@ -63,7 +63,7 @@ export function createLocales<LocaleData extends Record<string, unknown>>(
 
   // 如果没有指定 root 语言，默认使用 builtinLocales 中的第一个
   if (!locales.root) {
-    locales.root = builtinLocales[0][1]
+    locales.root = builtinLocales[0]?.[1] || {}
   }
 
   // 与 userLocales 合并

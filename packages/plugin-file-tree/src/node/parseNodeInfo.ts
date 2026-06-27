@@ -9,7 +9,7 @@ import { removeTrailingSlash } from '@pengzhanbo/utils'
  * A filename wrapped in double asterisks is highlighted as a focused node.
  * The marker may be followed by a space and an inline comment.
  */
-const RE_FOCUS = /^\*\*(.*)\*\*(?:$|\s+)/
+const RE_FOCUS = /^\*\*(.*?)\*\*(?:$|\s+)/
 
 /**
  * Parse a single node info string, extracting filename, comment, type, and

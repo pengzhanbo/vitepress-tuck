@@ -281,6 +281,6 @@ export const abbrMarkdownPlugin: PluginWithOptions<Record<string, string>> = (md
       disableAbbrReplace: true,
     })
     const label = rendered.replace(/<[^>]*>/g, '')
-    return `<VPAbbreviation aria-label="${label}">${content}${info ? `<template #tooltip>${rendered}</template>` : ''}</VPAbbreviation>`
+    return `<VPAbbreviation aria-label="${md.utils.escapeHtml(label)}">${content}${info ? `<template #tooltip>${rendered}</template>` : ''}</VPAbbreviation>`
   }
 }

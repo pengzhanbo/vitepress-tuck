@@ -38,9 +38,9 @@ export const fieldMarkdownPlugin: PluginSimple = (md) => {
     const { info, content } = tokens[idx]
     const { description, type, default: defaultValue, ...props } = parseFieldContent(content, info)
     return `<VPField${stringifyAttrs(props)}${
-      isUndefined(type) ? '' : ` type="${type}"`
+      isUndefined(type) ? '' : ` type="${md.utils.escapeHtml(type)}"`
     }${
-      isUndefined(defaultValue) ? '' : ` default-value="${defaultValue}"`
+      isUndefined(defaultValue) ? '' : ` default-value="${md.utils.escapeHtml(defaultValue)}"`
     }>${description ? md.render(description, env) : ''}</VPField>`
   })
 }

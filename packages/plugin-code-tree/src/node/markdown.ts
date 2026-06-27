@@ -323,7 +323,7 @@ function resolveCodeTreeDir(dir: string, env: MarkdownEnv) {
 function loadFiles(cwd: string, ignores: string[] = []): string[] {
   return globSync('**/*', {
     cwd,
-    ignore: ['**/node_modules**', '**/.DS_Store', ...ignores],
+    ignore: ['**/node_modules/**', '**/.DS_Store', ...ignores],
     onlyFiles: true,
     dot: true,
   }).sort((a, b) => {

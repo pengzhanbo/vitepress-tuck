@@ -100,7 +100,7 @@ function plantumlVitePluginWithServer(options: PlantumlVitePluginOptions = {}): 
           return createReadStream(outputPath).pipe(res)
         }
 
-        const promise = cached.promise ?? attemptAsync(async () => {
+        const promise = cached.promise ??= attemptAsync(async () => {
           const buffer = await fetchPlantuml(cached.content, (isDark ? 'd' : '') + format as PlantumlAllFormat, options.serverURL)
           buffer && await fs.promises.writeFile(outputPath, buffer)
           return buffer

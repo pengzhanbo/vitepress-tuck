@@ -12,7 +12,7 @@ import process from 'node:process'
  * 在首次使用时延迟填充，将内置已知扩展名列表与通过 `VITE_EXTRA_EXTENSIONS`
  * 环境变量提供的额外扩展名合并。
  */
-const KNOWN_EXTENSIONS = new Set()
+const KNOWN_EXTENSIONS = new Set<string>()
 
 /**
  * Determine whether a file should be treated as an HTML route based on its extension.

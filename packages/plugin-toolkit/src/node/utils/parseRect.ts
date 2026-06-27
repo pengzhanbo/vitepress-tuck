@@ -14,6 +14,7 @@
  * ```
  */
 export function parseRect(str: string, unit = 'px'): string {
+  str = str.trim()
   if (Number.parseFloat(str) === Number(str))
     return `${str}${unit}`
 

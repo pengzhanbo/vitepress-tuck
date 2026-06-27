@@ -48,7 +48,7 @@ export function isExternal(path: string): boolean {
  * URL_PROTOCOL_RE.test('mailto:foo@example.com') // true
  * URL_PROTOCOL_RE.test('//cdn.example.com/lib.js') // false
  */
-export const URL_PROTOCOL_RE = /^[a-z][a-z0-9+.-]*:/
+export const URL_PROTOCOL_RE = /^[a-z][a-z0-9+.-]*:/i
 
 /**
  * Checks whether the given link contains a URL protocol scheme or is a

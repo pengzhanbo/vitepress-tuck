@@ -37,7 +37,7 @@ export const logger = createLogger('vitepress-plugin-video')
  * timeToSeconds('01:01:01')
  */
 export function timeToSeconds(time: string): number {
-  if (!time)
+  if (!time || typeof time !== 'string')
     return 0
 
   if (Number.parseFloat(time) === Number(time))

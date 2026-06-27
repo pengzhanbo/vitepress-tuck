@@ -38,7 +38,7 @@ const FENCE = '`'.repeat(6)
  * @param lang - Optional language override / 可选的语言覆盖
  * @returns Fenced code block string / 围栏代码块字符串
  */
-export const loadCodeContent = (file: CodeTreeFile, lang?: string) => `${FENCE}${lang ?? file.extname} [${file.path}]\n${fs.readFileSync(file.absolutePath, 'utf-8').trim()}\n${FENCE}`
+export const loadCodeContent = (file: CodeTreeFile, lang?: string) => `${FENCE}${lang ?? file.extname} [${escape(file.path)}]\n${fs.readFileSync(file.absolutePath, 'utf-8').trim()}\n${FENCE}`
 
 /**
  * Built-in file loaders used by the embed syntax.

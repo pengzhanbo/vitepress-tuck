@@ -65,7 +65,7 @@ export const fileTreeMarkdownPlugin: PluginSimple = (md) => {
 
       const nodeType = children.length > 0 ? 'folder' : type
       const renderedComment = comment
-        ? `<template #comment>${md.renderInline(comment.replaceAll('#', '\#'))}</template>`
+        ? `<template #comment>${md.renderInline(comment)}</template>`
         : ''
       const props: Omit<FileTreeNode, 'children'> = {
         expanded: nodeType === 'folder' ? expanded : false,

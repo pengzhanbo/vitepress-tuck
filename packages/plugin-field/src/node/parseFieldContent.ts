@@ -130,7 +130,7 @@ export function parseFieldContent(content: string, info: string): FieldObject {
       let rest: string
 
       if (spaceIdx === -1) {
-        tag = line.slice(1) // strip leading '@'
+        tag = line.slice(1).toLowerCase() // strip leading '@'
         rest = ''
       }
       else {

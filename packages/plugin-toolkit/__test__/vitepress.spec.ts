@@ -161,7 +161,7 @@ describe('vitepress utilities', () => {
     })
 
     it('should handle empty builtin gracefully', () => {
-      expect(() => createLocales([])).toThrow() // accessing [0][1] on empty array
+      expect(createLocales([])).toEqual({ root: {} })
     })
 
     it('should handle config without locales by falling back to {}', () => {

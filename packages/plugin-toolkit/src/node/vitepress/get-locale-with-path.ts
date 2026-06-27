@@ -25,7 +25,7 @@ import { getVitepressConfig } from './get-vitepress-config.js'
 export function getLocaleWithPath(path: string): { lang: string, locale: string } {
   const config = getVitepressConfig()
   const locales = config.userConfig?.locales || {}
-  const keys = objectKeys(locales)
+  const keys = objectKeys(locales).sort((a, b) => b.length - a.length)
   const key = keys.find(locale => path.startsWith(locale)) || keys[0] || ''
   if (!key || !locales[key])
     return { lang: '', locale: '' }

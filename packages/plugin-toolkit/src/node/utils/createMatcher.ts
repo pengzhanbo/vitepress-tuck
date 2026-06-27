@@ -59,5 +59,5 @@ export function resolveMatcherPattern(include?: string | string[], exclude?: str
 }
 
 function normalize(arr?: string | string[]) {
-  return isArray(arr) ? arr.sort((a, b) => a.localeCompare(b)) : arr
+  return isArray(arr) ? [...arr].sort((a, b) => a.localeCompare(b)) : arr
 }

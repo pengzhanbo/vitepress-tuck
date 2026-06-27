@@ -154,6 +154,10 @@ function inlineEmbedLinkDef(root: string, files: string[]): RuleInline {
     // [[xxxx]]
     //   ^^^^  <- content
     const content = state.src.slice(start + 3, state.pos).trim()
+
+    if (!content)
+      return false
+
     // found!
     state.posMax = state.pos
     state.pos = start + 3
@@ -304,7 +308,7 @@ function genEmbedAsset(
     token.attrSet('width', '100%')
     for (const hash of hashes) {
       const [key, value] = hash.split('=').map(x => x.trim())
-      token.attrSet(key!, value!)
+      typeof value !== 'undefined' && token.attrSet(key!, value)
     }
     token.content = filename
     state.push('pdf_close', 'VPPdf', -1)

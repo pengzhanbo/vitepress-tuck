@@ -87,9 +87,9 @@ export const commentMarkdownPlugin: PluginSimple = (md): void => {
       state.pos = start + 2
 
       const token = state.push('obsidian_inline_comment', '', 0)
-      token.content = state.src.slice(start + 2, state.pos)
+      token.content = state.src.slice(start + 2, state.posMax)
       token.markup = '%%'
-      token.map = [start, state.pos + 2]
+      token.map = [start, state.posMax + 2]
 
       state.pos = state.posMax + 2
       state.posMax = max
