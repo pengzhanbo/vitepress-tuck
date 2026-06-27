@@ -41,8 +41,6 @@ export interface EnhanceOptions {
   enhances?: EnhanceItem[]
 }
 
-let uuid = 0
-
 /**
  * Creates a Vite virtual module plugin that generates the
  * `virtual:enhance-app` module on the fly.
@@ -81,18 +79,16 @@ export function virtualEnhanceApp(options: EnhanceOptions): Plugin {
     load(id) {
       if (id === resolveId) {
         const { imports = [], enhances } = options
+        const importList = [...imports]
         const enhanceCode: string[] = []
+        let uuid = 0
         enhances?.forEach(({ moduleName, exportName }) => {
           // 重命名，避免冲突
           const alias = `${exportName}$${uuid++}`
-          imports.push(`import { ${exportName} as ${alias} } from '${moduleName}/client'`)
-          enhanceCode.push(`  ${alias}(ctx)`)
+          importList.push(`import { ${exportName} as ${alias} } from '${moduleName}/client'`)
+          enhanceCode.push(`  await ${alias}(ctx)`)
         })
-        return `${imports.join('\n')}\n
-export default function enhanceApp(ctx) {
-${enhanceCode.join('\n')}
-}
-`
+        return `${importList.join('\n')}\n\nexport default async function enhanceApp(ctx) {\n${enhanceCode.join('\n')}\n}\n`
       }
     },
   }

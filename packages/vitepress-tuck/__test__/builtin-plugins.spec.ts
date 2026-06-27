@@ -41,7 +41,7 @@ describe('virtualEnhanceApp', () => {
     const code = (plugin.load as any)(resolvedId) as string
 
     expect(code).toContain('import "style.css"')
-    expect(code).toContain('export default function enhanceApp(ctx)')
+    expect(code).toContain('export default async function enhanceApp(ctx)')
   })
 
   it('should generate module with enhances (imports and function calls)', () => {
@@ -93,7 +93,7 @@ describe('virtualEnhanceApp', () => {
     expect(code).toContain('import "style-a.css"')
     expect(code).toContain('import "style-b.css"')
     expect(code).toContain('from \'plugin-c/client\'')
-    expect(code).toContain('export default function enhanceApp(ctx)')
+    expect(code).toContain('export default async function enhanceApp(ctx)')
   })
 
   it('should generate valid module with empty options', () => {
@@ -101,7 +101,7 @@ describe('virtualEnhanceApp', () => {
     const resolvedId = (plugin.resolveId as any)('virtual:enhance-app')
     const code = (plugin.load as any)(resolvedId) as string
 
-    expect(code).toContain('export default function enhanceApp(ctx)')
+    expect(code).toContain('export default async function enhanceApp(ctx)')
   })
 
   it('should use unique aliases for each enhance to avoid conflicts', () => {

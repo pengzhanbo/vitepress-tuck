@@ -1,4 +1,4 @@
-import type { DefaultTheme, HeadConfig, PageData, UserConfig } from 'vitepress'
+import type { DefaultTheme, HeadConfig, UserConfig } from 'vitepress'
 import type { VitepressPluginHooks } from './types.js'
 import { toTruthy } from '@pengzhanbo/utils'
 
@@ -63,9 +63,9 @@ export function mergePluginHooks<ThemeConfig = DefaultTheme.Config>(hooks: Vitep
     const transformHtml = config.transformHtml
     config.transformHtml = async (code, id, ctx) => {
       for (const hook of hooks.transformHtml) {
-        code = await hook(code, id, ctx) || code
+        code = await hook(code, id, ctx) ?? code
       }
-      return await transformHtml?.(code, id, ctx) || code
+      return await transformHtml?.(code, id, ctx) ?? code
     }
   }
 
@@ -74,9 +74,12 @@ export function mergePluginHooks<ThemeConfig = DefaultTheme.Config>(hooks: Vitep
     const transformPageData = config.transformPageData
     config.transformPageData = async (pageData, ctx) => {
       for (const hook of hooks.transformPageData) {
-        pageData = (await hook(pageData, ctx) || pageData) as PageData
+        const result = await hook(pageData, ctx)
+        if (result)
+          pageData = { ...pageData, ...result }
       }
-      return await transformPageData?.(pageData, ctx) || pageData
+      const result = await transformPageData?.(pageData, ctx)
+      return result ? { ...pageData, ...result } : pageData
     }
   }
 
@@ -85,9 +88,9 @@ export function mergePluginHooks<ThemeConfig = DefaultTheme.Config>(hooks: Vitep
     const postRender = config.postRender
     config.postRender = async (context) => {
       for (const hook of hooks.postRender) {
-        context = await hook(context) || context
+        context = await hook(context) ?? context
       }
-      return await postRender?.(context) || context
+      return await postRender?.(context) ?? context
     }
   }
 }
