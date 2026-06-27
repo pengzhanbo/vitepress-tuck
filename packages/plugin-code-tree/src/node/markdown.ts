@@ -3,7 +3,7 @@ import type { MarkdownEnv } from 'vitepress'
 import type { CodeTreeData, CodeTreeFile, CodeTreePluginOptions } from './types.js'
 import fs from 'node:fs'
 import path from 'node:path'
-import { attempt, removeLeadingSlash } from '@pengzhanbo/utils'
+import { attempt, ensureTrailingSlash, removeLeadingSlash } from '@pengzhanbo/utils'
 import ansis from 'ansis'
 import { globSync } from 'tinyglobby'
 import {
@@ -111,7 +111,7 @@ export const codeTreeMarkdownPlugin: PluginWithOptions<CodeTreePluginOptions> = 
       const targetDir = resolveCodeTreeDir(dir, env)
 
       // 避免遍历到项目根目录以上
-      if (!targetDir.startsWith(config.root)) {
+      if (!targetDir.startsWith(ensureTrailingSlash(config.root))) {
         logger.warn(`Invalid code-tree target directory ${ansis.yellow(dir)}, in ${ansis.gray(env.relativePath)}`)
         return `<p>@[code-tree](${dir}) <em>Invalid target directory</em></p>`
       }
