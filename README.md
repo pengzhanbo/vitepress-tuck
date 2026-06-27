@@ -2,6 +2,11 @@
 
 English | [简体中文](./README.zh-CN.md)
 
+[![npm version](https://npmx.dev/api/registry/badge/version/vitepress-tuck)](https://www.npmjs.com/package/vitepress-tuck)
+![npm download](https://npmx.dev/api/registry/badge/downloads/vitepress-tuck)
+![npm license](https://npmx.dev/api/registry/badge/license/vitepress-tuck)
+[![codecov](https://codecov.io/gh/pengzhanbo/vitepress-tuck/graph/badge.svg?token=O82LEANW6N)](https://codecov.io/gh/pengzhanbo/vitepress-tuck)
+
 > A low-barrier, extensible plugin development library and plugin ecosystem for VitePress
 
 ## Overview
