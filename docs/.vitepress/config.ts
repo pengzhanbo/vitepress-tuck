@@ -1,3 +1,4 @@
+import path from 'node:path'
 import abbr from 'vitepress-plugin-abbr'
 import caniuse from 'vitepress-plugin-caniuse'
 import codeCollapse from 'vitepress-plugin-code-collapse'
@@ -87,4 +88,7 @@ export default defineConfig({
     codeTree(),
     repoCard(),
   ],
+  components: {
+    dirs: [path.resolve(__dirname, 'theme/components')],
+  },
 })
