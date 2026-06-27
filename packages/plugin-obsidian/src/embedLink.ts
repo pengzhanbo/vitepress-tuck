@@ -339,8 +339,7 @@ function genEmbedAsset(
     }
     else if (page) {
       // 避免循环引用
-      const stack = ((env as any).__embedLinkStack__ ??= new Set()) as Set<string>
-      if (stack.has(page)) {
+      if ((env as any).__embedLinkStack__?.includes(page)) {
         // 存在 hashes 时，渲染为锚点链接
         if (hashes.length > 0) {
           const linkToken = state.push('link_open', 'a', 1)
@@ -354,7 +353,6 @@ function genEmbedAsset(
         }
         return
       }
-      stack.add(page)
       const [error, markdown] = attempt(() => fs.readFileSync(path.join(root, page), 'utf-8'))
       if (error) {
         console.warn(`[embedLinkPlugin] can not read file: ${page}`)
@@ -370,7 +368,10 @@ function genEmbedAsset(
 
       const token = state.push('obsidian_embed_link', '', 0)
       token.content = content
-      token.children = [...state.md.parse(content, env)]
+      token.children = [...state.md.parse(content, {
+        __embedLinkStack__: [...((env as any).__embedLinkStack__ || []), page],
+        ...env,
+      })]
     }
     else {
       const linkToken = state.push('link_open', 'a', 1)
