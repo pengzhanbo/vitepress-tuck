@@ -37,3 +37,9 @@ jobs:
         run: |
           pnpm run build:package
           pnpm run test
+
+      - name: Upload coverage
+        if: github.ref == 'refs/heads/main'
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
