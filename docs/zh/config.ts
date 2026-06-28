@@ -21,6 +21,7 @@ export default defineAdditionalConfig({
         { text: '文件树', link: 'file-tree' },
         { text: '代码树', link: 'code-tree' },
         { text: '字段', link: 'field' },
+        { text: '折叠面板', link: 'collapse' },
         { text: '隐秘文本', link: 'plot' },
         { text: 'Npm To', link: 'npm-to' },
         { text: 'Mermaid', link: 'mermaid' },

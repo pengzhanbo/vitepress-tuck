@@ -1,0 +1,97 @@
+@import url("vitepress-plugin-toolkit/styles/transition/fade-in-height-expand.css");
+
+.vp-collapse {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-block: 16px;
+  margin-inline: 0;
+}
+
+.vp-collapse.card {
+  padding-block-end: 16px;
+  border: solid 1px var(--vp-c-divider);
+  border-radius: 8px;
+}
+
+.vp-collapse-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding-block-start: 16px;
+  border-top: solid 1px var(--vp-c-divider);
+}
+
+.vp-collapse-item:first-child,
+.vp-collapse.card .vp-collapse-item {
+  border-top: none;
+}
+
+.vp-collapse:not(.card) .vp-collapse-item:first-child {
+  padding-block-start: 0;
+}
+
+.vp-collapse.card .vp-collapse-item::after {
+  position: absolute;
+  right: 16px;
+  bottom: -16px;
+  left: 16px;
+  display: block;
+  height: 1px;
+  content: "";
+  background-color: var(--vp-c-divider);
+}
+
+.vp-collapse.card .vp-collapse-item:last-child::after {
+  display: none;
+}
+
+.vp-collapse-header {
+  display: flex;
+  gap: 6px;
+  align-items: first baseline;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.vp-collapse-header .vpi-chevron-right {
+  position: relative;
+  top: 4px;
+  width: 20px;
+  height: 20px;
+  color: var(--vp-c-text-3);
+  transition: transform 0.25s ease-in-out;
+  transform: rotate(0deg);
+}
+
+.vp-collapse.card .vp-collapse-header {
+  gap: 0;
+  padding-inline: 4px 16px;
+}
+
+.vp-collapse-item.expanded .vpi-chevron-right {
+  transform: rotate(90deg);
+}
+
+.vp-collapse-header .vp-collapse-title {
+  flex: 1 2;
+  margin: 0;
+}
+
+.vp-collapse-content-inner {
+  padding-block-start: 12px;
+  padding-inline-start: 24px;
+}
+
+.vp-collapse.card .vp-collapse-content-inner {
+  padding-inline-end: 16px;
+}
+
+.vp-collapse-content-inner > *:first-child {
+  margin-top: 0;
+}
+
+.vp-collapse-content-inner > *:last-child {
+  margin-bottom: 0;
+}

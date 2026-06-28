@@ -1,26 +1,6 @@
 import path from 'node:path'
-import abbr from 'vitepress-plugin-abbr'
-import caniuse from 'vitepress-plugin-caniuse'
-import codeCollapse from 'vitepress-plugin-code-collapse'
-import codeTree from 'vitepress-plugin-code-tree'
-import codepen from 'vitepress-plugin-codepen'
-import field from 'vitepress-plugin-field'
-import fileTree from 'vitepress-plugin-file-tree'
-import jsfiddle from 'vitepress-plugin-jsfiddle'
-import mermaid from 'vitepress-plugin-mermaid-tuck'
-import npmTo from 'vitepress-plugin-npm-to'
-import obsidian from 'vitepress-plugin-obsidian'
-import pdf from 'vitepress-plugin-pdf'
-import plantuml from 'vitepress-plugin-plantuml'
-import plot from 'vitepress-plugin-plot'
-import qrcode from 'vitepress-plugin-qrcode'
-import repoCard from 'vitepress-plugin-repo-card'
-import steps from 'vitepress-plugin-steps'
-import video from 'vitepress-plugin-video'
 import { defineConfig } from 'vitepress-tuck'
-
-import groupIcons from './plugins/group-icons'
-import llmstxt from './plugins/llmstxt'
+import { plugins } from './plugins'
 
 export default defineConfig({
   title: 'Vitepress Tuck',
@@ -63,31 +43,7 @@ export default defineConfig({
   //   },
   // },
 
-  plugins: [
-    // wrap external plugins
-    llmstxt(),
-    groupIcons(),
-
-    // monorepo internal plugins
-    abbr(),
-    steps(),
-    plot(),
-    fileTree(),
-    caniuse(),
-    obsidian(),
-    pdf(),
-    video(),
-    npmTo(['pnpm', 'npm', 'bun', 'deno', 'yarn']),
-    qrcode(),
-    jsfiddle(),
-    codepen(),
-    mermaid(),
-    codeCollapse(),
-    field(),
-    plantuml(),
-    codeTree(),
-    repoCard(),
-  ],
+  plugins,
   components: {
     dirs: [path.resolve(__dirname, 'theme/components')],
   },
