@@ -14,6 +14,7 @@
     "vitepress-plugin-code-collapse": "workspace:*",
     "vitepress-plugin-code-tree": "workspace:*",
     "vitepress-plugin-codepen": "workspace:*",
+    "vitepress-plugin-collapse": "workspace:*",
     "vitepress-plugin-field": "workspace:*",
     "vitepress-plugin-file-tree": "workspace:*",
     "vitepress-plugin-group-icons": "catalog:dev",

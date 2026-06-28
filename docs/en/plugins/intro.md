@@ -18,6 +18,7 @@ All plugins support two usage modes:
 | [Mermaid](./mermaid)             | `vitepress-plugin-mermaid-tuck`  | Mermaid diagram support                                         |
 | [PlantUML](./plantuml)           | `vitepress-plugin-plantuml`      | PlantUML diagram support                                        |
 | [Field](./field)                 | `vitepress-plugin-field`         | API field documentation, with JSDoc-style tags for metadata     |
+| [Collapse](./collapse)           | `vitepress-plugin-collapse`      | Collapsible sections with accordion mode                        |
 | [Npm To](./npm-to)               | `vitepress-plugin-npm-to`        | Auto-convert npm commands to other package managers             |
 | [Repo Card](./repo-card)         | `vitepress-plugin-repo-card`     | GitHub / Gitee repository card display                          |
 | [File Tree](./file-tree)         | `vitepress-plugin-file-tree`     | File tree display                                               |
