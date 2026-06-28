@@ -15,7 +15,7 @@ const { group, appear, width, mode = 'default', onLeave, onAfterLeave, onAfterEn
 }>()
 
 function handleBeforeLeave(el: HTMLElement): void {
-  el.style[width ? 'maxWidth' : 'maxHeight'] = `${el.offsetHeight}px`
+  el.style[width ? 'maxWidth' : 'maxHeight'] = `${width ? el.offsetWidth : el.offsetHeight}px`
   void el.offsetWidth
 }
 

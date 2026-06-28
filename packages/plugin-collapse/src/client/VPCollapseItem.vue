@@ -64,7 +64,11 @@ function toggle() {
 
 <template>
   <div class="vp-collapse-item" :class="{ expanded }">
-    <div class="vp-collapse-header" tabindex="0" role="button" @click="toggle" @keypress="toggle">
+    <div
+      class="vp-collapse-header"
+      tabindex="0" role="button" :aria-expanded="expanded ? 'true' : 'false'"
+      @click="toggle" @keydown.enter.prevent="toggle" @keydown.space.prevent="toggle"
+    >
       <span class="vpi-chevron-right" />
       <p class="vp-collapse-title">
         <slot name="title" />

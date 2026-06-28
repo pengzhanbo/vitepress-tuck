@@ -151,7 +151,7 @@ be combined with `accordion`.
 
 ::: collapse accordion card
 
-- Question 1 a long question a long question a long question a long question a long question
+- Question 1
 
   Answer 1
 
