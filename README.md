@@ -27,7 +27,14 @@ significantly lowering the barrier to developing VitePress plugins while offerin
 ### Installation
 
 ```bash
-pnpm add vitepress-tuck
+# npm
+npm install -D vitepress vitepress-tuck
+# pnpm
+pnpm add -D vitepress vitepress-tuck
+# yarn
+yarn add -D vitepress vitepress-tuck
+# bun
+bun add -D vitepress vitepress-tuck
 ```
 
 ### Using in Configuration
@@ -104,24 +111,26 @@ export default defineConfig({
 
 All plugins are built on `vitepress-tuck` while remaining compatible with native VitePress.
 
-| Plugin                                              | Package                          | Description                                                          |
-| --------------------------------------------------- | -------------------------------- | -------------------------------------------------------------------- |
-| [Steps](./docs/en/plugins/steps.md)                 | `vitepress-plugin-steps`         | Step-by-step container for creating guided content                   |
-| [File Tree](./docs/en/plugins/file-tree.md)         | `vitepress-plugin-file-tree`     | Render file directory trees with expand/collapse                     |
-| [Code Tree](./docs/en/plugins/code-tree.md)         | `vitepress-plugin-code-tree`     | Code tree with file tree sidebar                                     |
-| [Plot](./docs/en/plugins/plot.md)                   | `vitepress-plugin-plot`          | Hidden text with click/hover reveal (`!!text!!` syntax)              |
-| [Npm To](./docs/en/plugins/npm-to.md)               | `vitepress-plugin-npm-to`        | Convert npm commands to pnpm / yarn / bun / deno equivalents         |
-| [Repo Card](./docs/en/plugins/repo-card.md)         | `vitepress-plugin-repo-card`     | GitHub / Gitee repository card display                               |
-| [Mermaid](./docs/en/plugins/mermaid.md)             | `vitepress-plugin-mermaid-tuck`  | Mermaid diagram rendering with i18n support                          |
-| [PlantUML](./docs/en/plugins/plantuml.md)           | `vitepress-plugin-plantuml`      | PlantUML diagram rendering with i18n support                         |
-| [QRCode](./docs/en/plugins/qrcode.md)               | `vitepress-plugin-qrcode`        | Generate QR codes (image/card modes)                                 |
-| [Video](./docs/en/plugins/video.md)                 | `vitepress-plugin-video`         | Multi-platform video embedding (Bilibili, YouTube, AcFun, ArtPlayer) |
-| [Obsidian](./docs/en/plugins/obsidian.md)           | `vitepress-plugin-obsidian`      | Obsidian-style Markdown (Wiki links, Callouts, embeds, comments)     |
-| [PDF](./docs/en/plugins/pdf.md)                     | `vitepress-plugin-pdf`           | Embed PDF files with page/zoom/toolbar options                       |
-| [Can I Use](./docs/en/plugins/caniuse.md)           | `vitepress-plugin-caniuse`       | Embed browser compatibility data from caniuse.com                    |
-| [Code Collapse](./docs/en/plugins/code-collapse.md) | `vitepress-plugin-code-collapse` | Fold long code blocks (global / per-block configuration)             |
-| [CodePen](./docs/en/plugins/codepen.md)             | `vitepress-plugin-codepen`       | Embed CodePen demos with custom tabs and themes                      |
-| [JSFiddle](./docs/en/plugins/jsfiddle.md)           | `vitepress-plugin-jsfiddle`      | Embed JSFiddle demos with custom tabs                                |
+| Plugin                                                                             | Description                                                                     |                                                                                                                                                                                    |
+| ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [vitepress-plugin-abbr](https://tuck.pengzhanbo.cn/plugins/abbr)                   | Abbreviation display, supports custom tags and content                          | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-abbr) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-abbr)                   |
+| [vitepress-plugin-steps](https://tuck.pengzhanbo.cn/plugins/steps)                 | Step container for creating step guidance content                               | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-steps) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-steps)                 |
+| [vitepress-plugin-file-tree](https://tuck.pengzhanbo.cn/plugins/file-tree)         | File directory tree display, supports expand/collapse                           | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-file-tree) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-file-tree)         |
+| [vitepress-plugin-code-tree](https://tuck.pengzhanbo.cn/plugins/code-tree)         | Code tree display, supports expand/collapse                                     | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-code-tree) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-code-tree)         |
+| [vitepress-plugin-plot](https://tuck.pengzhanbo.cn/plugins/plot)                   | Hidden text mask, click or hover to reveal hidden text (`!!text!!` syntax)      | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-plot) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-plot)                   |
+| [vitepress-plugin-npm-to](https://tuck.pengzhanbo.cn/plugins/npm-to)               | npm commands are automatically converted to `pnpm / yarn / bun / deno` commands | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-npm-to) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-npm-to)               |
+| [vitepress-plugin-repo-card](https://tuck.pengzhanbo.cn/plugins/repo-card)         | GitHub / Gitee repository card display                                          | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-repo-card) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-repo-card)         |
+| [vitepress-plugin-mermaid-tuck](https://tuck.pengzhanbo.cn/plugins/mermaid-tuck)   | Mermaid diagram rendering                                                       | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-mermaid-tuck) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-mermaid-tuck)   |
+| [vitepress-plugin-plantuml](https://tuck.pengzhanbo.cn/plugins/plantuml)           | PlantUML diagram rendering                                                      | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-plantuml) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-plantuml)           |
+| [vitepress-plugin-qrcode](https://tuck.pengzhanbo.cn/plugins/qrcode)               | QR code generation, supports two modes: image and card                          | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-qrcode) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-qrcode)               |
+| [vitepress-plugin-video](https://tuck.pengzhanbo.cn/plugins/video)                 | Multi-platform video embedding（Bilibili、YouTube、AcFun、ArtPlayer）           | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-video) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-video)                 |
+| [vitepress-plugin-obsidian](https://tuck.pengzhanbo.cn/plugins/obsidian)           | Obsidian-style Markdown syntax (Wiki links, Callout, embeds, comments)          | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-obsidian) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-obsidian)           |
+| [vitepress-plugin-pdf](https://tuck.pengzhanbo.cn/plugins/pdf)                     | Embed PDF file, supporting configuration of page number, zoom, toolbar, etc     | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-pdf) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-pdf)                     |
+| [vitepress-plugin-caniuse](https://tuck.pengzhanbo.cn/plugins/caniuse)             | Embed caniuse.com browser compatibility data                                    | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-caniuse) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-caniuse)             |
+| [vitepress-plugin-code-collapse](https://tuck.pengzhanbo.cn/plugins/code-collapse) | Code block line collapse, supporting global/single block configuration          | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-code-collapse) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-code-collapse) |
+| [vitepress-plugin-codepen](https://tuck.pengzhanbo.cn/plugins/codepen)             | Embed CodePen examples, support custom tags and themes                          | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-codepen) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-codepen)             |
+| [vitepress-plugin-jsfiddle](https://tuck.pengzhanbo.cn/plugins/jsfiddle)           | Embed JSFiddle examples with support for custom tabs.                           | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-jsfiddle) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-jsfiddle)           |
+| [vitepress-plugin-watermark](https://tuck.pengzhanbo.cn/plugins/watermark)         | Watermark display, supports custom content and styles                           | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-watermark) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-watermark)         |
 
 ## Developing Plugins
 
