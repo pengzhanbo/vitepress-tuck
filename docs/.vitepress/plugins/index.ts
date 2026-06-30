@@ -1,5 +1,6 @@
 import type { VitepressPlugin } from 'vitepress-tuck'
 import abbr from 'vitepress-plugin-abbr'
+import annotation from 'vitepress-plugin-annotation'
 import caniuse from 'vitepress-plugin-caniuse'
 import codeCollapse from 'vitepress-plugin-code-collapse'
 import codeTree from 'vitepress-plugin-code-tree'
@@ -29,6 +30,7 @@ export const plugins: VitepressPlugin[] = [
 
   // monorepo internal plugins
   abbr(),
+  annotation(),
   steps(),
   plot(),
   fileTree(),

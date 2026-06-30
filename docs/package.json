@@ -10,6 +10,7 @@
   "devDependencies": {
     "vitepress": "catalog:prod",
     "vitepress-plugin-abbr": "workspace:*",
+    "vitepress-plugin-annotation": "workspace:*",
     "vitepress-plugin-caniuse": "workspace:*",
     "vitepress-plugin-code-collapse": "workspace:*",
     "vitepress-plugin-code-tree": "workspace:*",
