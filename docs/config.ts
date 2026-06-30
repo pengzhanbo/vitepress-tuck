@@ -22,6 +22,7 @@ export default defineAdditionalConfig({
         { text: 'Code Tree', link: 'code-tree' },
         { text: 'Field', link: 'field' },
         { text: 'Collapse', link: 'collapse' },
+        { text: 'Annotation', link: 'annotation' },
         { text: 'Plot', link: 'plot' },
         { text: 'Npm To', link: 'npm-to' },
         { text: 'Mermaid', link: 'mermaid' },
