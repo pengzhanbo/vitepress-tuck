@@ -1,7 +1,7 @@
 {
   "name": "vitepress-plugin-watermark",
   "type": "module",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Add watermark to your VitePress site.",
   "author": "pengzhanbo <q942450674@outlook.com> (https://github.com/pengzhanbo/)",
   "license": "MIT",

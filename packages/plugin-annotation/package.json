@@ -1,7 +1,7 @@
 {
   "name": "vitepress-plugin-annotation",
   "type": "module",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Add annotation support to VitePress",
   "author": "pengzhanbo <q942450674@outlook.com> (https://github.com/pengzhanbo/)",
   "license": "MIT",

@@ -1,3 +1,10 @@
+# [0.8.0](https://github.com/pengzhanbo/vitepress-tuck/compare/v0.7.0...v0.8.0) (2026-06-30)
+
+### Features
+
+* add plugin-annotation ([#23](https://github.com/pengzhanbo/vitepress-tuck/issues/23)) ([8d97f7e](https://github.com/pengzhanbo/vitepress-tuck/commit/8d97f7e720944803d7bbc11f2d66d9d64553d519))
+* add plugin-collapse ([#22](https://github.com/pengzhanbo/vitepress-tuck/issues/22)) ([1b99b95](https://github.com/pengzhanbo/vitepress-tuck/commit/1b99b95c5ebb4b1d840dc5c636fb6e0478534c82))
+
 # [0.7.0](https://github.com/pengzhanbo/vitepress-tuck/compare/v0.6.0...v0.7.0) (2026-06-27)
 
 
