@@ -1,0 +1,1 @@
+function e(e){return typeof e==`function`}function t(e){return Object.keys(e)}var n=/^(?:https?:)?\/\//i;function r(e){return n.test(e)}export{r as n,t as r,e as t};
