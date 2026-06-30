@@ -80,7 +80,7 @@ const inset = computed(() => placement.value.split('-')[0])
   <button
     v-bind="$attrs" ref="annotation" type="button"
     class="vp-annotation" :class="{ [label]: true, [inset]: true, active }"
-    :aria-label="label"
+    :aria-label="label" :aria-expanded="active"
     @click="active = !active"
   >
     <span class="vpi-annotation" />
