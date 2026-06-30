@@ -1,4 +1,3 @@
-import type Token from 'markdown-it/lib/token.mjs'
 import MarkdownIt from 'markdown-it'
 import { describe, expect, it, vi } from 'vitest'
 import { annotationMarkdownPlugin } from '../src/node/markdown'
@@ -79,8 +78,8 @@ describe('annotationMarkdownPlugin', () => {
     })
   })
 
-  // ==================== 注释定义语法 (annotationDef) ====================
-  describe('注释定义语法 (annotationDef)', () => {
+  // ==================== 注释定义 ====================
+  describe('注释定义', () => {
     // 空 label 不被识别为定义
     it('空 label 不被识别为定义', () => {
       const md = new MarkdownIt()
@@ -185,19 +184,15 @@ describe('annotationMarkdownPlugin', () => {
       expect(result).toContain('second')
     })
 
-    // ??= 操作符：同一 label 多次定义时首次创建 data 对象
-    it('同一 label 多次定义时复用同一 data 对象', () => {
+    // 同一 label 多次定义时每个源只渲染一次（缓存）
+    it('同一 label 多次定义时每个源只渲染一次', () => {
       const md = new MarkdownIt()
       md.use(annotationMarkdownPlugin)
 
-      const env = {}
-      md.render('[+name]: first\n[+name]: second\n\n[+name]', env)
-      // env.annotations[':name'] 应该有 2 个 sources 和 2 个 rendered
-      const data = (env as any).annotations[':name']
-      expect(data.sources).toHaveLength(2)
-      expect(data.rendered).toHaveLength(2)
-      expect(data.rendered[0]).toContain('first')
-      expect(data.rendered[1]).toContain('second')
+      const spy = vi.spyOn(md, 'render')
+      md.render('[+name]: first\n[+name]: second\n\n[+name]')
+      // 1 次 document + 2 次注释源渲染（first 和 second 各一次）
+      expect(spy).toHaveBeenCalledTimes(3)
     })
 
     // 定义语法不与普通链接引用定义冲突
@@ -295,8 +290,8 @@ describe('annotationMarkdownPlugin', () => {
     })
   })
 
-  // ==================== 注释引用语法 (annotationRef) ====================
-  describe('注释引用语法 (annotationRef)', () => {
+  // ==================== 注释引用 ====================
+  describe('注释引用', () => {
     // 无定义时引用不被识别
     it('无定义时引用不被识别', () => {
       const md = new MarkdownIt()
@@ -413,8 +408,8 @@ describe('annotationMarkdownPlugin', () => {
     })
   })
 
-  // ==================== 渲染器行为 ====================
-  describe('渲染器行为', () => {
+  // ==================== 渲染行为 ====================
+  describe('渲染行为', () => {
     // 注释源中的 markdown 被渲染为 HTML
     it('注释源中的 markdown 被渲染为 HTML', () => {
       const md = new MarkdownIt()
@@ -480,20 +475,6 @@ describe('annotationMarkdownPlugin', () => {
       expect(result).toContain('third')
     })
 
-    // 多源注释的缓存：每个源只渲染一次
-    it('多源注释的每个源只渲染一次', () => {
-      const md = new MarkdownIt()
-      md.use(annotationMarkdownPlugin)
-
-      const env = {}
-      md.render('[+name]: first\n[+name]: second\n\n[+name]', env)
-      // 2 个 sources, 2 个 rendered（各渲染一次）
-      const rendered = (env as any).annotations[':name'].rendered
-      expect(rendered).toHaveLength(2)
-      expect(rendered[0]).toContain('first')
-      expect(rendered[1]).toContain('second')
-    })
-
     // 注释源渲染为块级 HTML
     it('注释源渲染为块级 HTML', () => {
       const md = new MarkdownIt()
@@ -507,72 +488,69 @@ describe('annotationMarkdownPlugin', () => {
 
   // ==================== 全局注释 (globalAnnotations) ====================
   describe('全局注释 (globalAnnotations)', () => {
-    // 字符串值的全局注释被包装为数组
-    it('字符串值的全局注释被包装为数组', () => {
-      const md = new MarkdownIt()
-      md.use(annotationMarkdownPlugin, { name: 'description' })
-
-      // 手动调用渲染器，测试全局注释回退
-      const tokens: Token[] = [{ type: 'annotation_ref', meta: { label: 'name' } } as any]
-      const env = { annotations: {} }
-      const result = md.renderer.rules.annotation_ref!(tokens as any, 0, {}, env as any, md as any)
-      expect(result).toContain('<VPAnnotation label="name"')
-      expect(result).toContain(':total="1"')
-      expect(result).toContain('description')
-    })
-
-    // 数组值的全局注释保持原样
-    it('数组值的全局注释保持原样', () => {
-      const md = new MarkdownIt()
-      md.use(annotationMarkdownPlugin, { name: ['desc1', 'desc2'] })
-
-      const tokens: Token[] = [{ type: 'annotation_ref', meta: { label: 'name' } } as any]
-      const env = { annotations: {} }
-      const result = md.renderer.rules.annotation_ref!(tokens as any, 0, {}, env as any, md as any)
-      expect(result).toContain(':total="2"')
-      expect(result).toContain('desc1')
-      expect(result).toContain('desc2')
-    })
-
-    // key 已含 : 前缀时保持原样
-    it('key 已含 : 前缀时保持原样', () => {
-      const md = new MarkdownIt()
-      md.use(annotationMarkdownPlugin, { ':name': 'description' })
-
-      const tokens: Token[] = [{ type: 'annotation_ref', meta: { label: 'name' } } as any]
-      const env = { annotations: {} }
-      const result = md.renderer.rules.annotation_ref!(tokens as any, 0, {}, env as any, md as any)
-      expect(result).toContain('description')
-    })
-
-    // key 不含 : 前缀时自动添加
-    it('key 不含 : 前缀时自动添加', () => {
-      const md = new MarkdownIt()
-      md.use(annotationMarkdownPlugin, { name: 'description' })
-
-      const tokens: Token[] = [{ type: 'annotation_ref', meta: { label: 'name' } } as any]
-      const env = { annotations: {} }
-      const result = md.renderer.rules.annotation_ref!(tokens as any, 0, {}, env as any, md as any)
-      expect(result).toContain('description')
-    })
-
     // 局部定义优先于全局注释
     it('局部定义优先于全局注释', () => {
       const md = new MarkdownIt()
       md.use(annotationMarkdownPlugin, { name: 'global desc' })
 
-      const tokens: Token[] = [{ type: 'annotation_ref', meta: { label: 'name' } } as any]
-      const env = {
-        annotations: {
-          ':name': { sources: ['local desc'], rendered: [] },
-        },
-      }
-      const result = md.renderer.rules.annotation_ref!(tokens as any, 0, {}, env as any, md as any)
+      const result = md.render('[+name]: local desc\n\n[+name]')
+      expect(result).toContain('<VPAnnotation label="name"')
       expect(result).toContain('local desc')
       expect(result).not.toContain('global desc')
     })
 
-    // 默认全局注释为空对象
+    // 全局注释配置为字符串值时局部定义优先
+    it('全局注释配置为字符串值时局部定义优先', () => {
+      const md = new MarkdownIt()
+      md.use(annotationMarkdownPlugin, { name: 'global desc' })
+
+      const result = md.render('[+name]: local\n\n[+name]')
+      expect(result).toContain('local')
+      expect(result).not.toContain('global desc')
+    })
+
+    // 全局注释配置为数组值时局部定义优先
+    it('全局注释配置为数组值时局部定义优先', () => {
+      const md = new MarkdownIt()
+      md.use(annotationMarkdownPlugin, { name: ['desc1', 'desc2'] })
+
+      const result = md.render('[+name]: local\n\n[+name]')
+      expect(result).toContain('local')
+      expect(result).not.toContain('desc1')
+      expect(result).not.toContain('desc2')
+    })
+
+    // 全局注释 key 含 : 前缀时局部定义优先
+    it('全局注释 key 含 : 前缀时局部定义优先', () => {
+      const md = new MarkdownIt()
+      md.use(annotationMarkdownPlugin, { ':name': 'global desc' })
+
+      const result = md.render('[+name]: local\n\n[+name]')
+      expect(result).toContain('local')
+      expect(result).not.toContain('global desc')
+    })
+
+    // 全局注释不影响其他局部定义的渲染
+    it('全局注释不影响其他局部定义的渲染', () => {
+      const md = new MarkdownIt()
+      md.use(annotationMarkdownPlugin, { name: 'global desc' })
+
+      const result = md.render('[+other]: other desc\n\n[+other]')
+      expect(result).toContain('<VPAnnotation label="other"')
+      expect(result).toContain('other desc')
+    })
+
+    // 无局部定义时全局注释引用不被识别（当前行内解析器不回退到全局注释）
+    it('无局部定义时全局注释引用不被识别', () => {
+      const md = new MarkdownIt()
+      md.use(annotationMarkdownPlugin, { name: 'global desc' })
+
+      const result = md.render('[+name]')
+      expect(result).not.toContain('<VPAnnotation')
+      expect(result).toContain('[+name]')
+    })
+
+    // 不传全局注释时不报错
     it('不传全局注释时不报错', () => {
       const md = new MarkdownIt()
       md.use(annotationMarkdownPlugin)
@@ -581,18 +559,15 @@ describe('annotationMarkdownPlugin', () => {
       expect(result).toContain('<VPAnnotation')
     })
 
-    // 全局注释的渲染结果也被缓存
-    it('全局注释的渲染结果被缓存', () => {
+    // 全局注释配置不影响多次引用的缓存行为
+    it('全局注释配置不影响多次引用的缓存行为', () => {
       const md = new MarkdownIt()
-      md.use(annotationMarkdownPlugin, { name: 'description' })
+      md.use(annotationMarkdownPlugin, { name: 'global desc' })
 
-      const tokens: Token[] = [{ type: 'annotation_ref', meta: { label: 'name' } } as any]
-      const env = { annotations: {} }
-      md.renderer.rules.annotation_ref!(tokens as any, 0, {}, env as any, md as any)
-      // 第二次调用应使用缓存
       const spy = vi.spyOn(md, 'render')
-      md.renderer.rules.annotation_ref!(tokens as any, 0, {}, env as any, md as any)
-      expect(spy).not.toHaveBeenCalled()
+      md.render('[+name]: local\n\n[+name] and [+name]')
+      // 1 document + 1 annotation（第二次引用使用缓存）
+      expect(spy).toHaveBeenCalledTimes(2)
     })
   })
 

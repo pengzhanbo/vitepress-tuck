@@ -77,20 +77,19 @@ const inset = computed(() => placement.value.split('-')[0])
 </script>
 
 <template>
-  <span
-    ref="annotation" class="vp-annotation vpi-annotation"
-    :class="{ [label]: true, [inset]: true, active }" :aria-label="label"
-    v-bind="$attrs"
-    role="button"
-    tabindex="0"
+  <button
+    v-bind="$attrs" ref="annotation" type="button"
+    class="vp-annotation" :class="{ [label]: true, [inset]: true, active }"
+    :aria-label="label"
     @click="active = !active"
-    @keypress="active = !active"
-  />
+  >
+    <span class="vpi-annotation" />
+  </button>
   <ClientOnly>
     <Teleport to="body">
       <Transition name="fade-in">
         <div
-          v-show="active" ref="tooltip"
+          v-if="active" ref="tooltip"
           class="vp-annotation-popover" :class="{ group: group.length > 1 }"
           :style="floatingStyles"
         >

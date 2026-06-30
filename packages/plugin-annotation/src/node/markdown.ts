@@ -159,7 +159,7 @@ const annotationDef: RuleBlock = (
   while (nextLine < endLine) {
     const nextStart = state.bMarks[nextLine] + state.tShift[nextLine]
     const nextMax = state.eMarks[nextLine]
-    const source = state.src.slice(nextStart, nextMax).trim()
+    const source = state.src.slice(nextStart, nextMax).slice(state.blkIndent).trimEnd()
 
     // 行不为空，且行缩进小于块缩进，则跳出
     if (state.sCount[nextLine] < state.blkIndent + 2 && source !== '')
@@ -328,7 +328,7 @@ export const annotationMarkdownPlugin: PluginWithOptions<Record<string, string |
     /* istanbul ignore next -- @preserve */
     const data = env.annotations[`:${label}`] || annotations[`:${label}`]
 
-    return `<VPAnnotation label="${label}" :total="${data.sources.length}">${
+    return `<VPAnnotation label="${md.utils.escapeHtml(label)}" :total="${data.sources.length}">${
       data.sources.map((source, i) => {
         const annotation = data.rendered[i] ??= md.render(source, cleanMarkdownEnv(env, ['references', 'annotations']))
         return `<template #item-${i}>${annotation}</template>`
