@@ -60,10 +60,6 @@ describe('parseSize', () => {
   })
 
   it('带空格的宽度 1.2em x 1.5em 解析时 trim', () => {
-    // split('x') 后 parseRect 会 trim，但 ' 1.5em' 经过 trim 变 '1.5em'
-    // 但实际 ' 1.2em x 1.5em' split('x') -> [' 1.2em ', ' 1.5em']
-    // parseRect trim 后 -> '1.2em' 和 '1.5em'
-    // 但 ' 1.2em '.trim() = '1.2em', parseFloat('1.2em')=1.2, Number('1.2em')=NaN, 1.2!==NaN -> 返回 '1.2em'
     const result = parseSize(' 1.2em x 1.5em')
     expect(result.width).toBe('1.2em')
     expect(result.height).toBe('1.5em')

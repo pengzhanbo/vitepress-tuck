@@ -116,7 +116,7 @@ export type IconOptions = IconifyOptions | IconfontOptions | FontAwesomeOptions
  *
  * 图标资源链接，支持协议相对路径、http 和 https 链接。
  */
-export type IconAssetLink = `//${string}` | `//${string}` | `https://${string}` | `http://${string}`
+export type IconAssetLink = `//${string}` | `https://${string}` | `http://${string}`
 
 /**
  * Built-in FontAwesome asset names.
