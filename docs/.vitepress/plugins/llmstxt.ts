@@ -2,7 +2,7 @@ import process from 'node:process'
 import llmstxt, { copyOrDownloadAsMarkdownButtons } from 'vitepress-plugin-llms'
 import { definePlugin } from 'vitepress-tuck'
 
-const isProd = process.env.NODE_ENV === 'production'
+const isProd = process.env.NODE_ENV === 'production' || !!process.env.CI
 
 export default definePlugin(() => ({
   name: 'vitepress-plugin-llms',

@@ -94,6 +94,9 @@ catalogs:
       specifier: ^3.3.5
       version: 3.3.5
   peer:
+    '@iconify/json':
+      specifier: ^2.2.493
+      version: 2.2.493
     dashjs:
       specifier: ^5.2.0
       version: 5.2.0
@@ -143,6 +146,9 @@ catalogs:
     tinyglobby:
       specifier: ^0.2.17
       version: 0.2.17
+    unplugin-icons:
+      specifier: ^23.0.1
+      version: 23.0.1
     unplugin-vue-components:
       specifier: ^32.1.0
       version: 32.1.0
@@ -251,6 +257,9 @@ importers:
 
   docs:
     devDependencies:
+      '@iconify/json':
+        specifier: catalog:peer
+        version: 2.2.493
       vitepress:
         specifier: ^2.0.0-alpha.17
         version: 2.0.0-alpha.17(@types/node@26.0.1)(change-case@5.4.4)(esbuild@0.27.7)(jiti@2.7.0)(oxc-minify@0.137.0)(postcss@8.5.15)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
@@ -284,6 +293,9 @@ importers:
       vitepress-plugin-group-icons:
         specifier: catalog:dev
         version: 1.7.5(vite@8.1.0(@types/node@26.0.1)(esbuild@0.27.7)(jiti@2.7.0)(yaml@2.9.0))
+      vitepress-plugin-icons:
+        specifier: workspace:*
+        version: link:../packages/plugin-icons
       vitepress-plugin-jsfiddle:
         specifier: workspace:*
         version: link:../packages/plugin-jsfiddle
@@ -509,6 +521,30 @@ importers:
       vue:
         specifier: ^3.5.0
         version: 3.5.35(typescript@6.0.3)
+
+  packages/plugin-icons:
+    dependencies:
+      '@iconify/json':
+        specifier: catalog:peer
+        version: 2.2.493
+      '@pengzhanbo/utils':
+        specifier: catalog:prod
+        version: 3.7.3
+      unplugin-icons:
+        specifier: catalog:prod
+        version: 23.0.1(@vue/compiler-sfc@3.5.39)
+      vitepress:
+        specifier: ^2.0.0-alpha.17
+        version: 2.0.0-alpha.17(@types/node@26.0.1)(change-case@5.4.4)(esbuild@0.27.7)(jiti@2.7.0)(oxc-minify@0.137.0)(postcss@8.5.15)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
+      vitepress-plugin-toolkit:
+        specifier: workspace:*
+        version: link:../plugin-toolkit
+      vitepress-tuck:
+        specifier: workspace:*
+        version: link:../vitepress-tuck
+      vue:
+        specifier: ^3.5.0
+        version: 3.5.39(typescript@6.0.3)
 
   packages/plugin-jsfiddle:
     dependencies:
@@ -1248,6 +1284,9 @@ packages:
 
   '@iconify-json/vscode-icons@1.2.52':
     resolution: {integrity: sha512-vX4VmsMatZ39SyNtxsXxmE3FzYmRVBGDzkk5/M5bmVQO2CyZhwZwTUoNuCnU2pAjuLR+7aZdYRl3IFC/MOx/ZQ==}
+
+  '@iconify/json@2.2.493':
+    resolution: {integrity: sha512-3fycKppFtbaiozIvBOMlaPnimWwq2nBVOjqzXKzTd3oTSOf8W+qfHvzbQLK92gtMfSV/m4GkLaJV/Upj6vACwA==}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
@@ -5217,6 +5256,23 @@ packages:
   unist-util-visit@5.1.0:
     resolution: {integrity: sha512-m+vIdyeCOpdr/QeQCu2EzxX/ohgS8KbnPDgFni4dQsfSCtpz8UqDyY5GjRru8PDKuYn7Fq19j1CQ+nJSsGKOzg==}
 
+  unplugin-icons@23.0.1:
+    resolution: {integrity: sha512-rv0XEJepajKzDLvRUWASM8K+8+/CCfZn2jtogXqg6RIp7kpatRc/aFrVJn8ANQA09e++lPEEv9yX8cC9enc+QQ==}
+    peerDependencies:
+      '@svgr/core': '>=7.0.0'
+      '@svgx/core': ^1.0.1
+      '@vue/compiler-sfc': ^3.0.2
+      svelte: ^3.0.0 || ^4.0.0 || ^5.0.0
+    peerDependenciesMeta:
+      '@svgr/core':
+        optional: true
+      '@svgx/core':
+        optional: true
+      '@vue/compiler-sfc':
+        optional: true
+      svelte:
+        optional: true
+
   unplugin-utils@0.3.1:
     resolution: {integrity: sha512-5lWVjgi6vuHhJ526bI4nlCOmkCIF3nnfXkCMDeMJrtdvxTs6ZFCM8oNufGTsDbKv/tJ/xj8RpvXjRuPBZJuJog==}
     engines: {node: '>=20.19.0'}
@@ -5236,6 +5292,10 @@ packages:
     engines: {node: '>=20.19.0'}
     peerDependencies:
       vue: ^3.2.25
+
+  unplugin@2.3.11:
+    resolution: {integrity: sha512-5uKD0nqiYVzlmCRs01Fhs2BdkEgBS3SAVP6ndrBsuK42iC2+JHyxM05Rm9G8+5mkmRtzMZGY8Ct5+mliZxU/Ww==}
+    engines: {node: '>=18.12.0'}
 
   unplugin@3.0.0:
     resolution: {integrity: sha512-0Mqk3AT2TZCXWKdcoaufeXNukv2mTrEZExeXlHIOZXdqYoHHr4n51pymnwV8x2BOVxwXbK2HLlI7usrqMpycdg==}
@@ -5888,6 +5948,11 @@ snapshots:
     dependencies:
       '@iconify/types': 2.0.0
 
+  '@iconify/json@2.2.493':
+    dependencies:
+      '@iconify/types': 2.0.0
+      pathe: 2.0.3
+
   '@iconify/types@2.0.0': {}
 
   '@iconify/utils@3.1.3':
@@ -6351,7 +6416,7 @@ snapshots:
   '@stylistic/eslint-plugin@5.10.0(eslint@10.6.0(jiti@2.7.0))':
     dependencies:
       '@eslint-community/eslint-utils': 4.9.1(eslint@10.6.0(jiti@2.7.0))
-      '@typescript-eslint/types': 8.60.1
+      '@typescript-eslint/types': 8.62.0
       eslint: 10.6.0(jiti@2.7.0)
       eslint-visitor-keys: 4.2.1
       espree: 10.4.0
@@ -6651,8 +6716,8 @@ snapshots:
 
   '@typescript-eslint/project-service@8.60.0(typescript@6.0.3)':
     dependencies:
-      '@typescript-eslint/tsconfig-utils': 8.60.1(typescript@6.0.3)
-      '@typescript-eslint/types': 8.60.1
+      '@typescript-eslint/tsconfig-utils': 8.62.0(typescript@6.0.3)
+      '@typescript-eslint/types': 8.62.0
       debug: 4.4.3
       typescript: 6.0.3
     transitivePeerDependencies:
@@ -10368,6 +10433,16 @@ snapshots:
       unist-util-is: 6.0.1
       unist-util-visit-parents: 6.0.2
 
+  unplugin-icons@23.0.1(@vue/compiler-sfc@3.5.39):
+    dependencies:
+      '@antfu/install-pkg': 1.1.0
+      '@iconify/utils': 3.1.3
+      local-pkg: 1.2.1
+      obug: 2.1.3
+      unplugin: 2.3.11
+    optionalDependencies:
+      '@vue/compiler-sfc': 3.5.39
+
   unplugin-utils@0.3.1:
     dependencies:
       pathe: 2.0.3
@@ -10408,6 +10483,13 @@ snapshots:
       - terser
       - tsx
       - yaml
+
+  unplugin@2.3.11:
+    dependencies:
+      '@jridgewell/remapping': 2.3.5
+      acorn: 8.16.0
+      picomatch: 4.0.4
+      webpack-virtual-modules: 0.6.2
 
   unplugin@3.0.0:
     dependencies:

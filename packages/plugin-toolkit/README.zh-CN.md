@@ -261,7 +261,6 @@ logger.debug('详细日志', 'debug')
 ```ts
 import {
   isBuild,          // 是否生产构建
-  isDev,            // 是否开发模式
   EXTENSION_VIDEOS, // 浏览器支持的视频扩展名
   EXTENSION_IMAGES, // 浏览器支持的图片扩展名
   EXTENSION_AUDIOS, // 浏览器支持的音频扩展名

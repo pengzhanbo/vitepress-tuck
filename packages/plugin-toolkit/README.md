@@ -263,7 +263,6 @@ logger.debug('Verbose details', 'debug')
 ```ts
 import {
   isBuild,           // Whether building for production
-  isDev,             // Whether in development mode
   EXTENSION_VIDEOS,  // Browser-supported video file extensions
   EXTENSION_IMAGES,  // Browser-supported image file extensions
   EXTENSION_AUDIOS,  // Browser-supported audio file extensions

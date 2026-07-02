@@ -91,7 +91,7 @@ export interface VitepressPlugin extends Pick<
    * 用于 `unplugin-vue-components` 插件的组件解析器。
    *
    */
-  componentResolver?: string[] | ComponentResolver
+  componentResolver?: ComponentResolver | string[] | (string | ComponentResolver)[]
 }
 
 /**

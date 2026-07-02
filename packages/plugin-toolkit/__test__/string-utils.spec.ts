@@ -4,7 +4,6 @@ import {
   EXTENSION_IMAGES,
   EXTENSION_VIDEOS,
   isBuild,
-  isDev,
   parseRect,
   resolveAttr,
   resolveAttrs,
@@ -282,11 +281,6 @@ describe('isLinkWithProtocol', () => {
 describe('constants', () => {
   it('isBuild should be false in test environment', () => {
     expect(isBuild).toBe(false)
-  })
-
-  it('isDev should depend on NODE_ENV', () => {
-    // In test environment, NODE_ENV is typically 'test', so isDev is false
-    expect(isDev).toBe(false)
   })
 
   it('extensionVideos should contain common video formats', () => {
