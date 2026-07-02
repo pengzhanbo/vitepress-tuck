@@ -8,6 +8,7 @@ import codepen from 'vitepress-plugin-codepen'
 import collapse from 'vitepress-plugin-collapse'
 import field from 'vitepress-plugin-field'
 import fileTree from 'vitepress-plugin-file-tree'
+import icons from 'vitepress-plugin-icons'
 import jsfiddle from 'vitepress-plugin-jsfiddle'
 import mermaid from 'vitepress-plugin-mermaid-tuck'
 import npmTo from 'vitepress-plugin-npm-to'
@@ -49,4 +50,9 @@ export const plugins: VitepressPlugin[] = [
   codeTree(),
   repoCard(),
   collapse(),
+  icons([
+    { provider: 'iconify' },
+    { provider: 'iconfont', assets: '//at.alicdn.com/t/c/font_4920010_cm826bt13ke.css' },
+    { provider: 'fontawesome', assets: 'fontawesome' },
+  ]),
 ]

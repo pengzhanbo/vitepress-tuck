@@ -8,6 +8,7 @@
     "docs:preview": "vitepress preview"
   },
   "devDependencies": {
+    "@iconify/json": "catalog:peer",
     "vitepress": "catalog:prod",
     "vitepress-plugin-abbr": "workspace:*",
     "vitepress-plugin-annotation": "workspace:*",
@@ -19,6 +20,7 @@
     "vitepress-plugin-field": "workspace:*",
     "vitepress-plugin-file-tree": "workspace:*",
     "vitepress-plugin-group-icons": "catalog:dev",
+    "vitepress-plugin-icons": "workspace:*",
     "vitepress-plugin-jsfiddle": "workspace:*",
     "vitepress-plugin-llms": "catalog:dev",
     "vitepress-plugin-mermaid-tuck": "workspace:*",

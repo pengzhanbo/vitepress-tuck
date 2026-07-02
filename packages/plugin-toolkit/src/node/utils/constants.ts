@@ -8,13 +8,6 @@ import process from 'node:process'
 export const isBuild = process.env.NODE_ENV === 'production'
 
 /**
- * Whether the current process is running in development mode.
- *
- * 当前进程是否运行在开发模式下。
- */
-export const isDev = process.env.NODE_ENV === 'development'
-
-/**
  * Browser-supported video file name extensions.
  *
  * 浏览器支持的视频文件名扩展名。

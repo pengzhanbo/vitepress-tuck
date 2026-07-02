@@ -2,7 +2,7 @@ import type { ComponentResolver } from 'unplugin-vue-components'
 import type { DefaultTheme, UserConfig } from 'vitepress'
 import type { EnhanceOptions } from './builtin-plugins/virtual-enhance-app.js'
 import type { TuckConfig, VitepressPlugin } from './types.js'
-import { isArray, isString } from '@pengzhanbo/utils'
+import { isString, partition, toArray } from '@pengzhanbo/utils'
 import { mergeConfig } from 'vitepress'
 import { builtinPlugins } from './builtin-plugins/index.js'
 import { createHooks, mergePluginHooks } from './hooks.js'
@@ -87,7 +87,7 @@ export function defineConfig<ThemeConfig = DefaultTheme.Config>(
       }
 
       // 注入组件Resolver
-      componentResolver && components.resolvers!.push(normalizeComponentResolver(name, componentResolver))
+      componentResolver && components.resolvers!.push(...normalizeComponentResolver(name, componentResolver))
 
       // 提取各种钩子函数
       if (customConfig.markdown?.config) {
@@ -116,15 +116,17 @@ export function defineConfig<ThemeConfig = DefaultTheme.Config>(
   return mergedConfig
 }
 
-function normalizeComponentResolver(pluginName: string, componentResolver: string[] | ComponentResolver): ComponentResolver {
-  return isArray(componentResolver)
-    ? {
-        type: 'component',
-        resolve: (componentName) => {
-          if (componentResolver.includes(componentName)) {
-            return { name: componentName, from: `${pluginName}/client` }
-          }
-        },
+function normalizeComponentResolver(pluginName: string, componentResolver: ComponentResolver | string[] | (string | ComponentResolver)[]): ComponentResolver[] {
+  const [components, resolvers] = partition(toArray(componentResolver), isString) as [string[], ComponentResolver[]]
+
+  components.length && resolvers.push({
+    type: 'component',
+    resolve: (componentName) => {
+      if (components.includes(componentName)) {
+        return { name: componentName, from: `${pluginName}/client` }
       }
-    : componentResolver
+    },
+  })
+
+  return resolvers
 }
