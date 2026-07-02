@@ -1,3 +1,9 @@
+# [0.9.0](https://github.com/pengzhanbo/vitepress-tuck/compare/v0.8.0...v0.9.0) (2026-07-02)
+
+### Features
+
+* add plugin-icons ([#24](https://github.com/pengzhanbo/vitepress-tuck/issues/24)) ([78e2ec6](https://github.com/pengzhanbo/vitepress-tuck/commit/78e2ec6c60d715925c4fd5a75d1ee248b091a021))
+
 # [0.8.0](https://github.com/pengzhanbo/vitepress-tuck/compare/v0.7.0...v0.8.0) (2026-06-30)
 
 ### Features
