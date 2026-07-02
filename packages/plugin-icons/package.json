@@ -17,7 +17,10 @@
   "keywords": [
     "vitepress",
     "vitepress-plugin",
-    "icons"
+    "icons",
+    "iconify",
+    "iconfont",
+    "fontAwesome"
   ],
   "exports": {
     ".": "./dist/node/index.js",
