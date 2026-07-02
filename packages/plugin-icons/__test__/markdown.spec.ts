@@ -33,13 +33,6 @@ describe('iconRender - iconify', () => {
     expect(result).toContain('class="iconify border"')
   })
 
-  it('带 class 属性（iconify 分支不使用 classname，仅保留 iconify 类名）', () => {
-    // 注意：iconify 渲染分支中 class 被解构但未使用，因此 class 不出现在输出中
-    const result = iconRender('name class="my-class"', options)
-    expect(result).toContain('class="iconify"')
-    expect(result).not.toContain('my-class')
-  })
-
   it('使用 iconify.prefix 自定义前缀', () => {
     const result = iconRender('name', { defaultProvider: 'iconify', iconify: { provider: 'iconify', prefix: 'icon' } })
     expect(result).toContain('<IconName')

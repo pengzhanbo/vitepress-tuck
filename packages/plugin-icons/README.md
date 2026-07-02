@@ -39,68 +39,8 @@ export default defineConfig({
 })
 ```
 
-```ts
-// .vitepress/theme/index.ts
-import type { Theme } from 'vitepress'
-import enhanceApp from 'virtual:enhance-app'
-import DefaultTheme from 'vitepress/theme'
-
-export default {
-  extends: DefaultTheme,
-  enhanceApp(ctx) {
-    enhanceApp(ctx)
-  },
-} satisfies Theme
-```
-
-### With Vitepress
-
-**Installation:**
-
-```bash
-# npm
-npm install -D vitepress-plugin-icons unplugin-icons unplugin-vue-components
-# pnpm
-pnpm add -D vitepress-plugin-icons unplugin-icons unplugin-vue-components
-# yarn
-yarn add -D vitepress-plugin-icons unplugin-icons unplugin-vue-components
-```
-
-**Configuration:**
-
-```ts
-// .vitepress/config.ts
-import { defineConfig } from 'vitepress'
-import Icons from 'unplugin-icons/vite'
-import IconsResolver from 'unplugin-icons/resolver'
-import Components from 'unplugin-vue-components/vite'
-import { iconsMarkdownPlugin } from 'vitepress-plugin-icons'
-
-export default defineConfig({
-  markdown: {
-    config: (md) => {
-      md.use(iconsMarkdownPlugin, { defaultProvider: 'iconify', iconify: { provider: 'iconify' } })
-    },
-  },
-  vite: {
-    plugins: [
-      Icons(),
-      Components({ resolvers: [IconsResolver()] }),
-    ],
-  },
-})
-```
-
-```ts
-// .vitepress/theme/index.ts
-import type { Theme } from 'vitepress'
-import DefaultTheme from 'vitepress/theme'
-import 'vitepress-plugin-icons/style.css'
-
-export default {
-  extends: DefaultTheme,
-} satisfies Theme
-```
+> [!IMPORTANT]
+> 该插件仅推荐搭配 Vitepress-tuck 使用，传统 Vitepress 配置方式复杂度较高。
 
 ## Syntax
 

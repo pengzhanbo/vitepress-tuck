@@ -29,7 +29,7 @@ export function createHeadConfig(iconfont: IconfontOptions | undefined, fontawes
     }
   })
 
-  fontawesome && toArray(fontawesome.assets).forEach((asset) => {
+  fontawesome && toArray(fontawesome.assets ?? 'fontawesome').forEach((asset) => {
     if (asset === 'fontawesome') {
       ['solid', 'regular', 'fontawesome'].forEach((type) => {
         head.push(['script', { 'src': getFontAwesomeCDNLink(type), 'data-auto-replace-svg': 'nest' }])

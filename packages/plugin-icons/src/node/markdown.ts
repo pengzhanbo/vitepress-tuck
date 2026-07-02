@@ -34,7 +34,7 @@
 
 import type { PluginWithOptions } from 'markdown-it'
 import type { FontAwesomeOptions, IconfontOptions, IconifyOptions } from './types.js'
-import { capitalize, pascalCase } from '@pengzhanbo/utils'
+import { capitalize, escape, pascalCase } from '@pengzhanbo/utils'
 import { stringifyAttrs } from 'vitepress-plugin-toolkit'
 import { resolveIcon } from './resolveIcon.js'
 import { getFontawesomeName, mergeStyles, parseSize } from './utils.js'
@@ -75,6 +75,7 @@ export function iconRender(content: string, options: IconsMarkdownOptions): stri
   if (iconify && provider === 'iconify') {
     const component = `${capitalize(iconify.prefix || 'i')}${pascalCase(name)}`
     const classes = ['iconify']
+    classname && classes.push(classname as string)
     extra && classes.push(extra)
 
     return `<${component} class="${classes.join(' ')}" aria-hidden${stringifyAttrs({
@@ -101,7 +102,7 @@ export function iconRender(content: string, options: IconsMarkdownOptions): stri
     return `<span class="${classes.join(' ')}" aria-hidden${stringifyAttrs({ style, ...attrs })} />`
   }
   // fallback to plain text
-  return `<span>::${content}::</span>`
+  return `<span>::${escape(content)}::</span>`
 }
 
 /**

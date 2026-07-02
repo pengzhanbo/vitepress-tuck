@@ -31,46 +31,8 @@ export default defineConfig({
 
 [Learn more about **vitepress-tuck**](../guide/quick-start.md){.readmore}
 
-### Native Mode
-
-```ts [.vitepress/config.ts]
-import { defineConfig } from 'vitepress'
-import Icons from 'unplugin-icons/vite' // [!code ++]
-import IconsResolver from 'unplugin-icons/resolver' // [!code ++]
-import Components from 'unplugin-vue-components/vite' // [!code ++]
-import { iconsMarkdownPlugin } from 'vitepress-plugin-icons' // [!code ++]
-
-export default defineConfig({
-  markdown: {
-    config: (md) => {
-      // [!code ++:3]
-      md.use(iconsMarkdownPlugin, {
-        defaultProvider: 'iconify',
-        iconify: { provider: 'iconify' },
-      })
-    },
-  },
-  vite: {
-    plugins: [
-      // [!code ++:3]
-      Icons(),
-      Components({ resolvers: [IconsResolver()] }),
-    ],
-  },
-})
-```
-
-Import the styles in your theme:
-
-```ts [.vitepress/theme/index.ts]
-import type { Theme } from 'vitepress'
-import DefaultTheme from 'vitepress/theme'
-import 'vitepress-plugin-icons/style.css' // [!code ++]
-
-export default {
-  extends: DefaultTheme,
-} satisfies Theme
-```
+> [!WARNING]
+> Due to the high complexity of plugin configuration, it is only recommended for use in `vitepress-tuck` mode.
 
 ## Syntax
 
@@ -123,11 +85,11 @@ Icon names use the plain name (without the `icon-` prefix), e.g. `hot` resolves 
 
 **Rendered Result:**
 
-::hot::
+::iconfont hot::
 
-::hot =24px::
+::iconfont hot =24px::
 
-::hot =24px /#f00::
+::iconfont hot =24px /#f00::
 
 ::iconfont hot =24px /#f00::
 

@@ -2,7 +2,8 @@
 
 <NpmBadge name="vitepress-plugin-icons" />
 
-图标插件，使用简洁的 `::name::` 语法，在 Markdown 中内联使用来自 [Iconify](https://iconify.design/)、[iconfont](https://www.iconfont.cn/) 或 [FontAwesome](https://fontawesome.com/) 的图标。
+图标插件，使用简洁的 `::name::` 语法，在 Markdown 中内联使用来自 [Iconify](https://iconify.design/)、
+[iconfont](https://www.iconfont.cn/) 或 [FontAwesome](https://fontawesome.com/) 的图标。
 
 ## 安装
 
@@ -31,46 +32,8 @@ export default defineConfig({
 
 [查看 **vitepress-tuck** 了解更多](../guide/quick-start.md){.readmore}
 
-### 传统模式
-
-```ts [.vitepress/config.ts]
-import { defineConfig } from 'vitepress'
-import Icons from 'unplugin-icons/vite' // [!code ++]
-import IconsResolver from 'unplugin-icons/resolver' // [!code ++]
-import Components from 'unplugin-vue-components/vite' // [!code ++]
-import { iconsMarkdownPlugin } from 'vitepress-plugin-icons' // [!code ++]
-
-export default defineConfig({
-  markdown: {
-    config: (md) => {
-      // [!code ++:3]
-      md.use(iconsMarkdownPlugin, {
-        defaultProvider: 'iconify',
-        iconify: { provider: 'iconify' },
-      })
-    },
-  },
-  vite: {
-    plugins: [
-      // [!code ++:3]
-      Icons(),
-      Components({ resolvers: [IconsResolver()] }),
-    ],
-  },
-})
-```
-
-在主题中引入样式：
-
-```ts [.vitepress/theme/index.ts]
-import type { Theme } from 'vitepress'
-import DefaultTheme from 'vitepress/theme'
-import 'vitepress-plugin-icons/style.css' // [!code ++]
-
-export default {
-  extends: DefaultTheme,
-} satisfies Theme
-```
+> [!WARNING]
+> 由于插件配置复杂度较高，仅推荐在 `vitepress-tuck` 模式下使用。
 
 ## 语法
 
@@ -123,11 +86,11 @@ export default {
 
 **渲染结果：**
 
-::hot::
+::iconfont hot::
 
-::hot =24px::
+::iconfont hot =24px::
 
-::hot =24px /#f00::
+::iconfont hot =24px /#f00::
 
 ::iconfont hot =24px /#f00::
 
@@ -163,12 +126,12 @@ export default {
 
 ### 通用选项
 
-| 选项      | 类型                                       | 默认值     | 说明               |
-| --------- | ------------------------------------------ | ---------- | ------------------ |
-| `provider`| `'iconify' \| 'iconfont' \| 'fontawesome'` | `'iconify'`| 图标提供商         |
-| `default` | `boolean`                                  | `false`    | 是否作为默认提供商 |
-| `color`   | `string`                                   | `''`       | 默认图标颜色       |
-| `size`    | `string \| number`                         | `'1.2em'`  | 默认图标大小       |
+| 选项       | 类型                                       | 默认值      | 说明               |
+| ---------- | ------------------------------------------ | ----------- | ------------------ |
+| `provider` | `'iconify' \| 'iconfont' \| 'fontawesome'` | `'iconify'` | 图标提供商         |
+| `default`  | `boolean`                                  | `false`     | 是否作为默认提供商 |
+| `color`    | `string`                                   | `''`        | 默认图标颜色       |
+| `size`     | `string \| number`                         | `'1.2em'`   | 默认图标大小       |
 
 ### Iconify
 
@@ -187,10 +150,10 @@ icons({
 
 ### iconfont
 
-| 选项     | 类型                               | 默认值    | 说明                  |
-| -------- | ---------------------------------- | --------- | --------------------- |
-| `prefix` | `string`                           | `'icon-'` | 图标类名前缀          |
-| `assets` | `IconAssetLink \| IconAssetLink[]` | -         | iconfont 资源链接     |
+| 选项     | 类型                               | 默认值    | 说明              |
+| -------- | ---------------------------------- | --------- | ----------------- |
+| `prefix` | `string`                           | `'icon-'` | 图标类名前缀      |
+| `assets` | `IconAssetLink \| IconAssetLink[]` | -         | iconfont 资源链接 |
 
 ```ts [.vitepress/config.ts]
 icons({
@@ -203,10 +166,10 @@ icons({
 
 ### FontAwesome
 
-| 选项     | 类型                                                  | 默认值         | 说明                        |
-| -------- | ----------------------------------------------------- | -------------- | --------------------------- |
-| `prefix` | `LiteralUnion<FontAwesomePrefix>`                     | `'fas'`        | 默认图标前缀                |
-| `assets` | `Arrayable<FontAwesomeAssetBuiltIn \| IconAssetLink>` | `'fontawesome'`| 内置资源名或自定义资源链接  |
+| 选项     | 类型                                                  | 默认值          | 说明                       |
+| -------- | ----------------------------------------------------- | --------------- | -------------------------- |
+| `prefix` | `LiteralUnion<FontAwesomePrefix>`                     | `'fas'`         | 默认图标前缀               |
+| `assets` | `Arrayable<FontAwesomeAssetBuiltIn \| IconAssetLink>` | `'fontawesome'` | 内置资源名或自定义资源链接 |
 
 `assets` 选项接受：
 
@@ -225,19 +188,19 @@ icons({
 
 `prefix` 支持以下别名：
 
-| 前缀     | 别名    | 对应类名                           |
-| -------- | ------- | ---------------------------------- |
-| `fas`    | `s`     | `fa-solid fa-name`                 |
-| `far`    | `r`     | `fa-regular fa-name`               |
-| `fal`    | `l`     | `fa-light fa-name`                 |
-| `fat`    | `t`     | `fa-thin fa-name`                  |
-| `fads`   | `ds`    | `fa-duotone fa-solid fa-name`      |
-| `fass`   | `ss`    | `fa-sharp fa-solid fa-name`        |
-| `fasr`   | `sr`    | `fa-sharp fa-regular fa-name`      |
-| `fasl`   | `sl`    | `fa-sharp fa-light fa-name`        |
-| `fast`   | `st`    | `fa-sharp fa-thin fa-name`         |
-| `fasds`  | `sds`   | `fa-sharp-duotone fa-solid fa-name`|
-| `fab`    | `b`     | `fa-brands fa-name`                |
+| 前缀    | 别名  | 对应类名                            |
+| ------- | ----- | ----------------------------------- |
+| `fas`   | `s`   | `fa-solid fa-name`                  |
+| `far`   | `r`   | `fa-regular fa-name`                |
+| `fal`   | `l`   | `fa-light fa-name`                  |
+| `fat`   | `t`   | `fa-thin fa-name`                   |
+| `fads`  | `ds`  | `fa-duotone fa-solid fa-name`       |
+| `fass`  | `ss`  | `fa-sharp fa-solid fa-name`         |
+| `fasr`  | `sr`  | `fa-sharp fa-regular fa-name`       |
+| `fasl`  | `sl`  | `fa-sharp fa-light fa-name`         |
+| `fast`  | `st`  | `fa-sharp fa-thin fa-name`          |
+| `fasds` | `sds` | `fa-sharp-duotone fa-solid fa-name` |
+| `fab`   | `b`   | `fa-brands fa-name`                 |
 
 也可以在图标名称中使用 `prefix:name` 格式为单个图标指定前缀，如 `fab:github`。
 
