@@ -50,7 +50,7 @@ export default defineConfig({
 })
 ```
 
-在主题中注册组件并引入样式：
+在主题中注册组件：
 
 ```ts [.vitepress/theme/index.ts]
 import type { Theme } from 'vitepress'
