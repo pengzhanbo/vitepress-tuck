@@ -24,6 +24,7 @@ export default defineAdditionalConfig({
         { text: '折叠面板', link: 'collapse' },
         { text: '注释', link: 'annotation' },
         { text: '图标', link: 'icons' },
+        { text: '马克笔', link: 'mark' },
         { text: '隐秘文本', link: 'plot' },
         { text: 'Npm To', link: 'npm-to' },
         { text: 'Mermaid', link: 'mermaid' },

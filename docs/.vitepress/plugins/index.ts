@@ -10,6 +10,7 @@ import field from 'vitepress-plugin-field'
 import fileTree from 'vitepress-plugin-file-tree'
 import icons from 'vitepress-plugin-icons'
 import jsfiddle from 'vitepress-plugin-jsfiddle'
+import mark from 'vitepress-plugin-mark'
 import mermaid from 'vitepress-plugin-mermaid-tuck'
 import npmTo from 'vitepress-plugin-npm-to'
 import obsidian from 'vitepress-plugin-obsidian'
@@ -43,6 +44,7 @@ export const plugins: VitepressPlugin[] = [
   qrcode(),
   jsfiddle(),
   codepen(),
+  mark(),
   mermaid(),
   codeCollapse(),
   field(),

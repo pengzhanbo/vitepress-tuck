@@ -23,6 +23,7 @@
     "vitepress-plugin-icons": "workspace:*",
     "vitepress-plugin-jsfiddle": "workspace:*",
     "vitepress-plugin-llms": "catalog:dev",
+    "vitepress-plugin-mark": "workspace:*",
     "vitepress-plugin-mermaid-tuck": "workspace:*",
     "vitepress-plugin-npm-to": "workspace:*",
     "vitepress-plugin-obsidian": "workspace:*",

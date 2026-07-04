@@ -1,15 +1,15 @@
 {
-  "name": "vitepress-plugin-abbr",
+  "name": "vitepress-plugin-mark",
   "type": "module",
   "version": "0.9.0",
-  "description": "Add abbreviation support to VitePress",
+  "description": "Add mark (highlight) support to your VitePress site",
   "author": "pengzhanbo <q942450674@outlook.com> (https://github.com/pengzhanbo/)",
   "license": "MIT",
-  "homepage": "https://tuck.pengzhanbo.cn/plugins/abbr",
+  "homepage": "https://tuck.pengzhanbo.cn/plugins/mark",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pengzhanbo/vitepress-tuck.git",
-    "directory": "packages/plugin-abbr"
+    "directory": "packages/plugin-mark"
   },
   "bugs": {
     "url": "https://github.com/pengzhanbo/vitepress-tuck/issues"
@@ -17,8 +17,7 @@
   "keywords": [
     "vitepress",
     "vitepress-plugin",
-    "abbr",
-    "abbreviation"
+    "mark"
   ],
   "exports": {
     ".": "./dist/node/index.js",
@@ -47,8 +46,8 @@
     "vue": "^3.5.0"
   },
   "dependencies": {
-    "@floating-ui/vue": "catalog:prod",
-    "@pengzhanbo/utils": "catalog:prod",
+    "@mdit/plugin-inline-rule": "catalog:prod",
+    "@vueuse/core": "catalog:prod",
     "vitepress-plugin-toolkit": "workspace:*",
     "vitepress-tuck": "workspace:*"
   },

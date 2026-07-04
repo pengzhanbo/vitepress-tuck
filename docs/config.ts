@@ -24,6 +24,7 @@ export default defineAdditionalConfig({
         { text: 'Collapse', link: 'collapse' },
         { text: 'Annotation', link: 'annotation' },
         { text: 'Icons', link: 'icons' },
+        { text: 'Mark', link: 'mark' },
         { text: 'Plot', link: 'plot' },
         { text: 'Npm To', link: 'npm-to' },
         { text: 'Mermaid', link: 'mermaid' },

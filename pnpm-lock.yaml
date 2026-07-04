@@ -110,6 +110,9 @@ catalogs:
     '@floating-ui/vue':
       specifier: ^2.0.0
       version: 2.0.0
+    '@mdit/plugin-inline-rule':
+      specifier: ^1.0.1
+      version: 1.0.1
     '@pengzhanbo/utils':
       specifier: ^3.7.3
       version: 3.7.3
@@ -302,6 +305,9 @@ importers:
       vitepress-plugin-llms:
         specifier: catalog:dev
         version: 1.13.2
+      vitepress-plugin-mark:
+        specifier: workspace:*
+        version: link:../packages/plugin-mark
       vitepress-plugin-mermaid-tuck:
         specifier: workspace:*
         version: link:../packages/plugin-mermaid-tuck
@@ -347,6 +353,9 @@ importers:
       '@floating-ui/vue':
         specifier: catalog:prod
         version: 2.0.0(vue@3.5.38(typescript@6.0.3))
+      '@pengzhanbo/utils':
+        specifier: catalog:prod
+        version: 3.7.3
       vitepress:
         specifier: ^2.0.0-alpha.17
         version: 2.0.0-alpha.17(@types/node@26.0.1)(change-case@5.4.4)(esbuild@0.27.7)(jiti@2.7.0)(oxc-minify@0.137.0)(postcss@8.5.15)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
@@ -560,6 +569,27 @@ importers:
       vue:
         specifier: ^3.5.0
         version: 3.5.35(typescript@6.0.3)
+
+  packages/plugin-mark:
+    dependencies:
+      '@mdit/plugin-inline-rule':
+        specifier: catalog:prod
+        version: 1.0.1(markdown-it@14.2.0)
+      '@vueuse/core':
+        specifier: catalog:prod
+        version: 14.3.0(vue@3.5.39(typescript@6.0.3))
+      vitepress:
+        specifier: ^2.0.0-alpha.17
+        version: 2.0.0-alpha.17(@types/node@26.0.1)(change-case@5.4.4)(esbuild@0.27.7)(jiti@2.7.0)(oxc-minify@0.137.0)(postcss@8.5.15)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
+      vitepress-plugin-toolkit:
+        specifier: workspace:*
+        version: link:../plugin-toolkit
+      vitepress-tuck:
+        specifier: workspace:*
+        version: link:../vitepress-tuck
+      vue:
+        specifier: ^3.5.0
+        version: 3.5.39(typescript@6.0.3)
 
   packages/plugin-mermaid-tuck:
     dependencies:
@@ -1318,6 +1348,24 @@ packages:
 
   '@keyv/serialize@1.1.1':
     resolution: {integrity: sha512-dXn3FZhPv0US+7dtJsIi2R+c7qWYiReoEh5zUntWCf4oSpMNib8FDhSoed6m3QyZdx5hK7iLFkYk3rNxwt8vTA==}
+
+  '@mdit/helper@1.0.1':
+    resolution: {integrity: sha512-zAzShsRZmkqjuoOFg6/zTCYVpvghj9a30Cl/eOGkE0xzRJJJG8T18eqb2lgceQhjVLWHK02HNVkzyfNHc429lQ==}
+    engines: {node: '>=22'}
+    peerDependencies:
+      markdown-it: ^14.2.0
+    peerDependenciesMeta:
+      markdown-it:
+        optional: true
+
+  '@mdit/plugin-inline-rule@1.0.1':
+    resolution: {integrity: sha512-SdCbSS+f43j9tB0LzYCmgoXusDEiyWQKs3lrWa0dI5aJRZDqqa7w95ZyzeazcbGviFUP5NHZUHI2AsC5mSBGgQ==}
+    engines: {node: '>=22'}
+    peerDependencies:
+      markdown-it: ^14.2.0
+    peerDependenciesMeta:
+      markdown-it:
+        optional: true
 
   '@mermaid-js/parser@1.2.0':
     resolution: {integrity: sha512-oYPyv8A4As1yH5Bx+04iQEQxXuIQDe0GKCNSRgao6z8AM9jixXIfP0vsppRLvGf+nKIOb9/LdpWA4YuJiVvESA==}
@@ -5987,6 +6035,19 @@ snapshots:
       keyv: 5.6.0
 
   '@keyv/serialize@1.1.1': {}
+
+  '@mdit/helper@1.0.1(markdown-it@14.2.0)':
+    dependencies:
+      '@types/markdown-it': 14.1.2
+    optionalDependencies:
+      markdown-it: 14.2.0
+
+  '@mdit/plugin-inline-rule@1.0.1(markdown-it@14.2.0)':
+    dependencies:
+      '@mdit/helper': 1.0.1(markdown-it@14.2.0)
+      '@types/markdown-it': 14.1.2
+    optionalDependencies:
+      markdown-it: 14.2.0
 
   '@mermaid-js/parser@1.2.0':
     dependencies:

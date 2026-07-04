@@ -63,6 +63,7 @@ catalogs:
 
   prod:
     '@floating-ui/vue': ^2.0.0
+    '@mdit/plugin-inline-rule': ^1.0.1
     '@pengzhanbo/utils': ^3.7.3
     '@vueuse/core': ^14.3.0
     ansis: ^4.3.1
