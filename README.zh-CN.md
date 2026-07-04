@@ -107,28 +107,97 @@ export default defineConfig({
 
 所有插件均基于 `vitepress-tuck` 开发，同时兼容 VitePress 原生接入方式。
 
-| 插件                                                                                  | 说明                                                          |                                                                                                                                                                                    |
-| ------------------------------------------------------------------------------------- | ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [vitepress-plugin-abbr](https://tuck.pengzhanbo.cn/zh/plugins/abbr)                   | 缩写词展示，支持自定义标签与内容                              | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-abbr) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-abbr)                   |
-| [vitepress-plugin-annotation](https://tuck.pengzhanbo.cn/zh/plugins/annotation)       | 为 VitePress 添加内容注释支持                                 | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-annotation) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-annotation)       |
-| [vitepress-plugin-collapse](https://tuck.pengzhanbo.cn/zh/plugins/collapse)           | 可折叠内容展示，用于创建可展开/折叠的章节或段落               | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-collapse) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-collapse)           |
-| [vitepress-plugin-steps](https://tuck.pengzhanbo.cn/zh/plugins/steps)                 | 步骤容器，用于创建步骤引导内容                                | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-steps) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-steps)                 |
-| [vitepress-plugin-file-tree](https://tuck.pengzhanbo.cn/zh/plugins/file-tree)         | 文件目录树展示，支持展开/折叠                                 | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-file-tree) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-file-tree)         |
-| [vitepress-plugin-code-tree](https://tuck.pengzhanbo.cn/zh/plugins/code-tree)         | 代码树展示，支持展开/折叠                                     | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-code-tree) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-code-tree)         |
-| [vitepress-plugin-plot](https://tuck.pengzhanbo.cn/zh/plugins/plot)                   | 隐文遮罩，点击或悬停显示隐藏文本（`!!text!!` 语法）           | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-plot) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-plot)                   |
-| [vitepress-plugin-npm-to](https://tuck.pengzhanbo.cn/zh/plugins/npm-to)               | npm 命令自动转换为 pnpm / yarn / bun / deno 等包管理器命令    | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-npm-to) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-npm-to)               |
-| [vitepress-plugin-repo-card](https://tuck.pengzhanbo.cn/zh/plugins/repo-card)         | github / gitee 仓库卡片展示                                   | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-repo-card) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-repo-card)         |
-| [vitepress-plugin-mermaid-tuck](https://tuck.pengzhanbo.cn/zh/plugins/mermaid-tuck)   | Mermaid 图表渲染                                              | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-mermaid-tuck) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-mermaid-tuck)   |
-| [vitepress-plugin-plantuml](https://tuck.pengzhanbo.cn/zh/plugins/plantuml)           | PlantUML 图表渲染                                             | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-plantuml) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-plantuml)           |
-| [vitepress-plugin-qrcode](https://tuck.pengzhanbo.cn/zh/plugins/qrcode)               | 二维码生成，支持图片 / 卡片两种模式                           | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-qrcode) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-qrcode)               |
-| [vitepress-plugin-video](https://tuck.pengzhanbo.cn/zh/plugins/video)                 | 多平台视频嵌入（Bilibili、YouTube、AcFun、ArtPlayer）         | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-video) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-video)                 |
-| [vitepress-plugin-obsidian](https://tuck.pengzhanbo.cn/zh/plugins/obsidian)           | Obsidian 风格 Markdown 语法（Wiki 链接、Callout、嵌入、注释） | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-obsidian) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-obsidian)           |
-| [vitepress-plugin-pdf](https://tuck.pengzhanbo.cn/zh/plugins/pdf)                     | 嵌入 PDF 文件，支持页码、缩放、工具栏等配置                   | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-pdf) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-pdf)                     |
-| [vitepress-plugin-caniuse](https://tuck.pengzhanbo.cn/zh/plugins/caniuse)             | 嵌入 caniuse.com 浏览器兼容性数据                             | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-caniuse) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-caniuse)             |
-| [vitepress-plugin-code-collapse](https://tuck.pengzhanbo.cn/zh/plugins/code-collapse) | 代码块行折叠，支持全局/单块配置                               | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-code-collapse) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-code-collapse) |
-| [vitepress-plugin-codepen](https://tuck.pengzhanbo.cn/zh/plugins/codepen)             | 嵌入 CodePen 示例，支持自定义标签与主题                       | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-codepen) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-codepen)             |
-| [vitepress-plugin-jsfiddle](https://tuck.pengzhanbo.cn/zh/plugins/jsfiddle)           | 嵌入 JSFiddle 示例，支持自定义标签页                          | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-jsfiddle) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-jsfiddle)           |
-| [vitepress-plugin-watermark](https://tuck.pengzhanbo.cn/zh/plugins/watermark)         | 水印展示，支持自定义内容与样式                                | ![downloads](https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-watermark) ![bundle-size](https://npmx.dev/api/registry/badge/size/vitepress-plugin-watermark)         |
+| 插件                                            | 说明                                                                      |                                                                         |
+| ----------------------------------------------- | ------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| [vitepress-plugin-abbr][abbr]                   | 为 VitePress 添加缩写词支持                                               | ![downloads][abbr-download] ![bundle-size][abbr-size]                   |
+| [vitepress-plugin-annotation][annotation]       | 为 VitePress 添加注释内容支持                                             | ![downloads][annotation-download] ![bundle-size][annotation-size]       |
+| [vitepress-plugin-caniuse][caniuse]             | 在 VitePress 中嵌入 <https://caniuse.com/> 数据                           | ![downloads][caniuse-download] ![bundle-size][caniuse-size]             |
+| [vitepress-plugin-code-collapse][code-collapse] | 在 VitePress 中提供代码块折叠行功能                                       | ![downloads][code-collapse-download] ![bundle-size][code-collapse-size] |
+| [vitepress-plugin-code-tree][code-tree]         | 在 VitePress 中渲染代码树结构 site                                        | ![downloads][code-tree-download] ![bundle-size][code-tree-size]         |
+| [vitepress-plugin-codepen][codepen]             | 在 VitePress 中嵌入 CodePen                                               | ![downloads][codepen-download] ![bundle-size][codepen-size]             |
+| [vitepress-plugin-collapse][collapse]           | 在 VitePress 中渲染可折叠的内容区块 site.                                 | ![downloads][collapse-download] ![bundle-size][collapse-size]           |
+| [vitepress-plugin-field][field]                 | 在 VitePress 中渲染结构化的 API 字段/属性文档                             | ![downloads][field-download] ![bundle-size][field-size]                 |
+| [vitepress-plugin-file-tree][file-tree]         | 在 VitePress 中渲染文件树结构                                             | ![downloads][file-tree-download] ![bundle-size][file-tree-size]         |
+| [vitepress-plugin-icons][icons]                 | 使用Iconify、Iconfont 和 FontAwesome 为 Vitepress 提供图标                | ![downloads][icons-download] ![bundle-size][icons-size]                 |
+| [vitepress-plugin-jsfiddle][jsfiddle]           | 在 VitePress 中嵌入 JSFiddle                                              | ![downloads][jsfiddle-download] ![bundle-size][jsfiddle-size]           |
+| [vitepress-plugin-mermaid-tuck][mermaid-tuck]   | 在 VitePress 中渲染 Mermaid 图表                                          | ![downloads][mermaid-tuck-download] ![bundle-size][mermaid-tuck-size]   |
+| [vitepress-plugin-npm-to][npm-to]               | 将 npm 命令转换为等价的 `pnpm / yarn / bun / deno` 命令                   | ![downloads][npm-to-download] ![bundle-size][npm-to-size]               |
+| [vitepress-plugin-obsidian][obsidian]           | Obsidian 风格的 markdown 语法支持 (Wiki links, Callout, embeds, comments) | ![downloads][obsidian-download] ![bundle-size][obsidian-size]           |
+| [vitepress-plugin-pdf][pdf]                     | 在 VitePress 中嵌入 PDF 文件                                              | ![downloads][pdf-download] ![bundle-size][pdf-size]                     |
+| [vitepress-plugin-plantuml][plantuml]           | 在 VitePress 中渲染 PlantUML 图表                                         | ![downloads][plantuml-download] ![bundle-size][plantuml-size]           |
+| [vitepress-plugin-plot][plot]                   | 使用 `!!text!!` 语法添加黑幕文本。文本在被悬停或点击前保持隐藏            | ![downloads][plot-download] ![bundle-size][plot-size]                   |
+| [vitepress-plugin-qrcode][qrcode]               | 在 VitePress 中生成二维码                                                 | ![downloads][qrcode-download] ![bundle-size][qrcode-size]               |
+| [vitepress-plugin-repo-card][repo-card]         | 在 VitePress 中展示 GitHub/Gitee 仓库信息卡片                             | ![downloads][repo-card-download] ![bundle-size][repo-card-size]         |
+| [vitepress-plugin-steps][steps]                 | 将有序/无序列表渲染为带序号和连接线的步骤样式                             | ![downloads][steps-download] ![bundle-size][steps-size]                 |
+| [vitepress-plugin-video][video]                 | 在 VitePress 中嵌入视频（支持 Bilibili、YouTube、AcFun、ArtPlayer）       | ![downloads][video-download] ![bundle-size][video-size]                 |
+| [vitepress-plugin-watermark][watermark]         | 在 VitePress 中添加水印文本                                               | ![downloads][watermark-download] ![bundle-size][watermark-size]         |
+
+[abbr]: https://tuck.pengzhanbo.cn/plugins/abbr
+[abbr-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-abbr
+[abbr-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-abbr
+[annotation]: https://tuck.pengzhanbo.cn/plugins/annotation
+[annotation-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-annotation
+[annotation-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-annotation
+[caniuse]: https://tuck.pengzhanbo.cn/plugins/caniuse
+[caniuse-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-caniuse
+[caniuse-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-caniuse
+[code-collapse]: https://tuck.pengzhanbo.cn/plugins/code-collapse
+[code-collapse-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-code-collapse
+[code-collapse-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-code-collapse
+[code-tree]: https://tuck.pengzhanbo.cn/plugins/code-tree
+[code-tree-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-code-tree
+[code-tree-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-code-tree
+[codepen]: https://tuck.pengzhanbo.cn/plugins/codepen
+[codepen-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-codepen
+[codepen-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-codepen
+[collapse]: https://tuck.pengzhanbo.cn/plugins/collapse
+[collapse-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-collapse
+[collapse-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-collapse
+[field]: https://tuck.pengzhanbo.cn/plugins/field
+[field-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-field
+[field-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-field
+[file-tree]: https://tuck.pengzhanbo.cn/plugins/file-tree
+[file-tree-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-file-tree
+[file-tree-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-file-tree
+[icons]: https://tuck.pengzhanbo.cn/plugins/icons
+[icons-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-icons
+[icons-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-icons
+[jsfiddle]: https://tuck.pengzhanbo.cn/plugins/jsfiddle
+[jsfiddle-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-jsfiddle
+[jsfiddle-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-jsfiddle
+[mermaid-tuck]: https://tuck.pengzhanbo.cn/plugins/mermaid-tuck
+[mermaid-tuck-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-mermaid-tuck
+[mermaid-tuck-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-mermaid-tuck
+[npm-to]: https://tuck.pengzhanbo.cn/plugins/mermaid-tuck
+[npm-to-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-mermaid-tuck
+[npm-to-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-mermaid-tuck
+[obsidian]: https://tuck.pengzhanbo.cn/plugins/obsidian
+[obsidian-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-obsidian
+[obsidian-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-obsidian
+[pdf]: https://tuck.pengzhanbo.cn/plugins/pdf
+[pdf-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-pdf
+[pdf-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-pdf
+[plantuml]: https://tuck.pengzhanbo.cn/plugins/plantuml
+[plantuml-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-plantuml
+[plantuml-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-plantuml
+[plot]: https://tuck.pengzhanbo.cn/plugins/plot
+[plot-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-plot
+[plot-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-plot
+[qrcode]: https://tuck.pengzhanbo.cn/plugins/qrcode
+[qrcode-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-qrcode
+[qrcode-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-qrcode
+[repo-card]: https://tuck.pengzhanbo.cn/plugins/repo-card
+[repo-card-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-repo-card
+[repo-card-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-repo-card
+[steps]: https://tuck.pengzhanbo.cn/plugins/steps
+[steps-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-steps
+[steps-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-steps
+[video]: https://tuck.pengzhanbo.cn/plugins/video
+[video-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-video
+[video-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-video
+[watermark]: https://tuck.pengzhanbo.cn/plugins/watermark
+[watermark-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-watermark
+[watermark-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-watermark
 
 ## 开发插件
 
