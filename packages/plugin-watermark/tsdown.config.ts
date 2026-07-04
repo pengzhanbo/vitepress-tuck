@@ -1,4 +1,5 @@
 import { defineConfig } from 'tsdown'
+import { onSuccess } from '../../scripts/tsdown'
 
 export default defineConfig({
   entry: 'src/index.ts',
@@ -8,4 +9,5 @@ export default defineConfig({
   format: 'esm',
   dts: true,
   fixedExtension: false,
+  onSuccess,
 })

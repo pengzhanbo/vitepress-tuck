@@ -1,6 +1,8 @@
-import type { UserConfig } from 'tsdown'
+import type { ResolvedConfig, UserConfig } from 'tsdown'
+import fs from 'node:fs'
 import { mergeConfig } from 'tsdown'
 import vue from 'unplugin-vue/rolldown'
+import { strip } from './strip-comments'
 
 const baseConfig: UserConfig = {
   clean: true,
@@ -33,6 +35,7 @@ export function build({
       outDir: mode === 'only-node-deep' ? 'dist/node' : 'dist',
       target: 'node20.19.0',
       dts: true,
+      onSuccess,
     }, nodeConfig)
   }
 
@@ -46,6 +49,7 @@ export function build({
       outDir: 'dist/node',
       dts: true,
       target: 'node20.19.0',
+      onSuccess,
     }, nodeConfig),
     // ssr 环境
     mergeConfig({}, baseConfig, {
@@ -54,6 +58,7 @@ export function build({
       platform: 'node',
       dts: { vue: true },
       plugins: [vue({ isProduction: true, ssr: true })],
+      onSuccess,
     }, clientConfig, ssrConfig),
     // browser 环境
     mergeConfig({}, baseConfig, {
@@ -65,6 +70,19 @@ export function build({
       outputOptions: {
         banner: styleAssets.map(asset => `import "${asset}"`).join('\n') || undefined,
       },
+      onSuccess,
     }, clientConfig, browserConfig),
   ]
+}
+
+export async function onSuccess({ entry, outDir, watch }: ResolvedConfig): Promise<void> {
+  if (watch)
+    return
+  const files = Object.keys(entry).map(key => `${outDir}/${key}.js`)
+  await Promise.all(files.map(prettyFile))
+}
+
+async function prettyFile(file: string) {
+  const content = await fs.promises.readFile(file, 'utf-8')
+  await fs.promises.writeFile(file, strip(content), 'utf-8')
 }

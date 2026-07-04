@@ -47,6 +47,7 @@
     "cpx2": "catalog:dev",
     "cross-env": "catalog:dev",
     "eslint": "catalog:dev",
+    "js-tokens": "catalog:dev",
     "markdown-it": "catalog:dev",
     "nano-staged": "catalog:dev",
     "oxc-minify": "catalog:dev",

@@ -51,6 +51,9 @@ catalogs:
     eslint:
       specifier: ^10.6.0
       version: 10.6.0
+    js-tokens:
+      specifier: ^10.0.0
+      version: 10.0.0
     markdown-it:
       specifier: ^14.2.0
       version: 14.2.0
@@ -215,6 +218,9 @@ importers:
       eslint:
         specifier: catalog:dev
         version: 10.6.0(jiti@2.7.0)
+      js-tokens:
+        specifier: catalog:dev
+        version: 10.0.0
       markdown-it:
         specifier: catalog:dev
         version: 14.2.0
