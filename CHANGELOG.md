@@ -1,3 +1,9 @@
+# [0.10.0](https://github.com/pengzhanbo/vitepress-tuck/compare/v0.9.0...v0.10.0) (2026-07-04)
+
+### Features
+
+* add plugin-mark ([#25](https://github.com/pengzhanbo/vitepress-tuck/issues/25)) ([6613a35](https://github.com/pengzhanbo/vitepress-tuck/commit/6613a3566c48d8698ca12b9edb4f84997d588171))
+
 # [0.9.0](https://github.com/pengzhanbo/vitepress-tuck/compare/v0.8.0...v0.9.0) (2026-07-02)
 
 ### Features
