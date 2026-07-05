@@ -14,12 +14,13 @@ export function strip(code: string) {
   return result
 }
 
-function stripFromToken(token: JSToken): string | false {
+function stripFromToken(token: JSToken): string {
   if (token.type === 'SingleLineComment') {
     return ''
   }
 
-  if (token.type === 'MultiLineComment') {
+  // 对于多行注释，如果包含 `webpackChunkName:`，则保留注释内容
+  if (token.type === 'MultiLineComment' && !token.value.includes('webpackChunkName:')) {
     return ''
   }
   return token.value
