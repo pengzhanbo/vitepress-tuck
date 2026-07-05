@@ -64,7 +64,6 @@ export default defineConfig({
 // .vitepress/theme/index.ts
 import type { Theme } from 'vitepress'
 import { enhanceAppWithCollapse } from 'vitepress-plugin-collapse/client'
-import 'vitepress-plugin-collapse/style.css'
 import DefaultTheme from 'vitepress/theme'
 
 export default {

@@ -97,12 +97,6 @@ export default {
 } satisfies Theme
 ```
 
-Import styles if needed:
-
-```ts
-import 'vitepress-plugin-repo-card/style.css'
-```
-
 ## Syntax
 
 ### Embed Syntax

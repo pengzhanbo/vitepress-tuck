@@ -38,7 +38,6 @@ export default defineConfig({
 import type { Theme } from 'vitepress'
 import enhanceApp from 'virtual:enhance-app'
 import DefaultTheme from 'vitepress/theme'
-import 'vitepress-plugin-mark/style.css'
 
 export default {
   extends: DefaultTheme,
@@ -81,7 +80,6 @@ export default defineConfig({
 // .vitepress/theme/index.ts
 import type { Theme } from 'vitepress'
 import { enhanceAppWithMark } from 'vitepress-plugin-mark/client'
-import 'vitepress-plugin-mark/style.css'
 import DefaultTheme from 'vitepress/theme'
 
 export default {
@@ -137,17 +135,11 @@ VitePress 的容器类型相对应。
 
 ```md
 ==Default mark==
-
 ==Note mark=={.note}
-
 ==Info mark=={.info}
-
 ==Tip mark=={.tip}
-
 ==Warning mark=={.warning}
-
 ==Caution mark=={.caution}
-
 ==Important mark=={.important}
 ```
 

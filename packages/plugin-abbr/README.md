@@ -39,7 +39,6 @@ export default defineConfig({
 import type { Theme } from 'vitepress'
 import enhanceApp from 'virtual:enhance-app'
 import DefaultTheme from 'vitepress/theme'
-import 'vitepress-plugin-abbr/style.css'
 
 export default {
   extends: DefaultTheme,
