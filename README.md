@@ -124,6 +124,7 @@ All plugins are built on `vitepress-tuck` while remaining compatible with native
 | [vitepress-plugin-file-tree][file-tree]         | Render file tree structure in your VitePress site                                       | ![downloads][file-tree-download] ![bundle-size][file-tree-size]         |
 | [vitepress-plugin-icons][icons]                 | Provide icons for vitepress with iconify / iconfont / fontAwesome                       | ![downloads][icons-download] ![bundle-size][icons-size]                 |
 | [vitepress-plugin-jsfiddle][jsfiddle]           | Embed JSFiddle in your VitePress site                                                   | ![downloads][jsfiddle-download] ![bundle-size][jsfiddle-size]           |
+| [vitepress-plugin-mark][mark]                   | Add mark (highlight) support to your VitePress site                                     | ![downloads][mark-download] ![bundle-size][mark-size]                   |
 | [vitepress-plugin-mermaid-tuck][mermaid-tuck]   | Render Mermaid diagrams in your VitePress site                                          | ![downloads][mermaid-tuck-download] ![bundle-size][mermaid-tuck-size]   |
 | [vitepress-plugin-npm-to][npm-to]               | npm commands are automatically converted to `pnpm / yarn / bun / deno` commands         | ![downloads][npm-to-download] ![bundle-size][npm-to-size]               |
 | [vitepress-plugin-obsidian][obsidian]           | Obsidian-style Markdown syntax (Wiki links, Callout, embeds, comments)                  | ![downloads][obsidian-download] ![bundle-size][obsidian-size]           |
@@ -169,6 +170,9 @@ All plugins are built on `vitepress-tuck` while remaining compatible with native
 [jsfiddle]: https://tuck.pengzhanbo.cn/plugins/jsfiddle
 [jsfiddle-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-jsfiddle
 [jsfiddle-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-jsfiddle
+[mark]: https://tuck.pengzhanbo.cn/plugins/mark
+[mark-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-mark
+[mark-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-mark
 [mermaid-tuck]: https://tuck.pengzhanbo.cn/plugins/mermaid-tuck
 [mermaid-tuck-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-mermaid-tuck
 [mermaid-tuck-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-mermaid-tuck

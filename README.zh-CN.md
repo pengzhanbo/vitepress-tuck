@@ -120,6 +120,7 @@ export default defineConfig({
 | [vitepress-plugin-file-tree][file-tree]         | 在 VitePress 中渲染文件树结构                                             | ![downloads][file-tree-download] ![bundle-size][file-tree-size]         |
 | [vitepress-plugin-icons][icons]                 | 使用Iconify、Iconfont 和 FontAwesome 为 Vitepress 提供图标                | ![downloads][icons-download] ![bundle-size][icons-size]                 |
 | [vitepress-plugin-jsfiddle][jsfiddle]           | 在 VitePress 中嵌入 JSFiddle                                              | ![downloads][jsfiddle-download] ![bundle-size][jsfiddle-size]           |
+| [vitepress-plugin-mark][mark]                   | 为你的 VitePress 站点添加 mark（高亮）支持                                | ![downloads][mark-download] ![bundle-size][mark-size]                   |
 | [vitepress-plugin-mermaid-tuck][mermaid-tuck]   | 在 VitePress 中渲染 Mermaid 图表                                          | ![downloads][mermaid-tuck-download] ![bundle-size][mermaid-tuck-size]   |
 | [vitepress-plugin-npm-to][npm-to]               | 将 npm 命令转换为等价的 `pnpm / yarn / bun / deno` 命令                   | ![downloads][npm-to-download] ![bundle-size][npm-to-size]               |
 | [vitepress-plugin-obsidian][obsidian]           | Obsidian 风格的 markdown 语法支持 (Wiki links, Callout, embeds, comments) | ![downloads][obsidian-download] ![bundle-size][obsidian-size]           |
@@ -165,6 +166,9 @@ export default defineConfig({
 [jsfiddle]: https://tuck.pengzhanbo.cn/plugins/jsfiddle
 [jsfiddle-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-jsfiddle
 [jsfiddle-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-jsfiddle
+[mark]: https://tuck.pengzhanbo.cn/plugins/mark
+[mark-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-mark
+[mark-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-mark
 [mermaid-tuck]: https://tuck.pengzhanbo.cn/plugins/mermaid-tuck
 [mermaid-tuck-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-mermaid-tuck
 [mermaid-tuck-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-mermaid-tuck
