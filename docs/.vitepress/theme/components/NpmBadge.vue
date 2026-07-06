@@ -10,13 +10,12 @@ const normalizedName = computed(() => encodeURIComponent(name))
 
 <template>
   <p class="vp-npm-badge">
-    <a :href="`https://www.npmjs.com/package/${name}`" target="_blank">
+    <a :href="`https://npmx.dev/package/${name}`" target="_blank">
       <img :src="`https://npmx.dev/api/registry/badge/version/${normalizedName}`" alt="npm version">
     </a>
     <img :src="`https://npmx.dev/api/registry/badge/downloads/${normalizedName}`" alt="npm monthly downloads">
     <img :src="`https://npmx.dev/api/registry/badge/size/${normalizedName}`" alt="npm size">
     <img :src="`https://npmx.dev/api/registry/badge/license/${normalizedName}`" alt="npm license">
-    <!-- <img :src="`https://npmx.dev/api/registry/badge/updated/${normalizedName}`" alt="npm updated"> -->
   </p>
 </template>
 
