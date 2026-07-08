@@ -133,6 +133,7 @@ All plugins are built on `vitepress-tuck` while remaining compatible with native
 | [vitepress-plugin-plot][plot]                   | Add spoiler/hidden text with `!!text!!` syntax. Text is masked until hovered or clicked | ![downloads][plot-download] ![bundle-size][plot-size]                   |
 | [vitepress-plugin-qrcode][qrcode]               | Generate QR codes in your VitePress site                                                | ![downloads][qrcode-download] ![bundle-size][qrcode-size]               |
 | [vitepress-plugin-repo-card][repo-card]         | Add repository (github/gitee) card in your VitePress site                               | ![downloads][repo-card-download] ![bundle-size][repo-card-size]         |
+| [vitepress-plugin-stackblitz][stackblitz]       | Embed StackBlitz projects in your VitePress site                                        | ![downloads][stackblitz-download] ![bundle-size][stackblitz-size]       |
 | [vitepress-plugin-steps][steps]                 | Render ordered/unordered lists as numbered steps with badges and connecting lines       | ![downloads][steps-download] ![bundle-size][steps-size]                 |
 | [vitepress-plugin-video][video]                 | Multi-platform video embedding（Bilibili、YouTube、AcFun、ArtPlayer）                   | ![downloads][video-download] ![bundle-size][video-size]                 |
 | [vitepress-plugin-watermark][watermark]         | Add watermark to your VitePress site                                                    | ![downloads][watermark-download] ![bundle-size][watermark-size]         |
@@ -197,6 +198,9 @@ All plugins are built on `vitepress-tuck` while remaining compatible with native
 [repo-card]: https://tuck.pengzhanbo.cn/plugins/repo-card
 [repo-card-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-repo-card
 [repo-card-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-repo-card
+[stackblitz]: https://tuck.pengzhanbo.cn/plugins/stackblitz
+[stackblitz-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-stackblitz
+[stackblitz-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-stackblitz
 [steps]: https://tuck.pengzhanbo.cn/plugins/steps
 [steps-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-steps
 [steps-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-steps

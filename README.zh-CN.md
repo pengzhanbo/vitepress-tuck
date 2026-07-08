@@ -129,6 +129,7 @@ export default defineConfig({
 | [vitepress-plugin-plot][plot]                   | 使用 `!!text!!` 语法添加黑幕文本。文本在被悬停或点击前保持隐藏            | ![downloads][plot-download] ![bundle-size][plot-size]                   |
 | [vitepress-plugin-qrcode][qrcode]               | 在 VitePress 中生成二维码                                                 | ![downloads][qrcode-download] ![bundle-size][qrcode-size]               |
 | [vitepress-plugin-repo-card][repo-card]         | 在 VitePress 中展示 GitHub/Gitee 仓库信息卡片                             | ![downloads][repo-card-download] ![bundle-size][repo-card-size]         |
+| [vitepress-plugin-stackblitz][stackblitz]       | 将 StackBlitz 项目嵌入到 VitePress 页面中                                 | ![downloads][stackblitz-download] ![bundle-size][stackblitz-size]       |
 | [vitepress-plugin-steps][steps]                 | 将有序/无序列表渲染为带序号和连接线的步骤样式                             | ![downloads][steps-download] ![bundle-size][steps-size]                 |
 | [vitepress-plugin-video][video]                 | 在 VitePress 中嵌入视频（支持 Bilibili、YouTube、AcFun、ArtPlayer）       | ![downloads][video-download] ![bundle-size][video-size]                 |
 | [vitepress-plugin-watermark][watermark]         | 在 VitePress 中添加水印文本                                               | ![downloads][watermark-download] ![bundle-size][watermark-size]         |
@@ -193,6 +194,9 @@ export default defineConfig({
 [repo-card]: https://tuck.pengzhanbo.cn/plugins/repo-card
 [repo-card-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-repo-card
 [repo-card-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-repo-card
+[stackblitz]: https://tuck.pengzhanbo.cn/plugins/stackblitz
+[stackblitz-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-stackblitz
+[stackblitz-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-stackblitz
 [steps]: https://tuck.pengzhanbo.cn/plugins/steps
 [steps-download]: https://npmx.dev/api/registry/badge/downloads/vitepress-plugin-steps
 [steps-size]: https://npmx.dev/api/registry/badge/size/vitepress-plugin-steps
