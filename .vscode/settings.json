@@ -65,8 +65,10 @@
     "iconfont",
     "iconify",
     "jsfiddle",
+    "llms",
     "qrcode",
     "shiki",
+    "stackblitz",
     "unrun"
   ],
   "npmx.ignore.replacement": [

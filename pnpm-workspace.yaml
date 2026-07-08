@@ -66,9 +66,11 @@ catalogs:
     '@floating-ui/vue': ^2.0.0
     '@mdit/plugin-inline-rule': ^1.0.1
     '@pengzhanbo/utils': ^3.7.3
+    '@stackblitz/sdk': ^1.11.1
     '@vueuse/core': ^14.3.0
     ansis: ^4.3.1
     artplayer: ^5.4.0
+    destr: ^2.0.5
     gray-matter: ^4.0.3
     local-pkg: ^1.2.1
     markdown-it-container: ^4.0.0
@@ -82,3 +84,5 @@ catalogs:
     vitepress: ^2.0.0-alpha.17
     vue: ^3.5.39
     watermark-js-plus: ^1.6.4
+    yaml: ^2.9.0
+    zod: ^4.4.3

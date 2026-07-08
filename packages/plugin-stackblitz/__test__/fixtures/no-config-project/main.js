@@ -1,0 +1,1 @@
+const msg = 'no config'

@@ -1,0 +1,5 @@
+title: YAML Project
+description: A yaml test project
+template: vue
+dependencies:
+  vue: ^3.5.0

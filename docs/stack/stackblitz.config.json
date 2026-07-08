@@ -1,0 +1,7 @@
+{
+  "$schema": "../../../node_modules/vitepress-plugin-stackblitz/schema.json",
+  "title": "Project",
+  "description": "Project description",
+  "template": "javascript",
+  "dependencies": {}
+}

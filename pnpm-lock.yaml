@@ -119,6 +119,9 @@ catalogs:
     '@pengzhanbo/utils':
       specifier: ^3.7.3
       version: 3.7.3
+    '@stackblitz/sdk':
+      specifier: ^1.11.1
+      version: 1.11.1
     '@vueuse/core':
       specifier: ^14.3.0
       version: 14.3.0
@@ -128,6 +131,9 @@ catalogs:
     artplayer:
       specifier: ^5.4.0
       version: 5.4.0
+    destr:
+      specifier: ^2.0.5
+      version: 2.0.5
     gray-matter:
       specifier: ^4.0.3
       version: 4.0.3
@@ -164,6 +170,12 @@ catalogs:
     watermark-js-plus:
       specifier: ^1.6.4
       version: 1.6.4
+    yaml:
+      specifier: ^2.9.0
+      version: 2.9.0
+    zod:
+      specifier: ^4.4.3
+      version: 4.4.3
 
 overrides:
   vite: ^8.1.0
@@ -338,6 +350,9 @@ importers:
       vitepress-plugin-repo-card:
         specifier: workspace:*
         version: link:../packages/plugin-repo-card
+      vitepress-plugin-stackblitz:
+        specifier: workspace:*
+        version: link:../packages/plugin-stackblitz
       vitepress-plugin-steps:
         specifier: workspace:*
         version: link:../packages/plugin-steps
@@ -782,6 +797,42 @@ importers:
       vue:
         specifier: ^3.5.0
         version: 3.5.38(typescript@6.0.3)
+
+  packages/plugin-stackblitz:
+    dependencies:
+      '@pengzhanbo/utils':
+        specifier: catalog:prod
+        version: 3.7.3
+      '@stackblitz/sdk':
+        specifier: catalog:prod
+        version: 1.11.1
+      ansis:
+        specifier: catalog:prod
+        version: 4.3.1
+      destr:
+        specifier: catalog:prod
+        version: 2.0.5
+      tinyglobby:
+        specifier: catalog:prod
+        version: 0.2.17
+      vitepress:
+        specifier: ^2.0.0-alpha.17
+        version: 2.0.0-alpha.17(@types/node@26.0.1)(change-case@5.4.4)(esbuild@0.27.7)(jiti@2.7.0)(oxc-minify@0.137.0)(postcss@8.5.15)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
+      vitepress-plugin-toolkit:
+        specifier: workspace:*
+        version: link:../plugin-toolkit
+      vitepress-tuck:
+        specifier: workspace:*
+        version: link:../vitepress-tuck
+      vue:
+        specifier: ^3.5.0
+        version: 3.5.39(typescript@6.0.3)
+      yaml:
+        specifier: catalog:prod
+        version: 2.9.0
+      zod:
+        specifier: catalog:prod
+        version: 4.4.3
 
   packages/plugin-steps:
     dependencies:
@@ -1905,6 +1956,9 @@ packages:
   '@sindresorhus/merge-streams@4.0.0':
     resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
     engines: {node: '>=18'}
+
+  '@stackblitz/sdk@1.11.1':
+    resolution: {integrity: sha512-5wl1j3IhtmE7POTl2W9VGQdbQyBQrRsF3jcYBK+0V353AuO8H2GFZkiFNyTRxL+TDY3HIFCHc3G983Osmg76Lg==}
 
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
@@ -3158,6 +3212,9 @@ packages:
   dequal@2.0.3:
     resolution: {integrity: sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==}
     engines: {node: '>=6'}
+
+  destr@2.0.5:
+    resolution: {integrity: sha512-ugFTXCtDZunbzasqBxrK93Ik/DRYsO6S/fedkWEMKqt04xZ4csmnmwGDBAb07QWNaGMAmnTIemsYZCksjATwsA==}
 
   detect-indent@7.0.2:
     resolution: {integrity: sha512-y+8xyqdGLL+6sh0tVeHcfP/QDd8gUgbasolJJpY7NgeQGSZ739bDtSiaiDgtoicy+mtYB81dKLxO9xRhCyIB3A==}
@@ -5154,10 +5211,6 @@ packages:
     resolution: {integrity: sha512-SHf/r48b7vOrjve9PxJo3MN5v5yuyjHvdUcrQffT3WXMUfnGmHDVbC4k3sHJaJTgZCwpUplIaAo5ANtMyp3YHg==}
     engines: {node: '>=18'}
 
-  tinyglobby@0.2.16:
-    resolution: {integrity: sha512-pn99VhoACYR8nFHhxqix+uvsbXineAasWm5ojXoN8xEwK5Kd3/TrhNn1wByuD52UxWRLy8pu+kRMniEi6Eq9Zg==}
-    engines: {node: '>=12.0.0'}
-
   tinyglobby@0.2.17:
     resolution: {integrity: sha512-wXR/dYpcqKmfWpEdZjiKJOwCNFndD0DMnrW/cYjVGttEkBfVgcLFHoNrlj47mjOVic9yyNu65alsgF4NQyTa2g==}
     engines: {node: '>=12.0.0'}
@@ -5638,6 +5691,9 @@ packages:
   yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
+
+  zod@4.4.3:
+    resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
 
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
@@ -6459,6 +6515,8 @@ snapshots:
   '@sindresorhus/base62@1.0.0': {}
 
   '@sindresorhus/merge-streams@4.0.0': {}
+
+  '@stackblitz/sdk@1.11.1': {}
 
   '@standard-schema/spec@1.1.0': {}
 
@@ -7445,7 +7503,7 @@ snapshots:
       package-manager-detector: 1.6.0
       semver: 7.8.1
       tinyexec: 1.2.2
-      tinyglobby: 0.2.16
+      tinyglobby: 0.2.17
       unconfig: 7.5.0
       yaml: 2.9.0
 
@@ -7911,6 +7969,8 @@ snapshots:
       robust-predicates: 3.0.3
 
   dequal@2.0.3: {}
+
+  destr@2.0.5: {}
 
   detect-indent@7.0.2: {}
 
@@ -10320,11 +10380,6 @@ snapshots:
 
   tinyexec@1.2.4: {}
 
-  tinyglobby@0.2.16:
-    dependencies:
-      fdir: 6.5.0(picomatch@4.0.4)
-      picomatch: 4.0.4
-
   tinyglobby@0.2.17:
     dependencies:
       fdir: 6.5.0(picomatch@4.0.4)
@@ -10890,5 +10945,7 @@ snapshots:
       yargs-parser: 21.1.1
 
   yocto-queue@0.1.0: {}
+
+  zod@4.4.3: {}
 
   zwitch@2.0.4: {}
