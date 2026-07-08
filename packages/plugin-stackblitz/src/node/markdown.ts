@@ -25,7 +25,7 @@ import type { StackBlitzConfig } from './types.js'
 import fs from 'node:fs'
 import { deepMerge, hasOwn, omit, pick } from '@pengzhanbo/utils'
 import { createContainerPlugin, createEmbedRuleBlock, resolveAttrs, stringifyAttrs } from 'vitepress-plugin-toolkit'
-import z from 'zod'
+import { z } from 'zod'
 import { embedSchema, schema } from './schema.js'
 import { loadFiles, logger, parseConfig, resolveStackBlitzDir, transformConfig } from './utils.js'
 
