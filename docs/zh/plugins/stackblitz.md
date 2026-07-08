@@ -325,10 +325,10 @@ console.log('Hello StackBlitz!');
 
 ### 本地项目嵌入
 
-@[code-tree title="本地项目目录" entry="stackblitz.config.json"](./stack)
+@[code-tree title="本地项目目录" entry="stackblitz.config.json"](@/stack)
 
 ```md
-@[stackblitz local](./stack)
+@[stackblitz local](@/stack)
 ```
 
-@[stackblitz local](./stack)
+@[stackblitz local](@/stack)

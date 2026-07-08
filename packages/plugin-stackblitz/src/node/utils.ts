@@ -24,6 +24,9 @@ export const logger = createLogger('vitepress-plugin-stackblitz')
  * @returns The parsed configuration object
  */
 export function parseConfig(format: string, content: string) {
+  if (!content)
+    return {}
+
   if (format === 'json') {
     const [error, config] = attempt(safeDestr, content)
     if (error) {

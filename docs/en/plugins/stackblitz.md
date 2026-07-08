@@ -2,7 +2,9 @@
 
 <NpmBadge name="vitepress-plugin-stackblitz" />
 
-Embed [StackBlitz](https://stackblitz.com/) projects into VitePress pages. Supports embedding online editors via StackBlitz ID, GitHub repository, or local project files. Can also display as a button to open in a new tab.
+Embed [StackBlitz](https://stackblitz.com/) projects into VitePress pages.
+Supports embedding online editors via StackBlitz ID, GitHub repository, or local project files.
+Can also display as a button to open in a new tab.
 
 ## Installation
 
@@ -59,7 +61,9 @@ export default {
 
 ## Syntax
 
-The plugin provides two syntaxes for embedding StackBlitz projects: embed syntax for referencing external projects, and container syntax for writing project files directly inline within Markdown.
+The plugin provides two syntaxes for embedding StackBlitz projects:
+embed syntax for referencing external projects, and container syntax for writing project
+files directly inline within Markdown.
 
 ### Embed by StackBlitz ID
 
@@ -83,10 +87,10 @@ Place a `stackblitz.config.json` (or `.yaml`, `.yml`) configuration file in your
 
 `path` supports the following prefixes:
 
-| Prefix | Description                                 |
-| ------ | ------------------------------------------- |
-| `@`    | Relative to VitePress `srcDir`              |
-| `/`    | Relative to VitePress project root          |
+| Prefix | Description                                       |
+| ------ | ------------------------------------------------- |
+| `@`    | Relative to VitePress `srcDir`                    |
+| `/`    | Relative to VitePress project root                |
 | -      | Relative to the current markdown file's directory |
 
 See [Local Project Configuration](#local-project-configuration) for more details.
@@ -99,7 +103,7 @@ Display as a button that opens the project in a new tab:
 @[stackblitz button](stackblitz-id)
 ```
 
-Can also be combined with `github`:
+It can also be combined with GitHub:
 
 ```md
 @[stackblitz github button](user/repo)
@@ -148,44 +152,44 @@ console.log('Hello StackBlitz!');
 
 Applicable to both embed syntax and button mode:
 
-| Attribute          | Type                              | Default    | Description                             |
-| ------------------ | --------------------------------- | ---------- | --------------------------------------- |
-| `theme`            | `'dark' \| 'light' \| 'default'`  | auto       | Color theme, auto follows VitePress dark mode |
-| `view`             | `'default' \| 'preview' \| 'editor'` | `'default'` | Initial UI view                     |
-| `height`           | `number`                          | `400`      | Embed height (embed mode only)          |
-| `width`            | `number`                          | -          | Embed width (embed mode only)           |
-| `clickToLoad`      | `boolean`                         | `false`    | Show "click to run" dialog              |
-| `openFile`         | `string \| string[]`              | -          | File(s) to open on load                 |
-| `hideExplorer`     | `boolean`                         | `false`    | Hide the file explorer                  |
-| `hideDevTools`     | `boolean`                         | `false`    | Hide the dev tools console              |
-| `showSidebar`      | `boolean`                         | `false`    | Show sidebar as open on load            |
-| `terminalHeight`   | `number` (0-100)                  | -          | Terminal height percentage              |
-| `devToolsHeight`   | `number` (0-100)                  | -          | Dev tools height percentage             |
-| `newWindow`        | `boolean`                         | `false`    | Open project in a new tab               |
-| `forceEmbedLayout` | `boolean`                         | `false`    | Force embed layout (deprecated)         |
-| `origin`           | `string`                          | -          | StackBlitz EE instance URL              |
+| Attribute          | Type                                 | Default     | Description                                   |
+| ------------------ | ------------------------------------ | ----------- | --------------------------------------------- |
+| `theme`            | `'dark' \| 'light' \| 'default'`     | auto        | Color theme, auto follows VitePress dark mode |
+| `view`             | `'default' \| 'preview' \| 'editor'` | `'default'` | Initial UI view                               |
+| `height`           | `number`                             | `400`       | Embed height (embed mode only)                |
+| `width`            | `number`                             | -           | Embed width (embed mode only)                 |
+| `clickToLoad`      | `boolean`                            | `false`     | Show "click to run" dialog                    |
+| `openFile`         | `string \| string[]`                 | -           | File(s) to open on load                       |
+| `hideExplorer`     | `boolean`                            | `false`     | Hide the file explorer                        |
+| `hideDevTools`     | `boolean`                            | `false`     | Hide the dev tools console                    |
+| `showSidebar`      | `boolean`                            | `false`     | Show sidebar as open on load                  |
+| `terminalHeight`   | `number` (0-100)                     | -           | Terminal height percentage                    |
+| `devToolsHeight`   | `number` (0-100)                     | -           | Dev tools height percentage                   |
+| `newWindow`        | `boolean`                            | `false`     | Open project in a new tab                     |
+| `forceEmbedLayout` | `boolean`                            | `false`     | Force embed layout (deprecated)               |
+| `origin`           | `string`                             | -           | StackBlitz EE instance URL                    |
 
 #### Project Options
 
 Only applicable to local project embed mode and container syntax:
 
-| Attribute      | Type                                                  | Default | Description                     |
-| -------------- | ----------------------------------------------------- | ------- | ------------------------------- |
-| `title`        | `string`                                              | -       | Project title (required)        |
-| `description`  | `string`                                              | -       | Project description (required)  |
-| `template`     | `'angular-cli' \| 'create-react-app' \| 'html' \| 'javascript' \| 'typescript' \| 'polymer' \| 'vue' \| 'node'` | - | Project template (required) |
-| `dependencies` | `Record<string, string>`                              | -       | npm dependencies                |
-| `files`        | `Record<string, string>`                              | -       | Project files (auto-loaded for local mode) |
+| Attribute      | Type                                                                                                            | Default | Description                                |
+| -------------- | --------------------------------------------------------------------------------------------------------------- | ------- | ------------------------------------------ |
+| `title`        | `string`                                                                                                        | -       | Project title (required)                   |
+| `description`  | `string`                                                                                                        | -       | Project description (required)             |
+| `template`     | `'angular-cli' \| 'create-react-app' \| 'html' \| 'javascript' \| 'typescript' \| 'polymer' \| 'vue' \| 'node'` | -       | Project template (required)                |
+| `dependencies` | `Record<string, string>`                                                                                        | -       | npm dependencies                           |
+| `files`        | `Record<string, string>`                                                                                        | -       | Project files (auto-loaded for local mode) |
 
 #### Build Settings
 
 Set via `settings`-prefixed attributes, only applicable to local project embed mode and container syntax:
 
-| Attribute                | Type                              | Default   | Description                      |
-| ------------------------ | --------------------------------- | --------- | -------------------------------- |
-| `settingsTrigger`        | `'auto' \| 'save' \| 'keystroke'`  | `'auto'`  | Compilation trigger timing       |
-| `settingsAction`         | `'hmr' \| 'refresh'`              | `'hmr'`   | How to inject compiled changes   |
-| `settingsClearConsole`   | `boolean`                         | `true`    | Clear console after compilation  |
+| Attribute              | Type                              | Default  | Description                     |
+| ---------------------- | --------------------------------- | -------- | ------------------------------- |
+| `settingsTrigger`      | `'auto' \| 'save' \| 'keystroke'` | `'auto'` | Compilation trigger timing      |
+| `settingsAction`       | `'hmr' \| 'refresh'`              | `'hmr'`  | How to inject compiled changes  |
+| `settingsClearConsole` | `boolean`                         | `true`   | Clear console after compilation |
 
 ```md
 @[stackblitz local title="Demo" description="A demo" template="html" settingsTrigger="save" settingsAction="refresh"](path/to/project)
@@ -195,7 +199,7 @@ Set via `settings`-prefixed attributes, only applicable to local project embed m
 
 When using `@[stackblitz local](path)` to embed a local project, the plugin automatically:
 
-1. Loads all files from the specified directory (excluding `node_modules` and `.DS_Store`)
+1. Loads all files from the specified directory (excluding `node_modules`)
 2. Searches for `stackblitz.config.json`, `stackblitz.config.yaml`, `stackblitz.config.yml` in order
 3. Merges the configuration file options with the loaded files
 
@@ -325,8 +329,10 @@ console.log('Hello StackBlitz!');
 
 ### Local Project Embed
 
+@[code-tree title="Local Project Directory" entry="stackblitz.config.json"](@/stack)
+
 ```md
-@[stackblitz local](../zh/plugins/stack)
+@[stackblitz local](@/stack)
 ```
 
-@[stackblitz local](../zh/plugins/stack)
+@[stackblitz local](@/stack)

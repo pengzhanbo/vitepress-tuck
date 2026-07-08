@@ -62,7 +62,4 @@ export const embedSchema = openSchema.extend({
  *
  * 完整的配置校验模式，合并了项目定义和嵌入选项。
  */
-export const schema = z.object({
-  ...projectSchema.shape,
-  ...embedSchema.shape,
-})
+export const schema = projectSchema.extend(embedSchema.shape)

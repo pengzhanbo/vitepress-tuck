@@ -43,7 +43,7 @@ describe('parseConfig', () => {
     expect(result).toHaveProperty('title', 'Test')
   })
 
-  it('removes $schema from JSON when config value is falsy', () => {
+  it('returns empty object for falsy JSON config value', () => {
     const result = parseConfig('json', '0')
     expect(result).toEqual({})
   })

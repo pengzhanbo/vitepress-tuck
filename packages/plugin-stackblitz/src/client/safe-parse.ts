@@ -9,7 +9,7 @@
  * @returns The parsed object or the original object value
  */
 export function safeParse(str: unknown) {
-  if (typeof str === 'object')
+  if (typeof str === 'object' && str !== null)
     return str
 
   try {

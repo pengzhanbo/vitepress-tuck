@@ -407,7 +407,7 @@ describe('stackblitzMarkdownPlugin - container syntax', () => {
     const result = md.render([
       '::: stackblitz title="T" description="D" template="html"',
       '',
-      '``` [config]',
+      '```json [config]',
       '{"settings":{"trigger":"save"}}',
       '```',
       '',
@@ -531,5 +531,10 @@ describe('stackblitzMarkdownPlugin - edge cases', () => {
     // The config file should be removed from files and parsed as config
     const result = md.render('@[stackblitz local](test-project)', env)
     expect(result).toContain('<VPStackBlitz')
+    const projectEncoded = result.match(/project="([^"]*)"/)?.[1]
+    expect(projectEncoded).toBeDefined()
+    const project = JSON.parse(decodeURIComponent(projectEncoded!))
+    expect(project.files).not.toHaveProperty('stackblitz.config.json')
+    expect(project.title).toBeDefined()
   })
 })
