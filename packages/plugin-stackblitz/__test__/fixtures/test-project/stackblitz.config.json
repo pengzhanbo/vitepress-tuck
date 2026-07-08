@@ -1,0 +1,11 @@
+{
+  "title": "Test Project",
+  "description": "A test project",
+  "template": "typescript",
+  "dependencies": {
+    "vue": "^3.5.0"
+  },
+  "settings": {
+    "trigger": "save"
+  }
+}

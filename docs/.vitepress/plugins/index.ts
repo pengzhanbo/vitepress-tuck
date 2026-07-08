@@ -19,6 +19,7 @@ import plantuml from 'vitepress-plugin-plantuml'
 import plot from 'vitepress-plugin-plot'
 import qrcode from 'vitepress-plugin-qrcode'
 import repoCard from 'vitepress-plugin-repo-card'
+import stackblitz from 'vitepress-plugin-stackblitz'
 import steps from 'vitepress-plugin-steps'
 import video from 'vitepress-plugin-video'
 
@@ -33,6 +34,7 @@ export const plugins: VitepressPlugin[] = [
   // monorepo internal plugins
   abbr(),
   annotation(),
+  stackblitz(),
   steps(),
   plot(),
   fileTree(),

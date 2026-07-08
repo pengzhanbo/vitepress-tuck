@@ -27,6 +27,7 @@ export default defineAdditionalConfig({
         { text: '马克笔', link: 'mark' },
         { text: '隐秘文本', link: 'plot' },
         { text: 'Npm To', link: 'npm-to' },
+        { text: 'StackBlitz', link: 'stackblitz' },
         { text: 'Mermaid', link: 'mermaid' },
         { text: 'PlantUML', link: 'plantuml' },
         { text: 'Repo Card', link: 'repo-card' },
