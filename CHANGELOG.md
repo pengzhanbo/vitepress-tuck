@@ -1,3 +1,9 @@
+# [0.11.0](https://github.com/pengzhanbo/vitepress-tuck/compare/v0.10.0...v0.11.0) (2026-07-08)
+
+### Features
+
+* add plugin-stackblitz ([#26](https://github.com/pengzhanbo/vitepress-tuck/issues/26)) ([de5f96f](https://github.com/pengzhanbo/vitepress-tuck/commit/de5f96fca3ac4ec2e44f1723c9786f735766a92c))
+
 # [0.10.0](https://github.com/pengzhanbo/vitepress-tuck/compare/v0.9.0...v0.10.0) (2026-07-04)
 
 ### Features
