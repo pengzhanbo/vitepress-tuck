@@ -222,6 +222,12 @@ Example `stackblitz.config.json`:
 
 > [!TIP]
 > Including the `$schema` field provides intelligent autocompletion and validation for configuration files in your editor.
+>
+> ```json
+> {
+>   "$schema": "https://unpkg.com/vitepress-plugin-stackblitz/schema.json"
+> }
+> ```
 
 ## Example
 
@@ -329,10 +335,10 @@ console.log('Hello StackBlitz!');
 
 ### Local Project Embed
 
-@[code-tree title="Local Project Directory" entry="stackblitz.config.json"](@/stack)
+@[code-tree title="Local Project Directory" entry="stackblitz.config.json"](@/snippets/stack)
 
 ```md
-@[stackblitz local](@/stack)
+@[stackblitz local](@/snippets/stack)
 ```
 
-@[stackblitz local](@/stack)
+@[stackblitz local](@/snippets/stack)

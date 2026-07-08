@@ -1,5 +1,5 @@
 {
-  "$schema": "../../../node_modules/vitepress-plugin-stackblitz/schema.json",
+  "$schema": "https://unpkg.com/vitepress-plugin-stackblitz/schema.json",
   "title": "Project",
   "description": "Project description",
   "template": "javascript",

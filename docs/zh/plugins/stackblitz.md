@@ -203,7 +203,7 @@ console.log('Hello StackBlitz!');
 
 ```json
 {
-  "$schema": "../../node_modules/vitepress-plugin-stackblitz/schema.json",
+  "$schema": "https://unpkg.com/vitepress-plugin-stackblitz/schema.json",
   "title": "Project",
   "description": "Project description",
   "template": "javascript",
@@ -218,6 +218,12 @@ console.log('Hello StackBlitz!');
 
 > [!TIP]
 > 使用 `$schema` 字段可以在编辑器中获得配置文件的智能提示和校验支持。
+>
+> ```json
+> {
+>   "$schema": "https://unpkg.com/vitepress-plugin-stackblitz/schema.json"
+> }
+> ```
 
 ## 示例
 
@@ -325,10 +331,10 @@ console.log('Hello StackBlitz!');
 
 ### 本地项目嵌入
 
-@[code-tree title="本地项目目录" entry="stackblitz.config.json"](@/stack)
+@[code-tree title="本地项目目录" entry="stackblitz.config.json"](@/snippets/stack)
 
 ```md
-@[stackblitz local](@/stack)
+@[stackblitz local](@/snippets/stack)
 ```
 
-@[stackblitz local](@/stack)
+@[stackblitz local](@/snippets/stack)
