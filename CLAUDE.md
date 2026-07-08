@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 `vitepress-tuck` is a pnpm monorepo providing a plugin development framework and plugin ecosystem for VitePress.
 The core library wraps VitePress's `defineConfig` with plugin lifecycle management,
-while 13+ standalone plugins provide features like Mermaid diagrams, QR codes, video embedding, Obsidian-style markdown, and more.
+while 24 standalone plugins provide features like Mermaid diagrams, QR codes, video embedding, Obsidian-style markdown, and more.
 
 ## Repository Structure
 
@@ -23,6 +23,10 @@ Each plugin follows a consistent layout:
 - `src/node/` — server-side: markdown-it plugin, Vite plugin, config
 - `src/client/` — client-side: Vue components, composables, styles
 - `exports` in `package.json` map `"."` to node entry, `"./client"` to browser/ssr conditionals, `"./style.css"` to styles
+
+**Note:** The core `vitepress-tuck` package is the exception — it has no `./client` export.
+It exports `"."` and `"./client-types"` (TypeScript ambient declarations for the `virtual:enhance-app` virtual module).
+Its build uses `mode: 'only-node'` since it has no Vue client code.
 
 ## Core Architecture
 
@@ -47,7 +51,7 @@ An identity function providing TypeScript type inference for plugin authors. Plu
 interface VitepressPlugin {
   name: string
   client?: { imports?: string[]; enhance?: string | boolean }
-  componentResolver?: string[] | ComponentResolver  // declare Vue components for auto-import
+  componentResolver?: ComponentResolver | string[] | (string | ComponentResolver)[]  // declare Vue components for auto-import
   // Plus all VitePress UserConfig fields: markdown, vite, vue,
   // buildEnd, transformHead, transformHtml, transformPageData, postRender
 }
@@ -56,6 +60,7 @@ interface VitepressPlugin {
 ### `TuckConfig` type (in `packages/vitepress-tuck/src/types.ts`)
 
 Extends `UserConfig` with:
+
 - `plugins?: VitepressPlugin[]` — the plugin list
 - `components?: ComponentsOptions` — options forwarded to `unplugin-vue-components` (auto-imports components in `.vue` and `.md` files)
 
@@ -65,7 +70,7 @@ Extends `UserConfig` with:
 
 - **`virtual:enhance-app`** — A Vite virtual module that auto-generates client injection code. When a plugin sets
   `client.enhance`, the built-in plugin generates `import { <name> } from '<plugin>/client'` and chains the calls in
-  a single `enhanceApp(ctx)` export. Users import this once in `.vitepress/theme/index.ts`.
+  a single `enhanceAppWith<name>(ctx)` export. Users import this once in `.vitepress/theme/index.ts`.
   For TypeScript support, add `"vitepress-tuck/client-types"` to `compilerOptions.types` in `tsconfig.json`.
 
 - **`auto-components`** — Wraps [`unplugin-vue-components`](https://github.com/unplugin/unplugin-vue-components) for
@@ -92,6 +97,9 @@ pnpm build                    # Runs clean + build:package
 
 # Build a single package
 pnpm -F vitepress-plugin-<name> build
+
+# Watch mode for a single package during development
+pnpm -F vitepress-plugin-<name> dev
 
 # Run docs dev server
 pnpm docs:dev                 # Starts VitePress dev server
@@ -144,9 +152,19 @@ pnpm release:publish          # publish all packages
 ## Dependencies
 
 - Uses pnpm **catalogs** (`catalog:prod`, `catalog:dev`, `catalog:peer`) defined in `pnpm-workspace.yaml`.
+- Key pnpm settings: `catalogMode: prefer` (category catalogs are preferred over plain specifiers),
+  `shellEmulator: true` (ensures cross-platform script compatibility), `shamefullyHoist: true`.
 - Plugins reference each other via `workspace:*` (e.g., `"vitepress-tuck": "workspace:*"`, `"vitepress-plugin-toolkit": "workspace:*"`).
 - Peer dependencies: `vitepress` (^1.6.4 || ^2.0.0-alpha.17), `vue` (^3.5.0).
 - Node >= 20.19.0, pnpm >= 10.
+
+## Linting
+
+- ESLint config is in `eslint.config.mjs` (CommonJS-style ESM file — not `.ts`).
+  Uses `@pengzhanbo/eslint-config-vue` preset with TypeScript `erasableOnly: true` (type-only imports/exports
+  are erased, not checked by the TypeScript compiler directly). Vue accessibility rules are enabled but relaxed for static elements.
+- Stylelint uses `@pengzhanbo/stylelint-config`.
+- Ignored paths: `**/*.md`, `**/__test__/fixtures/**`.
 
 ## Pre-commit Hooks
 
@@ -166,6 +184,22 @@ pnpm release:publish          # publish all packages
 1. Copy the structure of an existing plugin (e.g., `plugin-qrcode`).
 2. Package name follows `vitepress-plugin-<name>`.
 3. `package.json` exports: `"."` → `./dist/node/index.js`, `"./client"` with browser/ssr conditions, `"./style.css"` if needed.
-4. Use `definePlugin` from `vitepress-tuck` for the node entry; export a named `enhanceApp` function from `./client` for client-side setup.
+4. Use `definePlugin` from `vitepress-tuck` for the node entry; export a named `enhanceAppWith<Name>`
+   function from `./client` for client-side setup.
 5. Use `plugin-toolkit` for markdown-it container/embed helpers and VitePress utilities.
-6. Add the plugin as a `devDependency` in `docs/package.json` and add a docs page under `docs/zh/plugins/` and `docs/en/plugins/`.
+6. Add the plugin as a `devDependency` in `docs/package.json` and add a docs page under `docs/zh/plugins/`
+   and `docs/en/plugins/` (docs are bilingual: Chinese `zh/` and English `en/`).
+
+**Plugin node entry pattern:** Plugins typically export both:
+
+- A **default export** — the factory function (wrapped with `definePlugin`) for use with `vitepress-tuck`'s `defineConfig`
+- **Named exports** — the raw markdown-it plugin and types, enabling standalone use with native VitePress
+
+`tsdown.config.ts` for a typical plugin with client code:
+
+```ts
+import { build } from '../../scripts/tsdown'
+export default build()
+```
+
+For a plugin without client code (node-only), use `build({ mode: 'only-node' })` or `build({ mode: 'only-node-deep' })`.
