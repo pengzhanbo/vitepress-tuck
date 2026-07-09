@@ -23,8 +23,9 @@ import type { Project } from '@stackblitz/sdk'
 import type { PluginSimple } from 'markdown-it'
 import type { StackBlitzConfig } from './types.js'
 import fs from 'node:fs'
-import { deepMerge, hasOwn, omit, pick } from '@pengzhanbo/utils'
-import { createContainerPlugin, createEmbedRuleBlock, resolveAttrs, stringifyAttrs } from 'vitepress-plugin-toolkit'
+import { deepMerge, ensureTrailingSlash, hasOwn, omit, pick } from '@pengzhanbo/utils'
+import ansis from 'ansis'
+import { createContainerPlugin, createEmbedRuleBlock, getVitepressConfig, resolveAttrs, stringifyAttrs } from 'vitepress-plugin-toolkit'
 import { z } from 'zod'
 import { embedSchema, schema } from './schema.js'
 import { loadFiles, logger, parseConfig, resolveStackBlitzDir, transformConfig } from './utils.js'
@@ -109,6 +110,7 @@ export const stackblitzMarkdownPlugin: PluginSimple = (md) => {
       return attrs as StackBlitzConfig
     },
     content(meta, env) {
+      const config = getVitepressConfig()
       const { source, github, local, button, ...attrs } = meta
       const props: Record<string, any> = {
         from: local ? 'project' : github ? 'github' : 'id',
@@ -117,10 +119,15 @@ export const stackblitzMarkdownPlugin: PluginSimple = (md) => {
       }
       if (local && source) {
         const localDir = resolveStackBlitzDir(source, env)
+        // 避免遍历到项目根目录以外
+        if (!localDir.startsWith(ensureTrailingSlash(config.root))) {
+          logger.warn(`Invalid stackblitz target directory ${ansis.yellow(source)}, in ${ansis.gray(env.relativePath)}`)
+          return `<p>@[stackblitz](${source}) <em>Invalid target directory</em></p>`
+        }
         // 校验本地目录是否存在
         if (!fs.existsSync(localDir)) {
-          logger.error(`Local directory ${localDir} does not exist`)
-          return `<p>Local directory ${localDir} does not exist</p>`
+          logger.error(`Local directory ${ansis.yellow(source)} does not exist`)
+          return `<p>@[stackblitz](${source}) <em>Local directory ${source} does not exist</em></p>`
         }
         const files = loadFiles(localDir)
         let configFormat = ''
@@ -143,7 +150,7 @@ export const stackblitzMarkdownPlugin: PluginSimple = (md) => {
       // 校验配置是否符合 schema
       if (!success) {
         logger.error(`Error parsing config: ${z.prettifyError(error)}`)
-        return `<p>Error parsing config <br> ${z.prettifyError(error)}</p>`
+        return `<p>Error parsing config <br> ${md.utils.escapeHtml(z.prettifyError(error))}</p>`
       }
 
       if (props.from === 'project')
@@ -195,7 +202,7 @@ export const stackblitzMarkdownPlugin: PluginSimple = (md) => {
       // 校验配置是否符合 schema
       if (!success) {
         logger.error(`Error parsing config: ${z.prettifyError(error)}`)
-        return `<p>Error parsing config <br> ${z.prettifyError(error)}</p>`
+        return `<p>[stackblitz] Error parsing config <br> ${md.utils.escapeHtml(z.prettifyError(error))}</p>`
       }
       data.files = { ...data.files, ...files }
 

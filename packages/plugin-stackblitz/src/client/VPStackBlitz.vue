@@ -22,7 +22,7 @@ onMounted(() => {
     return
 
   watch(
-    [() => [source, from, project, embed], isDark],
+    [isDark, () => source, () => from, () => project, () => embed],
     () => {
       el.value!.innerHTML = ''
       const container = document.createElement('div')
