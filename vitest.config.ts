@@ -6,6 +6,11 @@ export default defineConfig({
     exclude: [
       '**/node_modules/**',
       '**/dist/**',
+      '**/__test__/fixtures/**',
+      '**/*.d.ts',
+      'packages/*/src/**/types.ts',
+      'packages/*/src/**/env.d.ts',
+      'scripts/**',
     ],
     coverage: {
       enabled: true,
