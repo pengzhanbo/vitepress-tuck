@@ -1,4 +1,4 @@
-import { useEventListener, useMediaQuery, useMutationObserver } from '@vueuse/core'
+import { tryOnScopeDispose, useEventListener, useMediaQuery, useMutationObserver } from '@vueuse/core'
 import { computed, nextTick, onMounted, ref, shallowRef, type TemplateRef } from 'vue'
 
 /**
@@ -145,7 +145,7 @@ export function useZoomAndDrag(parentEl: TemplateRef<HTMLDivElement>) {
       startGap = Math.abs(touches[1].clientX - touches[0].clientX)
       currentWidth = width.value || originalWidth
     }
-  }, { passive: false })
+  }, { passive: true })
 
   useEventListener(parentEl, 'touchmove', (e) => {
     if (!isDragging)
@@ -159,10 +159,10 @@ export function useZoomAndDrag(parentEl: TemplateRef<HTMLDivElement>) {
     if (touches[1]) {
       width.value = currentWidth + Math.abs(touches[1].clientX - touches[0].clientX) - startGap
     }
-  }, { passive: false })
+  }, { passive: true })
   useEventListener(parentEl, 'touchend', () => {
     isDragging = false
-  }, { passive: false })
+  }, { passive: true })
 
   /**
    * Adjust the zoom level by a fixed step, or reset to the initial state.
@@ -208,12 +208,13 @@ export function useZoomAndDrag(parentEl: TemplateRef<HTMLDivElement>) {
    */
   function zooming() {
     actorEl.value?.classList.add('zooming')
-    if (zoomTimer)
-      clearTimeout(zoomTimer)
+    zoomTimer && clearTimeout(zoomTimer)
     zoomTimer = setTimeout(() => {
       actorEl.value!.classList.remove('zooming')
     }, 250)
   }
+
+  tryOnScopeDispose(() => zoomTimer && clearTimeout(zoomTimer))
 
   return {
     actorStyle: computed(() => ({
