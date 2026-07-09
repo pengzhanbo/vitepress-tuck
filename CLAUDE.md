@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 `vitepress-tuck` is a pnpm monorepo providing a plugin development framework and plugin ecosystem for VitePress.
 The core library wraps VitePress's `defineConfig` with plugin lifecycle management,
-while 24 standalone plugins provide features like Mermaid diagrams, QR codes, video embedding, Obsidian-style markdown, and more.
+while 22 standalone plugins provide features like Mermaid diagrams, QR codes, video embedding, Obsidian-style markdown, and more.
 
 ## Repository Structure
 
