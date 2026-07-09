@@ -106,8 +106,22 @@ describe('stackblitzMarkdownPlugin - embed local project', () => {
     const errorSpy = vi.spyOn(logger, 'error').mockImplementation(() => {})
     const result = md.render('@[stackblitz local](nonexistent-dir)', env)
     expect(result).toContain('does not exist')
+    expect(result).toContain('@[stackblitz](nonexistent-dir)')
+    expect(result).toContain('<em>Local directory nonexistent-dir does not exist</em>')
     expect(errorSpy).toHaveBeenCalled()
     errorSpy.mockRestore()
+  })
+
+  it('shows warning for target directory outside root', () => {
+    const md = new MarkdownIt()
+    md.use(stackblitzMarkdownPlugin)
+    const env = { path: path.join(FIXTURES_DIR, 'page.md'), relativePath: 'page.md' }
+    const warnSpy = vi.spyOn(logger, 'warn').mockImplementation(() => {})
+    const result = md.render('@[stackblitz local](../outside-dir)', env)
+    expect(result).toContain('Invalid target directory')
+    expect(result).toContain('@[stackblitz](../outside-dir)')
+    expect(warnSpy).toHaveBeenCalled()
+    warnSpy.mockRestore()
   })
 
   it('resolves @ prefix for local project', () => {
@@ -282,6 +296,19 @@ describe('stackblitzMarkdownPlugin - embed error handling', () => {
     expect(errorSpy).toHaveBeenCalled()
     errorSpy.mockRestore()
   })
+
+  it('escapes HTML in error message', () => {
+    const md = new MarkdownIt()
+    md.use(stackblitzMarkdownPlugin)
+    const errorSpy = vi.spyOn(logger, 'error').mockImplementation(() => {})
+    // Invalid theme value triggers validation error; error output should be HTML-escaped
+    const result = md.render('@[stackblitz theme="invalid"](my-id)')
+    expect(result).toContain('Error parsing config')
+    // Quotation marks in zod error message should be HTML-escaped to &quot;
+    expect(result).toContain('&quot;dark&quot;')
+    expect(result).not.toContain('"dark"')
+    errorSpy.mockRestore()
+  })
 })
 
 // =============================================================================
@@ -428,8 +455,25 @@ describe('stackblitzMarkdownPlugin - container error handling', () => {
     const errorSpy = vi.spyOn(logger, 'error').mockImplementation(() => {})
     // Missing required fields
     const result = md.render('::: stackblitz theme="dark"\n:::')
-    expect(result).toContain('Error parsing config')
+    expect(result).toContain('[stackblitz] Error parsing config')
     expect(errorSpy).toHaveBeenCalled()
+    errorSpy.mockRestore()
+  })
+
+  it('escapes HTML in container error message', () => {
+    const md = new MarkdownIt()
+    md.use(stackblitzMarkdownPlugin)
+    const errorSpy = vi.spyOn(logger, 'error').mockImplementation(() => {})
+    // Invalid theme value triggers validation error; error output should be HTML-escaped
+    const result = md.render([
+      '::: stackblitz title="T" description="D" template="html" theme="invalid"',
+      '',
+      ':::',
+    ].join('\n'))
+    expect(result).toContain('[stackblitz] Error parsing config')
+    // Quotation marks in zod error message should be HTML-escaped to &quot;
+    expect(result).toContain('&quot;dark&quot;')
+    expect(result).not.toContain('"dark"')
     errorSpy.mockRestore()
   })
 

@@ -28,7 +28,7 @@ export function parseConfig(format: string, content: string) {
     return {}
 
   if (format === 'json') {
-    const [error, config] = attempt(safeDestr, content)
+    const [error, config] = attempt(safeDestr, content, { strict: true })
     if (error) {
       logger.error(`Error parsing JSON config: ${error.message}`)
     }

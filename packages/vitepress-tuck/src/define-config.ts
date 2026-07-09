@@ -58,7 +58,7 @@ export function defineConfig<ThemeConfig = DefaultTheme.Config>(
 ): UserConfig<NoInfer<ThemeConfig>> {
   const hooks = createHooks()
   const { plugins = [], components = {}, ...userConfig } = config
-  let mergedConfig = {} as UserConfig<NoInfer<ThemeConfig>>
+  let mergedConfig = {} as Partial<UserConfig<NoInfer<ThemeConfig>>>
 
   const enhanceApp: Required<EnhanceOptions> = { imports: [], enhances: [] }
 
@@ -113,7 +113,7 @@ export function defineConfig<ThemeConfig = DefaultTheme.Config>(
   // 合并钩子
   mergePluginHooks(hooks, mergedConfig)
 
-  return mergedConfig
+  return mergedConfig satisfies UserConfig<NoInfer<ThemeConfig>>
 }
 
 function normalizeComponentResolver(pluginName: string, componentResolver: ComponentResolver | string[] | (string | ComponentResolver)[]): ComponentResolver[] {

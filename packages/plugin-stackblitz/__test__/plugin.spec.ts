@@ -1,6 +1,17 @@
 import MarkdownIt from 'markdown-it'
-import { describe, expect, it } from 'vitest'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { stackblitz } from '../src/node/plugin'
+
+// 设置 VITEPRESS_CONFIG，供 createLocales（vite 插件 load 时调用）使用
+beforeAll(() => {
+  ;(globalThis as Record<string, unknown>).VITEPRESS_CONFIG = {
+    root: '/',
+  }
+})
+
+afterAll(() => {
+  delete (globalThis as Record<string, unknown>).VITEPRESS_CONFIG
+})
 
 describe('stackblitz plugin', () => {
   it('has correct name', () => {
