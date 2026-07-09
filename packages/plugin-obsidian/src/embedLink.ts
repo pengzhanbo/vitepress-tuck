@@ -36,7 +36,8 @@ import { attempt, isHttp } from '@pengzhanbo/utils'
 import grayMatter from 'gray-matter'
 import Token from 'markdown-it/lib/token.mjs'
 import { EXTENSION_AUDIOS, EXTENSION_IMAGES, EXTENSION_VIDEOS, parseRect, slugify } from 'vitepress-plugin-toolkit'
-import { findFirstFile, loadFiles } from './loadFiles'
+import { findFirstFile, loadFiles } from './loadFiles.js'
+import { logger } from './logger.js'
 
 const audioExtensions = EXTENSION_AUDIOS.map(ext => `.${ext}`)
 const videoExtensions = EXTENSION_VIDEOS.map(ext => `.${ext}`)
@@ -353,18 +354,18 @@ function genEmbedAsset(
           state.push('link_close', 'a', -1)
         }
         else {
-          console.warn(`[embedLinkPlugin] circular reference detected: ${page}, in ${env.relativePath}`)
+          logger.warn(`[embedLink] circular reference detected: ${page}, in ${env.relativePath}`)
         }
         return
       }
       const [error, markdown] = attempt(() => fs.readFileSync(path.join(root, page), 'utf-8'))
       if (error) {
-        console.warn(`[embedLinkPlugin] can not read file: ${page}`)
+        logger.warn(`[embedLink] can not read file: ${page}`)
         return
       }
       const { content: rawContent } = grayMatter(markdown || '')
       if (!rawContent) {
-        console.warn(`[embedLinkPlugin] file ${page} is empty`)
+        logger.warn(`[embedLink] file ${page} is empty`)
         return
       }
 
@@ -547,7 +548,7 @@ function extractContentByHeadings(content: string, headings: string[]): string {
   }
 
   if (targetHeadingIndex === -1) {
-    console.warn(`No heading found for ${headings.join(' > ')}`)
+    logger.warn(`[embedLink] No heading found for ${headings.join(' > ')}`)
     return ''
   }
 
