@@ -6,27 +6,3 @@
 
 1. **vitepress-tuck 模式（推荐）**：通过 `plugins` 配置一键接入
 2. **传统模式**：手动在 VitePress 配置中接入
-
-## 插件列表
-
-| 插件                             | 包名                             | 说明                                               |
-| -------------------------------- | -------------------------------- | -------------------------------------------------- |
-| [Steps](./steps)                 | `vitepress-plugin-steps`         | 步骤容器，用于创建步骤引导内容                     |
-| [Obsidian](./obsidian)           | `vitepress-plugin-obsidian`      | Obsidian 语法支持，包括 Wiki 链接、Callout、注释等 |
-| [Video](./video)                 | `vitepress-plugin-video`         | 视频嵌入，支持 Bilibili、YouTube、AcFun、ArtPlayer |
-| [Mermaid](./mermaid)             | `vitepress-plugin-mermaid-tuck`  | Mermaid 图表支持                                   |
-| [PlantUML](./plantuml)           | `vitepress-plugin-plantuml`      | PlantUML 图表支持                                  |
-| [Field](./field)                 | `vitepress-plugin-field`         | API 字段文档，支持 JSDoc 标签                      |
-| [折叠面板](./collapse)           | `vitepress-plugin-collapse`      | 折叠面板容器，支持手风琴模式                       |
-| [Npm To](./npm-to)               | `vitepress-plugin-npm-to`        | npm 命令自动转换为其他包管理器命令                 |
-| [Repo Card](./repo-card)         | `vitepress-plugin-repo-card`     | github / gitee 仓库卡片展示                        |
-| [File Tree](./file-tree)         | `vitepress-plugin-file-tree`     | 文件树展示                                         |
-| [Code Tree](./code-tree)         | `vitepress-plugin-code-tree`     | 代码树，带文件树侧边栏                             |
-| [PDF](./pdf)                     | `vitepress-plugin-pdf`           | PDF 文件嵌入                                       |
-| [QRCode](./qrcode)               | `vitepress-plugin-qrcode`        | 二维码生成                                         |
-| [缩写词](./abbr)                 | `vitepress-plugin-abbr`          | 缩写词提示框，悬停或聚焦显示完整描述               |
-| [Plot](./plot)                   | `vitepress-plugin-plot`          | 隐文遮罩，点击或悬停显示隐藏文本                   |
-| [Can I Use](./caniuse)           | `vitepress-plugin-caniuse`       | caniuse 浏览器兼容性数据嵌入                       |
-| [Code Collapse](./code-collapse) | `vitepress-plugin-code-collapse` | 代码块折叠                                         |
-| [CodePen](./codepen)             | `vitepress-plugin-codepen`       | CodePen 嵌入                                       |
-| [JSFiddle](./jsfiddle)           | `vitepress-plugin-jsfiddle`      | JSFiddle 嵌入                                      |
