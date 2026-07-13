@@ -1,0 +1,1 @@
+import{Ct as e,Xt as t,Zt as n,bt as r,ct as i,jt as a,k as o,rt as s}from"./framework.D5NciBKD.js";var c=i({__name:`VPMark`,setup(i){let c=a(`mark`),l=o(c,{rootMargin:`-64px 0px 0px 0px`,threshold:1});return(i,a)=>(r(),s(`mark`,{ref_key:`mark`,ref:c,class:n({active:t(l)})},[e(i.$slots,`default`)],2))}});export{c as t};
