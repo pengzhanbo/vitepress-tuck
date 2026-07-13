@@ -2,7 +2,7 @@ import type { ResolvedConfig, UserConfig } from 'tsdown'
 import fs from 'node:fs'
 import { mergeConfig } from 'tsdown'
 import vue from 'unplugin-vue/rolldown'
-import { strip } from './strip-comments'
+import { strip, stripRegionComments } from './strip-comments'
 
 const baseConfig: UserConfig = {
   clean: true,
@@ -78,11 +78,15 @@ export function build({
 export async function onSuccess({ entry, outDir, watch }: ResolvedConfig): Promise<void> {
   if (watch)
     return
-  const files = Object.keys(entry).map(key => `${outDir}/${key}.js`)
-  await Promise.all(files.map(prettyFile))
-}
+  await Promise.all(Object.keys(entry).map(async (name) => {
+    // 移除 js 文件中的注释，仅保留代码本身
+    // IDE 提示可直接从 dts 文件中读取注释
+    const file = `${outDir}/${name}.js`
+    await fs.promises.writeFile(file, strip(await fs.promises.readFile(file, 'utf-8')))
 
-async function prettyFile(file: string) {
-  const content = await fs.promises.readFile(file, 'utf-8')
-  await fs.promises.writeFile(file, strip(content), 'utf-8')
+    // rolldown 会生成一些无关的 region 注释包围代码标识它们属于哪个源文件
+    // 可以直接安全的移除它们
+    const dts = `${outDir}/${name}.d.ts`
+    await fs.promises.writeFile(dts, stripRegionComments(await fs.promises.readFile(dts, 'utf-8')))
+  }))
 }

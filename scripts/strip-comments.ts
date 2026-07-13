@@ -25,3 +25,14 @@ function stripFromToken(token: JSToken): string {
   }
   return token.value
 }
+
+export function stripRegionComments(code: string) {
+  const result: string[] = []
+  for (const line of code.split('\n')) {
+    if (line.startsWith('//#region') || line.startsWith('//#endregion')) {
+      continue
+    }
+    result.push(line)
+  }
+  return result.join('\n')
+}
