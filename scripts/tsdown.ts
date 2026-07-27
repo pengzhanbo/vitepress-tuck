@@ -1,5 +1,7 @@
 import type { ResolvedConfig, UserConfig } from 'tsdown'
 import fs from 'node:fs'
+import path from 'node:path'
+import process from 'node:process'
 import { mergeConfig } from 'tsdown'
 import vue from 'unplugin-vue/rolldown'
 import { strip, stripRegionComments } from './strip-comments'
@@ -12,6 +14,7 @@ const baseConfig: UserConfig = {
 
 interface Options {
   mode?: 'only-node' | 'only-node-deep' | 'normal'
+  outDir?: string
   inlineStyle?: boolean
   styleAssets?: string[]
   nodeConfig?: UserConfig
@@ -22,6 +25,7 @@ interface Options {
 
 export function build({
   mode = 'normal',
+  outDir = 'dist',
   inlineStyle = true,
   styleAssets = [],
   nodeConfig = {},
@@ -29,12 +33,17 @@ export function build({
   browserConfig = {},
   ssrConfig = {},
 }: Options = {}): UserConfig | UserConfig[] {
+  outDir = outDir.replace(/^\/+/, '')
+  // clean output directory
+  fs.rmSync(path.join(process.cwd(), outDir), { recursive: true })
+
   if (mode === 'only-node' || mode === 'only-node-deep') {
     return mergeConfig({}, baseConfig, {
       entry: mode === 'only-node-deep' ? 'src/node/index.ts' : 'src/index.ts',
-      outDir: mode === 'only-node-deep' ? 'dist/node' : 'dist',
+      outDir: mode === 'only-node-deep' ? `${outDir}/node` : outDir,
       target: 'node20.19.0',
       dts: true,
+      copy: [{ from: 'src/client/**/*.css', to: outDir, flatten: false }],
       onSuccess,
     }, nodeConfig)
   }
@@ -46,7 +55,7 @@ export function build({
     // node 环境
     mergeConfig({}, baseConfig, {
       entry: 'src/node/index.ts',
-      outDir: 'dist/node',
+      outDir: `${outDir}/node`,
       dts: true,
       target: 'node20.19.0',
       onSuccess,
@@ -54,7 +63,7 @@ export function build({
     // ssr 环境
     mergeConfig({}, baseConfig, {
       entry: 'src/client/index.ts',
-      outDir: `dist/client/ssr`,
+      outDir: `${outDir}/client/ssr`,
       platform: 'node',
       target: 'baseline-widely-available',
       dts: { vue: true },
@@ -64,7 +73,7 @@ export function build({
     // browser 环境
     mergeConfig({}, baseConfig, {
       entry: 'src/client/index.ts',
-      outDir: `dist/client/browser`,
+      outDir: `${outDir}/client/browser`,
       platform: 'browser',
       target: 'baseline-widely-available',
       dts: { vue: true },
@@ -72,9 +81,7 @@ export function build({
       outputOptions: {
         banner: styleAssets.map(asset => `import "${asset}"`).join('\n') || undefined,
       },
-      copy: [
-        { from: 'src/client/**/*.css', to: 'dist/client' },
-      ],
+      copy: [{ from: 'src/client/**/*.css', to: outDir, flatten: false }],
       onSuccess,
     }, clientConfig, browserConfig),
   ]

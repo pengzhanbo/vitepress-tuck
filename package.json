@@ -5,10 +5,6 @@
   "private": true,
   "author": "pengzhanbo <q942450674@outlook.com> (https://github.com/pengzhanbo/)",
   "license": "MIT",
-  "engines": {
-    "node": "^20.19.0 || >=22.1.0",
-    "pnpm": ">=10"
-  },
   "scripts": {
     "build": "pnpm build:package",
     "build:package": "pnpm -r --stream build",
