@@ -33,7 +33,7 @@
     "build": "tsdown --config-loader unrun"
   },
   "peerDependencies": {
-    "vitepress": "^1.6.4 || ^2.0.0-alpha.17"
+    "vitepress": "^2.0.0-alpha.18"
   },
   "dependencies": {
     "@pengzhanbo/utils": "catalog:prod",

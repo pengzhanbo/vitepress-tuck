@@ -14,7 +14,7 @@ const cache = new LRUCache<string, Matcher>({ maxSize: 100 })
  * @param exclude - Patterns to exclude, can be string or array / 要排除的模式，可以是字符串或数组
  * @returns Matcher instance / 匹配器实例
  */
-export function createMatcher(include?: string | string[], exclude?: string | string[]) {
+export function createMatcher(include?: string | string[], exclude?: string | string[]): Matcher {
   const key = genHash([normalize(include), normalize(exclude)])
   if (cache.has(key))
     return cache.get(key)!

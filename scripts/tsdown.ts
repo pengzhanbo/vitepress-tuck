@@ -56,6 +56,7 @@ export function build({
       entry: 'src/client/index.ts',
       outDir: `dist/client/ssr`,
       platform: 'node',
+      target: 'baseline-widely-available',
       dts: { vue: true },
       plugins: [vue({ isProduction: true, ssr: true })],
       onSuccess,
@@ -65,11 +66,15 @@ export function build({
       entry: 'src/client/index.ts',
       outDir: `dist/client/browser`,
       platform: 'browser',
+      target: 'baseline-widely-available',
       dts: { vue: true },
       plugins: [vue({ isProduction: true, ssr: false })],
       outputOptions: {
         banner: styleAssets.map(asset => `import "${asset}"`).join('\n') || undefined,
       },
+      copy: [
+        { from: 'src/client/**/*.css', to: 'dist/client' },
+      ],
       onSuccess,
     }, clientConfig, browserConfig),
   ]

@@ -28,13 +28,12 @@
     "dist"
   ],
   "scripts": {
-    "clean": "rimraf --glob ./dist",
     "dev": "pnpm tsdown -w",
     "build": "pnpm tsdown",
     "tsdown": "tsdown --config-loader unrun"
   },
   "peerDependencies": {
-    "vitepress": "^1.6.4 || ^2.0.0-alpha.17",
+    "vitepress": "^2.0.0-alpha.18",
     "vue": "^3.5.0"
   },
   "dependencies": {

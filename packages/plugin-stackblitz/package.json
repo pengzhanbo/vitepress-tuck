@@ -35,16 +35,12 @@
     "schema.json"
   ],
   "scripts": {
-    "clean": "rimraf --glob ./dist",
-    "dev": "pnpm '/(tsdown|copy):watch/'",
-    "build": "pnpm tsdown && pnpm copy",
-    "copy": "cpx \"src/**/*.css\" dist",
-    "copy:watch": "pnpm copy -w",
-    "tsdown": "tsdown --config-loader unrun",
-    "tsdown:watch": "pnpm tsdown -w"
+    "dev": "pnpm tsdown -w",
+    "build": "pnpm tsdown",
+    "tsdown": "tsdown --config-loader unrun"
   },
   "peerDependencies": {
-    "vitepress": "^1.6.4 || ^2.0.0-alpha.17",
+    "vitepress": "^2.0.0-alpha.18",
     "vue": "^3.5.0"
   },
   "dependencies": {
