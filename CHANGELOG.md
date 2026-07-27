@@ -1,3 +1,13 @@
+## [0.11.1](https://github.com/pengzhanbo/vitepress-tuck/compare/v0.11.0...v0.11.1) (2026-07-27)
+
+### Bug Fixes
+
+* **plugin-toolkit:** fix touch events passive mode and memory leak ([#29](https://github.com/pengzhanbo/vitepress-tuck/issues/29)) ([43a289f](https://github.com/pengzhanbo/vitepress-tuck/commit/43a289f48f48535b72cb43f665224fd375d5f3ae))
+
+### Features
+
+* **plugin-stackblitz:** improve safety and stability ([#28](https://github.com/pengzhanbo/vitepress-tuck/issues/28)) ([192586b](https://github.com/pengzhanbo/vitepress-tuck/commit/192586b421e5384c4c8f570c7b99f054ea81feb6))
+
 # [0.11.0](https://github.com/pengzhanbo/vitepress-tuck/compare/v0.10.0...v0.11.0) (2026-07-08)
 
 ### Features
