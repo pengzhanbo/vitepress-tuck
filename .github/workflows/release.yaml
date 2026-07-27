@@ -37,9 +37,6 @@ jobs:
       - name: Install deps
         run: pnpm install
 
-      - name: Update npm
-        run: npm i -g npm@latest
-
       - name: Build And Publish
         id: publish
         run: |
@@ -47,7 +44,7 @@ jobs:
           pnpm release:publish --no-git-checks
           pnpm release:sync
 
-      - run: npx changelogithub
+      - run: pnpm dlx changelogithub
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
