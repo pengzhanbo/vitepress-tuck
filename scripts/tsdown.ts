@@ -35,7 +35,9 @@ export function build({
 }: Options = {}): UserConfig | UserConfig[] {
   outDir = outDir.replace(/^\/+/, '')
   // clean output directory
-  fs.rmSync(path.join(process.cwd(), outDir), { recursive: true })
+  const absoluteOutDir = path.join(process.cwd(), outDir)
+  if (fs.existsSync(absoluteOutDir))
+    fs.rmSync(absoluteOutDir, { recursive: true })
 
   if (mode === 'only-node' || mode === 'only-node-deep') {
     return mergeConfig({}, baseConfig, {
