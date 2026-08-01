@@ -283,9 +283,6 @@ catalogs:
     unrun:
       specifier: ^0.3.1
       version: 0.3.1
-    vitepress-plugin-group-icons:
-      specifier: ^1.7.5
-      version: 1.7.5
     vitepress-plugin-llms:
       specifier: ^1.13.3
       version: 1.13.3
@@ -296,15 +293,6 @@ catalogs:
     '@iconify/json':
       specifier: ^2.2.506
       version: 2.2.506
-    dashjs:
-      specifier: ^5.2.0
-      version: 5.2.0
-    hls.js:
-      specifier: ^1.6.16
-      version: 1.6.16
-    mpegts.js:
-      specifier: 1.7.3
-      version: 1.7.3
   prod:
     '@floating-ui/vue':
       specifier: ^2.0.1
@@ -508,7 +496,7 @@ importers:
         version: link:../packages/plugin-file-tree
       vitepress-plugin-group-icons:
         specifier: catalog:dev
-        version: 1.7.5(vite@8.1.5(@types/node@26.1.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 1.7.6(vite@8.1.5(@types/node@26.1.1)(jiti@2.7.0)(yaml@2.9.0))
       vitepress-plugin-icons:
         specifier: workspace:*
         version: link:../packages/plugin-icons
@@ -5501,8 +5489,8 @@ packages:
       yaml:
         optional: true
 
-  vitepress-plugin-group-icons@1.7.5:
-    resolution: {integrity: sha512-QzcroUuIiVKyXpmEiiHVbfRTQIy9Zbwxpk5JC/zavO8mavitwumz2RZWlwTchMCCHducYyPptkYvXvdnNUWkog==}
+  vitepress-plugin-group-icons@1.7.6:
+    resolution: {integrity: sha512-fXSpQAYHpFpEsZLKWQAwbRx/+0uRSHmY58YNAQcz0AVirGsM6w22jtSmQhOGLEj8ZKyeRtTJrpx6otUI6wvoaQ==}
     peerDependencies:
       vite: ^8.1.5
     peerDependenciesMeta:
@@ -10373,7 +10361,7 @@ snapshots:
       jiti: 2.7.0
       yaml: 2.9.0
 
-  vitepress-plugin-group-icons@1.7.5(vite@8.1.5(@types/node@26.1.1)(jiti@2.7.0)(yaml@2.9.0)):
+  vitepress-plugin-group-icons@1.7.6(vite@8.1.5(@types/node@26.1.1)(jiti@2.7.0)(yaml@2.9.0)):
     dependencies:
       '@iconify-json/logos': 1.2.11
       '@iconify-json/vscode-icons': 1.2.67
