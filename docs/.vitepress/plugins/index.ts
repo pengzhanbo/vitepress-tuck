@@ -23,8 +23,8 @@ import stackblitz from 'vitepress-plugin-stackblitz'
 import steps from 'vitepress-plugin-steps'
 import video from 'vitepress-plugin-video'
 
-import groupIcons from './group-icons'
-import llmstxt from './llmstxt'
+import groupIcons from './group-icons.js'
+import llmstxt from './llmstxt.js'
 
 export const plugins: VitepressPlugin[] = [
   // wrap external plugins

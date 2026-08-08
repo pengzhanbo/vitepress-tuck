@@ -1,13 +1,12 @@
 import path from 'node:path'
 import { defineConfig } from 'vitepress-tuck'
-import { plugins } from './plugins'
+import { plugins } from './plugins/index.js'
 
 export default defineConfig({
   title: 'Vitepress Tuck',
   description: 'Enhance vitepress configuration, provide plugins capability.',
   lastUpdated: true,
   cleanUrls: true,
-  metaChunk: true,
 
   rewrites: { 'en/:rest*': ':rest*' },
 
@@ -45,6 +44,6 @@ export default defineConfig({
 
   plugins,
   components: {
-    dirs: [path.resolve(__dirname, 'theme/components')],
+    dirs: [path.resolve(import.meta.dirname, 'theme/components')],
   },
 })
