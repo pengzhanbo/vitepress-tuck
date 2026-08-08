@@ -33,6 +33,7 @@ export const markdownPlugin: PluginSimple = (md) => {
     tag: 'VPMark',
     token: 'mark',
     nested: true,
+    double: true,
     placement: 'before-emphasis',
   })
 }
