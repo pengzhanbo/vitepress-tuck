@@ -41,8 +41,8 @@ catalogs:
     '@types/qrcode': ^1.5.6
     '@vitest/coverage-v8': ^4.1.10
     bumpp: ^12.2.0
-    conventional-changelog: ^8.1.1
-    conventional-changelog-angular: ^9.2.1
+    conventional-changelog: 7.2.0
+    conventional-changelog-angular: 8.3.1
     cpx2: ^9.0.0
     cross-env: ^10.1.0
     eslint: ^10.8.1
