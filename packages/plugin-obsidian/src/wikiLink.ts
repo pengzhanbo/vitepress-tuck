@@ -127,7 +127,7 @@ function wikiLinkDef(root: string, files: string[]): RuleInline {
     // 处理内部链接
     // eslint-disable-next-line no-cond-assign
     else if (page = findFirstFile(files, state.env.relativePath, filename)) {
-      const href = path.relative(path.dirname(state.env.path), path.join(root, page))
+      const href = path.relative(path.dirname(state.env.realPath || state.env.path), path.join(root, page))
       linkToken.attrJoin('href', `${href}${slug}`)
       const title = path.basename(page, '.md') || ''
       textToken.content ||= [title, ...titles].join(' > ')
