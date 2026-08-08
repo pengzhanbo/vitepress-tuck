@@ -1,3 +1,11 @@
+# [0.12.0](https://github.com/pengzhanbo/vitepress-tuck/compare/v0.11.1...v0.12.0) (2026-08-08)
+
+
+### Bug Fixes
+
+* **plugin-mark:** update mark options ([22f215e](https://github.com/pengzhanbo/vitepress-tuck/commit/22f215e36a3d0b941c103278ba68624928a4753a))
+* **plugin-obsidian:** fix internal link parse ([6979aba](https://github.com/pengzhanbo/vitepress-tuck/commit/6979abae67ac3cb33415e9772fe9562265c3684e))
+
 ## [0.11.1](https://github.com/pengzhanbo/vitepress-tuck/compare/v0.11.0...v0.11.1) (2026-07-27)
 
 ### Bug Fixes
