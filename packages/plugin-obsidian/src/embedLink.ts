@@ -335,7 +335,7 @@ function genEmbedAsset(
       const linkToken = state.push('link_open', 'a', 1)
       const textToken = state.push('text', '', 0)
       textToken.content = settings?.trim() || ''
-      const href = path.relative(path.dirname(state.env.path), path.join(root, page))
+      const href = path.relative(path.dirname(state.env.realPath || state.env.path), path.join(root, page))
 
       linkToken.attrJoin('href', `${href}${slug}`)
       const title = path.basename(page, '.md') || ''
