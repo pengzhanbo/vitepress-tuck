@@ -296,20 +296,8 @@ catalogs:
     '@iconify/json':
       specifier: ^2.2.512
       version: 2.2.512
-    dashjs:
-      specifier: ^5.2.0
-      version: 5.2.0
-    hls.js:
-      specifier: ^1.6.17
-      version: 1.6.17
-    mpegts.js:
-      specifier: 1.7.3
-      version: 1.7.3
   prod:
     '@floating-ui/vue':
-      specifier: ^2.0.1
-      version: 2.0.1
-    '@mdit/plugin-inline-rule':
       specifier: ^2.0.1
       version: 2.0.1
     '@pengzhanbo/utils':
@@ -790,7 +778,7 @@ importers:
     dependencies:
       '@mdit/plugin-inline-rule':
         specifier: catalog:prod
-        version: 2.0.1(markdown-it@14.3.0)
+        version: 2.2.0(markdown-it@14.3.0)
       '@vueuse/core':
         specifier: catalog:prod
         version: 14.4.0(vue@3.5.41(typescript@6.0.3))
@@ -1423,20 +1411,20 @@ packages:
   '@keyv/serialize@1.1.1':
     resolution: {integrity: sha512-dXn3FZhPv0US+7dtJsIi2R+c7qWYiReoEh5zUntWCf4oSpMNib8FDhSoed6m3QyZdx5hK7iLFkYk3rNxwt8vTA==}
 
-  '@mdit/helper@1.0.1':
-    resolution: {integrity: sha512-zAzShsRZmkqjuoOFg6/zTCYVpvghj9a30Cl/eOGkE0xzRJJJG8T18eqb2lgceQhjVLWHK02HNVkzyfNHc429lQ==}
+  '@mdit/helper@1.1.0':
+    resolution: {integrity: sha512-IWOUioaLobXA4ueulPfJopKaOHEGAH2pYDyK3u0cy4ItzxHXFssIJYksvdhUOC4JSHWfSjCArw41LBQdKOgFiw==}
     engines: {node: '>=22'}
     peerDependencies:
-      markdown-it: ^14.2.0
+      markdown-it: ^15.0.0
     peerDependenciesMeta:
       markdown-it:
         optional: true
 
-  '@mdit/plugin-inline-rule@2.0.1':
-    resolution: {integrity: sha512-l1pLarAVfPpyVoJ1dyGaP+F904Cb5ZXu+nyM38QH0gy9jxKJvYi1sYUUHfJXBeKIbllcgQLuSggW/EV/5JIk4g==}
+  '@mdit/plugin-inline-rule@2.2.0':
+    resolution: {integrity: sha512-Ce/GHczV8NZUgZU/3A085Ew7Ru1hY4NK8j0/Y+vp/NHXj+M7Hn1ANg8NHWlb3+NqQpJDuUq5TI2hA+DCQ1uUxw==}
     engines: {node: '>=22'}
     peerDependencies:
-      markdown-it: ^14.2.0
+      markdown-it: ^15.0.0
     peerDependenciesMeta:
       markdown-it:
         optional: true
@@ -6168,16 +6156,13 @@ snapshots:
 
   '@keyv/serialize@1.1.1': {}
 
-  '@mdit/helper@1.0.1(markdown-it@14.3.0)':
-    dependencies:
-      '@types/markdown-it': 14.1.2
+  '@mdit/helper@1.1.0(markdown-it@14.3.0)':
     optionalDependencies:
       markdown-it: 14.3.0
 
-  '@mdit/plugin-inline-rule@2.0.1(markdown-it@14.3.0)':
+  '@mdit/plugin-inline-rule@2.2.0(markdown-it@14.3.0)':
     dependencies:
-      '@mdit/helper': 1.0.1(markdown-it@14.3.0)
-      '@types/markdown-it': 14.1.2
+      '@mdit/helper': 1.1.0(markdown-it@14.3.0)
     optionalDependencies:
       markdown-it: 14.3.0
 
