@@ -11,11 +11,11 @@ const normalizedName = computed(() => encodeURIComponent(name))
 <template>
   <p class="vp-npm-badge">
     <a :href="`https://npmx.dev/package/${name}`" target="_blank">
-      <img :src="`https://npmx.dev/api/registry/badge/version/${normalizedName}`" alt="npm version">
+      <img :src="`https://img.shields.io/npm/v/${normalizedName}?style=flat-square`" alt="npm version">
     </a>
-    <img :src="`https://npmx.dev/api/registry/badge/downloads/${normalizedName}`" alt="npm monthly downloads">
-    <img :src="`https://npmx.dev/api/registry/badge/size/${normalizedName}`" alt="npm size">
-    <img :src="`https://npmx.dev/api/registry/badge/license/${normalizedName}`" alt="npm license">
+    <img :src="`https://img.shields.io/npm/dm/${normalizedName}?style=flat-square`" alt="npm monthly downloads">
+    <img :src="`https://img.shields.io/npm/unpacked-size/${normalizedName}?style=flat-square&label=install%20size`" alt="npm size">
+    <img :src="`https://img.shields.io/npm/l/${normalizedName}?style=flat-square`" alt="npm license">
   </p>
 </template>
 
