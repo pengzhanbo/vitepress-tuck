@@ -296,15 +296,6 @@ catalogs:
     '@iconify/json':
       specifier: ^2.2.517
       version: 2.2.517
-    dashjs:
-      specifier: ^5.2.1
-      version: 5.2.1
-    hls.js:
-      specifier: ^1.7.0
-      version: 1.7.0
-    mpegts.js:
-      specifier: 1.7.3
-      version: 1.7.3
   prod:
     '@floating-ui/vue':
       specifier: ^2.0.1
