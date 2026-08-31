@@ -1,3 +1,10 @@
+## [0.12.1](https://github.com/pengzhanbo/vitepress-tuck/compare/v0.12.0...v0.12.1) (2026-08-31)
+
+
+### Bug Fixes
+
+* **plugin-obsidian:** fix internal link parse ([7773187](https://github.com/pengzhanbo/vitepress-tuck/commit/77731873455d87c7bd765260f101583cc7c8c514))
+
 # [0.12.0](https://github.com/pengzhanbo/vitepress-tuck/compare/v0.11.1...v0.12.0) (2026-08-08)
 
 
