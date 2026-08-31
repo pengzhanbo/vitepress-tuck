@@ -12,7 +12,6 @@
   width: max-content;
   padding: 4px 8px;
   font-size: 14px;
-  font-weight: bold;
   color: var(--vp-c-text-1);
   background-color: var(--vp-c-bg);
   border: 1px solid var(--vp-c-divider);
