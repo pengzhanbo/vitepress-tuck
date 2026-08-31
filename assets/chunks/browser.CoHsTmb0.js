@@ -1,0 +1,1 @@
+import{$t as e,It as t,Ot as n,P as r,Qt as i,Tt as a,ht as o,ut as s}from"./framework.CveFvk5h.js";var c=o({__name:`VPMark`,setup(o){let c=t(`mark`),l=r(c,{rootMargin:`-64px 0px 0px 0px`,threshold:1});return(t,r)=>(a(),s(`mark`,{ref_key:`mark`,ref:c,class:e({active:i(l)})},[n(t.$slots,`default`)],2))}});export{c as t};
