@@ -171,7 +171,7 @@ export const abbrMarkdownPlugin: PluginWithOptions<Record<string, string>> = (md
 
     const abbreviations = { ...globalAbbreviations, ...localAbbreviations }
     const abbreviationsRegExpText = objectKeys(abbreviations)
-      .map(x => x.substring(1))
+      .map(x => `${x}`.substring(1))
       .sort((a, b) => b.length - a.length)
       .map(escapeRE)
       .join('|')
