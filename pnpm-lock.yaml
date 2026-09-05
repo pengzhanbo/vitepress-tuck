@@ -291,17 +291,8 @@ catalogs:
       version: 4.1.11
   peer:
     '@iconify/json':
-      specifier: ^2.2.522
-      version: 2.2.522
-    dashjs:
-      specifier: ^5.2.1
-      version: 5.2.1
-    hls.js:
-      specifier: ^1.7.1
-      version: 1.7.1
-    mpegts.js:
-      specifier: 1.7.3
-      version: 1.7.3
+      specifier: ^2.2.525
+      version: 2.2.525
   prod:
     '@floating-ui/vue':
       specifier: ^2.0.1
@@ -473,7 +464,7 @@ importers:
     devDependencies:
       '@iconify/json':
         specifier: catalog:peer
-        version: 2.2.522
+        version: 2.2.525
       vitepress:
         specifier: ^2.0.0-alpha.19
         version: 2.0.0-alpha.19(@types/node@26.4.0)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.26)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
@@ -1380,6 +1371,9 @@ packages:
 
   '@iconify/json@2.2.522':
     resolution: {integrity: sha512-YJfmIfMUNaYcmBVig39XoHoX133cDE97Rc9SxNKbfI2fOmfxfuPsZd1L2wv+fczSeq/bTEI+68SxBcg1dSZa2g==}
+
+  '@iconify/json@2.2.525':
+    resolution: {integrity: sha512-QB0vDFwtU13MgkiygAi1F6pS9zfTDUQZU0PPBGrU8FIAHpc8HBFNsCOW7r6JAb+OtCq3p+VuqbN4oNxlMdVm8w==}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
@@ -6140,6 +6134,11 @@ snapshots:
       '@iconify/types': 2.0.0
       pathe: 2.0.3
 
+  '@iconify/json@2.2.525':
+    dependencies:
+      '@iconify/types': 2.0.0
+      pathe: 2.0.3
+
   '@iconify/types@2.0.0': {}
 
   '@iconify/utils@3.1.4':
@@ -6604,7 +6603,7 @@ snapshots:
       eslint-visitor-keys: 4.2.1
       espree: 10.4.0
       estraverse: 5.3.0
-      picomatch: 4.0.5
+      picomatch: 4.0.7
 
   '@stylistic/stylelint-plugin@5.3.0(stylelint@17.14.1(supports-color@10.2.2)(typescript@6.0.3))':
     dependencies:
@@ -10723,7 +10722,7 @@ snapshots:
   vite@8.2.2(@types/node@26.4.0)(jiti@2.7.0)(yaml@2.9.0):
     dependencies:
       lightningcss: 1.33.0
-      picomatch: 4.0.5
+      picomatch: 4.0.7
       postcss: 8.5.26
       rolldown: 1.2.5
       tinyglobby: 0.2.17
