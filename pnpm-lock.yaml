@@ -251,8 +251,8 @@ catalogs:
       specifier: ^10.0.0
       version: 10.0.0
     markdown-it:
-      specifier: ^14.3.0
-      version: 14.3.0
+      specifier: ^14.3.1
+      version: 14.3.1
     nano-staged:
       specifier: ^1.0.2
       version: 1.0.2
@@ -293,15 +293,6 @@ catalogs:
     '@iconify/json':
       specifier: ^2.2.522
       version: 2.2.522
-    dashjs:
-      specifier: ^5.2.1
-      version: 5.2.1
-    hls.js:
-      specifier: ^1.7.1
-      version: 1.7.1
-    mpegts.js:
-      specifier: 1.7.3
-      version: 1.7.3
   prod:
     '@floating-ui/vue':
       specifier: ^2.0.1
@@ -428,7 +419,7 @@ importers:
         version: 10.0.0
       markdown-it:
         specifier: catalog:dev
-        version: 14.3.0
+        version: 14.3.1
       nano-staged:
         specifier: catalog:dev
         version: 1.0.2
@@ -788,7 +779,7 @@ importers:
     dependencies:
       '@mdit/plugin-inline-rule':
         specifier: catalog:prod
-        version: 2.2.0(markdown-it@14.3.0)
+        version: 2.2.0(markdown-it@14.3.1)
       '@vueuse/core':
         specifier: catalog:prod
         version: 14.4.0(vue@3.5.42(typescript@6.0.3))
@@ -866,7 +857,7 @@ importers:
         version: 4.0.3
       markdown-it:
         specifier: catalog:dev
-        version: 14.3.0
+        version: 14.3.1
       tinyglobby:
         specifier: catalog:prod
         version: 0.2.17
@@ -4372,8 +4363,8 @@ packages:
   markdown-it-container@4.0.0:
     resolution: {integrity: sha512-HaNccxUH0l7BNGYbFbjmGpf5aLHAMTinqRZQAEQbMr2cdD3z91Q6kIo1oUn1CQndkT03jat6ckrdRYuwwqLlQw==}
 
-  markdown-it@14.3.0:
-    resolution: {integrity: sha512-RCEsPjR+sr0x+AuYp601tKTkgFG4YEPLCzHST3cQ/fhlJkqAkz1L2/Qbp1j9qw5SBwQHFBoW8+hoN5xssOF0Tw==}
+  markdown-it@14.3.1:
+    resolution: {integrity: sha512-4Ej49aYTDFIQ+uBkfX8GBvJGccoARxxPep+7aWTs55ozbjQJpW9M26Fe53vnGgvLeVzva/amzjQQaQu9w0vMhA==}
     hasBin: true
 
   markdown-table@3.0.4:
@@ -6175,15 +6166,15 @@ snapshots:
 
   '@keyv/serialize@1.1.1': {}
 
-  '@mdit/helper@1.1.0(markdown-it@14.3.0)':
+  '@mdit/helper@1.1.0(markdown-it@14.3.1)':
     optionalDependencies:
-      markdown-it: 14.3.0
+      markdown-it: 14.3.1
 
-  '@mdit/plugin-inline-rule@2.2.0(markdown-it@14.3.0)':
+  '@mdit/plugin-inline-rule@2.2.0(markdown-it@14.3.1)':
     dependencies:
-      '@mdit/helper': 1.1.0(markdown-it@14.3.0)
+      '@mdit/helper': 1.1.0(markdown-it@14.3.1)
     optionalDependencies:
-      markdown-it: 14.3.0
+      markdown-it: 14.3.1
 
   '@mermaid-js/parser@1.2.1':
     dependencies:
@@ -6604,7 +6595,7 @@ snapshots:
       eslint-visitor-keys: 4.2.1
       espree: 10.4.0
       estraverse: 5.3.0
-      picomatch: 4.0.5
+      picomatch: 4.0.7
 
   '@stylistic/stylelint-plugin@5.3.0(stylelint@17.14.1(supports-color@10.2.2)(typescript@6.0.3))':
     dependencies:
@@ -9109,7 +9100,7 @@ snapshots:
 
   markdown-it-container@4.0.0: {}
 
-  markdown-it@14.3.0:
+  markdown-it@14.3.1:
     dependencies:
       argparse: 2.0.1
       entities: 4.5.0
@@ -10723,7 +10714,7 @@ snapshots:
   vite@8.2.2(@types/node@26.4.0)(jiti@2.7.0)(yaml@2.9.0):
     dependencies:
       lightningcss: 1.33.0
-      picomatch: 4.0.5
+      picomatch: 4.0.7
       postcss: 8.5.26
       rolldown: 1.2.5
       tinyglobby: 0.2.17
@@ -10744,7 +10735,7 @@ snapshots:
   vitepress-plugin-llms@1.13.5(supports-color@10.2.2):
     dependencies:
       '@11ty/gray-matter': 2.1.0
-      markdown-it: 14.3.0
+      markdown-it: 14.3.1
       markdown-title: 1.0.2
       mdast-util-from-markdown: 2.0.3(supports-color@10.2.2)
       millify: 6.1.0
