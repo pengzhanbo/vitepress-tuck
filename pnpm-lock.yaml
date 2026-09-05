@@ -209,8 +209,8 @@ catalogs:
       specifier: ^2.9.0
       version: 2.9.0
     '@pengzhanbo/stylelint-config':
-      specifier: ^2.9.0
-      version: 2.9.0
+      specifier: ^2.9.2
+      version: 2.9.2
     '@tsdown/css':
       specifier: ^0.22.14
       version: 0.22.14
@@ -293,15 +293,6 @@ catalogs:
     '@iconify/json':
       specifier: ^2.2.522
       version: 2.2.522
-    dashjs:
-      specifier: ^5.2.1
-      version: 5.2.1
-    hls.js:
-      specifier: ^1.7.1
-      version: 1.7.1
-    mpegts.js:
-      specifier: 1.7.3
-      version: 1.7.3
   prod:
     '@floating-ui/vue':
       specifier: ^2.0.1
@@ -383,7 +374,7 @@ importers:
         version: 2.9.0(@stylistic/eslint-plugin@5.10.0(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2)))(@typescript-eslint/parser@8.67.0(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@6.0.3))(@typescript-eslint/typescript-estree@8.67.0(supports-color@10.2.2)(typescript@6.0.3))(@typescript-eslint/utils@8.67.0(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@6.0.3))(@vue/compiler-sfc@3.5.42)(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(globals@17.10.0)(supports-color@10.2.2)(typescript@6.0.3)(vitest@4.1.11)
       '@pengzhanbo/stylelint-config':
         specifier: catalog:dev
-        version: 2.9.0(stylelint@17.14.1(supports-color@10.2.2)(typescript@6.0.3))
+        version: 2.9.2(stylelint@17.14.1(supports-color@10.2.2)(typescript@6.0.3))
       '@tsdown/css':
         specifier: catalog:dev
         version: 0.22.14(jiti@2.7.0)(postcss@8.5.23)(tsdown@0.22.14)(yaml@2.9.0)
@@ -1668,13 +1659,10 @@ packages:
       vue-eslint-parser:
         optional: true
 
-  '@pengzhanbo/stylelint-config@2.9.0':
-    resolution: {integrity: sha512-gE3z2qEuAt1GmO6AKlvOj1HlHw+l58XcwZV0YpXCDSClSFZMGdLY2xUmucSUuT01rNMX2CZECI1DcX/MIEC64g==}
+  '@pengzhanbo/stylelint-config@2.9.2':
+    resolution: {integrity: sha512-qAdmziZNJu2if7Wdy6218HspioaN/y/xvVnj/6XO1HCNgvjG1yk/QGbgMfFd8w75XjZbPcd5LzteTGNCbFiRhw==}
     peerDependencies:
       stylelint: ^17.14.1
-
-  '@pengzhanbo/utils@3.10.0':
-    resolution: {integrity: sha512-AY68WuXD85ZiHnMVsJEwEcnO917ctiW/kU+AisL2PfqfRIe2b2QV0Il9bHEsx4RecaQ8Ec5404TBTFX+KGud6A==}
 
   '@pengzhanbo/utils@3.11.0':
     resolution: {integrity: sha512-EUuj3hR9pmEMuZY429c0keqCgD919dcNrpS2XVsaiUPYgvFSU/BwMNb3tvyXNdsupNCRqvCytpdV1Vk61VF0Og==}
@@ -6356,9 +6344,9 @@ snapshots:
       - typescript
       - vitest
 
-  '@pengzhanbo/stylelint-config@2.9.0(stylelint@17.14.1(supports-color@10.2.2)(typescript@6.0.3))':
+  '@pengzhanbo/stylelint-config@2.9.2(stylelint@17.14.1(supports-color@10.2.2)(typescript@6.0.3))':
     dependencies:
-      '@pengzhanbo/utils': 3.10.0
+      '@pengzhanbo/utils': 3.11.0
       '@stylelint-types/stylelint-order': 8.1.1(stylelint-define-config@17.14.0(stylelint@17.14.1(supports-color@10.2.2)(typescript@6.0.3)))(stylelint@17.14.1(supports-color@10.2.2)(typescript@6.0.3))
       '@stylelint-types/stylelint-scss': 7.0.1(stylelint-define-config@17.14.0(stylelint@17.14.1(supports-color@10.2.2)(typescript@6.0.3)))(stylelint@17.14.1(supports-color@10.2.2)(typescript@6.0.3))
       '@stylelint-types/stylelint-stylistic': 5.1.0(stylelint-define-config@17.14.0(stylelint@17.14.1(supports-color@10.2.2)(typescript@6.0.3)))(stylelint@17.14.1(supports-color@10.2.2)(typescript@6.0.3))
@@ -6372,8 +6360,6 @@ snapshots:
       stylelint-config-standard-scss: 17.0.0(postcss@8.5.26)(stylelint@17.14.1(supports-color@10.2.2)(typescript@6.0.3))
       stylelint-define-config: 17.14.0(stylelint@17.14.1(supports-color@10.2.2)(typescript@6.0.3))
       stylelint-order: 8.1.1(stylelint@17.14.1(supports-color@10.2.2)(typescript@6.0.3))
-
-  '@pengzhanbo/utils@3.10.0': {}
 
   '@pengzhanbo/utils@3.11.0': {}
 
@@ -6604,7 +6590,7 @@ snapshots:
       eslint-visitor-keys: 4.2.1
       espree: 10.4.0
       estraverse: 5.3.0
-      picomatch: 4.0.5
+      picomatch: 4.0.7
 
   '@stylistic/stylelint-plugin@5.3.0(stylelint@17.14.1(supports-color@10.2.2)(typescript@6.0.3))':
     dependencies:
@@ -10723,7 +10709,7 @@ snapshots:
   vite@8.2.2(@types/node@26.4.0)(jiti@2.7.0)(yaml@2.9.0):
     dependencies:
       lightningcss: 1.33.0
-      picomatch: 4.0.5
+      picomatch: 4.0.7
       postcss: 8.5.26
       rolldown: 1.2.5
       tinyglobby: 0.2.17
