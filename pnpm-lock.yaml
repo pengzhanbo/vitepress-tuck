@@ -233,8 +233,8 @@ catalogs:
       specifier: ^12.2.2
       version: 12.2.2
     conventional-changelog:
-      specifier: 7.2.0
-      version: 7.2.0
+      specifier: 7.2.1
+      version: 7.2.1
     conventional-changelog-angular:
       specifier: 8.3.1
       version: 8.3.1
@@ -410,7 +410,7 @@ importers:
         version: 12.2.2
       conventional-changelog:
         specifier: catalog:dev
-        version: 7.2.0(conventional-commits-filter@5.0.0)
+        version: 7.2.1(conventional-commits-filter@5.0.0)
       conventional-changelog-angular:
         specifier: catalog:dev
         version: 8.3.1
@@ -2953,8 +2953,8 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  conventional-changelog@7.2.0:
-    resolution: {integrity: sha512-BEdgG+vPl53EVlTTk9sZ96aagFp0AQ5pw/ggiQMy2SClLbTo1r0l+8dSg79gkLOO5DS1Lswuhp5fWn6RwE+ivg==}
+  conventional-changelog@7.2.1:
+    resolution: {integrity: sha512-smcpqCeNRCAoL586/Iql8GfVsduP1JDrr7SAzKHWM5C5voDzKhc3QtqwVWeKMhvVw4iYfAr+znz1TF4kPXVm3A==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -6604,7 +6604,7 @@ snapshots:
       eslint-visitor-keys: 4.2.1
       espree: 10.4.0
       estraverse: 5.3.0
-      picomatch: 4.0.5
+      picomatch: 4.0.7
 
   '@stylistic/stylelint-plugin@5.3.0(stylelint@17.14.1(supports-color@10.2.2)(typescript@6.0.3))':
     dependencies:
@@ -7555,7 +7555,7 @@ snapshots:
       meow: 13.2.0
       semver: 7.8.5
 
-  conventional-changelog@7.2.0(conventional-commits-filter@5.0.0):
+  conventional-changelog@7.2.1(conventional-commits-filter@5.0.0):
     dependencies:
       '@conventional-changelog/git-client': 2.7.0(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.4.0)
       '@simple-libs/hosted-git-info': 1.0.2
@@ -10723,7 +10723,7 @@ snapshots:
   vite@8.2.2(@types/node@26.4.0)(jiti@2.7.0)(yaml@2.9.0):
     dependencies:
       lightningcss: 1.33.0
-      picomatch: 4.0.5
+      picomatch: 4.0.7
       postcss: 8.5.26
       rolldown: 1.2.5
       tinyglobby: 0.2.17
