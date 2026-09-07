@@ -20,40 +20,19 @@ npm install vitepress-plugin-watermark
 
 ## Usage
 
-This plugin only provides a client-side `setupWatermark` function, which must be called inside the
-`<script setup>` block of a Layout wrapper component.
-
-Create a custom Layout wrapper component:
-
-```vue [.vitepress/theme/Layout.vue]
-<script setup lang="ts">
-import { setupWatermark } from 'vitepress-plugin-watermark'
-import Theme from 'vitepress/theme'
-import { h, useAttrs, useSlots } from 'vue'
-
-const slots = useSlots()
-const attrs = useAttrs()
-
-const Layout = () => h(Theme.Layout, attrs, slots)
-
-setupWatermark()
-</script>
-
-<template>
-  <Layout />
-</template>
-```
-
-Then register this Layout in your theme:
+This plugin only provides the client-side `setupWatermark` function,
+which needs to be called in the theme's `setup` function to configure the watermark:
 
 ```ts [.vitepress/theme/index.ts]
 import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
-import Layout from './Layout.vue'
+import { setupWatermark } from 'vitepress-plugin-watermark'
 
 export default {
   extends: DefaultTheme,
-  Layout,
+  setup() {
+    setupWatermark({ /* Configure watermark here */ })
+  },
 } satisfies Theme
 ```
 

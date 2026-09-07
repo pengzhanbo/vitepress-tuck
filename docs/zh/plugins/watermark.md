@@ -20,39 +20,18 @@ npm install vitepress-plugin-watermark
 
 ## 使用
 
-此插件仅提供客户端 `setupWatermark` 函数，需要在 Layout 包装组件的 `<script setup>` 中调用。
-
-创建一个自定义的 Layout 包装组件：
-
-``` vue [.vitepress/theme/Layout.vue]
-<script setup lang="ts">
-import { setupWatermark } from 'vitepress-plugin-watermark'
-import Theme from 'vitepress/theme'
-import { h, useAttrs, useSlots } from 'vue'
-
-const slots = useSlots()
-const attrs = useAttrs()
-
-const Layout = () => h(Theme.Layout, attrs, slots)
-
-setupWatermark()
-</script>
-
-<template>
-  <Layout />
-</template>
-```
-
-然后在主题中注册此 Layout：
+此插件仅提供客户端 `setupWatermark` 函数，需要在主题 `setup` 函数中调用配置水印：
 
 ```ts [.vitepress/theme/index.ts]
 import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
-import Layout from './Layout.vue'
+import { setupWatermark } from 'vitepress-plugin-watermark'
 
 export default {
   extends: DefaultTheme,
-  Layout,
+  setup() {
+    setupWatermark({ /* 配置水印 */ })
+  },
 } satisfies Theme
 ```
 
