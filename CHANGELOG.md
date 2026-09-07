@@ -1,3 +1,9 @@
+## [0.12.2](https://github.com/pengzhanbo/vitepress-tuck/compare/v0.12.1...v0.12.2) (2026-09-07)
+
+### Bug Fixes
+
+* add optional chaining operator to `import.meta.env`, close [#55](https://github.com/pengzhanbo/vitepress-tuck/issues/55) ([#56](https://github.com/pengzhanbo/vitepress-tuck/issues/56)) ([717362f](https://github.com/pengzhanbo/vitepress-tuck/commit/717362f776e19b799e086150aad7ce8811a52218))
+
 ## [0.12.1](https://github.com/pengzhanbo/vitepress-tuck/compare/v0.12.0...v0.12.1) (2026-08-31)
 
 

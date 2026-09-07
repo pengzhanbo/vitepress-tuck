@@ -1,7 +1,7 @@
 {
   "name": "vitepress-tuck-monorepo",
   "type": "module",
-  "version": "0.12.1",
+  "version": "0.12.2",
   "private": true,
   "packageManager": "pnpm@12.3.4",
   "author": "pengzhanbo <q942450674@outlook.com> (https://github.com/pengzhanbo/)",
