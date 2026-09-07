@@ -1,24 +1,21 @@
-catalogMode: prefer
 ignoreWorkspaceRootCheck: true
+catalogMode: prefer
+blockExoticSubdeps: false
+minimumReleaseAgeExcludePrune: true
 
-shamefullyHoist: true
-shellEmulator: true
-fetchTimeout: 180000
 trustPolicy: no-downgrade
 trustPolicyExclude:
   - tinyexec
   - ast-v8-to-istanbul
 
 strictPeerDependencies: false
-blockExoticSubdeps: false
+fetchTimeout: 180000
+shamefullyHoist: true
+shellEmulator: true
 
 packages:
   - packages/*
   - docs
-
-allowBuilds:
-  esbuild: true
-  simple-git-hooks: true
 
 overrides:
   '@types/markdown-it': ^14.2.0
@@ -27,44 +24,48 @@ overrides:
   vue: catalog:prod
   vue-tsc: catalog:dev
 
+allowBuilds:
+  esbuild: true
+  simple-git-hooks: true
+
 catalogs:
   dev:
-    '@pengzhanbo/eslint-config-vue': ^2.9.0
-    '@pengzhanbo/stylelint-config': ^2.9.0
-    '@tsdown/css': ^0.22.14
+    '@pengzhanbo/eslint-config-vue': ^2.9.2
+    '@pengzhanbo/stylelint-config': ^2.9.2
+    '@tsdown/css': ^0.23.0
     '@types/markdown-it': ^14.2.0
-    '@types/markdown-it-container': ^4.0.0
-    '@types/node': ^26.4.0
+    '@types/markdown-it-container': ^4.0.1
+    '@types/node': ^26.4.1
     '@types/picomatch': ^4.0.3
     '@types/qrcode': ^1.5.6
-    '@vitest/coverage-v8': ^4.1.11
-    bumpp: ^12.2.2
-    conventional-changelog: 7.2.0
-    conventional-changelog-angular: 8.3.1
+    '@vitest/coverage-v8': ^5.0.0
+    bumpp: ^12.3.0
+    conventional-changelog: ^8.1.3
+    conventional-changelog-angular: ^9.4.0
     cpx2: ^9.0.0
     cross-env: ^10.1.0
-    eslint: ^10.9.1
+    eslint: ^10.10.0
     js-tokens: ^10.0.0
     markdown-it: ^14.3.0
     nano-staged: ^1.0.2
-    oxc-minify: ^0.147.0
+    oxc-minify: ^0.148.0
     rimraf: ^6.1.3
     simple-git-hooks: ^2.14.0
-    stylelint: ^17.14.1
-    tsdown: ^0.22.14
+    stylelint: ^17.15.0
+    tsdown: ^0.23.0
     typescript: ^6.0.3
     unplugin-vue: ^7.2.0
     unrun: ^0.3.1
     vite: ^8.2.2
     vitepress-plugin-group-icons: ^1.7.6
     vitepress-plugin-llms: ^1.13.5
-    vitest: ^4.1.11
+    vitest: ^5.0.0
     vue-tsc: ^3.3.11
 
   peer:
-    '@iconify/json': ^2.2.522
+    '@iconify/json': ^2.2.525
     dashjs: ^5.2.1
-    hls.js: ^1.7.1
+    hls.js: ^1.7.2
     mpegts.js: 1.7.3
 
   prod:
@@ -86,7 +87,7 @@ catalogs:
     tinyglobby: ^0.2.17
     unplugin-icons: ^23.0.1
     unplugin-vue-components: ^32.1.0
-    vitepress: ^2.0.0-alpha.19
+    vitepress: ^2.0.0-alpha.20
     vue: ^3.5.42
     watermark-js-plus: ^1.6.6
     yaml: ^2.9.0
