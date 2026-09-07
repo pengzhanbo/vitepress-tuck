@@ -1,0 +1,1 @@
+import{$t as e,At as t,D as n,Dt as r,It as i,_t as a,en as o,ft as s}from"./framework.SV1DZZ0b.js";var c=a({__name:`VPMark`,setup(a){let c=i(`mark`),l=n(c,{rootMargin:`-64px 0px 0px 0px`,threshold:1});return(n,i)=>(r(),s(`mark`,{ref_key:`mark`,ref:c,class:o({active:e(l)})},[t(n.$slots,`default`)],2))}});export{c as t};

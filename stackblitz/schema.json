@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "StackBlitz Config Schema",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "title": "The project title\n项目标题"
+    },
+    "description": {
+      "type": "string",
+      "title": "A short description for this project\n此项目的简短描述"
+    },
+    "template": {
+      "type": "string",
+      "enum": [
+        "angular-cli",
+        "create-react-app",
+        "html",
+        "javascript",
+        "typescript",
+        "polymer",
+        "vue",
+        "node"
+      ],
+      "title": "Determines how code compiles and runs\n决定代码如何编译和运行"
+    },
+    "dependencies": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Specifies npm dependencies\n指定 npm 依赖"
+    },
+    "settings": {
+      "type": "object",
+      "properties": {
+        "trigger": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "save",
+            "keystroke"
+          ],
+          "title": "Determines when the source changes should trigger compilation\n决定源文件更改触发编译的时机"
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "hmr",
+            "refresh"
+          ],
+          "title": "Determines how compiled changes should be injected\n决定编译更改的注入方式"
+        },
+        "clearConsole": {
+          "type": "boolean",
+          "title": "Determines if the Console should be cleared after compilation\n决定编译后是否应清除控制台"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Code compilation behavior\n代码编译行为"
+    },
+    "clickToLoad": {
+      "type": "boolean",
+      "title": "Shows a UI dialog asking users to run the project\n显示一个要求用户运行项目的UI对话框"
+    },
+    "devToolsHeight": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "title": "Sets the Console height (from 0 to 100)\n设置控制台高度 (从 0 到 100)"
+    },
+    "forceEmbedLayout": {
+      "type": "boolean",
+      "title": "Whether to use the embed layout or the full editor layout. This option is deprecated and will be removed in a future release\n选择使用嵌入布局还是完整编辑器布局。此选项已弃用，将在未来版本中移除。"
+    },
+    "hideDevTools": {
+      "type": "boolean",
+      "title": "Hides the Console completely\n完全隐藏控制台"
+    },
+    "hideExplorer": {
+      "type": "boolean",
+      "title": "Hides the ActivityBar\n隐藏活动栏"
+    },
+    "newWindow": {
+      "type": "boolean",
+      "title": "Opens the project in a new tab\n在新标签页中打开项目"
+    },
+    "openFile": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ],
+      "title": "Specifies which file(s) to open in the editor and code lines to highlight\n指定要在编辑器中打开的文件以及要高亮显示的代码行。"
+    },
+    "origin": {
+      "type": "string",
+      "title": "StackBlitz Enterprise Edition: sets the origin URL of the StackBlitz EE instance\nStackBlitz 企业版：设置 StackBlitz EE 实例的来源 URL"
+    },
+    "showSidebar": {
+      "type": "boolean",
+      "title": "Shows the Sidebar as open (true) or closed (false) on page load\n页面加载时显示侧边栏为打开 (true) 或关闭 (false) 的状态。"
+    },
+    "terminalHeight": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "title": "Sets the Terminal height (from 0 to 100)\n设置终端高度 (从 0 到 100)"
+    },
+    "theme": {
+      "type": "string",
+      "enum": [
+        "dark",
+        "light",
+        "default"
+      ],
+      "title": "Sets the desired color theme\n设置所需的颜色主题"
+    },
+    "view": {
+      "type": "string",
+      "enum": [
+        "default",
+        "preview",
+        "editor"
+      ],
+      "title": "Sets the initial UI view: editor, preview, or both\n设置初始UI视图: 编辑器、预览或两者"
+    },
+    "width": {
+      "type": "number",
+      "minimum": 0,
+      "title": "Sets the width of the embed iframe\n设置嵌入iframe的宽度"
+    },
+    "height": {
+      "type": "number",
+      "minimum": 0,
+      "title": "Sets the height of the embed iframe\n设置嵌入iframe的高度"
+    },
+    "$schema": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "description",
+    "template"
+  ],
+  "additionalProperties": false
+}
