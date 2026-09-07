@@ -30,7 +30,7 @@ const { expand, index } = defineProps<{
 
 const collapse = inject(COLLAPSE_KEY)
 
-if (import.meta.env.DEV && !collapse) {
+if (import.meta.env?.DEV && !collapse) {
   throw new Error('<VPCollapseItem /> must be used inside <VPCollapse />')
 }
 

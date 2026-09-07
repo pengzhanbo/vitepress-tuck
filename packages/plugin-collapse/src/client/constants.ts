@@ -16,5 +16,5 @@ export const COLLAPSE_KEY: InjectionKey<{
   accordion: boolean
   index: Ref<number | undefined>
 }> = Symbol(
-  import.meta.env.DEV ? 'collapse' : '',
+  import.meta.env?.DEV ? 'collapse' : '',
 )
