@@ -116,6 +116,9 @@ catalogs:
     '@tsdown/css':
       specifier: ^0.23.0
       version: 0.23.0
+    '@types/markdown-it':
+      specifier: ^14.2.0
+      version: 14.2.0
     '@types/markdown-it-container':
       specifier: ^4.0.1
       version: 4.0.1
@@ -191,6 +194,9 @@ catalogs:
     vitest:
       specifier: ^5.0.0
       version: 5.0.0
+    vue-tsc:
+      specifier: ^3.3.11
+      version: 3.3.11
   peer:
     '@iconify/json':
       specifier: ^2.2.525
@@ -259,6 +265,12 @@ catalogs:
     unplugin-vue-components:
       specifier: ^32.1.0
       version: 32.1.0
+    vitepress:
+      specifier: ^2.0.0-alpha.20
+      version: 2.0.0-alpha.20
+    vue:
+      specifier: ^3.5.42
+      version: 3.5.42
     watermark-js-plus:
       specifier: ^1.6.6
       version: 1.6.6
@@ -290,7 +302,7 @@ importers:
         specifier: catalog:dev
         version: 0.23.0(jiti@2.7.0)(postcss@8.5.28)(tsdown@0.23.0)(yaml@2.9.0)
       '@types/markdown-it':
-        specifier: ^14.2.0
+        specifier: catalog:dev
         version: 14.2.0
       '@types/markdown-it-container':
         specifier: catalog:dev
@@ -359,16 +371,16 @@ importers:
         specifier: catalog:dev
         version: 0.3.1(synckit@0.11.13)
       vitepress:
-        specifier: ^2.0.0-alpha.20
+        specifier: catalog:prod
         version: 2.0.0-alpha.20(@types/node@26.4.1)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.28)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
       vitest:
         specifier: catalog:dev
         version: 5.0.0(@types/node@26.4.1)(@vitest/coverage-v8@5.0.0)(vite@8.2.2(@types/node@26.4.1)(jiti@2.7.0)(yaml@2.9.0))
       vue:
-        specifier: ^3.5.42
+        specifier: catalog:prod
         version: 3.5.42(typescript@6.0.3)
       vue-tsc:
-        specifier: ^3.3.11
+        specifier: catalog:dev
         version: 3.3.11(typescript@6.0.3)
 
   docs:
@@ -377,7 +389,7 @@ importers:
         specifier: catalog:peer
         version: 2.2.525
       vitepress:
-        specifier: ^2.0.0-alpha.20
+        specifier: catalog:prod
         version: 2.0.0-alpha.20(@types/node@26.4.1)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.28)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
       vitepress-plugin-abbr:
         specifier: workspace:*
@@ -473,7 +485,7 @@ importers:
         specifier: catalog:prod
         version: 3.11.0
       vitepress:
-        specifier: ^2.0.0-alpha.20
+        specifier: ^2.0.0-alpha.18
         version: 2.0.0-alpha.20(@types/node@26.4.1)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.28)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
       vitepress-plugin-toolkit:
         specifier: workspace:*
@@ -482,7 +494,7 @@ importers:
         specifier: workspace:*
         version: link:../vitepress-tuck
       vue:
-        specifier: ^3.5.42
+        specifier: ^3.5.0
         version: 3.5.42(typescript@6.0.3)
 
   packages/plugin-annotation:
@@ -497,7 +509,7 @@ importers:
         specifier: catalog:prod
         version: 14.4.0(vue@3.5.42(typescript@6.0.3))
       vitepress:
-        specifier: ^2.0.0-alpha.20
+        specifier: ^2.0.0-alpha.18
         version: 2.0.0-alpha.20(@types/node@26.4.1)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.28)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
       vitepress-plugin-toolkit:
         specifier: workspace:*
@@ -506,7 +518,7 @@ importers:
         specifier: workspace:*
         version: link:../vitepress-tuck
       vue:
-        specifier: ^3.5.42
+        specifier: ^3.5.0
         version: 3.5.42(typescript@6.0.3)
 
   packages/plugin-caniuse:
@@ -515,7 +527,7 @@ importers:
         specifier: catalog:prod
         version: 14.4.0(vue@3.5.42(typescript@6.0.3))
       vitepress:
-        specifier: ^2.0.0-alpha.20
+        specifier: ^2.0.0-alpha.18
         version: 2.0.0-alpha.20(@types/node@26.4.1)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.28)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
       vitepress-plugin-toolkit:
         specifier: workspace:*
@@ -524,7 +536,7 @@ importers:
         specifier: workspace:*
         version: link:../vitepress-tuck
       vue:
-        specifier: ^3.5.42
+        specifier: ^3.5.0
         version: 3.5.42(typescript@6.0.3)
 
   packages/plugin-code-collapse:
@@ -533,7 +545,7 @@ importers:
         specifier: catalog:prod
         version: 14.4.0(vue@3.5.42(typescript@6.0.3))
       vitepress:
-        specifier: ^2.0.0-alpha.20
+        specifier: ^2.0.0-alpha.18
         version: 2.0.0-alpha.20(@types/node@26.4.1)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.28)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
       vitepress-plugin-toolkit:
         specifier: workspace:*
@@ -542,7 +554,7 @@ importers:
         specifier: workspace:*
         version: link:../vitepress-tuck
       vue:
-        specifier: ^3.5.42
+        specifier: ^3.5.0
         version: 3.5.42(typescript@6.0.3)
 
   packages/plugin-code-tree:
@@ -563,7 +575,7 @@ importers:
         specifier: catalog:prod
         version: 0.2.17
       vitepress:
-        specifier: ^2.0.0-alpha.20
+        specifier: ^2.0.0-alpha.18
         version: 2.0.0-alpha.20(@types/node@26.4.1)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.28)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
       vitepress-plugin-file-tree:
         specifier: workspace:*
@@ -575,13 +587,13 @@ importers:
         specifier: workspace:*
         version: link:../vitepress-tuck
       vue:
-        specifier: ^3.5.42
+        specifier: ^3.5.0
         version: 3.5.42(typescript@6.0.3)
 
   packages/plugin-codepen:
     dependencies:
       vitepress:
-        specifier: ^2.0.0-alpha.20
+        specifier: ^2.0.0-alpha.18
         version: 2.0.0-alpha.20(@types/node@26.4.1)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.28)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
       vitepress-plugin-toolkit:
         specifier: workspace:*
@@ -590,13 +602,13 @@ importers:
         specifier: workspace:*
         version: link:../vitepress-tuck
       vue:
-        specifier: ^3.5.42
+        specifier: ^3.5.0
         version: 3.5.42(typescript@6.0.3)
 
   packages/plugin-collapse:
     dependencies:
       vitepress:
-        specifier: ^2.0.0-alpha.20
+        specifier: ^2.0.0-alpha.18
         version: 2.0.0-alpha.20(@types/node@26.4.1)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.28)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
       vitepress-plugin-toolkit:
         specifier: workspace:*
@@ -605,7 +617,7 @@ importers:
         specifier: workspace:*
         version: link:../vitepress-tuck
       vue:
-        specifier: ^3.5.42
+        specifier: ^3.5.0
         version: 3.5.42(typescript@6.0.3)
 
   packages/plugin-field:
@@ -614,7 +626,7 @@ importers:
         specifier: catalog:prod
         version: 3.11.0
       vitepress:
-        specifier: ^2.0.0-alpha.20
+        specifier: ^2.0.0-alpha.18
         version: 2.0.0-alpha.20(@types/node@26.4.1)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.28)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
       vitepress-plugin-toolkit:
         specifier: workspace:*
@@ -623,7 +635,7 @@ importers:
         specifier: workspace:*
         version: link:../vitepress-tuck
       vue:
-        specifier: ^3.5.42
+        specifier: ^3.5.0
         version: 3.5.42(typescript@6.0.3)
 
   packages/plugin-file-tree:
@@ -635,7 +647,7 @@ importers:
         specifier: catalog:prod
         version: 14.4.0(vue@3.5.42(typescript@6.0.3))
       vitepress:
-        specifier: ^2.0.0-alpha.20
+        specifier: ^2.0.0-alpha.18
         version: 2.0.0-alpha.20(@types/node@26.4.1)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.28)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
       vitepress-plugin-toolkit:
         specifier: workspace:*
@@ -644,7 +656,7 @@ importers:
         specifier: workspace:*
         version: link:../vitepress-tuck
       vue:
-        specifier: ^3.5.42
+        specifier: ^3.5.0
         version: 3.5.42(typescript@6.0.3)
 
   packages/plugin-icons:
@@ -659,7 +671,7 @@ importers:
         specifier: catalog:prod
         version: 23.0.1(@vue/compiler-sfc@3.5.42)
       vitepress:
-        specifier: ^2.0.0-alpha.20
+        specifier: ^2.0.0-alpha.18
         version: 2.0.0-alpha.20(@types/node@26.4.1)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.28)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
       vitepress-plugin-toolkit:
         specifier: workspace:*
@@ -668,13 +680,13 @@ importers:
         specifier: workspace:*
         version: link:../vitepress-tuck
       vue:
-        specifier: ^3.5.42
+        specifier: ^3.5.0
         version: 3.5.42(typescript@6.0.3)
 
   packages/plugin-jsfiddle:
     dependencies:
       vitepress:
-        specifier: ^2.0.0-alpha.20
+        specifier: ^2.0.0-alpha.18
         version: 2.0.0-alpha.20(@types/node@26.4.1)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.28)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
       vitepress-plugin-toolkit:
         specifier: workspace:*
@@ -683,7 +695,7 @@ importers:
         specifier: workspace:*
         version: link:../vitepress-tuck
       vue:
-        specifier: ^3.5.42
+        specifier: ^3.5.0
         version: 3.5.42(typescript@6.0.3)
 
   packages/plugin-mark:
@@ -695,7 +707,7 @@ importers:
         specifier: catalog:prod
         version: 14.4.0(vue@3.5.42(typescript@6.0.3))
       vitepress:
-        specifier: ^2.0.0-alpha.20
+        specifier: ^2.0.0-alpha.18
         version: 2.0.0-alpha.20(@types/node@26.4.1)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.28)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
       vitepress-plugin-toolkit:
         specifier: workspace:*
@@ -704,7 +716,7 @@ importers:
         specifier: workspace:*
         version: link:../vitepress-tuck
       vue:
-        specifier: ^3.5.42
+        specifier: ^3.5.0
         version: 3.5.42(typescript@6.0.3)
 
   packages/plugin-mermaid-tuck:
@@ -719,7 +731,7 @@ importers:
         specifier: catalog:prod
         version: 11.17.2
       vitepress:
-        specifier: ^2.0.0-alpha.20
+        specifier: ^2.0.0-alpha.18
         version: 2.0.0-alpha.20(@types/node@26.4.1)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.28)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
       vitepress-plugin-toolkit:
         specifier: workspace:*
@@ -728,7 +740,7 @@ importers:
         specifier: workspace:*
         version: link:../vitepress-tuck
       vue:
-        specifier: ^3.5.42
+        specifier: ^3.5.0
         version: 3.5.42(typescript@6.0.3)
 
   packages/plugin-npm-to:
@@ -740,7 +752,7 @@ importers:
         specifier: catalog:prod
         version: 4.3.1
       vitepress:
-        specifier: ^2.0.0-alpha.20
+        specifier: ^2.0.0-alpha.18
         version: 2.0.0-alpha.20(@types/node@26.4.1)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.28)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
       vitepress-plugin-toolkit:
         specifier: workspace:*
@@ -749,7 +761,7 @@ importers:
         specifier: workspace:*
         version: link:../vitepress-tuck
       vue:
-        specifier: ^3.5.42
+        specifier: ^3.5.0
         version: 3.5.42(typescript@6.0.3)
 
   packages/plugin-obsidian:
@@ -773,7 +785,7 @@ importers:
         specifier: catalog:prod
         version: 0.2.17
       vitepress:
-        specifier: ^2.0.0-alpha.20
+        specifier: ^2.0.0-alpha.18
         version: 2.0.0-alpha.20(@types/node@26.4.1)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.28)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
       vitepress-plugin-toolkit:
         specifier: workspace:*
@@ -782,7 +794,7 @@ importers:
         specifier: workspace:*
         version: link:../vitepress-tuck
       vue:
-        specifier: ^3.5.42
+        specifier: ^3.5.0
         version: 3.5.42(typescript@6.0.3)
 
   packages/plugin-pdf:
@@ -794,7 +806,7 @@ importers:
         specifier: catalog:prod
         version: 14.4.0(vue@3.5.42(typescript@6.0.3))
       vitepress:
-        specifier: ^2.0.0-alpha.20
+        specifier: ^2.0.0-alpha.18
         version: 2.0.0-alpha.20(@types/node@26.4.1)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.28)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
       vitepress-plugin-toolkit:
         specifier: workspace:*
@@ -803,7 +815,7 @@ importers:
         specifier: workspace:*
         version: link:../vitepress-tuck
       vue:
-        specifier: ^3.5.42
+        specifier: ^3.5.0
         version: 3.5.42(typescript@6.0.3)
 
   packages/plugin-plantuml:
@@ -821,7 +833,7 @@ importers:
         specifier: catalog:prod
         version: 4.1.0
       vitepress:
-        specifier: ^2.0.0-alpha.20
+        specifier: ^2.0.0-alpha.18
         version: 2.0.0-alpha.20(@types/node@26.4.1)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.28)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
       vitepress-plugin-toolkit:
         specifier: workspace:*
@@ -830,7 +842,7 @@ importers:
         specifier: workspace:*
         version: link:../vitepress-tuck
       vue:
-        specifier: ^3.5.42
+        specifier: ^3.5.0
         version: 3.5.42(typescript@6.0.3)
 
   packages/plugin-plot:
@@ -839,7 +851,7 @@ importers:
         specifier: catalog:prod
         version: 14.4.0(vue@3.5.42(typescript@6.0.3))
       vitepress:
-        specifier: ^2.0.0-alpha.20
+        specifier: ^2.0.0-alpha.18
         version: 2.0.0-alpha.20(@types/node@26.4.1)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.28)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
       vitepress-plugin-toolkit:
         specifier: workspace:*
@@ -848,7 +860,7 @@ importers:
         specifier: workspace:*
         version: link:../vitepress-tuck
       vue:
-        specifier: ^3.5.42
+        specifier: ^3.5.0
         version: 3.5.42(typescript@6.0.3)
 
   packages/plugin-qrcode:
@@ -860,7 +872,7 @@ importers:
         specifier: catalog:prod
         version: 1.5.4
       vitepress:
-        specifier: ^2.0.0-alpha.20
+        specifier: ^2.0.0-alpha.18
         version: 2.0.0-alpha.20(@types/node@26.4.1)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.28)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
       vitepress-plugin-toolkit:
         specifier: workspace:*
@@ -869,7 +881,7 @@ importers:
         specifier: workspace:*
         version: link:../vitepress-tuck
       vue:
-        specifier: ^3.5.42
+        specifier: ^3.5.0
         version: 3.5.42(typescript@6.0.3)
 
   packages/plugin-repo-card:
@@ -881,7 +893,7 @@ importers:
         specifier: catalog:prod
         version: 4.3.1
       vitepress:
-        specifier: ^2.0.0-alpha.20
+        specifier: ^2.0.0-alpha.18
         version: 2.0.0-alpha.20(@types/node@26.4.1)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.28)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
       vitepress-plugin-toolkit:
         specifier: workspace:*
@@ -890,7 +902,7 @@ importers:
         specifier: workspace:*
         version: link:../vitepress-tuck
       vue:
-        specifier: ^3.5.42
+        specifier: ^3.5.0
         version: 3.5.42(typescript@6.0.3)
 
   packages/plugin-stackblitz:
@@ -911,7 +923,7 @@ importers:
         specifier: catalog:prod
         version: 0.2.17
       vitepress:
-        specifier: ^2.0.0-alpha.20
+        specifier: ^2.0.0-alpha.18
         version: 2.0.0-alpha.20(@types/node@26.4.1)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.28)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
       vitepress-plugin-toolkit:
         specifier: workspace:*
@@ -920,7 +932,7 @@ importers:
         specifier: workspace:*
         version: link:../vitepress-tuck
       vue:
-        specifier: ^3.5.42
+        specifier: ^3.5.0
         version: 3.5.42(typescript@6.0.3)
       yaml:
         specifier: catalog:prod
@@ -932,7 +944,7 @@ importers:
   packages/plugin-steps:
     dependencies:
       vitepress:
-        specifier: ^2.0.0-alpha.20
+        specifier: ^2.0.0-alpha.18
         version: 2.0.0-alpha.20(@types/node@26.4.1)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.28)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
       vitepress-plugin-toolkit:
         specifier: workspace:*
@@ -941,7 +953,7 @@ importers:
         specifier: workspace:*
         version: link:../vitepress-tuck
       vue:
-        specifier: ^3.5.42
+        specifier: ^3.5.0
         version: 3.5.42(typescript@6.0.3)
 
   packages/plugin-toolkit:
@@ -962,10 +974,10 @@ importers:
         specifier: catalog:prod
         version: 4.0.7
       vitepress:
-        specifier: ^2.0.0-alpha.20
+        specifier: ^2.0.0-alpha.18
         version: 2.0.0-alpha.20(@types/node@26.4.1)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.28)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
       vue:
-        specifier: ^3.5.42
+        specifier: ^3.5.0
         version: 3.5.42(typescript@6.0.3)
 
   packages/plugin-video:
@@ -995,7 +1007,7 @@ importers:
         specifier: catalog:peer
         version: 1.8.2
       vitepress:
-        specifier: ^2.0.0-alpha.20
+        specifier: ^2.0.0-alpha.18
         version: 2.0.0-alpha.20(@types/node@26.4.1)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.28)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
       vitepress-plugin-toolkit:
         specifier: workspace:*
@@ -1004,16 +1016,16 @@ importers:
         specifier: workspace:*
         version: link:../vitepress-tuck
       vue:
-        specifier: ^3.5.42
+        specifier: ^3.5.0
         version: 3.5.42(typescript@6.0.3)
 
   packages/plugin-watermark:
     dependencies:
       vitepress:
-        specifier: ^2.0.0-alpha.20
+        specifier: ^2.0.0-alpha.18
         version: 2.0.0-alpha.20(@types/node@26.4.1)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.28)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
       vue:
-        specifier: ^3.5.42
+        specifier: ^3.5.0
         version: 3.5.42(typescript@6.0.3)
       watermark-js-plus:
         specifier: catalog:prod
@@ -1028,7 +1040,7 @@ importers:
         specifier: catalog:prod
         version: 32.1.0(rolldown@1.2.7)(vite@8.2.2(@types/node@26.4.1)(jiti@2.7.0)(yaml@2.9.0))(vue@3.5.42(typescript@6.0.3))
       vitepress:
-        specifier: ^2.0.0-alpha.20
+        specifier: ^2.0.0-alpha.18
         version: 2.0.0-alpha.20(@types/node@26.4.1)(change-case@5.4.4)(jiti@2.7.0)(postcss@8.5.28)(qrcode@1.5.4)(typescript@6.0.3)(yaml@2.9.0)
 
 packages:
