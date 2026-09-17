@@ -1,6 +1,73 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
+    "config:recommended",
+    ":semanticCommits",
+    "security:minimumReleaseAgeNpm",
+    ":timezone(Asia/Shanghai)"
+  ],
+  "rangeStrategy": "bump",
+  "automerge": false,
+  "platformAutomerge": false,
+  "osvVulnerabilityAlerts": true,
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "automerge": false
+  },
+  "packageRules": [
+    {
+      "description": "prod catalog（发布包运行时依赖）：minor/patch 合并为一个 PR",
+      "matchDepTypes": ["pnpm.catalog.prod"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "pnpm catalog prod (non-major)",
+      "groupSlug": "catalog-prod"
+    },
+    {
+      "description": "prod catalog：major 单独成 PR，验证兼容性后再合并",
+      "matchDepTypes": ["pnpm.catalog.prod"],
+      "matchUpdateTypes": ["major"],
+      "groupName": "pnpm catalog prod (major)",
+      "groupSlug": "catalog-prod-major"
+    },
+    {
+      "description": "dev catalog（构建/测试工具链）：minor/patch 合并为一个 PR",
+      "matchDepTypes": ["pnpm.catalog.dev"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "pnpm catalog dev (non-major)",
+      "groupSlug": "catalog-dev"
+    },
+    {
+      "description": "dev catalog：major 单独成 PR",
+      "matchDepTypes": ["pnpm.catalog.dev"],
+      "matchUpdateTypes": ["major"],
+      "groupName": "pnpm catalog dev (major)",
+      "groupSlug": "catalog-dev-major"
+    },
+    {
+      "description": "peer catalog（可选 peer 依赖）：minor/patch 合并为一个 PR",
+      "matchDepTypes": ["pnpm.catalog.peer"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "pnpm catalog peer (non-major)",
+      "groupSlug": "catalog-peer"
+    },
+    {
+      "description": "peer catalog：major 单独成 PR",
+      "matchDepTypes": ["pnpm.catalog.peer"],
+      "matchUpdateTypes": ["major"],
+      "groupName": "pnpm catalog peer (major)",
+      "groupSlug": "catalog-peer-major"
+    },
+    {
+      "description": "pnpm-workspace.yaml 的 overrides：合并为一个 PR，避免逐个依赖产生 PR",
+      "matchDepTypes": ["pnpm-workspace.overrides", "pnpm.overrides"],
+      "groupName": "pnpm overrides",
+      "groupSlug": "pnpm-overrides"
+    },
+    {
+      "description": "GitHub Actions：合并为一个 PR",
+      "matchManagers": ["github-actions"],
+      "groupName": "GitHub Actions",
+      "groupSlug": "github-actions"
+    }
   ]
 }
