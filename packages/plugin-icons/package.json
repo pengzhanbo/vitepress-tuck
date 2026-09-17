@@ -38,7 +38,7 @@
   },
   "peerDependencies": {
     "@iconify/json": "catalog:peer",
-    "vitepress": "^2.0.0-alpha.18",
+    "vitepress": "^2.0.0-alpha.20",
     "vue": "^3.5.0"
   },
   "peerDependenciesMeta": {
