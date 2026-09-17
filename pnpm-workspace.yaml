@@ -24,6 +24,7 @@ overrides:
   vitepress: catalog:prod
   vue: catalog:prod
   vue-tsc: catalog:dev
+  yaml: catalog:prod
 
 allowBuilds:
   esbuild: true
