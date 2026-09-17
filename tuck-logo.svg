@@ -1,0 +1,46 @@
+<svg viewBox="0 0 160 192" fill="none" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+  <g clip-path="url(#clip0_1288_1252)">
+    <path d="M.127 43.899c-.99-6.773 3.919-13.036 10.965-13.988l102.06-13.789c7.045-.952 13.56 3.767 14.55 10.54l20.171 137.973c.99 6.774-3.919 13.036-10.965 13.988l-97.807 13.214c-9.395 1.27-18.08-5.023-19.4-14.053L.126 43.899z" fill="url(#paint0_linear_1288_1252)"/>
+    <path d="M10.138 30.573c-1.073-7.694 4.245-14.808 11.877-15.89L124.678.14c7.632-1.082 14.689 4.28 15.762 11.973l19.422 139.315c1.073 7.694-4.245 14.808-11.877 15.89L45.322 181.861c-7.632 1.082-14.69-4.279-15.762-11.973L10.138 30.573z" fill="url(#paint1_linear_1288_1252)"/>
+    <path d="M19.098 33.742c-.763-5.467 3.02-10.521 8.45-11.29L121.947 9.1c5.43-.769 10.451 3.04 11.215 8.506l18.241 130.653c.763 5.467-3.02 10.521-8.451 11.289l-94.397 13.354c-5.43.769-10.451-3.04-11.215-8.506L19.098 33.742z" fill="#fff"/>
+    <text style="text-align:start" x="40.266" y="144.239" transform="rotate(-8.005)" font-weight="700" font-size="21.333" font-family="sans-serif" fill="url(#linearGradient26)"><tspan x="42.266" y="144.239">TCUK</tspan></text>
+    <path d="M118.649 103.244l-61.826 8.132c-2.44.321-4.139 2.431-3.796 4.714l4.034 26.865c.343 2.282 2.598 3.872 5.037 3.552l61.826-8.132c2.439-.321 4.139-2.432 3.796-4.714l-4.034-26.865c-.343-2.283-2.598-3.873-5.037-3.552z" stroke="url(#paint2_linear_1288_1252)" stroke-width="4"/>
+    <path d="M106.461 37.673L85.09 89.181c-.442 1.064-1.943 1.273-2.68.374l-35.847-43.77c-.803-.98-.022-2.404 1.295-2.362l29.054.933c.186.006.37-.02.547-.075l27.07-8.521c1.249-.393 2.411.758 1.932 1.913z" fill="url(#paint4_linear_1288_1252)"/>
+    <path d="M88.812 31.5l-20.4 6.703a.738.738 0 0 0-.523.752l1.702 20.672c.04.487.566.798 1.05.621l5.652-2.057c.53-.193 1.089.193 1.052.725l-.568 8.227c-.038.553.565.94 1.1.705l3.455-1.518c.535-.236 1.14.153 1.1.707l-.924 12.926c-.058.809 1.114 1.087 1.479.35l.244-.49L95.63 45.425c.208-.576-.375-1.122-.985-.923l-5.849 1.904c-.55.18-1.101-.25-1.018-.792l2.055-13.324c.083-.542-.472-.972-1.021-.791z" fill="url(#paint5_linear_1288_1252)"/>
+  </g>
+  <defs id="defs19">
+    <linearGradient id="linearGradient25">
+      <stop offset="0" stop-color="#41d1ff" stop-opacity=".961"/>
+      <stop offset="1" stop-color="#bd34fe"/>
+    </linearGradient>
+    <linearGradient id="paint0_linear_1288_1252" x1=".448" y1="16.413" x2="148.448" y2="191.541" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#508AB7"/>
+      <stop offset="1" stop-color="#2D1342"/>
+    </linearGradient>
+    <linearGradient id="paint1_linear_1288_1252" x1="11.186" y1="19.154" x2="158.875" y2="162.67" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#49C7FF"/>
+      <stop offset="1" stop-color="#BD36FF"/>
+    </linearGradient>
+    <linearGradient id="paint2_linear_1288_1252" x1="56.68" y1="114.377" x2="122.209" y2="145.088" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#49C8FF"/>
+      <stop offset="1" stop-color="#BE35FF"/>
+    </linearGradient>
+    <linearGradient id="paint3_linear_1288_1252" x1="61.292" y1="123.344" x2="119.455" y2="123.344" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4BC7FF"/>
+      <stop offset="1" stop-color="#B93DFF"/>
+    </linearGradient>
+    <linearGradient id="paint4_linear_1288_1252" x1="45.296" y1="42.033" x2="84.585" y2="84.667" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#41D1FF"/>
+      <stop offset="1" stop-color="#BD34FE"/>
+    </linearGradient>
+    <linearGradient id="paint5_linear_1288_1252" x1="73.829" y1="34.598" x2="85.124" y2="75.213" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFEA83"/>
+      <stop offset=".083" stop-color="#FFDD35"/>
+      <stop offset="1" stop-color="#FFA800"/>
+    </linearGradient>
+    <clipPath id="clip0_1288_1252">
+      <path fill="#fff" id="rect19" d="M0 0h160v192H0z"/>
+    </clipPath>
+    <linearGradient xlink:href="#linearGradient25" id="linearGradient26" x1="40.693" y1="136.494" x2="104.026" y2="136.494" gradientUnits="userSpaceOnUse"/>
+  </defs>
+</svg>
