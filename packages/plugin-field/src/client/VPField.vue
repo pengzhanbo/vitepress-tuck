@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { VPLink } from 'vitepress/theme'
+import { useLocale } from './locales.js'
 
 /**
  * Vue component that renders a single field documentation entry.
@@ -20,40 +21,84 @@ import { computed } from 'vue'
  * </VPField>
  * ```
  */
-const { name, type, required, optional, deprecated, defaultValue } = defineProps<{
-  /** Field name displayed as the title / 显示为标题的字段名称 */
+defineProps<{
   name: string
-  /** Type annotation rendered as inline code / 以行内代码渲染的类型注解 */
+  slug: string
   type?: string
-  /** Whether the field is required (shows "Required" badge) / 字段是否为必填（显示 "Required" 徽章） */
+  typeLink?: string
   required?: boolean
-  /** Whether the field is optional (shows "Optional" badge) / 字段是否为可选（显示 "Optional" 徽章） */
-  optional?: boolean
-  /** Whether the field is deprecated (shows "Deprecated" badge) / 字段是否已弃用（显示 "Deprecated" 徽章） */
-  deprecated?: boolean
-  /** Default value rendered as inline code / 以行内代码渲染的默认值 */
+  deprecated?: boolean | string
+  experimental?: boolean | string
   defaultValue?: string
+  since?: string
+  unit?: string
+  format?: string
+  constraint?: string
 }>()
 
-/**
- * Resolves the badge label based on the required/optional flags.
- *
- * 根据 required/optional 标志解析徽章标签。
- */
-const badge = computed(() => required ? 'Required' : optional ? 'Optional' : '')
+const locale = useLocale()
 </script>
 
 <template>
-  <div class="vp-field" :class="{ required, optional, deprecated }">
-    <p class="field-meta">
-      <span class="name">{{ name }}</span>
-      <span v-if="badge" :class="{ required, optional }">{{ badge }}</span>
-      <span v-if="deprecated" class="deprecated">Deprecated</span>
-      <span v-if="type" class="type"><code>{{ type }}</code></span>
-    </p>
-    <p v-if="defaultValue" class="default-value">
-      <code>{{ defaultValue }}</code>
-    </p>
+  <div
+    :id="slug" class="vp-field"
+    :class="{ required, deprecated, optional: !required && !deprecated, experimental }"
+  >
+    <div class="field-meta">
+      <div class="meta-left align-start">
+        <p class="meta-name">
+          <span class="visually-hidden">Name:</span>
+          <span class="name">{{ name }}</span>
+          <a :href="`#${slug}`" class="header-anchor" :aria-label="`Permalink to “${name}”`">&ZeroWidthSpace;</a>
+        </p>
+        <p>
+          <span v-if="deprecated" class="deprecated">
+            {{ locale.deprecated || 'Deprecated' }}<template v-if="deprecated && typeof deprecated === 'string'">: {{ decodeURIComponent(deprecated) }}</template>
+          </span>
+          <span v-else-if="required" class="required">{{ locale.required || 'Required' }}</span>
+          <span v-else class="optional">{{ locale.optional || 'Optional' }}</span>
+          <span v-if="experimental" class="experimental">
+            {{ locale.experimental || 'Experimental' }}<template v-if="experimental && typeof experimental === 'string'">: {{ decodeURIComponent(experimental) }}</template>
+          </span>
+        </p>
+      </div>
+      <div v-if="type" class="meta-right type">
+        <span class="visually-hidden">Type:</span>
+        <VPLink v-if="typeLink" :href="typeLink">
+          <code title="Type" aria-label="Type">{{ decodeURIComponent(type) }}</code>
+        </VPLink>
+        <code v-else title="Type" aria-label="Type">{{ decodeURIComponent(type) }}</code>
+      </div>
+    </div>
+
+    <div class="field-meta baseline">
+      <div class="meta-left">
+        <p v-if="defaultValue" class="default-value">
+          <span class="key">{{ locale.default || 'Default' }}:</span>
+          <code>{{ decodeURIComponent(defaultValue) }}</code>
+        </p>
+        <p v-if="$slots.enum" class="enum">
+          <span class="key">{{ locale.enum || 'Enum' }}:</span>
+          <slot name="enum" />
+        </p>
+        <p v-if="unit" class="unit">
+          <span class="key">{{ locale.unit || 'Unit' }}:</span>
+          <code>{{ decodeURIComponent(unit) }}</code>
+        </p>
+        <p v-if="format" class="format">
+          <span class="key">{{ locale.format || 'Format' }}:</span>
+          <code>{{ decodeURIComponent(format) }}</code>
+        </p>
+        <p v-if="constraint" class="constraint">
+          <span class="key">{{ locale.constraint || 'Constraint' }}:</span>
+          <code>{{ decodeURIComponent(constraint) }}</code>
+        </p>
+      </div>
+      <div v-if="since" class="meta-right since">
+        <span class="key">{{ locale.since || 'Since' }}:</span>
+        <code>{{ decodeURIComponent(since) }}</code>
+      </div>
+    </div>
     <div v-if="$slots.default" class="description">
       <slot />
     </div>

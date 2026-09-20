@@ -1,19 +1,64 @@
 .vp-field {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   width: 100%;
-  margin: 16px 0;
+  margin-block: 16px;
+  margin-inline: 0;
   transition: border-color 0.25s ease;
 }
 
 .vp-field + .vp-field {
-  padding-top: 8px;
+  padding-block-start: 12px;
   border-top: solid 1px var(--vp-c-divider);
 }
 
-.vp-field .field-meta {
+.vp-field .field-meta,
+.vp-field .field-meta :where(.meta-left,.meta-right) {
   display: flex;
-  gap: 8px;
-  align-items: flex-start;
-  margin: 8px 0;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.vp-field .field-meta {
+  justify-content: space-between;
+}
+
+@media (max-width: 768px) {
+  .vp-field .field-meta.baseline {
+    flex-direction: column;
+  }
+}
+
+.vp-field .field-meta :where(.meta-left,.meta-right) > p {
+  margin: 0;
+}
+
+.vp-field .field-meta.baseline {
+  gap: 8px 12px;
+  align-items: baseline;
+}
+
+.vp-field .field-meta .meta-left {
+  gap: 8px 12px;
+}
+
+.vp-field .field-meta .meta-left.align-start {
+  align-self: flex-start;
+}
+
+.vp-field .field-meta .meta-name {
+  position: relative;
+}
+
+.vp-field .field-meta .meta-name .header-anchor {
+  top: 0.25em;
+}
+
+.vp-field .field-meta .meta-name:hover .header-anchor {
+  opacity: 1;
 }
 
 .vp-field .field-meta .name {
@@ -25,15 +70,15 @@
   text-decoration: line-through;
 }
 
-.vp-field .field-meta .required,
-.vp-field .field-meta .optional,
-.vp-field .field-meta .deprecated {
+.vp-field .field-meta :where(.required,.optional,.deprecated,.experimental) {
   display: inline-block;
-  padding: 2px 8px;
+  padding-block: 2px;
+  padding-inline: 8px;
   font-size: 12px;
   font-style: italic;
   line-height: 1;
   border-radius: 8px;
+  transform: translateY(-6px);
 }
 
 .vp-field .field-meta .required {
@@ -51,27 +96,87 @@
   border: solid 1px var(--vp-c-danger-2);
 }
 
-.vp-field .field-meta .type {
-  flex: 1 2;
-  text-align: right;
+.vp-field .field-meta .experimental {
+  color: var(--vp-c-warning-2);
+  border: solid 1px var(--vp-c-warning-2);
 }
 
-.vp-field .default-value {
+.vp-field.deprecated .field-meta .name {
+  color: var(--vp-c-text-2);
+}
+
+.vp-field .field-meta .meta-left .header-anchor::before {
+  top: 6px;
+}
+
+.vp-field .field-meta .meta-left > p,
+.vp-field .field-meta .meta-right:not(.type) {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: flex-start;
   margin: 0;
   font-size: 14px;
   line-height: 1.7;
-  transform: translateY(-4px);
+}
+
+.vp-field .field-meta .meta-right.type a::after {
+  display: none;
+}
+
+.vp-field .field-meta :where(.since,.unit,.format,.constraint) code {
+  padding-block: 0;
+  padding-inline: 6px;
+  color: var(--vp-c-text-3);
+}
+
+@media (min-width: 768px) {
+  .vp-field .field-meta .meta-right.type {
+    flex: 1 2;
+    justify-content: flex-end;
+  }
+}
+
+.vp-field .field-meta .enum span:not(:first-child) {
+  display: inline-block;
+  padding-block: 0;
+  padding-inline: 6px;
+  font-size: 12px;
+  font-style: italic;
+  line-height: 1.7;
+  color: var(--vp-c-text-3);
+  background-color: var(--vp-code-bg);
+  border: solid 1px var(--vp-c-divider);
+  border-radius: 4px;
+}
+
+.vp-field .field-meta .key {
+  font-weight: 500;
+  color: var(--vp-c-text-3);
 }
 
 .vp-field .description :where(p, ul, ol) {
-  margin: 8px 0;
+  margin-block: 8px;
+  margin-inline: 0;
   line-height: 24px;
+}
+
+.vp-field .description :first-child {
+  margin-block-start: 0;
+}
+
+.vp-field .description :last-child {
+  margin-block-end: 0;
+}
+
+.vp-field.deprecated .description :where(p) {
   color: var(--vp-c-text-2);
 }
 
 .vp-field-group {
-  padding: 0 20px;
-  margin: 16px 0;
+  padding-inline: 20px;
+  margin-block: 16px;
+  margin-inline: 0;
   border: solid 1px var(--vp-c-divider);
   border-radius: 6px;
 }

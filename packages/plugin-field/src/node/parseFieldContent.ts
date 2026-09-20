@@ -1,3 +1,4 @@
+import type { LiteralUnion } from '@pengzhanbo/utils'
 /**
  * Parsed result from a `::: field` container block.
  *
@@ -16,6 +17,13 @@ export interface FieldObject {
    * 类型注解 — 如果未设置则为 `undefined`
    */
   type?: string
+
+  /**
+   * `@typeLink` value
+   *
+   * 类型引用链接
+   */
+  typelink?: string
   /**
    * `@default` value, preserved as-is
    *
@@ -25,27 +33,60 @@ export interface FieldObject {
   /**
    * Whether `@required` is present
    *
-   * 是否为必填项 — 是否在 `@required` 标签中
+   * 是否为必填项
    */
   required?: boolean
   /**
-   * Whether `@deprecated` is present
+   * Whether `@deprecated` is present, or a version/date string describing when it was deprecated
    *
-   * 是否为已弃用项 — 是否在 `@deprecated` 标签中
+   * 是否为已弃用项；也可以为描述弃用版本或日期的字符串
    */
-  deprecated?: boolean
+  deprecated?: boolean | string
   /**
-   * Whether `@optional` is present
+   * Whether `@experimental` is present, or a version/date string describing when it was introduced
    *
-   * 是否为可选项 — 是否在 `@optional` 标签中
+   * 是否为实验性项；也可以为描述实验版本或日期的字符串
    */
-  optional?: boolean
+  experimental?: boolean | string
   /**
    * Description text, may span multiple lines joined by `\n`
    *
    * 描述文本 — 可跨多行，以 `\n` 连接
    */
   description?: string
+  /**
+   * `@enum` candidate values, appended across lines, quotes preserved
+   *
+   * `@enum` 候选值 — 多个 `@enum` 行追加，保留引号
+   */
+  enum?: string[]
+
+  /**
+   * `@unit` value
+   *
+   * 单位注解
+   */
+  unit?: string
+
+  /**
+   * `@format` value
+   *
+   * 格式注解
+   */
+  format?: string
+
+  /**
+   * `@constraint` value
+   *
+   * 约束注解
+   */
+  constraint?: string
+  /**
+   * Value of the first `@since`, undefined if absent
+   *
+   * 首个 `@since` 的值 — 未设置则为 `undefined`
+   */
+  since?: string
 }
 
 /**
@@ -53,15 +94,23 @@ export interface FieldObject {
  *
  * 携带结构化含义的标签；其他内容均视为描述文本。
  */
-const KNOWN_TAGS = new Set([
+const KNOWN_TAGS = new Set<LiteralUnion<keyof FieldObject>>([
   'name',
   'type',
+  'typelink',
   'default',
   'required',
   'deprecated',
-  'optional',
+  'experimental',
   'description',
+  'enum',
+  'unit',
+  'format',
+  'constraint',
+  'since',
 ])
+
+const BACKTICK_RE = /^`|`$/g
 
 /**
  * Parse the body of a `::: field` container into a structured `FieldObject`.
@@ -69,11 +118,17 @@ const KNOWN_TAGS = new Set([
  * Supports a JSDoc-style tag syntax:
  * - `@name` — override the field name (derived from `info` by default)
  * - `@type` — type annotation
+ * - `@typeLink` — type reference link
  * - `@default` — default value
  * - `@required` — mark as required (boolean flag)
- * - `@deprecated` — mark as deprecated (boolean flag)
- * - `@optional` — mark as optional (boolean flag)
+ * - `@deprecated` — mark as deprecated (boolean flag), or provide the version/date of deprecation
+ * - `@experimental` — mark as experimental (boolean flag), or provide the version/date when it was introduced
  * - `@description` — explicit description; any non-tag line also feeds into description
+ * - `@enum` — candidate values split by `|`, appended across lines, quotes preserved
+ * - `@since` — version/date string, only the first occurrence is kept
+ * - `@unit` — unit annotation
+ * - `@format` — format annotation
+ * - `@constraint` — constraint annotation
  *
  * Unknown `@`-prefixed tags are treated as description text.
  * Empty lines are ignored and never interrupt a description paragraph.
@@ -83,17 +138,23 @@ const KNOWN_TAGS = new Set([
  * 支持类 JSDoc 的标签语法：
  * - `@name` — 覆盖字段名称（默认从 `info` 派生）
  * - `@type` — 类型注解
+ * - `@typeLink` — 类型引用链接
  * - `@default` — 默认值
  * - `@required` — 标记为必需（布尔标志）
- * - `@deprecated` — 标记为已弃用（布尔标志）
- * - `@optional` — 标记为可选（布尔标志）
+ * - `@deprecated` — 标记为已弃用（布尔标志），或提供弃用版本/日期
+ * - `@experimental` — 标记为实验性（布尔标志），或提供引入的版本/日期
  * - `@description` — 显式描述；任何非标签行也会被纳入描述
+ * - `@enum` — 候选值，以 `|` 分隔，多个 `@enum` 行追加，保留引号
+ * - `@since` — 版本/日期字符串，只保留第一个出现的值
+ * - `@unit` — 单位注解
+ * - `@format` — 格式注解
+ * - `@constraint` — 约束注解
  *
  * 未知的以 `@` 开头的标签将被视为描述文本。
  * 空行会被忽略，且不会中断描述段落。
  *
- * @param content - Raw text inside the `:::` container / `:::` 容器内的原始文本
- * @param info - Text after `::: field` on the opening line (the field name) / 起始行中 `::: field` 之后的文本（字段名称）
+ * @param content Raw text inside the `:::` container
+ * @param info    Text after `::: field` on the opening line (the field name)
  */
 export function parseFieldContent(content: string, info: string): FieldObject {
   const lines = content.split('\n')
@@ -120,7 +181,8 @@ export function parseFieldContent(content: string, info: string): FieldObject {
     }
   }
 
-  for (const rawLine of lines) {
+  for (let cur = 0; cur < lines.length; cur++) {
+    const rawLine = lines[cur]
     const line = rawLine.trim()
 
     if (line.startsWith('@')) {
@@ -139,6 +201,11 @@ export function parseFieldContent(content: string, info: string): FieldObject {
         rest = line.slice(spaceIdx + 1).trim()
       }
 
+      // `@optional` 已废弃，不被解析
+      if (tag === 'optional') {
+        continue
+      }
+
       if (KNOWN_TAGS.has(tag)) {
         // A known tag ends the current description paragraph.
         flushDesc()
@@ -146,16 +213,35 @@ export function parseFieldContent(content: string, info: string): FieldObject {
         switch (tag) {
           case 'name':
           case 'type':
+          case 'typelink':
           case 'default':
-            rest && (result[tag] = rest)
+          case 'unit':
+          case 'format':
+          case 'constraint':
+            rest && (result[tag] = rest.replace(BACKTICK_RE, '')) // remove backticks
             break
           case 'required':
-          case 'deprecated':
-          case 'optional':
             result[tag] = true
+            break
+          case 'deprecated':
+          case 'experimental':
+            // bare tag → boolean flag; tag with value → version/date string
+            result[tag] = rest ? rest.replace(BACKTICK_RE, '') : true
             break
           case 'description':
             currentDesc = rest
+            break
+          case 'enum':
+            if (rest) {
+              const items = rest.split('|').map(v => v.trim())
+              const target = (result.enum ??= [])
+              target.push(...items)
+            }
+            break
+          case 'since':
+            if (rest && !result.since) {
+              result.since = rest.replace(BACKTICK_RE, '')
+            }
             break
         }
       }

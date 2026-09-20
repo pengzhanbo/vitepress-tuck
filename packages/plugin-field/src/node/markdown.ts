@@ -1,7 +1,7 @@
 import type { PluginSimple } from 'markdown-it'
 import type { MarkdownEnv } from 'vitepress'
-import { isUndefined } from '@pengzhanbo/utils'
-import { createContainerPlugin, createContainerSyntaxPlugin, stringifyAttrs } from 'vitepress-plugin-toolkit'
+import { isString, isUndefined } from '@pengzhanbo/utils'
+import { createContainerPlugin, createContainerSyntaxPlugin, slugify, stringifyAttrs } from 'vitepress-plugin-toolkit'
 import { parseFieldContent } from './parseFieldContent.js'
 
 /**
@@ -36,11 +36,55 @@ export const fieldMarkdownPlugin: PluginSimple = (md) => {
 
   createContainerSyntaxPlugin(md, 'field', (tokens, idx, _, env: MarkdownEnv) => {
     const { info, content } = tokens[idx]
-    const { description, type, default: defaultValue, ...props } = parseFieldContent(content, info)
-    return `<VPField${stringifyAttrs(props)}${
-      isUndefined(type) ? '' : ` type="${md.utils.escapeHtml(type)}"`
-    }${
-      isUndefined(defaultValue) ? '' : ` default-value="${md.utils.escapeHtml(defaultValue)}"`
-    }>${description ? md.render(description, env) : ''}</VPField>`
+    const parsed = parseFieldContent(content, info)
+    const props = {
+      name: parsed.name,
+      type: encodeData(parsed.type),
+      typeLink: parsed.typelink,
+      required: parsed.required,
+      deprecated: isString(parsed.deprecated) ? encodeData(parsed.deprecated) : parsed.deprecated,
+      experimental: isString(parsed.experimental) ? encodeData(parsed.experimental) : parsed.experimental,
+      defaultValue: encodeData(parsed.default),
+      slug: createSlug(parsed.name, env),
+      since: encodeData(parsed.since),
+      unit: encodeData(parsed.unit),
+      format: encodeData(parsed.format),
+      constraint: encodeData(parsed.constraint),
+    }
+    // 可选值
+    const enums = parsed.enum?.length
+      ? `<template #enum>${parsed.enum
+        .map(item => `<span>${md.utils.escapeHtml(item)}</span>`)
+        .join('')}</template>`
+      : ''
+    const description = parsed.description ? md.render(parsed.description, env) : ''
+    return `<VPField${stringifyAttrs(props)}>\n${enums}\n${description}\n</VPField>\n`
   })
+}
+
+/**
+ * Create a unique slug for a field.
+ *
+ * To avoid anchor link conflicts caused by duplicate slugs when the same field name exists
+ * on the same page, add a count to the slug for duplicate field names.
+ *
+ * 创建一个唯一的字段 slug。
+ *
+ * 避免同一个页面存在相同的 field name 时，slug 重复导致锚点链接冲突，
+ * 对于重复的 field name，在 slug 中添加计数。
+ *
+ * @param name - The name of the field
+ * @param env - The markdown-it environment
+ * @returns A unique slug for the field
+ */
+function createSlug(name: string, env: MarkdownEnv & { __FIELD_SLUG__?: Record<string, number> }) {
+  const cache = env.__FIELD_SLUG__ ??= {}
+  const slug = slugify(`field-${name}`)
+  const count = cache[slug] || 0
+  cache[slug] = count + 1
+  return `${slug}${count > 0 ? `-${count}` : ''}`
+}
+
+function encodeData(data?: string) {
+  return !isUndefined(data) ? encodeURIComponent(data) : undefined
 }

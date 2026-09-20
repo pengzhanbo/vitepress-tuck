@@ -63,6 +63,7 @@ export function defineConfig<ThemeConfig = DefaultTheme.Config>(
   const enhanceApp: Required<EnhanceOptions> = { imports: [], enhances: [] }
 
   components.resolvers ??= []
+
   /**
    * Iterates a list of plugins, extracting client config, lifecycle hooks, and
    * VitePress config fragments into the shared accumulators (`hooks`,
@@ -87,29 +88,34 @@ export function defineConfig<ThemeConfig = DefaultTheme.Config>(
       }
 
       // 注入组件Resolver
-      componentResolver && components.resolvers!.push(...normalizeComponentResolver(name, componentResolver))
+      if (componentResolver)
+        components.resolvers!.push(...normalizeComponentResolver(name, componentResolver))
 
       // 提取各种钩子函数
       if (customConfig.markdown?.config) {
         hooks.markdownConfig.push(customConfig.markdown.config)
         delete customConfig.markdown.config
       }
-      buildEnd && hooks.buildEnd.push(buildEnd)
-      transformHead && hooks.transformHead.push(transformHead)
-      transformHtml && hooks.transformHtml.push(transformHtml)
-      transformPageData && hooks.transformPageData.push(transformPageData)
-      postRender && hooks.postRender.push(postRender)
+      hooks.buildEnd.push(buildEnd)
+      hooks.transformHead.push(transformHead)
+      hooks.transformHtml.push(transformHtml)
+      hooks.transformPageData.push(transformPageData)
+      hooks.postRender.push(postRender)
 
       // 合并 markdown / vite / vue 配置
       mergedConfig = mergeConfig(mergedConfig, customConfig)
     })
   }
-  // 先处理外部插件
+
+  // 处理外部插件
   processPlugins(plugins)
-  // 再处理内置插件
+
+  // 处理内置插件
   processPlugins(builtinPlugins({ enhanceApp, components }))
+
   // 合并 userConfig
   mergedConfig = mergeConfig(mergedConfig, userConfig)
+
   // 合并钩子
   mergePluginHooks(hooks, mergedConfig)
 

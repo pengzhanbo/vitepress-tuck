@@ -25,7 +25,7 @@ export function mergePluginHooks<ThemeConfig = DefaultTheme.Config>(hooks: Vitep
     config.markdown ??= {}
     config.markdown.config = async (md) => {
       await Promise.all([
-        ...hooks.markdownConfig.map(config => config(md)),
+        ...hooks.markdownConfig.map(config => config?.(md)),
         userMarkdownConfig?.(md),
       ].filter(toTruthy))
     }
@@ -36,7 +36,7 @@ export function mergePluginHooks<ThemeConfig = DefaultTheme.Config>(hooks: Vitep
     const buildEnd = config.buildEnd
     config.buildEnd = async (site) => {
       await Promise.all([
-        ...hooks.buildEnd.map(hook => hook(site)),
+        ...hooks.buildEnd.map(hook => hook?.(site)),
         buildEnd?.(site),
       ].filter(toTruthy))
     }
@@ -47,7 +47,7 @@ export function mergePluginHooks<ThemeConfig = DefaultTheme.Config>(hooks: Vitep
     const transformHead = config.transformHead
     config.transformHead = async (site) => {
       const result = await Promise.all([
-        ...hooks.transformHead.map(hook => hook(site)),
+        ...hooks.transformHead.map(hook => hook?.(site)),
         transformHead?.(site),
       ].filter(toTruthy))
       const headConfigs: HeadConfig[] = []
@@ -63,7 +63,7 @@ export function mergePluginHooks<ThemeConfig = DefaultTheme.Config>(hooks: Vitep
     const transformHtml = config.transformHtml
     config.transformHtml = async (code, id, ctx) => {
       for (const hook of hooks.transformHtml) {
-        code = await hook(code, id, ctx) ?? code
+        code = await hook?.(code, id, ctx) ?? code
       }
       return await transformHtml?.(code, id, ctx) ?? code
     }
@@ -74,7 +74,7 @@ export function mergePluginHooks<ThemeConfig = DefaultTheme.Config>(hooks: Vitep
     const transformPageData = config.transformPageData
     config.transformPageData = async (pageData, ctx) => {
       for (const hook of hooks.transformPageData) {
-        const result = await hook(pageData, ctx)
+        const result = await hook?.(pageData, ctx)
         if (result)
           pageData = { ...pageData, ...result }
       }
@@ -88,7 +88,7 @@ export function mergePluginHooks<ThemeConfig = DefaultTheme.Config>(hooks: Vitep
     const postRender = config.postRender
     config.postRender = async (context) => {
       for (const hook of hooks.postRender) {
-        context = await hook(context) ?? context
+        context = await hook?.(context) ?? context
       }
       return await postRender?.(context) ?? context
     }

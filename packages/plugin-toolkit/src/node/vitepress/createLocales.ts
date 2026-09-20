@@ -59,15 +59,16 @@ export function createLocales<LocaleData extends Record<string, unknown>>(
         break
       }
     }
+    const userLocale = userLocales[key] ?? (lang ? userLocales[lang] : undefined)
+    if (userLocale) {
+      locales[key] = deepMerge({}, locales[key], userLocale) as LocaleData
+    }
   }
 
-  // 如果没有指定 root 语言，默认使用 builtinLocales 中的第一个
+  // 如果没有指定 root 语言，尝试使用用户提供的默认的 root 语言，否则使用 builtinLocales 中的第一个
   if (!locales.root) {
-    locales.root = builtinLocales[0]?.[1] || {}
+    locales.root = userLocales['/'] ?? builtinLocales[0]?.[1] ?? {}
   }
-
-  // 与 userLocales 合并
-  deepMerge(locales, userLocales)
 
   return locales
 }
