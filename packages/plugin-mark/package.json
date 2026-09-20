@@ -38,7 +38,7 @@
     "tsdown": "tsdown --config-loader unrun"
   },
   "peerDependencies": {
-    "vitepress": "^2.0.0-alpha.18",
+    "vitepress": "catalog:prod",
     "vue": "^3.5.0"
   },
   "dependencies": {
