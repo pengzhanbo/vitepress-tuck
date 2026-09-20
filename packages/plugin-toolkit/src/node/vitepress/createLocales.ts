@@ -65,9 +65,12 @@ export function createLocales<LocaleData extends Record<string, unknown>>(
     }
   }
 
-  // 如果没有指定 root 语言，尝试使用用户提供的默认的 root 语言，否则使用 builtinLocales 中的第一个
   if (!locales.root) {
-    locales.root = userLocales['/'] ?? builtinLocales[0]?.[1] ?? {}
+    const builtinRoot = builtinLocales[0]?.[1] ?? {}
+    const userRoot = userLocales.root ?? userLocales['/']
+    locales.root = userRoot
+      ? deepMerge({}, builtinRoot, userRoot) as LocaleData
+      : builtinRoot
   }
 
   return locales

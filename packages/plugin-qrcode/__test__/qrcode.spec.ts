@@ -60,4 +60,31 @@ describe('qrcodeMarkdownPlugin', () => {
     const result = md.render('@[qrcode width="200"](https://www.baidu.com)')
     expect(result).toContain('<VPQrcode')
   })
+
+  // 内部链接文本通过 VitePress 路由系统解析
+  it('should resolve internal link text via route system', () => {
+    ;(globalThis as any).VITEPRESS_CONFIG = {
+      site: { base: '/' },
+      userConfig: { locales: {} },
+    }
+    try {
+      const md = new MarkdownIt()
+      md.use(qrcodeMarkdownPlugin)
+
+      const result = md.render('@[qrcode](./guide.md)')
+      expect(result).toContain('text="./guide.html"')
+    }
+    finally {
+      delete (globalThis as any).VITEPRESS_CONFIG
+    }
+  })
+
+  // 页内 hash 与协议链接原样保留
+  it('should keep hash and protocol text as-is', () => {
+    const md = new MarkdownIt()
+    md.use(qrcodeMarkdownPlugin)
+
+    expect(md.render('@[qrcode](#section)')).toContain('text="#section"')
+    expect(md.render('@[qrcode](https://www.baidu.com)')).toContain('text="https://www.baidu.com"')
+  })
 })

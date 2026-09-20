@@ -217,6 +217,16 @@ describe('pdf plugin factory', () => {
     expect(typeof plugin.markdown?.config).toBe('function')
   })
 
+  // markdown.config 实际注册 pdfMarkdownPlugin
+  it('should register pdfMarkdownPlugin through markdown.config', () => {
+    const md = new MarkdownIt()
+    pdf().markdown!.config!(md as any)
+
+    const result = md.render('@[pdf](/files/doc.pdf)')
+    expect(result).toContain('<VPPdf')
+    expect(result).toContain('title="doc.pdf"')
+  })
+
   it('should configure vite.ssr.noExternal with vitepress-plugin-pdf', () => {
     const plugin = pdf()
     expect(plugin.vite?.ssr?.noExternal).toContain('vitepress-plugin-pdf')

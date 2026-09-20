@@ -1,6 +1,6 @@
 import type { PluginSimple } from 'markdown-it'
 import type { MarkdownEnv } from 'vitepress'
-import { isString, isUndefined } from '@pengzhanbo/utils'
+import { isString, isUndefined, objectKeys } from '@pengzhanbo/utils'
 import { createContainerPlugin, createContainerSyntaxPlugin, slugify, stringifyAttrs } from 'vitepress-plugin-toolkit'
 import { parseFieldContent } from './parseFieldContent.js'
 
@@ -51,6 +51,8 @@ export const fieldMarkdownPlugin: PluginSimple = (md) => {
       format: encodeData(parsed.format),
       constraint: encodeData(parsed.constraint),
     }
+    // 所有非布尔值字段应该字符串化
+    const propsStr = stringifyAttrs(props, false, objectKeys(props))
     // 可选值
     const enums = parsed.enum?.length
       ? `<template #enum>${parsed.enum
@@ -58,7 +60,7 @@ export const fieldMarkdownPlugin: PluginSimple = (md) => {
         .join('')}</template>`
       : ''
     const description = parsed.description ? md.render(parsed.description, env) : ''
-    return `<VPField${stringifyAttrs(props)}>\n${enums}\n${description}\n</VPField>\n`
+    return `<VPField${propsStr}>\n${enums}\n${description}\n</VPField>\n`
   })
 }
 

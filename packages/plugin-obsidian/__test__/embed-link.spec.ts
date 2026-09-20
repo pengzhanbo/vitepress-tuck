@@ -209,6 +209,17 @@ describe('embedLinkMarkdownPlugin', () => {
     expect(result).toContain('width: 300px')
     expect(result).toContain('height: 200px')
   })
+
+  // 图片仅设置高度 ![[image.png|x200]]：宽度为空时跳过 width
+  it('should render image embed with height only', () => {
+    const md = new MarkdownIt()
+    md.use(embedLinkMarkdownPlugin, { root: __dirname, files: [] })
+
+    const result = md.render('![[image.png|x200]]', { relativePath: 'index.md' })
+    expect(result).toContain('<img')
+    expect(result).toContain('height: 200px')
+    expect(result).not.toContain('width:')
+  })
 })
 
 // 块级 markdown 文件嵌入相关测试
@@ -354,6 +365,19 @@ describe('embedLinkMarkdownPlugin - block markdown embed', () => {
     expect(result).toContain('Content A')
   })
 
+  // 提取结果中的容器占位符被还原；非占位符的 container 注释被替换为空字符串
+  it('should restore container placeholders inside the extracted section', () => {
+    const md = new MarkdownIt()
+    md.use(embedLinkMarkdownPlugin, { root: fixturesDir, files: ['with-container.md'] })
+
+    const env = { path: path.join(fixturesDir, 'index.md'), relativePath: 'index.md' }
+    const result = md.render('![[with-container#Section A]]', env)
+    // ::: tip 容器内容被还原
+    expect(result).toContain('Container inside section')
+    // 源码中字面量 <!--container:xxx--> 注释（无对应占位符）被替换为空
+    expect(result).not.toContain('<!--container:missing-->')
+  })
+
   // 多级标题匹配中遇到同级标题重置匹配（覆盖 reset 分支）
   it('should reset heading match when encountering same-level heading', () => {
     const md = new MarkdownIt()
@@ -376,6 +400,20 @@ describe('embedLinkMarkdownPlugin - block markdown embed', () => {
     // 第一次 Introduction#SubA 不匹配 SubB，但第二次 Introduction#SubB 匹配
     const result = md.render('![[headings#Introduction#SubB]]', env)
     expect(result).toContain('SubB content')
+  })
+
+  // 三级标题序列：匹配到第二级后仍有余量，继续查找下一级标题
+  it('should continue matching when heading pointer has remaining levels', () => {
+    const md = new MarkdownIt()
+    md.use(embedLinkMarkdownPlugin, { root: fixturesDir, files: ['guide.md'] })
+
+    const env = { path: path.join(fixturesDir, 'index.md'), relativePath: 'index.md' }
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    // guide.md 仅有 Guide > Introduction > Details 三级，第四级不存在
+    const result = md.render('![[guide#Introduction#Details#Missing]]', env)
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('No heading found'))
+    expect(result).not.toContain('More details here')
+    warnSpy.mockRestore()
   })
 })
 
@@ -482,6 +520,72 @@ describe('embedLinkMarkdownPlugin - resolveFilenameToAssetPath', () => {
     // block rule 对 trimmed line 不匹配(不以 ]] 结尾)，但 inline rule 仍匹配并渲染
     expect(result).toContain('<img')
     expect(result).toContain('extra')
+  })
+
+  // 行内嵌入内容为纯空白：内容 trim 后为空，不匹配
+  it('should not match inline embed with blank content', () => {
+    const md = new MarkdownIt()
+    md.use(embedLinkMarkdownPlugin, { root: __dirname, files: [] })
+
+    const result = md.render('text ![[   ]] more', { relativePath: 'index.md' })
+    expect(result).toContain('more')
+    expect(result).not.toContain('<img')
+  })
+
+  // 内容以 # 开头（无文件名，仅有标题）：filename 回退为空字符串
+  it('should fallback filename when embed content starts with hash', () => {
+    const md = new MarkdownIt()
+    md.use(embedLinkMarkdownPlugin, { root: fixturesDir, files: ['guide.md'] })
+
+    const env = { path: path.join(fixturesDir, 'index.md'), relativePath: 'index.md' }
+    // infos[0] 为空字符串，findFirstFile 命中 guide.md 并展开内容
+    const result = md.render('![[#Introduction]]', env)
+    expect(result).toContain('Welcome to the introduction section')
+  })
+
+  // 空文件（0 字节）读取后 content 为空字符串
+  it('should warn when file is completely empty', () => {
+    const md = new MarkdownIt()
+    md.use(embedLinkMarkdownPlugin, { root: fixturesDir, files: ['blank.md'] })
+
+    const env = { path: path.join(fixturesDir, 'index.md'), relativePath: 'index.md' }
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const result = md.render('![[blank]]', env)
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('is empty'))
+    expect(result).not.toContain('custom-block')
+    warnSpy.mockRestore()
+  })
+
+  // 未命中内部文件且文件名以 . 开头：href 使用相对路径拼接
+  it('should join relative path for dot-prefixed filename without match', () => {
+    const md = new MarkdownIt()
+    md.use(embedLinkMarkdownPlugin, { root: fixturesDir, files: [] })
+
+    const env = { path: path.join(fixturesDir, 'index.md'), relativePath: 'index.md' }
+    const result = md.render('![[./missing.md]]', env)
+    expect(result).toContain('<a')
+    expect(result).toContain('href="missing.md"')
+  })
+
+  // 行内嵌入命中文件名为 '.md' 的内部文件：标题回退为空字符串
+  // （findFirstFile 对 `[[/]]` 生成候选路径 `.md`，仅当文件列表含 `.md` 时命中）
+  it('should render empty link text when matched page basename is empty', () => {
+    const md = new MarkdownIt()
+    md.use(embedLinkMarkdownPlugin, { root: fixturesDir, files: ['.md'] })
+
+    const env = { path: path.join(fixturesDir, 'index.md'), relativePath: 'index.md' }
+    const result = md.render('text ![[/]] more', env)
+    expect(result).toContain('href=".md"')
+  })
+
+  // 目标资源位于当前目录的上级目录：相对路径以 . 开头，原样返回
+  it('should keep parent-relative path when asset is in parent directory', () => {
+    const md = new MarkdownIt()
+    md.use(embedLinkMarkdownPlugin, { root: fixturesDir, files: [] })
+
+    // relativePath 位于子目录，image.png 存在于 root（即当前目录的上级）
+    const result = md.render('![[image.png]]', { relativePath: 'sub/index.md' })
+    expect(result).toContain('src="../image.png"')
   })
 })
 

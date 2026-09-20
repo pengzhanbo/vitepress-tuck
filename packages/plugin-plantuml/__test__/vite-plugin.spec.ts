@@ -3,7 +3,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { Writable } from 'node:stream'
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
-import { OUTPUT_DIR, SERVER_PREFIX } from '../src/node/constants'
+import { fallbackPNG, OUTPUT_DIR, SERVER_PREFIX } from '../src/node/constants'
 import { cache, getOutputPath } from '../src/node/utils'
 import { plantumlVitePlugin } from '../src/node/vite'
 
@@ -412,6 +412,71 @@ describe('plantumlVitePlugin - 服务器中间件缓存未命中', () => {
     }
   })
 
+  // 暗色 SVG：请求格式为 dsvg，且自定义 svgo 插件会移除根背景样式与满尺寸 rect
+  it('缓存未命中时对暗色 SVG 应请求 dsvg 并移除背景 rect', async () => {
+    const tmpDir = fs.mkdtempSync(path.join(FIXTURES_TMP_DIR, 'plantuml-test-'))
+    const backgroundRectSVG = [
+      '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="50" style="background:#ffffff">',
+      '<rect width="100" height="50" x="0" y="0" fill="#ffffff"/>',
+      '<rect width="10" height="10" x="5" y="5" fill="#000000"/>',
+      '</svg>',
+    ].join('')
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      text: async () => backgroundRectSVG,
+      arrayBuffer: async () => new ArrayBuffer(0),
+    })
+    const originalFetch = globalThis.fetch
+    globalThis.fetch = fetchMock as any
+    try {
+      cache.clear()
+      const filename = 'darkhash.dark.svg'
+      cache.set(filename, { content: '@startuml\nA -> B\n@enduml', paths: new Set() })
+
+      const plugins = plantumlVitePlugin()
+      const serverPlugin = plugins.find(p => p.name === 'vitepress:plantuml')!
+      const configResolved = serverPlugin.configResolved as (config: any) => void
+      const configureServer = serverPlugin.configureServer as (server: any) => void
+
+      configResolved({ cacheDir: tmpDir, logger: { error: vi.fn() } })
+
+      let middleware: any
+      configureServer({
+        middlewares: { use: (handler: any) => { middleware = handler } },
+      })
+
+      const chunks: Buffer[] = []
+      const res = new Writable({
+        write(chunk, _encoding, cb) {
+          chunks.push(Buffer.from(chunk))
+          cb()
+        },
+      })
+      ;(res as any).setHeader = vi.fn()
+      const next = vi.fn()
+      const finished = new Promise<void>((resolve, reject) => {
+        res.on('finish', resolve)
+        res.on('error', reject)
+      })
+      await middleware({ url: `${SERVER_PREFIX}${filename}` }, res, next)
+      await finished
+
+      // 暗色模式请求 dsvg 格式
+      expect(String(fetchMock.mock.calls[0]![0])).toContain('/dsvg/')
+      expect(next).not.toHaveBeenCalled()
+
+      // 根背景样式对应的满尺寸 rect 被移除，其余图形保留
+      const optimized = fs.readFileSync(getOutputPath(tmpDir, filename), 'utf-8')
+      expect(optimized).not.toContain('background')
+      expect(optimized).not.toContain('M0 0h100v50H0z')
+      expect(optimized).toContain('M5 5h10v10H5z')
+    }
+    finally {
+      globalThis.fetch = originalFetch
+      fs.rmSync(tmpDir, { recursive: true, force: true })
+    }
+  })
+
   it('获取失败时应调用 next 并记录错误', async () => {
     // 验证 fetch 返回失败时，调用 next 并记录错误日志
     const tmpDir = fs.mkdtempSync(path.join(FIXTURES_TMP_DIR, 'plantuml-test-'))
@@ -663,6 +728,53 @@ describe('plantumlVitePlugin - 构建模式', () => {
         // 兜底图片应已复制到输出路径
         const outputPath = getOutputPath(tmpDir, filename)
         expect(fs.existsSync(outputPath)).toBe(true)
+      }
+      finally {
+        fs.rmSync(tmpDir, { recursive: true, force: true })
+      }
+    }
+    finally {
+      globalThis.fetch = originalFetch
+      vi.unstubAllEnvs()
+      vi.resetModules()
+    }
+  })
+
+  // 暗色 PNG：请求格式为 dpng，渲染失败时复制 PNG 兜底图片
+  it('构建模式暗色 PNG 获取失败应复制 PNG 兜底图片', async () => {
+    vi.stubEnv('NODE_ENV', 'production')
+    vi.resetModules()
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: false,
+      text: async () => '',
+      arrayBuffer: async () => new ArrayBuffer(0),
+    })
+    const originalFetch = globalThis.fetch
+    globalThis.fetch = fetchMock as any
+    try {
+      const { plantumlVitePlugin: buildPluginFactory } = await import('../src/node/vite')
+      const { cache: buildCache } = await import('../src/node/utils')
+      buildCache.clear()
+
+      const tmpDir = fs.mkdtempSync(path.join(FIXTURES_TMP_DIR, 'plantuml-build-'))
+      try {
+        const filename = 'darkhash.dark.png'
+        buildCache.set(filename, { content: '@startuml\nA -> B\n@enduml', paths: new Set(['/test/page.md']) })
+
+        const plugins = buildPluginFactory()
+        const buildPlugin = plugins.find((p: any) => p.name === 'vitepress:plantuml')!
+        const configResolved = buildPlugin.configResolved as (config: any) => void
+        configResolved({ cacheDir: tmpDir, logger: { error: vi.fn() } })
+
+        const transform = buildPlugin.transform as any
+        await transform.handler('code', '/test/page.md')
+
+        // 暗色模式请求 dpng 格式
+        expect(String(fetchMock.mock.calls[0]![0])).toContain('/dpng/')
+        const outputPath = getOutputPath(tmpDir, filename)
+        expect(fs.existsSync(outputPath)).toBe(true)
+        // PNG 兜底图片被复制到输出路径
+        expect(fs.readFileSync(outputPath).equals(fs.readFileSync(fallbackPNG))).toBe(true)
       }
       finally {
         fs.rmSync(tmpDir, { recursive: true, force: true })

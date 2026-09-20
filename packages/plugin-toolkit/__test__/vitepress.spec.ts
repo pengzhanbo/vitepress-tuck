@@ -183,6 +183,45 @@ describe('vitepress utilities', () => {
       // Restore config
       ;(globalThis as any).VITEPRESS_CONFIG = mockConfig
     })
+
+    // 无 root 匹配且存在 userLocales.root 时，深度合并内置 root 与用户 root
+    it('should merge user root locale when root is not matched', () => {
+      ;(globalThis as any).VITEPRESS_CONFIG = {
+        site: { base: '/', lang: '', title: '' },
+        userConfig: {},
+      } as any
+
+      const builtin: [string[], Record<string, unknown>][] = [
+        [['en', 'en-US'], { title: 'English Title', description: 'English Description' }],
+      ]
+
+      const locales = createLocales(builtin, { root: { title: '我的站点' } })
+      // 用户 root 覆盖内置值，未覆盖的内置值保留
+      expect(locales.root.title).toBe('我的站点')
+      expect(locales.root.description).toBe('English Description')
+
+      // Restore config
+      ;(globalThis as any).VITEPRESS_CONFIG = mockConfig
+    })
+
+    // 语言环境条目未声明 lang 且无用户覆盖时不写入该条目
+    it('should skip locale entry without lang and user override', () => {
+      ;(globalThis as any).VITEPRESS_CONFIG = {
+        site: { base: '/', lang: '', title: '' },
+        userConfig: { locales: { '/test/': { label: 'Test' } } },
+      } as any
+
+      const builtin: [string[], Record<string, unknown>][] = [
+        [['en', 'en-US'], { title: 'English Title' }],
+      ]
+
+      const locales = createLocales(builtin)
+      expect(locales['/test/']).toBeUndefined()
+      expect(locales.root.title).toBe('English Title')
+
+      // Restore config
+      ;(globalThis as any).VITEPRESS_CONFIG = mockConfig
+    })
   })
 
   describe('resolveRouteLink', () => {
@@ -283,6 +322,12 @@ describe('vitepress utilities', () => {
       const env = { cleanUrls: true } as MarkdownEnv
       const result = resolveRouteLink('./guide.md?utm=1#intro', env)
       expect(result).toBe('./guide?utm=1#intro')
+    })
+
+    // URL 解析失败时原样返回（形如 `a1:` 的协议头不匹配外部链接规则，且无法被 URL 解析）
+    it('should return the raw url when URL parsing fails', () => {
+      const result = resolveRouteLink('a1://[::1', {} as MarkdownEnv)
+      expect(result).toBe('a1://[::1')
     })
   })
 })

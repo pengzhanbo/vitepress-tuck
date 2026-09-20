@@ -29,6 +29,22 @@ describe('codepenMarkdownPlugin', () => {
     expect(result).toContain('height="500px"')
   })
 
+  it('should support width option', () => {
+    const md = new MarkdownIt()
+    md.use(codepenMarkdownPlugin)
+
+    const result = md.render('@[codepen width="500px"](user/pen)')
+    expect(result).toContain('width="500px"')
+  })
+
+  it('should fallback to default width when not provided', () => {
+    const md = new MarkdownIt()
+    md.use(codepenMarkdownPlugin)
+
+    const result = md.render('@[codepen](user/pen)')
+    expect(result).toContain('width="100%"')
+  })
+
   it('should support title option', () => {
     const md = new MarkdownIt()
     md.use(codepenMarkdownPlugin)

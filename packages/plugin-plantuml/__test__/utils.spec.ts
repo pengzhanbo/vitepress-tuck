@@ -101,4 +101,18 @@ describe('encodePlantuml', () => {
     const result = encodePlantuml('@startuml\nBob -> Alice : hello\n@enduml')
     expect(result).toMatch(/^[\w\-]+$/)
   })
+
+  // 6bit 值为 62 时编码为 '-'，为 63 时编码为 '_'
+  it('6bit 值 62/63 应分别编码为 - 与 _', () => {
+    const source = [
+      '@startuml',
+      'Eve -> Alice: msg0',
+      'Cache -> Bob: msg1',
+      'Client -> Queue: msg2',
+      '@enduml',
+    ].join('\n')
+    const result = encodePlantuml(source)
+    expect(result).toContain('-')
+    expect(result).toContain('_')
+  })
 })

@@ -481,4 +481,76 @@ describe('calloutMarkdownPlugin', () => {
     expect(result).not.toContain('custom-block')
     expect(result).toContain('next item')
   })
+
+  // callout body 中存在缩进 4+ 空格的行（silent 探测时直接返回 false）
+  it('should skip indented line when probing callout rule', () => {
+    const md = new MarkdownIt()
+    md.use(calloutMarkdownPlugin)
+
+    const result = md.render('> [!note]\n> content\n     indented line')
+    expect(result).toContain('custom-block')
+    expect(result).toContain('content')
+  })
+
+  // 嵌套块引用中 > 后接 tab：空格的计数满足 (bsCount + initial) % 4 === 3
+  it('should handle tab after marker in nested blockquote', () => {
+    const md = new MarkdownIt()
+    md.use(calloutMarkdownPlugin)
+
+    const result = md.render('> >\t[!note]\n> >\tcontent')
+    expect(result).toContain('custom-block')
+    expect(result).toContain('content')
+  })
+
+  // 起始行 > 后空格再跟 tab：adjustTab 为 false 时参与 offset 计算
+  it('should handle space then tab after blockquote marker', () => {
+    const md = new MarkdownIt()
+    md.use(calloutMarkdownPlugin)
+
+    const result = md.render('> \t[!note]\n> content')
+    expect(result).toContain('custom-block')
+    expect(result).toContain('content')
+  })
+
+  // callout body 后跟列表：被列表规则终止（blkIndent 为 0，不恢复缩进）
+  it('should terminate callout when followed by list', () => {
+    const md = new MarkdownIt()
+    md.use(calloutMarkdownPlugin)
+
+    const result = md.render('> [!note]\n> content\n- list item')
+    expect(result).toContain('custom-block')
+    expect(result).toContain('content')
+    expect(result).toContain('list item')
+  })
+
+  // 列表项中的 callout 后跟嵌套列表：被终止且需要恢复 blkIndent 偏移
+  it('should terminate callout inside list item and restore indent', () => {
+    const md = new MarkdownIt()
+    md.use(calloutMarkdownPlugin)
+
+    const result = md.render('- item\n\n  > [!note]\n  > content in list\n  - nested item')
+    expect(result).toContain('custom-block')
+    expect(result).toContain('content in list')
+    expect(result).toContain('nested item')
+  })
+
+  // > 后既不跟空格也不跟 tab
+  it('should handle marker directly followed by type', () => {
+    const md = new MarkdownIt()
+    md.use(calloutMarkdownPlugin)
+
+    const result = md.render('>[!note]\n>content')
+    expect(result).toContain('custom-block')
+    expect(result).toContain('content')
+  })
+
+  // 首行之后的懒续行（currentLine === startLine + 1）
+  it('should handle lazy continuation as first body line', () => {
+    const md = new MarkdownIt()
+    md.use(calloutMarkdownPlugin)
+
+    const result = md.render('> [!note]\nlazy line')
+    expect(result).toContain('custom-block')
+    expect(result).toContain('lazy line')
+  })
 })

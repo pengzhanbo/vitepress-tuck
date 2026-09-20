@@ -33,6 +33,11 @@ describe('iconRender - iconify', () => {
     expect(result).toContain('class="iconify border"')
   })
 
+  it('带 class 属性', () => {
+    const result = iconRender('name class="my-class"', options)
+    expect(result).toContain('class="iconify my-class"')
+  })
+
   it('使用 iconify.prefix 自定义前缀', () => {
     const result = iconRender('name', { defaultProvider: 'iconify', iconify: { provider: 'iconify', prefix: 'icon' } })
     expect(result).toContain('<IconName')
