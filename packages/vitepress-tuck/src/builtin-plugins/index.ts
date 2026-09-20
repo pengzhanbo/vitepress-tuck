@@ -3,7 +3,6 @@ import type { VitepressPlugin } from '../types.js'
 import type { EnhanceOptions } from './virtual-enhance-app.js'
 import { autoComponentsPlugin } from './auto-components.js'
 import { ssrNoExternalDepsPlugin } from './ssr-no-external-deps.js'
-
 import { virtualEnhanceAppPlugin } from './virtual-enhance-app.js'
 
 /**

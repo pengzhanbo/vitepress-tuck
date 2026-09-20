@@ -57,6 +57,15 @@ describe('npmToMarkdownPlugin', () => {
     expect(result).toContain('pnpm dlx')
   })
 
+  // 带环境变量的命令：渲染结果保留 env 前缀
+  it('带环境变量的命令保留 env 前缀', () => {
+    const md = new MarkdownIt()
+    md.use(npmToMarkdownPlugin)
+    const result = md.render('::: npm-to\n```sh\nNODE_ENV=production npm run build\n```\n:::')
+    expect(result).toContain('code-group')
+    expect(result).toMatch(/NODE_ENV=production\s+pnpm build/)
+  })
+
   it('npm uninstall 命令', () => {
     const md = new MarkdownIt()
     md.use(npmToMarkdownPlugin)

@@ -38,4 +38,13 @@ describe('steps plugin (definePlugin)', () => {
     expect(plugin.markdown).toBeDefined()
     expect(typeof plugin.markdown?.config).toBe('function')
   })
+
+  // markdown.config 实际注册 stepsMarkdownPlugin
+  it('should register stepsMarkdownPlugin through markdown.config', () => {
+    const md = new MarkdownIt()
+    steps().markdown!.config!(md as any)
+
+    const result = md.render('::: steps\n- Step 1\n:::')
+    expect(result).toContain('class="vp-steps"')
+  })
 })

@@ -110,6 +110,19 @@ describe('createHeadConfig - fontawesome', () => {
     ])
   })
 
+  // assets 未配置时回退为内置 'fontawesome'
+  it('assets 未配置时回退为内置 fontawesome 资源', () => {
+    const fontawesome: FontAwesomeOptions = {
+      provider: 'fontawesome',
+    }
+    const result = createHeadConfig(undefined, fontawesome)
+    expect(result).toHaveLength(3)
+    expect(result[2]).toEqual([
+      'script',
+      { 'src': 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/js/fontawesome.min.js', 'data-auto-replace-svg': 'nest' },
+    ])
+  })
+
   it('内置 fontawesome-with-brands 资源生成 1 个 brands script 标签', () => {
     const fontawesome: FontAwesomeOptions = {
       provider: 'fontawesome',

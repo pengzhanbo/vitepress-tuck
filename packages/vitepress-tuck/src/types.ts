@@ -134,25 +134,25 @@ export interface VitepressPluginHooks {
   /**
    * `buildEnd` hooks, executed in parallel / `buildEnd` 钩子，并发执行
    */
-  buildEnd: NonNullable<UserConfig['buildEnd']>[]
+  buildEnd: UserConfig['buildEnd'][]
   /**
    * `transformHead` hooks, executed in parallel with merged results / `transformHead` 钩子，并发执行并合并结果
    */
-  transformHead: NonNullable<UserConfig['transformHead']>[]
+  transformHead: UserConfig['transformHead'][]
   /**
    * `transformHtml` hooks, executed sequentially with chained results / `transformHtml` 钩子，顺序链式执行
    */
-  transformHtml: NonNullable<UserConfig['transformHtml']>[]
+  transformHtml: UserConfig['transformHtml'][]
   /**
    * `transformPageData` hooks, executed sequentially with chained results / `transformPageData` 钩子，顺序链式执行
    */
-  transformPageData: NonNullable<UserConfig['transformPageData']>[]
+  transformPageData: UserConfig['transformPageData'][]
   /**
    * `postRender` hooks, executed sequentially with chained results / `postRender` 钩子，顺序链式执行
    */
-  postRender: NonNullable<UserConfig['postRender']>[]
+  postRender: UserConfig['postRender'][]
   /**
    * `markdown.config` hooks, executed in parallel / `markdown.config` 钩子，并发执行
    */
-  markdownConfig: NonNullable<NonNullable<UserConfig['markdown']>['config']>[]
+  markdownConfig: NonNullable<UserConfig['markdown']>['config'][]
 }

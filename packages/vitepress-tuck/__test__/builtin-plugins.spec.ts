@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { autoComponentsPlugin } from '../src/builtin-plugins/auto-components'
-import { virtualEnhanceApp } from '../src/builtin-plugins/virtual-enhance-app'
+import { virtualEnhanceApp, virtualEnhanceAppPlugin } from '../src/builtin-plugins/virtual-enhance-app'
 
 // ============================================================
 // virtualEnhanceApp
@@ -121,6 +121,28 @@ describe('virtualEnhanceApp', () => {
     // Should have 4 occurrences (2 per enhance), but only 2 unique aliases
     expect(aliases!.length).toBe(4)
     expect(new Set(aliases).size).toBe(2)
+  })
+})
+
+// ============================================================
+// virtualEnhanceAppPlugin
+// ============================================================
+
+describe('virtualEnhanceAppPlugin', () => {
+  // 不传 options 时回退为空对象
+  it('should fallback to empty options when called without arguments', () => {
+    const plugin = virtualEnhanceAppPlugin()
+
+    expect(plugin.name).toBe('virtual-enhance-app')
+    expect(plugin.vite?.plugins).toHaveLength(1)
+  })
+
+  it('should forward options to the vite plugin', () => {
+    const plugin = virtualEnhanceAppPlugin({ enhances: [{ moduleName: 'plugin-x', exportName: 'enhanceApp' }] })
+    const vitePlugin = plugin.vite!.plugins![0] as any
+    const code = vitePlugin.load(vitePlugin.resolveId('virtual:enhance-app')) as string
+
+    expect(code).toContain('plugin-x/client')
   })
 })
 

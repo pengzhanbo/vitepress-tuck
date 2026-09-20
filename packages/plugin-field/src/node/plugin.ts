@@ -1,5 +1,7 @@
+import type { FieldPluginOptions } from './types.js'
 import { definePlugin } from 'vitepress-tuck'
 import { fieldMarkdownPlugin } from './markdown.js'
+import { fieldVitePlugin } from './vite.js'
 
 /**
  * VitePress plugin for rendering structured field documentation blocks.
@@ -24,12 +26,15 @@ import { fieldMarkdownPlugin } from './markdown.js'
  * })
  * ```
  */
-export const field = definePlugin(() => ({
+export const field = definePlugin((options: FieldPluginOptions = {}) => ({
   name: 'vitepress-plugin-field',
   componentResolver: ['VPField'],
   markdown: {
     config(md) {
       md.use(fieldMarkdownPlugin)
     },
+  },
+  vite: {
+    plugins: [fieldVitePlugin(options)],
   },
 }))

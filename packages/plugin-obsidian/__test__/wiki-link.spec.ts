@@ -176,4 +176,33 @@ describe('wikiLinkMarkdownPlugin', () => {
     // textToken.content 为 "page > section" (basename + headings)
     expect(result).toContain('page &gt; section')
   })
+
+  // 页内锚点：title 与 relativePath basename 均为空时，文本回退为空字符串
+  it('should fallback to empty text when title and basename are empty', () => {
+    const md = new MarkdownIt()
+    md.use(wikiLinkMarkdownPlugin, { root: '/root', files: [] })
+
+    const result = md.render('[[#section]]', { path: '/root/index.md', relativePath: '' })
+    expect(result).toContain('href="#section"')
+    // title 与 basename 均为空字符串，链接文本以 " > section" 开头
+    expect(result).toContain('&gt; section</a>')
+  })
+
+  // 未命中内部文件且文件名以 . 开头：href 使用相对路径拼接
+  it('should join relative path for dot-prefixed filename without match', () => {
+    const md = new MarkdownIt()
+    md.use(wikiLinkMarkdownPlugin, { root: '/root', files: [] })
+
+    const result = md.render('[[./missing.md]]', { path: '/root/index.md', relativePath: 'index.md' })
+    expect(result).toContain('href="missing.md"')
+  })
+
+  // 内部文件命中 '.md'（findFirstFile 对 `[[/]]` 生成的候选路径）：标题回退为空字符串
+  it('should fallback to empty title when matched page basename is empty', () => {
+    const md = new MarkdownIt()
+    md.use(wikiLinkMarkdownPlugin, { root: '/root', files: ['.md'] })
+
+    const result = md.render('[[/]]', { path: '/root/index.md', relativePath: 'index.md' })
+    expect(result).toContain('href=".md"')
+  })
 })
