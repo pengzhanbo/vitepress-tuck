@@ -1,0 +1,1 @@
+import{Qt as e,St as t,Tt as n,Zt as r,at as i,jt as a,ut as o}from"./framework.BVFX0sDx.js";import{c as s}from"./theme.OirKIZyv.js";var c=o({__name:`VPMark`,setup(o){let c=a(`mark`),l=s(c,{rootMargin:`-64px 0px 0px 0px`,threshold:1});return(a,o)=>(t(),i(`mark`,{ref_key:`mark`,ref:c,class:e({active:r(l)})},[n(a.$slots,`default`)],2))}});export{c as t};
