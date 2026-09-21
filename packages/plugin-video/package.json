@@ -46,7 +46,7 @@
     "hls.js": "catalog:peer",
     "mpegts.js": "catalog:peer",
     "vitepress": "catalog:prod",
-    "vue": "^3.5.0"
+    "vue": "^3.5.43"
   },
   "peerDependenciesMeta": {
     "dashjs": {
