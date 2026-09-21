@@ -612,7 +612,7 @@ importers:
         specifier: catalog:prod
         version: 4.4.0
       shiki:
-        specifier: '>=4.0.0'
+        specifier: '>=4.4.3'
         version: 4.4.3
       tinyglobby:
         specifier: catalog:prod
