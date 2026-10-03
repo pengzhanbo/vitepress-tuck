@@ -40,7 +40,7 @@
   "peerDependencies": {
     "shiki": ">=4.0.0",
     "vitepress": "catalog:prod",
-    "vue": "^3.5.0"
+    "vue": "^3.5.43"
   },
   "peerDependenciesMeta": {
     "shiki": {
