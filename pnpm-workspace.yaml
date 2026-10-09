@@ -32,37 +32,37 @@ allowBuilds:
 
 catalogs:
   dev:
-    '@pengzhanbo/eslint-config-vue': ^2.9.2
-    '@pengzhanbo/stylelint-config': ^2.9.2
+    '@pengzhanbo/eslint-config-vue': ^2.10.0
+    '@pengzhanbo/stylelint-config': ^2.10.0
     '@tsdown/css': ^0.23.0
     '@types/markdown-it': ^14.2.0
     '@types/markdown-it-container': ^4.0.1
-    '@types/node': ^26.6.1
+    '@types/node': ^26.6.4
     '@types/picomatch': ^4.0.3
     '@types/qrcode': ^1.5.6
-    '@vitest/coverage-v8': ^5.0.1
+    '@vitest/coverage-v8': ^5.0.3
     bumpp: ^12.3.0
     conventional-changelog: ^8.1.3
     conventional-changelog-angular: ^9.4.0
     cpx2: ^9.0.3
     cross-env: ^10.1.0
-    eslint: ^10.10.0
+    eslint: ^10.12.0
     js-tokens: ^10.0.0
-    markdown-it: ^14.3.0
+    markdown-it: ^14.3.2
     nano-staged: ^1.0.2
-    oxc-minify: ^0.150.0
+    oxc-minify: ^0.153.0
     rimraf: ^6.1.3
     simple-git-hooks: ^2.14.0
-    stylelint: ^17.15.0
+    stylelint: ^17.16.0
     tsdown: ^0.23.0
     typescript: ^6.0.3
     unplugin-vue: ^8.0.0
     unrun: ^0.3.1
-    vite: ^8.3.0
+    vite: ^8.3.3
     vitepress-plugin-group-icons: ^1.7.6
     vitepress-plugin-llms: ^1.14.0
-    vitest: ^5.0.1
-    vue-tsc: ^3.3.11
+    vitest: ^5.0.3
+    vue-tsc: ^3.3.12
 
   peer:
     '@iconify/json': ^2.2.530
