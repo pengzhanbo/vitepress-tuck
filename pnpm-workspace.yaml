@@ -65,7 +65,7 @@ catalogs:
     vue-tsc: ^3.3.11
 
   peer:
-    '@iconify/json': ^2.2.530
+    '@iconify/json': ^2.2.539
     dashjs: ^5.2.1
     hls.js: ^1.7.3
     mpegts.js: ^1.8.2
